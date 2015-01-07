@@ -1,0 +1,49 @@
+telnet 10.0.2.93 1234
+device 3 = counter 1
+device 4 = counter 2
+device 8 = HP 8508A vector voltmeter
+
+possible error codes to queries, show on the gpib device front panel:
+  420 = query unterminated (read attempt after query that has no response)
+
+++mode 1            # to choose Controller Mode (0=Device Mode)
+++eot_enable 0      # disable appending a character to reply when EOI is detected
+++eos 3             # append <CR><LF> to gpib commands
+++clr
+
+++savecfg 0
+++auto 0
+++mode 1
+++eot_enable 0
+++eos 3
+++clr
+++addr
+
+++addr 3
+*IDN?
+++read eoi
+
+*RST
+*CLS
+*SRE 0
+*ESE 0
+:STAT:PRES
+SENS:ROSC:SOURCE:AUTO ON
+:INP1:ATT 1
+:INP1:COUP DC
+:INP1:IMP 50 OHM
+:EVEN1:LEVEL 1.0
+:EVEN1:SLOP POS
+:INP2:ATT 1
+:INP2:COUP DC
+:INP2:IMP 50 OHM
+:EVEN2:LEVEL 1.0
+:EVEN2:SLOP POS
+:FUNC 'TINT'
+:TINT:ARM:STAR:SOUR IMM
+:TINT:ARM:STOP:SOUR IMM
+:INIT:CONT ON
+
+READ?
+++read eoi
+

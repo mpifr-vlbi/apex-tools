@@ -1,0 +1,14 @@
+
+22mar2011 JanW: v1.01
+ + fixed: didn't notice connect() errors like "no route to destination" would end the program (err(buff))
+
+22mar2011 JanW: v1.01
+ + added recovery for TCP disconnects during the data point colletion phase
+
+20mar2011 JanW: 
+ * converted Alan Roys programs into 'nettools' library
+ + added Makefiles
+ + added some scripts and docs
+
+xx2011 ARoy:
+ first production version
