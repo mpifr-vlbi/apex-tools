@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# Based on http://ubuntuforums.org/showthread.php?t=1384629
+# "HOWTO: automatically shutdown after reaching critical temperature script"
+
+### Temperature guard
+### Auto Shutdown if Temperature is over threshold
+
+THRESHOLD=60 # Max temperature for chassis (or ambient?) temperature 'AUXTIN'
+SENSORS=/usr/local/bin/sensors
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+
+test -x $SENSORS || exit 0
+
+echo "Temperature Guard started. Threshold temperature is $THRESHOLD °C"
+logger "Temperature Guard started. Threshold temperature is $THRESHOLD °C "
+
+while [ 1 ]
+do
+
+  ## Get Temperature(s) using lm-sensors
+  t1=`$SENSORS | nawk '/AUXTIN/ {print substr($2,2,2)}'`
+
+# CPUTIN = CPU Temperature Index
+# AUXTIN = Auxiliary Temperature Index
+# SYSTIN = System Temperature Index
+
+  # log every 15 minutes
+  logger "Temperature Guard RUNNING. CASE: $t1°C CPU: $t2°C BOARD: $t3°C"
+
+  for i in `seq 1 180`;
+  do
+
+      ## Get Temperature using lm-sensors
+      t1=`$SENSORS | nawk '/AUXTIN/ {print substr($2,2,2)}'`
+
+      if [ $t1 -gt $THRESHOLD ]
+      then
+	echo -n "\rTemperature PANIC! BOARD: $t1°C Shutting down!"
+	logger "Temperature Guard: PANIC!. BOARD: $t1°C Shutting down!"
+	shutdown -h -t 15    # requires %user ALL=NOPASSWD: /sbin/shutdown in visudo
+      else
+	echo -n "\rTemperature Guard: OK.  BOARD: $t1°C (< $THRESHOLD°C) at `date -u`"
+      fi
+      sleep 5
+  done
+done
+
