@@ -13,7 +13,7 @@ station_id_1  = 0x4172 # 'Ar' to discern other IF
 # set thread id for both blocks
 # perhaps thread is always 0?
 thread_id_0 = 0
-thread_id_1 = 0
+thread_id_1 = 1
 
 roach2 = corr.katcp_wrapper.FpgaClient('r2dbe-1')
 roach2.wait_connected()
