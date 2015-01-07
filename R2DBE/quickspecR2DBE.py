@@ -24,6 +24,8 @@ def plotSpectrum(y,Fs,tstr):
 	"""
 	Plots a Single-Sided Amplitude Spectrum of y(t)
 	"""
+	doLogscale = True
+
 	n = len(y) # length of the signal
 	k = numpy.arange(n)
 	T = n/Fs
@@ -33,12 +35,17 @@ def plotSpectrum(y,Fs,tstr):
 	Y = numpy.fft.fft(y)/n # fft computing and normalization
 	Y = Y[range(n/2)]
  
-	#semilogy(frq,abs(Y),'k')
-	plot(frq,abs(Y),'k')
+	if doLogscale:
+		semilogy(frq,abs(Y),'k')
+	else:
+		plot(frq,abs(Y),'k')
 	xlim([0,frq[-1]])	
 
 	xlabel('Freq (MHz)')
-	ylabel('log|Y(freq)|')
+	if doLogscale:
+		ylabel('log|Y(freq)|')
+	else:
+		ylabel('|Y(freq)|')
 	title(tstr)
 
 print 'Connecting...'
