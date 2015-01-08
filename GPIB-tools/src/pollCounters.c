@@ -75,68 +75,77 @@ int main(int argc, char **argv) {
     err(buff);
   }
 
-  /* Inform user */
-  printf("Configuring the Prologix GPIB-LAN adaptor: ");
-  fflush(stdout);
+  // Nested function to help reconfiguration when TCP fails
+  void reconfigure(void)
+  {
+     /* Inform user */
+     printf("Configuring the Prologix GPIB-LAN adaptor: ");
+     fflush(stdout);
 
-  /* Send configuration commands to the Prologix media converter */
-  for (index = 0; index < nPrologixConfigCommands; index++)
-    sendMessage(sockfd, PrologixConfigCommands[index]);
+     /* Send configuration commands to the Prologix media converter */
+     for (index = 0; index < nPrologixConfigCommands; index++)
+       sendMessage(sockfd, PrologixConfigCommands[index]);
 
-  /* Configure GPIB controller with device address of the counter */
-  sprintf(buff, "++addr %s\n", gpibAddr);
-  sendMessage(sockfd, buff);
+     /* Configure GPIB controller with device address of the counter */
+     sprintf(buff, "++addr %s\n", gpibAddr);
+     sendMessage(sockfd, buff);
 
-  /* Query the GPIB controller to confirm device address setting */
-  sendMessage(sockfd, "++addr\n");
-  readMessage(sockfd, recvline, MAXLINE);
+     /* Query the GPIB controller to confirm device address setting */
+     sendMessage(sockfd, "++addr\n");
+     readMessage(sockfd, recvline, MAXLINE);
 
-  /* Inform user */
-  printf("done.\n");
-  printf("Configuring the counter:                   ");
-  fflush(stdout);
+     /* Inform user */
+     printf("done.\n");
+     printf("Configuring the counter:                   ");
+     fflush(stdout);
 
-  /* Query the counter identification */
-  sendMessage(sockfd, "*IDN?\n");
-  readMessage(sockfd, recvline, MAXLINE);
+     /* Query the counter identification */
+     sendMessage(sockfd, "*IDN?\n");
+     readMessage(sockfd, recvline, MAXLINE);
 
-  /* Configure the counter */
-  sendMessage(sockfd, ":SENS:ROSC:SOURCE:AUTO ON\n");
-  sendMessage(sockfd, ":INP1:ATT 1\n");
-  sendMessage(sockfd, ":INP1:COUP DC\n");
-  sendMessage(sockfd, ":INP1:IMP 50 OHM\n");
-  sendMessage(sockfd, ":EVEN1:LEVEL 1.0\n");
-  sendMessage(sockfd, ":EVEN1:SLOP POS\n");
-  sendMessage(sockfd, ":INP2:ATT 1\n");
-  sendMessage(sockfd, ":INP2:COUP DC\n");
-  sendMessage(sockfd, ":INP2:IMP 50 OHM\n");
-  sendMessage(sockfd, ":EVEN2:LEVEL 1.0\n");
-  sendMessage(sockfd, ":EVEN2:SLOP POS\n");
-  sendMessage(sockfd, ":FUNC 'TINT'\n");
-  sendMessage(sockfd, ":TINT:ARM:STAR:SOUR IMM\n");
-  sendMessage(sockfd, ":TINT:ARM:STOP:SOUR IMM\n");
-  sendMessage(sockfd, ":INIT:CONT ON\n");
+     /* Configure the counter */
+     sendMessage(sockfd, ":SENS:ROSC:SOURCE:AUTO ON\n");
+     sendMessage(sockfd, ":INP1:ATT 1\n");
+     sendMessage(sockfd, ":INP1:COUP DC\n");
+     sendMessage(sockfd, ":INP1:IMP 50 OHM\n");
+     sendMessage(sockfd, ":EVEN1:LEVEL 1.0\n");
+     sendMessage(sockfd, ":EVEN1:SLOP POS\n");
+     sendMessage(sockfd, ":INP2:ATT 1\n");
+     sendMessage(sockfd, ":INP2:COUP DC\n");
+     sendMessage(sockfd, ":INP2:IMP 50 OHM\n");
+     sendMessage(sockfd, ":EVEN2:LEVEL 1.0\n");
+     sendMessage(sockfd, ":EVEN2:SLOP POS\n");
+     sendMessage(sockfd, ":FUNC 'TINT'\n");
+     sendMessage(sockfd, ":TINT:ARM:STAR:SOUR IMM\n");
+     sendMessage(sockfd, ":TINT:ARM:STOP:SOUR IMM\n");
+     sendMessage(sockfd, ":INIT:CONT ON\n");
 
-  /*
-  sendMessage(sockfd, "FETCH:TINT?\n");
-  sleep(2);
-  readMessage(sockfd, recvline, MAXLINE);
-  */
-  printf("done.\n");
-  printf("Check counter for errors:                  ");
-  fflush(stdout);
+     /*
+     sendMessage(sockfd, "FETCH:TINT?\n");
+     sleep(2);
+     readMessage(sockfd, recvline, MAXLINE);
+     */
+     printf("done.\n");
+     printf("Check counter for errors:                  ");
+     fflush(stdout);
 
-  /* Check for errors */
-  sendMessage(sockfd, "SYSTEM:ERR?\n");
-  readMessage(sockfd, recvline, MAXLINE);
-  printf("%s", recvline);
+     /* Check for errors */
+     sendMessage(sockfd, "SYSTEM:ERR?\n");
+     readMessage(sockfd, recvline, MAXLINE);
+     printf("%s", recvline);
 
-  //  if (recvline[1]!='0') {
-    // zero character ("+0,NO ERROR") means everything is ok
-    // non-zero is an error ("-110,CMD HEADER ERROR, ...")
-  //  } else
-  //   printf("Reply was ok: %s", recvline);
-  printf("\n");
+     //  if (recvline[1]!='0') {
+     //     // zero character ("+0,NO ERROR") means everything is ok
+     //     // non-zero is an error ("-110,CMD HEADER ERROR, ...")
+     //  } else {
+     //    printf("Reply was ok: %s", recvline);
+     //  }
+     printf("\n");
+  }
+
+  /* Set up the GPIB device */
+  reconfigure();
+
 
   //=============================================================================================
   //=== MEASUREMENT PHASE                                                                     ===
@@ -185,6 +194,7 @@ int main(int argc, char **argv) {
           sockfd = tcp_client(_ipaddr, _port, _timeout_secs);
           if (sockfd >= 0) {
              printf("Reconnect SUCCESS!\n");
+             reconfigure();
              break;
           }
        }
