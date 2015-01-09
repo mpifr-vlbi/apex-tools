@@ -1,6 +1,19 @@
 
 The files in this repository are related to APEX mm-VLBI 
-configuration and station setup.
+configuration and station setup. 
+
+-------------------------------------------------------------
+
+To download the files:
+$ git clone https://bitbucket.org/jwagner313/apex-tools
+
+To upload changes:
+$ cd apex-tools ; git commit -m "message" ; git push
+
+To update to the most recent version:
+$ cd apex-tools ; git pull
+
+-------------------------------------------------------------
 
 The subdirectories are
 
