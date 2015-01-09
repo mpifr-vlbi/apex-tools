@@ -222,4 +222,4 @@ print 'r2dbe_quantize_1_thresh : %d' % (th)
 sleep(2)
 print 'Enabling VDIF stream...'
 roach2.write_int('r2dbe_vdif_0_enable', 1)
-roach2.write_int('r2dbe_vdif_1_enable', 0)  # disable for now to avoid confusion
+roach2.write_int('r2dbe_vdif_1_enable', 1)
