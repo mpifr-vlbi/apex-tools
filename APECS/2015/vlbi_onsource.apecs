@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+#
+# APEX - Atacama Pathfinder EXperiment Project
+#
+# Copyright (C) 2011
+#
+# Max-Planck-Institut fuer Radioastronomie, Bonn, Germany
+#
+# Jan Wagner
+#
+
+import sys
+import os
+
+
+# target host for ONSOURCE status UDP packet
+try:
+	dest = sys.argv[1]
+	port = int(sys.argv[2])
+except:
+	# Defaults:
+	# dest = "mark5c1.apex-telescope.org" # Actual run
+	dest = "mark5c2.apex-telescope.org"   # Testing
+	port = 55212
+
+# get and send ONSOURCE status
+
+# own library  -- needs commands/vlbi_commands.py
+#homepath = os.getenv("HOME")
+#sys.path.append(homepath + '/commands')
+#import vlbi_commands
+#vlbi_commands.vlbi_get_tracking_status(dest,port)
+
+# brute force -- get definitions into local namespace (not visible in APECS cmd line)
+execfile('commands/vlbi_commands.apecs')
+vlbi_get_tracking_status(dest,port)

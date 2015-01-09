@@ -1,0 +1,4 @@
+for i 4 to 11
+new
+lpoint 12609 12609 1 -100 66 -34 0 AP-H201-X201 5
+next

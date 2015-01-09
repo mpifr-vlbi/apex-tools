@@ -1,0 +1,11 @@
+
+# Executed remotely by FieldSystem
+
+reference (-1000,0)     # reference position for On-Off type scans, numerical X,Y offset on sky in unknown units
+calibrate()             # run a Sky-Hot-Cold
+reference (0,0)		# added 2012, just in case
+#offset(0,0)            # supposedly not necessary; disables mosaicing observing pattern
+
+# Results from Sky-Hot-Cold are monitored by /homes/t-091.f-0006-2013/calibrator_events/processCalEvents
+# which injects new results back into Field System
+

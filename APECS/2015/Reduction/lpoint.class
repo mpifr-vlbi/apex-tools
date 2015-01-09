@@ -1,0 +1,1148 @@
+! APECS line pointing fit script for use in CLASS. Adapted from the HHT/SMT.
+!
+! APEX - Atacama Pathfinder EXperiment Project
+!
+! Copyright (C) 1997-2006
+! Max-Planck-Institut fuer Radioastronomie, Bonn, Germany
+!
+! This library is free software; you can redistribute it and/or modify it under
+! the terms of the GNU Library General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version.
+!
+! This library is distributed in the hope that it will be useful, but WITHOUT
+! ANY WARRANTY; without even the implied warranty of MERCHANTABILITY FITNESS
+! FOR A PARTICULAR PURPOSE. See the GNU Library General Public License for more
+! details.
+!
+! You should have received a copy of the GNU Library General Public License
+! along with this library; if not, write to the Free Software Foundation, Inc.,
+! 675 Massachusetts Ave, Cambridge, MA 02139, USA. Correspondence concerning
+! APEX should be addressed as follows:
+!
+! Internet email: dmuders@mpifr-bonn.mpg.de
+!
+! Who		When		What
+! -----------------------------------------------------------------------------
+! D. Muders	Sept. 25, 2006  Use LAS\SPECTRUM to be compatible with latest
+!				Gildas version.
+! D. Muders	March 9, 2006   - Increased size of scan number variables to
+!				  8 characters
+!                               - Added writing fit to a file
+! D. Muders	April 24, 2005	Commented out consistency check section since
+!				the corresponding FORTRAN code is not used for
+!				APECS. A CLASS or Python solution will be
+!				needed in the future.
+! D. Muders	April 2005	Commented out CHEF specific commands. They
+!				were needed only to calculate the final Col*
+!				and Nule values for the CORR command in OBST.
+!				For APECS we use just the deltas.
+
+! ---  DEC/CMS REPLACEMENT HISTORY, Element LPOINT.CLASS
+! ---  *7    19-MAR-1999 14:53:22 DMUDERS "Save observation numbers and use FIND /NUM to speed up LPOINT fit"
+! ---  *6    11-JAN-1999 21:43:25 DMUDERS "Do not use MODE X AUTO for the Gauss fits etc."
+! ---  *5    11-JAN-1999 10:00:01 DMUDERS "Reset MODE X to AUTO instead of TOTAL"
+! ---  *4    20-OCT-1998 00:43:26 DMUDERS "Flag only if peak was found at map edge"
+! ---  *3    25-JUN-1998 21:43:32 DMUDERS "Create global SIC variables for AZ/EL pos. & offset for pointing model"
+! ---  *2    25-JUN-1998 10:36:01 DMUDERS "Allow for range of scan numbers"
+! ---  *1    23-APR-1998 18:30:45 PETERS "Initial version"
+! ---  DEC/CMS REPLACEMENT HISTORY, Element LPOINT.CLASS
+!
+! LPOINT.CLASS fits a line pointing to get the COL* and NULE offsets.
+! A line pointing is a cross scan in spectral line mode which will be
+! reduced by the online CHEF with PROCEDURE PRASTER. An LPOINT/LWPOINT
+! scan will produce a number of spectra (usually) along the azimuth and
+! elevation axes. This macro calculates the area under the observed
+! lines and fits a Gaussian to their AZ/EL distribution using velocity
+! windows from the raw data (since June 1997) or alternatively user
+! defined values. The positions of the Gauss curve are the required COL*
+! and NULE offsets.
+! 
+! LPOINT.CLASS expects an opened input file with the cross spectra.
+! 
+! Syntax:
+! 
+! @LPOINT.CLASS <Start Scan Number|*> <End Scan Number|*> <Base Order|*>
+!               <VLOW|*> <VHIG|*> <WLOW|*> <WHIG|*> <BE_NAME|*>
+!
+! All 8 parameters are required. A "*" means default/wildcard.
+! Default for Base Order is 1. Wildcards on VLOW/VHIG and WLOW/WHIG
+! mean that this parameter is fetched from the spectra header.
+!
+! Version 1.25, Dirk Muders, SMTO, March 1999:
+!    FIND /NUMBER works much faster than other FINDs since the spectra are
+!    sorted by observation number. Added two variables to save the first
+!    and last observation number of the required scan range for subsequent
+!    use in all FINDs. This speeds up the line pointing fit considerably,
+!    especially for large CLASS spectra files (Thanks for the hint, Bill !). 
+!  
+! Version 1.24, Dirk Muders, SMTO, January 1999:
+!    Reset MODE X to AUTO instead of TOTAL so that the spectra are always
+!    plotted within the [VLOW,VHIG] range given in the catalog.
+!
+! Version 1.23, Dirk Muders, SMTO, October 1998:
+!    Instead of insisting that the peak is in the center, check whether
+!    the maximum was found within the cross map or at the edge. Flag only
+!    if the peak is at the map edge.
+!
+! Version 1.22, Dirk Muders, SMTO, June 1998:
+!    Allow a range of scan numbers instead of just one scan (-> /APPEND
+!    adverb in OBST). Return a few arrays with the AZ/EL offsets so that
+!    the correct (non-averaged) offsets can be used later for the pointing
+!    model.
+!
+! Version 1.21, Dirk Muders, SMTO, April 1998:
+!    Check innermost 3 points along each axis concerning signal-to-noise
+!    ratio. The axis' fit is flagged if a S/N ratio of less than 3 is
+!    encountered towards the center or at least two of the inner points.
+!
+! Version 1.2, Dirk Muders, SMTO, March 1998:
+!    Use additional parameter BE_NAME to determine which backend should
+!    be used for the fit. Thus it is no longer necessary to change the
+!    backend configuration in OBST between a normal observation and a
+!    line pointing scan.
+!
+!    Get old Col* and NulE from spectra and display corrected values in
+!    plot.
+!
+!    Use new variable FE_NAME_CHAN to plot receiver information.
+! 
+! Version 1.1, Dirk Muders, SMTO, October 1997:
+!    Improved rms estimate using rms of baseline instead of Gauss fit.
+!
+! Version 1.0, Dirk Muders, SMTO, June 1997:
+!    Original version
+
+!ON ERROR CONTINUE	 ! Macro should not stop since it is also used for the
+			 ! online display
+
+DEFINE REAL WINMIN WINMAX MXMIN MXMAX
+DEFINE REAL AZM_PADDING ELV_PADDING SPACING
+DEFINE REAL IMM IMIN IMAX TMP_REAL DUMMY[10]
+DEFINE REAL DCOL DNULE			! Change in Col* and Nule
+DEFINE REAL AZM_RMS ELV_RMS		! Baseline RMS
+DEFINE REAL AZM_C_B_AREA ELV_C_B_AREA
+DEFINE REAL AZM_AREA2PEAK ELV_AREA2PEAK	! Gaussian scaling ratio
+DEFINE REAL AZM_MAX ELV_MAX		! Line temperature maxima
+DEFINE REAL NFIT_AZM[15]
+DEFINE REAL NFIT_ELV[15]
+DEFINE REAL BXMIN BXMAX BYMIN BYMAX BWIDTH BHEIGHT
+DEFINE REAL XSLOPE XINTERCEPT YSLOPE YINTERCEPT
+DEFINE REAL BX1 BX2 BY1 BY2
+
+DEFINE INTEGER NUMFIRST NUMLAST		! Observation numbers of scan range
+DEFINE INTEGER NUM_AZM NUM_ELV		! Number of observed points
+DEFINE INTEGER NUMFIT_AZM NUMFIT_ELV NCHAN
+DEFINE INTEGER AZM_MAX_POI ELV_MAX_POI	! Pointer for maximum search
+DEFINE INTEGER AZM_TAG ELV_TAG
+DEFINE INTEGER NUMDATA TMP_INT1 TMP_INT2
+DEFINE INTEGER BASEORDER		! Baseline order
+DEFINE INTEGER XNUM YNUM
+
+DEFINE LOGICAL COL_NULE_OK DO_AZM_FIT DO_ELV_FIT NEW_OFF
+
+DEFINE CHARACTER BASEORDER_CHAR*80 SCANSTART_CHAR*8 SCANEND_CHAR*8
+DEFINE CHARACTER VLOW_CHAR*80 VHIG_CHAR*80 WLOW_CHAR*80 WHIG_CHAR*80
+DEFINE CHARACTER BE_NAME*12
+DEFINE CHARACTER BUFFER1*160 BUFFER2*160
+
+
+LET SCANSTART_CHAR &1
+LET SCANEND_CHAR &2
+LET BASEORDER_CHAR &3
+LET VLOW_CHAR &4
+LET VHIG_CHAR &5
+LET WLOW_CHAR &6
+LET WHIG_CHAR &7
+LET BE_NAME &8
+
+SYMBOL SCANSTART 'SCANSTART_CHAR'
+SYMBOL SCANEND 'SCANEND_CHAR'
+
+IF (BE_NAME.NE."*") THEN
+  IF (BE_NAME.EQ."AOSA") THEN
+    LET BE_NAME "SMT-10M-B30"
+  ENDIF
+  IF (BE_NAME.EQ."AOSB") THEN
+    LET BE_NAME "SMT-10M-B40"
+  ENDIF
+  IF (BE_NAME.EQ."AOSC") THEN
+    LET BE_NAME "SMT-10M-B50"
+  ENDIF
+  IF (BE_NAME.EQ."FBSA") THEN
+    LET BE_NAME "SMT-10M-B71"
+  ENDIF
+  IF (BE_NAME.EQ."FBSB") THEN
+    LET BE_NAME "SMT-10M-B72"
+  ENDIF
+  IF (BE_NAME.EQ."FBSC") THEN
+    LET BE_NAME "SMT-10M-B73"
+  ENDIF
+ENDIF
+
+LET DO_AZM_FIT .FALSE.
+LET DO_ELV_FIT .FALSE.
+
+! Get access to extended set of header variables
+
+SET VAR GENERAL WRITE	! Need to switch to continuum kind for fit plot
+SET VAR BASE WRITE	! Need to store baseline rms in final "faked" spectra
+SET VAR PLOT READ
+SET VAR GAUSS WRITE	! In case a fit fails we want to return 0
+SET VAR DRIFT READ	! To get old Col* and NulE values
+
+! Set some defaults
+
+SET ANGLE SECOND
+SET PLOT HISTO
+SET UNIT V V
+SET ALI V C
+SET MATCH		! Set matching to default (2") for FIND
+SET WEIGHT E		! Weight equal so that it also works for
+			! non-calibrated data
+SET TYPE LINE
+SET CHAR 0.5
+SET BOX
+SET MODE X TOTAL
+SET MODE Y TOTAL
+METHOD GAUSS
+
+! Check if any data is present
+
+FIND /SCAN 'SCANSTART' 'SCANEND' /OFF * * /NUM * * /TEL 'BE_NAME'
+IF (FOUND.EQ.0) THEN
+  SAY "No data found !"
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  SET WEIGHT T		! Weight time is the default in CLASS
+  SET CHAR 0.6
+  SET BOX
+  SET MODE X AUTO
+  SET MODE Y AUTO
+  SET VAR GENERAL OFF
+  SET VAR BASE OFF
+  SET VAR PLOT OFF
+  SET VAR GAUSS OFF
+  SET VAR DRIFT OFF
+  DELETE /SYMBOL SCANSTART
+  DELETE /SYMBOL SCANEND
+  ON ERROR PAUSE
+  RETURN
+ENDIF
+
+! Get first and last spectrum to save the observation numbers of the scan
+! range and to get access to the velocity windows
+
+GET FIRST
+LET NUMFIRST NUMBER
+GET LAST
+LET NUMLAST NUMBER
+
+IF (TYPEC.NE.4) THEN
+  SAY "Observation system is not horizontal. This is not a line pointing scan !"
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -9999
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -9999
+  SET WEIGHT T		! Weight time is the default in CLASS
+  SET CHAR 0.6
+  SET BOX
+  SET MODE X AUTO
+  SET MODE Y AUTO
+  SET VAR GENERAL OFF
+  SET VAR BASE OFF
+  SET VAR PLOT OFF
+  SET VAR GAUSS OFF
+  SET VAR DRIFT OFF
+  DELETE /SYMBOL SCANSTART
+  DELETE /SYMBOL SCANEND
+  ON ERROR PAUSE
+  RETURN
+ENDIF
+
+DEFINE REAL TMPSPEC[CHANNELS]	! Define a temporary variable for later use
+
+! Get baseline order from macro parameters or assume 1
+
+IF (BASEORDER_CHAR.EQ."*") THEN
+  LET BASEORDER 1
+ELSE
+  SYMBOL TRANSFER 'BASEORDER_CHAR'
+  LET BASEORDER 'TRANSFER'
+  DELETE /SYMBOL TRANSFER
+  IF ((BASEORDER.LT.0).OR.(BASEORDER.GT.29)) THEN
+    SAY "Baseline order must be between 0 and 29 !"
+    MODEL DUMMY
+    LET NFIT 0
+    LET RY[1] 4
+    LET SIGFI -99
+    MODEL DUMMY
+    LET NFIT 0
+    LET RY[1] 4
+    LET SIGFI -99
+    SET WEIGHT T		! Weight time is the default in CLASS
+    SET CHAR 0.6
+    SET BOX
+    SET MODE X AUTO
+    SET MODE Y AUTO
+    SET VAR GENERAL OFF
+    SET VAR BASE OFF
+    SET VAR PLOT OFF
+    SET VAR GAUSS OFF
+    SET VAR DRIFT OFF
+    DELETE /SYMBOL SCANSTART
+    DELETE /SYMBOL SCANEND
+    ON ERROR PAUSE
+    RETURN
+  ENDIF
+ENDIF
+
+! Get the velocity windows from the header or from the macro parameters
+
+IF (VLOW_CHAR.EQ."*") THEN
+  LET MXMIN VMIN
+ELSE
+  SYMBOL TRANSFER 'VLOW_CHAR'
+  LET MXMIN 'TRANSFER'
+  DELETE /SYMBOL TRANSFER
+ENDIF
+
+IF (VHIG_CHAR.EQ."*") THEN
+  LET MXMAX VMAX
+ELSE
+  SYMBOL TRANSFER 'VHIG_CHAR'
+  LET MXMAX 'TRANSFER'
+  DELETE /SYMBOL TRANSFER
+ENDIF
+
+IF (MXMIN.GE.MXMAX) THEN
+  SAY "VLOW must be lower than VHIG !"
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  SET WEIGHT T		! Weight time is the default in CLASS
+  SET CHAR 0.6
+  SET BOX
+  SET MODE X AUTO
+  SET MODE Y AUTO
+  SET VAR GENERAL OFF
+  SET VAR BASE OFF
+  SET VAR PLOT OFF
+  SET VAR GAUSS OFF
+  SET VAR DRIFT OFF
+  DELETE /SYMBOL SCANSTART
+  DELETE /SYMBOL SCANEND
+  ON ERROR PAUSE
+  RETURN
+ENDIF
+
+IF (WLOW_CHAR.EQ."*") THEN
+  LET WINMIN W1[1]
+ELSE
+  SYMBOL TRANSFER 'WLOW_CHAR'
+  LET WINMIN 'TRANSFER'
+  DELETE /SYMBOL TRANSFER
+ENDIF
+
+IF (WHIG_CHAR.EQ."*") THEN
+  LET WINMAX W2[1]
+ELSE
+  SYMBOL TRANSFER 'WHIG_CHAR'
+  LET WINMAX 'TRANSFER'
+  DELETE /SYMBOL TRANSFER
+ENDIF
+
+IF (WINMIN.GE.WINMAX) THEN
+  SAY "WLOW must be lower than WHIG !"
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  SET WEIGHT T		! Weight time is the default in CLASS
+  SET CHAR 0.6
+  SET BOX
+  SET MODE X AUTO
+  SET MODE Y AUTO
+  SET VAR GENERAL OFF
+  SET VAR BASE OFF
+  SET VAR PLOT OFF
+  SET VAR GAUSS OFF
+  SET VAR DRIFT OFF
+  DELETE /SYMBOL SCANSTART
+  DELETE /SYMBOL SCANEND
+  ON ERROR PAUSE
+  RETURN
+ENDIF
+
+IF ((MXMIN.GE.WINMIN).OR.(MXMAX.LE.WINMAX)) THEN
+  SAY "[VLOW,VHIG] must contain [WLOW,WHIG] !"
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  SET WEIGHT T		! Weight time is the default in CLASS
+  SET CHAR 0.6
+  SET BOX
+  SET MODE X AUTO
+  SET MODE Y AUTO
+  SET VAR GENERAL OFF
+  SET VAR BASE OFF
+  SET VAR PLOT OFF
+  SET VAR GAUSS OFF
+  SET VAR DRIFT OFF
+  DELETE /SYMBOL SCANSTART
+  DELETE /SYMBOL SCANEND
+  ON ERROR PAUSE
+  RETURN
+ENDIF
+
+! FIXME: This needs to be implemented completely in CLASS and/or Python.
+! For the time being we comment it out to avoid problems with defined
+! variables.
+
+! Determine total number of spectra and save all scan numbers, azimuth and
+! elevation positions and offsets and check Col* and Nule values for
+! consistency (we cannot yet handle intermediate CORR F F). Those variables
+! are defined GLOBAL to preserve them for later use in FORTRAN. After using
+! them for pointing model purposes they will be deleted there to clean up.
+
+!FIND /SCAN 'SCANSTART' 'SCANEND' /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+
+!DEFINE INTEGER SCANNUM[FOUND] /GLOBAL
+!DEFINE REAL S_AZM[FOUND] /GLOBAL
+!DEFINE REAL S_ELV[FOUND] /GLOBAL
+!DEFINE REAL O_AZM[FOUND] /GLOBAL
+!DEFINE REAL O_ELV[FOUND] /GLOBAL
+!DEFINE REAL COLSTAR[FOUND] /GLOBAL
+!DEFINE REAL NULE[FOUND] /GLOBAL
+!
+!LET COL_NULE_OK .TRUE.
+!
+!FOR I 1 TO FOUND
+!  GET NEXT
+!  LET SCANNUM[I] SCAN
+!  LET S_AZM[I] AZIMUTH|PI*180.
+!  LET S_ELV[I] ELEVATION|PI*180.
+!  LET O_AZM[I] OFF_LAMBDA
+!  LET O_ELV[I] OFF_BETA
+!  !READCONT
+!  LET COLSTAR[I] COLLA
+!  LET NULE[I] COLLE
+!  IF (I.NE.1) THEN
+!    IF ((COLLA.NE.COLSTAR[1]).OR.(COLLE.NE.NULE[1])) THEN
+!      LET COL_NULE_OK .FALSE.
+!    ENDIF
+!  ENDIF
+!NEXT
+!
+!IF (.NOT.COL_NULE_OK) THEN
+!  SAY "Cannot yet handle varying Col*/NulE."
+!  MODEL DUMMY
+!  LET NFIT 0
+!  LET RY[1] 4
+!  LET SIGFI -99999
+!  MODEL DUMMY
+!  LET NFIT 0
+!  LET RY[1] 4
+!  LET SIGFI -99999
+!  SET WEIGHT T		! Weight time is the default in CLASS
+!  SET CHAR 0.6
+!  SET BOX
+!  SET MODE X AUTO
+!  SET MODE Y AUTO
+!  SET VAR GENERAL OFF
+!  SET VAR BASE OFF
+!  SET VAR PLOT OFF
+!  SET VAR GAUSS OFF
+!  SET VAR DRIFT OFF
+!  DELETE /SYMBOL SCANSTART
+!  DELETE /SYMBOL SCANEND
+!  ON ERROR PAUSE
+!  RETURN
+!ENDIF
+
+! Determine maximum number of necessary array elements
+
+FIND /SCAN 'SCANSTART' 'SCANEND' /OFF * 0 /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+LET NUMDATA FOUND
+
+FIND /SCAN 'SCANSTART' 'SCANEND' /OFF 0 * /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+IF (FOUND.GT.NUMDATA) THEN
+  LET NUMDATA FOUND
+ENDIF
+
+IF (NUMDATA.EQ.1) THEN
+  SAY "Cannot fit one point !"
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  MODEL DUMMY
+  LET NFIT 0
+  LET RY[1] 4
+  LET SIGFI -99
+  SET WEIGHT T		! Weight time is the default in CLASS
+  SET CHAR 0.6
+  SET BOX
+  SET MODE X AUTO
+  SET MODE Y AUTO
+  SET VAR GENERAL OFF
+  SET VAR BASE OFF
+  SET VAR PLOT OFF
+  SET VAR GAUSS OFF
+  SET VAR DRIFT OFF
+  DELETE /SYMBOL SCANSTART
+  DELETE /SYMBOL SCANEND
+  ON ERROR PAUSE
+  RETURN
+ENDIF
+
+! Now clear the plot
+
+CLEAR PLOT
+
+DEFINE REAL OFF_AZM[NUMDATA] OFF_ELV[NUMDATA]
+DEFINE REAL OFF_AZM_MIN OFF_AZM_MAX OFF_ELV_MIN OFF_ELV_MAX
+
+! Determine all unique offsets, count and sort them
+
+! First AZM
+
+FIND /SCAN 'SCANSTART' 'SCANEND' /OFF * 0 /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+IF (FOUND.NE.0) THEN
+  LET DO_AZM_FIT .TRUE.
+  GET FIRST
+  LET NUM_AZM 1
+  LET OFF_AZM[NUM_AZM] OFF_LAMBDA
+  FOR I 2 TO FOUND
+    GET NEXT
+    LET NEW_OFF .TRUE.
+    FOR J 1 TO NUM_AZM
+      IF (ABS(OFF_LAMBDA-OFF_AZM[J]).LE.2.0) THEN
+        LET NEW_OFF .FALSE.
+      ENDIF
+    NEXT
+    IF (NEW_OFF) THEN
+      LET NUM_AZM NUM_AZM+1
+      LET OFF_AZM[NUM_AZM] OFF_LAMBDA
+    ENDIF
+  NEXT
+
+! Sort offsets
+
+  FOR I NUM_AZM TO 1 BY -1
+    FOR J 2 TO I
+      LET TMP_INT1 J-1
+      IF (OFF_AZM[J].LT.OFF_AZM[TMP_INT1]) THEN
+        LET TMP_REAL OFF_AZM[J]
+        LET OFF_AZM[J] OFF_AZM[TMP_INT1]
+        LET OFF_AZM[TMP_INT1] TMP_REAL
+      ENDIF
+    NEXT
+  NEXT
+
+! Get the largest distance between two points along azimuth
+! as AZM padding distance (search is necessary for On-The-Fly
+! line pointings).
+
+  LET AZM_PADDING OFF_AZM[2]-OFF_AZM[1]
+  FOR I 3 TO NUM_AZM
+    LET TMP_INT1 I-1
+    IF ((OFF_AZM[I]-OFF_AZM[TMP_INT1]).GT.AZM_PADDING) THEN
+      LET AZM_PADDING OFF_AZM[I]-OFF_AZM[TMP_INT1]
+    ENDIF
+  NEXT
+
+  COMPUTE OFF_AZM_MIN MIN OFF_AZM
+  COMPUTE OFF_AZM_MAX MAX OFF_AZM
+
+ENDIF
+
+! The same for ELV
+
+FIND /SCAN 'SCANSTART' 'SCANEND' /OFF 0 * /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+IF (FOUND.NE.0) THEN
+  LET DO_ELV_FIT .TRUE.
+  GET FIRST
+  LET NUM_ELV 1
+  LET OFF_ELV[NUM_ELV] OFF_BETA
+  FOR I 2 TO FOUND
+    GET NEXT
+    LET NEW_OFF .TRUE.
+    FOR J 1 TO NUM_ELV
+      IF (ABS(OFF_BETA-OFF_ELV[J]).LE.2.0) THEN
+        LET NEW_OFF .FALSE.
+      ENDIF
+    NEXT
+    IF (NEW_OFF) THEN
+      LET NUM_ELV NUM_ELV+1
+      LET OFF_ELV[NUM_ELV] OFF_BETA
+    ENDIF
+  NEXT
+
+! Sort offsets
+
+  FOR I NUM_ELV TO 1 BY -1
+    FOR J 2 TO I
+      LET TMP_INT1 J-1
+      IF (OFF_ELV[J].LT.OFF_ELV[TMP_INT1]) THEN
+        LET TMP_REAL OFF_ELV[J]
+        LET OFF_ELV[J] OFF_ELV[TMP_INT1]
+        LET OFF_ELV[TMP_INT1] TMP_REAL
+      ENDIF
+    NEXT
+  NEXT
+
+! Get the largest distance between two points along elevation
+! as ELV padding distance (search is necessary for On-The-Fly
+! line pointings).
+
+  LET ELV_PADDING OFF_ELV[2]-OFF_ELV[1]
+  FOR I 3 TO NUM_ELV
+    LET TMP_INT1 I-1
+    IF ((OFF_ELV[I]-OFF_ELV[TMP_INT1]).GT.ELV_PADDING) THEN
+      LET ELV_PADDING OFF_ELV[I]-OFF_ELV[TMP_INT1]
+    ENDIF
+  NEXT
+
+  COMPUTE OFF_ELV_MIN MIN OFF_ELV
+  COMPUTE OFF_ELV_MAX MAX OFF_ELV
+
+ENDIF
+
+! Determine Y limits for the spectra for RX in [VLOW,VHIG]
+
+SET WIN WINMIN WINMAX /NOCURSOR
+SET MODE X MXMIN MXMAX
+
+FIND /SCAN 'SCANSTART' 'SCANEND' /OFF * * /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+
+LET IMIN 0.0
+LET IMAX 0.0
+FOR I 1 TO FOUND
+  GET N
+  BASE BASEORDER
+  LET TMPSPEC 0.0
+  LET TMPSPEC RY /WHERE RX.GE.MXMIN.AND.RX.LE.MXMAX
+  COMPU IMM MIN TMPSPEC
+  IF (IMM.LT.IMIN) THEN
+    LET IMIN IMM
+  ENDIF
+  COMPU IMM MAX TMPSPEC
+  IF (IMM.GT.IMAX) THEN
+    LET IMAX IMM
+  ENDIF
+NEXT
+
+! Determine the area and RMS of the central spectrum / spectra (for an
+! even number of points). Get scaling from area-to-peak ratio to scale
+! all other points. The RMS is used later to select pointings with a good
+! signal-to-noise ratio to be used for the pointing model.
+
+SET MODE Y IMIN-0.05*(IMAX-IMIN) IMAX+0.05*(IMAX-IMIN)
+
+! Need to use a quite large azimuth search radius to catch observations if
+! the center itself was not observed.
+
+FIND /SCAN 'SCANSTART' 'SCANEND' /RANGE -0.5*AZM_PADDING-2 0.5*AZM_PADDING+2 0 0 /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+IF (FOUND.NE.0) THEN
+  SET NOMATCH
+  SUM
+  SET MATCH
+  BASE BASEORDER	! Get RMS on baseline (-> SIGFI)
+  LINE 0		! Get initial guesses for Gauss fit from moments
+  GAUSS			! Get width of spectral line (-> NFIT[3])
+  LET AZM_RMS SIGFI
+  LET AZM_C_B_AREA AIRE
+  LET AZM_AREA2PEAK 1|(NFIT[3]*2.0*SQRT(LOG(2)|PI))
+ELSE
+  LET AZM_RMS -99
+  LET AZM_C_B_AREA 0
+  LET AZM_AREA2PEAK 1
+ENDIF
+
+! Need to use a quite large elevation search radius to catch observations if
+! the center itself was not observed.
+
+FIND /SCAN 'SCANSTART' 'SCANEND' /RANGE 0 0 -0.5*ELV_PADDING-2 0.5*ELV_PADDING+2 /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+IF (FOUND.NE.0) THEN
+  SET NOMATCH
+  SUM
+  SET MATCH
+  BASE BASEORDER	! Get RMS on baseline (-> SIGFI)
+  LINE 0		! Get initial guesses for Gauss fit from moments
+  GAUSS			! Get width of spectral line (-> NFIT[3])
+  LET ELV_RMS SIGFI
+  LET ELV_C_B_AREA AIRE
+  LET ELV_AREA2PEAK 1|(NFIT[3]*2.0*SQRT(LOG(2)|PI))
+ELSE
+  LET ELV_RMS -99
+  LET ELV_C_B_AREA 0
+  LET ELV_AREA2PEAK 1
+ENDIF
+
+! Start plot with some info about the scan
+
+LET BUFFER1 "LPOINT Scan:\s:"
+LET BUFFER1 'BUFFER1''SCANSTART'
+LET BUFFER2 "->"
+LET BUFFER1 'BUFFER1''BUFFER2'
+LET BUFFER1 'BUFFER1''SCANEND'
+LET BUFFER2 " Source:\s:"
+LET BUFFER1 'BUFFER1''BUFFER2'
+LET BUFFER1 'BUFFER1''SOURCE'
+LET BUFFER2 " Line:\s:"
+LET BUFFER1 'BUFFER1''BUFFER2'
+LET BUFFER1 'BUFFER1''LINE'
+
+DRAW TEXT 1.2 20.5 'BUFFER1' 6
+
+LET BUFFER1 "FE:\s:"
+! FE_NAME_CHAN is a special variable in CHEF that does not exist in CLASS
+!LET BUFFER1 'BUFFER1''FE_NAME_CHAN'
+LET BUFFER1 'BUFFER1'"RX"
+LET BUFFER2 " BE:\s:"
+LET BUFFER1 'BUFFER1''BUFFER2'
+LET BUFFER1 'BUFFER1''BE_NAME'
+LET BUFFER2 " Az:\s:"
+LET BUFFER1 'BUFFER1''BUFFER2'
+LET BUFFER1 'BUFFER1''INT(AZIMUTH|PI*180*100+0.5)|100'
+LET BUFFER2 " El:\s:"
+LET BUFFER1 'BUFFER1''BUFFER2'
+LET BUFFER1 'BUFFER1''INT(ELEVATION|PI*180*100+0.5)|100'
+
+DRAW TEXT 17.1 20.5 'BUFFER1' 6
+
+DRAW TEXT 23.0 1.0 "(C) D. Muders, SMT, 1999" 3
+
+! Do the AZM fit if required
+
+IF (DO_AZM_FIT) THEN
+! We need at least 15 points for the Gauss fit. Pad 8 points to either side.
+
+  LET NUMFIT_AZM NUM_AZM+16
+
+  DEFINE REAL XFIT_AZM[NUMFIT_AZM] YFIT_AZM[NUMFIT_AZM]
+  DEFINE REAL XFIT_RADIAN[NUMFIT_AZM]
+
+  FOR I 1 TO NUM_AZM
+    LET TMP_INT1 I+8
+    LET XFIT_AZM[TMP_INT1] OFF_AZM[I]
+  NEXT
+  LET TMP_INT2 NUM_AZM+8
+  FOR I 1 TO 8
+    LET XFIT_AZM[I] XFIT_AZM[9]-(9-I)*AZM_PADDING
+    LET TMP_INT1 NUM_AZM+8+I
+    LET XFIT_AZM[TMP_INT1] XFIT_AZM[TMP_INT2]+I*AZM_PADDING
+  NEXT
+
+  SET WIN WINMIN WINMAX /NOCURSOR
+  SET MODE X MXMIN MXMAX
+  SET MODE Y IMIN-0.05*(IMAX-IMIN) IMAX+0.05*(IMAX-IMIN)
+
+! Determine the line areas
+
+  FOR I 1 TO NUM_AZM
+    LET TMP_INT1 I+8
+! Rounding errors can produce something like -4.750654E-07 0 as an offset
+! for a spectrum which ought to be at 0 0. To avoid string overflows and
+! thus inaccurate positions in VMS CLASS of 02/94 truncate the positions
+! selected with the /OFF adverb.
+    FIND /SCAN 'SCANSTART' 'SCANEND' /OFF INT(XFIT_AZM[TMP_INT1]*1000+0.5)|1000 0.0 /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+    SUM
+    BASE BASEORDER
+    LET YFIT_AZM[TMP_INT1] AIRE
+  NEXT
+
+! Scale areas back to peak temperatures for convenience
+
+  LET YFIT_AZM YFIT_AZM*AZM_AREA2PEAK
+
+! Check whether the source peak has been detected along azimuth.
+! If not, flag the fit by making the RMS negative.
+
+  LET AZM_MAX YFIT_AZM[9]
+  LET AZM_MAX_POI 1
+
+  FOR I 2 TO NUM_AZM
+    LET TMP_INT1 I+8
+    IF (YFIT_AZM[TMP_INT1].GT.AZM_MAX) THEN
+      LET AZM_MAX YFIT_AZM[TMP_INT1]
+      LET AZM_MAX_POI I
+    ENDIF
+  NEXT
+
+! Flag the fit if the maximum was found at the edge of the map.
+
+  IF ((AZM_MAX_POI.EQ.1).OR.(AZM_MAX_POI.EQ.NUM_AZM)) THEN
+    LET AZM_RMS -ABS(AZM_RMS)
+  ENDIF
+
+! Check the signal-to-noise ratio for the central 3 points along azimuth.
+! The data is either too noisy or the arm length has been selected too large
+! if a S/N ratio of less than 3 is encountered towards the central spectrum or
+! close to it. In that case the RMS will be flagged by making it negative
+! and the tag number will be saved in the first channel of the final fit
+! spectra so that the fit does not get used for the pointing model.
+
+  LET AZM_TAG 0
+
+  LET TMP_INT1 INT(0.5*NUM_AZM+0.5)+7
+  IF (ABS(YFIT_AZM[TMP_INT1]|AZM_RMS).LT.3.0) THEN
+    LET AZM_TAG AZM_TAG+1
+  ENDIF
+  LET TMP_INT1 INT(0.5*NUM_AZM+0.5)+8
+  IF (ABS(YFIT_AZM[TMP_INT1]|AZM_RMS).LT.3.0) THEN
+    LET AZM_TAG AZM_TAG+2
+  ENDIF
+  LET TMP_INT1 INT(0.5*NUM_AZM+0.5)+9
+  IF (ABS(YFIT_AZM[TMP_INT1]|AZM_RMS).LT.3.0) THEN
+    LET AZM_TAG AZM_TAG+1
+  ENDIF
+
+  IF (AZM_TAG.GT.1) THEN
+    LET AZM_RMS -ABS(AZM_RMS)
+  ENDIF
+
+! Model a "spectrum" and fit a Gaussian to it
+
+  LET XFIT_RADIAN XFIT_AZM*PI|180|3600	! Spectrum needs to be in radian for
+					! correct plot
+  MODEL YFIT_AZM XFIT_RADIAN
+  LET TMP_INT1 NUMFIT_AZM-2
+  SET WIN RX[3] RX[TMP_INT1] /NOCURSOR
+  SET MODE X TOTAL
+  BASE 0
+  LET YFIT_AZM RY		! Save the baseline removed spectrum
+  LINE 0			! Get initial guesses for Gauss fit from moments
+  GAUSS
+  LET NFIT_AZM NFIT|PI*180*3600	! Save the fit parameters in arcsecs
+
+! Plot the modeled "spectrum"
+
+  LET TMP_INT2 NUM_AZM+10
+  LET KIND 1			! To get arcsec labeling
+  SET BOX 2 10.5 12 20
+  BOX P O I N			! No automatic labeling
+  SET MODE X RX[7] RX[TMP_INT2]
+  SET MODE Y TOTAL
+  DRAW TEXT 6.25 10.75 "Angular Offset (arcsec)" 5
+  LAS\SPECTRUM
+  FIT
+  DRAW TEXT 2.5 19.1 "Azimuth" 6
+  LET KIND 0
+
+  DELETE /VAR XFIT_RADIAN
+ENDIF
+
+! Do the ELV fit if required
+
+IF (DO_ELV_FIT) THEN
+! We need at least 15 points for the Gauss fit. Pad 8 points to either side.
+
+  LET NUMFIT_ELV NUM_ELV+16
+
+  DEFINE REAL XFIT_ELV[NUMFIT_ELV] YFIT_ELV[NUMFIT_ELV]
+  DEFINE REAL XFIT_RADIAN[NUMFIT_ELV]
+
+  FOR I 1 TO NUM_ELV
+    LET TMP_INT1 I+8
+    LET XFIT_ELV[TMP_INT1] OFF_ELV[I]
+  NEXT
+  LET TMP_INT2 NUM_ELV+8
+  FOR I 1 TO 8
+    LET XFIT_ELV[I] XFIT_ELV[9]-(9-I)*ELV_PADDING
+    LET TMP_INT1 NUM_ELV+8+I
+    LET XFIT_ELV[TMP_INT1] XFIT_ELV[TMP_INT2]+I*ELV_PADDING
+  NEXT
+
+  SET WIN WINMIN WINMAX /NOCURSOR
+  SET MODE X MXMIN MXMAX
+  SET MODE Y IMIN-0.05*(IMAX-IMIN) IMAX+0.05*(IMAX-IMIN)
+
+! Determine the line areas
+
+  FOR I 1 TO NUM_ELV
+    LET TMP_INT1 I+8
+! Rounding errors can produce something like -4.750654E-07 0 as an offset
+! for a spectrum which ought to be at 0 0. To avoid string overflows and
+! thus inaccurate positions in VMS CLASS of 02/94 truncate the positions
+! selected with the /OFF adverb.
+    FIND /SCAN 'SCANSTART' 'SCANEND' /OFF 0.0 INT(XFIT_ELV[TMP_INT1]*1000+0.5)|1000 /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+    SUM
+    BASE BASEORDER
+    LET YFIT_ELV[TMP_INT1] AIRE
+  NEXT
+
+! Scale areas back to peak temperatures for convenience
+
+  LET YFIT_ELV YFIT_ELV*ELV_AREA2PEAK
+
+! Check whether the source peak has been detected along azimuth.
+! If not, flag the fit by making the RMS negative.
+
+  LET ELV_MAX YFIT_ELV[9]
+  LET ELV_MAX_POI 1
+
+  FOR I 2 TO NUM_ELV
+    LET TMP_INT1 I+8
+    IF (YFIT_ELV[TMP_INT1].GT.ELV_MAX) THEN
+      LET ELV_MAX YFIT_ELV[TMP_INT1]
+      LET ELV_MAX_POI I
+    ENDIF
+  NEXT
+
+! Flag the fit if the maximum was found at the edge of the map.
+
+  IF ((ELV_MAX_POI.EQ.1).OR.(ELV_MAX_POI.EQ.NUM_ELV)) THEN
+    LET ELV_RMS -ABS(ELV_RMS)
+  ENDIF
+
+! Check the signal-to-noise ratio for the central 3 points along elevation.
+! The data is either too noisy or the arm length has been selected too large
+! if a S/N ratio of less than 3 is encountered towards the central spectrum or
+! close to it. In that case the RMS will be flagged by making it negative
+! and the tag number will be saved in the first channel of the final fit
+! spectra so that the fit does not get used for the pointing model.
+
+  LET ELV_TAG 0
+
+  LET TMP_INT1 INT(0.5*NUM_ELV+0.5)+7
+  IF (ABS(YFIT_ELV[TMP_INT1]|ELV_RMS).LT.3.0) THEN
+    LET ELV_TAG ELV_TAG+1
+  ENDIF
+  LET TMP_INT1 INT(0.5*NUM_ELV+0.5)+8
+  IF (ABS(YFIT_ELV[TMP_INT1]|ELV_RMS).LT.3.0) THEN
+    LET ELV_TAG ELV_TAG+2
+  ENDIF
+  LET TMP_INT1 INT(0.5*NUM_ELV+0.5)+9
+  IF (ABS(YFIT_ELV[TMP_INT1]|ELV_RMS).LT.3.0) THEN
+    LET ELV_TAG ELV_TAG+1
+  ENDIF
+
+  IF (ELV_TAG.GT.1) THEN
+    LET ELV_RMS -ABS(ELV_RMS)
+  ENDIF
+
+! Model a "spectrum" and fit a Gaussian to it
+
+  LET XFIT_RADIAN XFIT_ELV*PI|180|3600	! Spectrum needs to be in radian for
+					! correct plot
+  MODEL YFIT_ELV XFIT_RADIAN
+  LET TMP_INT1 NUMFIT_ELV-2
+  SET WIN RX[3] RX[TMP_INT1] /NOCURSOR
+  SET MODE X TOTAL
+  BASE 0
+  LET YFIT_ELV RY		! Save the baseline removed spectrum
+  LINE 0			! Get initial guesses for Gauss fit from moments
+  GAUSS
+  LET NFIT_ELV NFIT|PI*180*3600	! Save the fit parameters in arcsecs
+
+! Plot the modeled "spectrum"
+
+  LET TMP_INT2 NUM_ELV+10
+  LET KIND 1				! To get arcsec labeling
+  SET BOX 2 10.5 2 10
+  BOX P O I N				! No automatic labeling
+  SET MODE X RX[7] RX[TMP_INT2]
+  SET MODE Y TOTAL
+  DRAW TEXT 6.25 0.75 "Angular Offset (arcsec)" 5
+  LAS\SPECTRUM
+  FIT
+  DRAW TEXT 2.5 9.1 "Elevation" 6
+  LET KIND 0
+
+  DELETE /VAR XFIT_RADIAN
+ENDIF
+
+! Plot the full map
+
+SET WIN WINMIN WINMAX /NOCURSOR
+SET MODE X MXMIN MXMAX
+SET MODE Y IMIN-0.05*(IMAX-IMIN) IMAX+0.05*(IMAX-IMIN)
+
+LET BXMIN 13.5
+LET BXMAX 29.5
+LET BYMIN 2
+LET BYMAX 18
+
+! Always assume odd number of points to avoid confused plots
+
+LET XNUM NUM_AZM+(1-MOD(NUM_AZM,2))
+LET YNUM NUM_ELV+(1-MOD(NUM_ELV,2))
+
+LET BWIDTH 16|XNUM
+LET BHEIGHT 16|YNUM
+
+LET XSLOPE (BXMAX-BXMIN-BWIDTH)|(OFF_AZM_MAX-OFF_AZM_MIN)
+LET XINTERCEPT BXMIN+0.5*BWIDTH-XSLOPE*OFF_AZM_MIN
+LET YSLOPE (BYMAX-BYMIN-BHEIGHT)|(OFF_ELV_MAX-OFF_ELV_MIN)
+LET YINTERCEPT BYMIN+0.5*BHEIGHT-YSLOPE*OFF_ELV_MIN
+
+FOR I 1 TO NUM_AZM
+  FIND /SCAN 'SCANSTART' 'SCANEND' /OFF INT(OFF_AZM[I]*1000+0.5)|1000 0.0 /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+  SUM
+  BASE BASEORDER
+  LET BX1 XSLOPE*OFF_AZM[I]+XINTERCEPT-0.5*BWIDTH
+  LET BX2 BX1+BWIDTH
+  LET BY1 YINTERCEPT-0.5*BHEIGHT
+  LET BY2 BY1+BHEIGHT
+  SET BOX BX1 BX2 BY1 BY2
+  BOX N N N N
+  SET MODE X MXMIN MXMAX
+  SET MODE Y IMIN-0.05*(IMAX-IMIN) IMAX+0.05*(IMAX-IMIN)
+  LAS\SPECTRUM
+  BASE 0 /PL
+  DRAW WINDOW
+NEXT
+
+FOR I 1 TO NUM_ELV
+  FIND /SCAN 'SCANSTART' 'SCANEND' /OFF 0.0 INT(OFF_ELV[I]*1000+0.5)|1000 /NUM NUMFIRST NUMLAST /TEL 'BE_NAME'
+  SUM
+  BASE BASEORDER
+  LET BX1 XINTERCEPT-0.5*BWIDTH
+  LET BX2 BX1+BWIDTH
+  LET BY1 YSLOPE*OFF_ELV[I]+YINTERCEPT-0.5*BHEIGHT
+  LET BY2 BY1+BHEIGHT
+  SET BOX BX1 BX2 BY1 BY2
+  BOX N N N N
+  SET MODE X MXMIN MXMAX
+  SET MODE Y IMIN-0.05*(IMAX-IMIN) IMAX+0.05*(IMAX-IMIN)
+  LAS\SPECTRUM
+  BASE 0 /PL
+  DRAW WINDOW
+NEXT
+
+! Put the results (in arcsec) into the R (ELV) and T (AZM) buffers for CHEF
+
+SET MODE X TOTAL
+
+IF (DO_AZM_FIT) THEN
+  MODEL YFIT_AZM XFIT_AZM	! Previously saved baseline removed spectrum
+  LET NFIT NFIT_AZM		! Previously saved Gauss fit parameters
+  LET SIGFI AZM_RMS		! Put saved spectra's baseline RMS back into
+				! SIGFI variable
+  LET RY[1] AZM_TAG     	! Save S/N tag in the first channel
+				! for later use
+  LET DCOL NFIT[2]
+  DRAW TEXT 7.1 19.1 "dCol*=" 6
+  DRAW TEXT 8.7 19.1 'INT(DCOL*100+0.5)|100' 6
+ELSE
+  MODEL DUMMY
+  LET NFIT 0			! All parameters 0 means no fit
+  LET SIGFI -99
+  LET RY[1] -99
+  LET DCOL -99
+  DRAW TEXT 7.1 19.1 "No Fit" 6
+ENDIF
+
+IF (DO_ELV_FIT) THEN
+  MODEL YFIT_ELV XFIT_ELV	! Previously saved baseline removed spectrum
+  LET NFIT NFIT_ELV		! Previously saved Gauss fit parameters
+  LET SIGFI ELV_RMS		! Put saved spectra's baseline RMS back into
+				! SIGFI variable
+  LET RY[1] ELV_TAG     	! Save S/N tag in the first channel
+				! for later use
+  LET DNULE NFIT[2]
+  DRAW TEXT 7.1 9.1 "dNulE=" 6
+  DRAW TEXT 8.7 9.1 'INT(DNULE*100+0.5)|100' 6
+ELSE
+  MODEL DUMMY
+  LET NFIT 0		! All parameters 0 means no fit
+  LET SIGFI -99
+  LET RY[1] -99
+  LET DNULE -99
+  DRAW TEXT 7.1 9.1 "No Fit" 6
+ENDIF
+
+! Fetch old Col* and NulE from spectra if possible and write scan info
+! and corrected values
+
+! This is a special CHEF command that does not exist in CLASS
+!READCONT
+
+SAY " "
+SAY "dCol* = " 'INT(DCOL*100+0.5)|100'
+
+IF (COLLA.EQ.-999) THEN
+  DRAW TEXT 13.5 19.7 "Could not determine Col*" 6
+  SAY "Could not determine Col*"
+ELSE
+  LET BUFFER1 "Col* =\s:"
+  LET BUFFER1 'BUFFER1''INT(COLLA*100+0.5)|100'
+  DRAW TEXT 13.5 19.7 'BUFFER1' 6
+  LET BUFFER1 "dCol* =\s:"
+  LET BUFFER1 'BUFFER1''INT(DCOL*100+0.5)|100'
+  DRAW TEXT 18.5 19.7 'BUFFER1' 6
+  LET BUFFER1 "Cor(Col*) =\s:"
+  LET BUFFER1 'BUFFER1''INT((COLLA+DCOL)*100+0.5)|100'
+  DRAW TEXT 23.5 19.7 'BUFFER1' 6
+  SAY "Col* = " 'INT(COLLA*100+0.5)|100' "  dCol* = " 'INT(DCOL*100+0.5)|100' "  Cor(Col*) = " 'INT((COLLA+DCOL)*100+0.5)|100'
+ENDIF
+
+SAY " "
+SAY "dNulE = " 'INT(DNULE*100+0.5)|100'
+
+IF (COLLA.EQ.-999) THEN
+  DRAW TEXT 13.5 19 "Could not determine NulE" 6
+  SAY "Could not determine NulE"
+ELSE
+  LET BUFFER1 "NulE =\s:"
+  LET BUFFER1 'BUFFER1''INT(COLLE*100+0.5)|100'
+  DRAW TEXT 13.5 19 'BUFFER1' 6
+  LET BUFFER1 "dNulE =\s:"
+  LET BUFFER1 'BUFFER1''INT(DNULE*100+0.5)|100'
+  DRAW TEXT 18.5 19 'BUFFER1' 6
+  LET BUFFER1 "Cor(NulE) =\s:"
+  LET BUFFER1 'BUFFER1''INT((COLLE+DNULE)*100+0.5)|100'
+  DRAW TEXT 23.5 19 'BUFFER1' 6
+  SAY "NulE = " 'INT(COLLE*100+0.5)|100' "  dNulE = " 'INT(DNULE*100+0.5)|100' "  Cor(NulE) = " 'INT((COLLE+DNULE)*100+0.5)|100'
+ENDIF
+
+SIC OUT "temp_lpoint.result"
+SAY 'SCANSTART_CHAR'" "'SCANEND_CHAR'" "'INT(DCOL*100+0.5)|100'" "'INT(DNULE*100+0.5)|100'
+SIC OUT
+SYS "cat temp_lpoint.result >> lpoint.results"
+SYS "rm temp_lpoint.result"
+
+SAY " "
+CLEAR ALPHA
+
+! Reset constraints and switch off header variable access
+
+SET WEIGHT T		! Weight time is the default in CLASS
+SET CHAR 0.6
+SET BOX
+SET MODE X AUTO
+SET MODE Y AUTO
+SET VAR GENERAL OFF
+SET VAR BASE OFF
+SET VAR PLOT OFF
+SET VAR GAUSS OFF
+SET VAR DRIFT OFF
+DELETE /SYMBOL SCANSTART
+DELETE /SYMBOL SCANEND
+ON ERROR PAUSE

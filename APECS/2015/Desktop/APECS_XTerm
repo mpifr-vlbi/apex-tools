@@ -1,0 +1,15 @@
+[Desktop Entry]
+Comment[C]=
+Exec=xterm -ah -ls -r -bg black -fg white -bd white -fn 9x15bold -sb -sl 1024
+Icon=alevt
+MimeType=
+Name[C]=APECS XTerm
+Path=
+ServiceTypes=
+SwallowExec=
+SwallowTitle=
+Terminal=false
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

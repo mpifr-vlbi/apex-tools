@@ -1,0 +1,32 @@
+# Unused template code
+
+def cpointV(l=140., t=20., cal=1):
+	tp()
+    
+    	if (cal):
+        	calibrate()
+    	point(length=l, unit='arcsec', time=t, mode='otf', direction='x')
+
+def wcpointV(l=140., t=20., cal=1):
+	tp()
+    	if (cal):
+        	calibrate()
+	wob(amplitude=100.0, rate=1.0, mode='pos', blank=-1)
+    	point(length=l, unit='arcsec', time=t, mode='otf', direction='x')
+	tp()
+
+def wfxV(a=1.5,t=6.0):
+	wob(amplitude=60.0, rate=1.0, mode='pos', blank=-1)
+    	focus(amplitude=a, time=t, points=5, axis='X', mode='sym')
+    	tp()
+
+def wfyV(a=1.5,t=6.0):
+	wob(amplitude=60.0, rate=1.0, mode='pos', blank=-1)
+    	focus(amplitude=a, time=t, points=5, axis='Y', mode='sym')
+    	tp()
+
+def wfzV(a=1.0,t=6.0):
+	wob(amplitude=60.0, rate=1.0, mode='pos', blank=-1)
+    	focus(amplitude=a, time=t, points=5, axis='Z', mode='sym')
+    	tp()
+

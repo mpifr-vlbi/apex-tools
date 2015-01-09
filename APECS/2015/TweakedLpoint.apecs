@@ -1,0 +1,92 @@
+def lpoint(t=15.0, ask=1, cal=0, red=0):
+    '''
+    Sets the line and backend configuration, and performs a
+    default line pointing observation.
+
+    Parameters:   t: Integration time per subscan
+                ask: 1 = ask for tuning, 0 = do not ask
+                cal: 1 = calibrate before the pointing
+                red: 1 = reduce automatically (online),
+                     0 = reduce manually (offline)
+    '''
+    OldReference = reference.func_defaults
+
+    # Commented out to avoid triggering a change to Doppler=on during VLBI in 2013
+    # het230.line('CO(2-1)')
+    # het230.backends(['ffts1'])
+    # ffts1_group.configure(group=1, bandwidth=1000, numchan=8192, offset=0)
+
+    setup_shfi(fename='het230',linename='co(2-1)',sideband='',mode='spec', cats='sys')
+
+    tp()
+    go()
+    if (ask):
+        print ' '
+        dummy = raw_input('\033[32;1mTune to CO(2-1) - if necessary - and press RETURN when ready!\033[0m ')
+        print ' '
+    use_ref('on')
+    if (cal):
+        calibrate()
+    reference(x=180.0, y=0.0, time=0.0, on2off=5, unit='arcsec', mode='rel', system='ho')
+    point(length=54.0, unit='arcsec', time=t, points=5, mode='ras', direction='x')
+    reference.func_defaults = OldReference
+    reference()
+    if (ask):
+        print ' '
+        print '\033[32;1mRerun het230_setup before you continue!\033[0m '
+    if (red):
+        execfile('/homes/software/apecs/pointingTools/lpoint_MDU.py')
+
+def wlpoint(t=20.0, ask=1, cal=0, red=0):
+    '''
+    Sets the line and backend configuration, and performs a
+    default line pointing observation using the wobbler.
+
+    Parameters:   t: Integration time per subscan
+                ask: 1 = ask for tuning, 0 = do not ask
+                cal: 1 = calibrate before the pointing
+                red: 1 = reduce automatically (online),
+                     0 = reduce manually (offline)
+    '''
+    
+    # Commented out to avoid triggering a change to Doppler=on during VLBI in 2013
+    # het230.line('CO(2-1)')
+    # het230.backends(['ffts1'])
+    # ffts1_group.configure(group=1, bandwidth=1000, numchan=8192, offset=0)
+
+    setup_shfi(fename='het230',linename='co(2-1)',sideband='',mode='spec', cats='sys')
+    go()
+    
+    if (ask):
+        print ' '
+        dummy = raw_input('\033[32;1mTune to CO(2-1) - if necessary - and press RETURN when ready!\033[0m ')
+        print ' '
+    if (cal):
+        calibrate()
+    wob(amplitude=60.0, rate=0.5, mode='pos', blank=-1)
+    point(length=54.0, unit='arcsec', time=t, points=5, mode='ras', direction='x')
+    tp()
+    if (ask):
+        print ' '
+        print '\033[32;1mRerun het230_setup before you continue!\033[0m '
+    if (red):
+        execfile('/homes/software/apecs/pointingTools/lpoint_MDU.py')
+
+def cpoint(l=140., t=20., cal=0):
+    '''
+    Default continuum pointing cross scan.
+
+    Parameters:   l: Length of the arms of the cross
+                  t: Integration time per subscan
+                  cal: 1 = calibrate before the pointing
+    '''
+    # het230.backends(['pbe_a'])
+    setup_shfi(fename='het230',mode='cont', linename='vlbifreq',sideband='', cats='user')
+
+    tp()
+    if (cal):
+        calibrate()
+    point(length=l, unit='arcsec', time=t, mode='otf', direction='x')
+
+## 230.538 GHz
+## 229.343 GHz

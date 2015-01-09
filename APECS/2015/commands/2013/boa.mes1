@@ -1,0 +1,6 @@
+Logfile for The BOlometer data Analysis project. created on Sat Mar 23 05:56:09 2013
+Sat Mar 23 05:56:09 2013 User            I: BoA - Offline mode
+Sat Mar 23 05:56:10 2013 BoaDir          I: input directory : /homes/t-091.f-0006-2013/rawdata/
+Sat Mar 23 05:56:30 2013 BoaDir          E: no such file or directory: /homes/t-091.f-0006-2013/rawdata/10804
+Sat Mar 23 05:56:30 2013 boa.BoaFocus    E: could not open dataset 10804
+Sat Mar 23 07:23:03 2013 User            I: old log file renamed to boa.mes1

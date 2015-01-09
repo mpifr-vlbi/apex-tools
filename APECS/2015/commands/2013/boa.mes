@@ -1,0 +1,31 @@
+Logfile for The BOlometer data Analysis project. created on Sat Mar 23 07:23:03 2013
+Sat Mar 23 07:23:03 2013 User            I: BoA - Offline mode
+Sat Mar 23 07:23:04 2013 BoaDir          I: input directory : /homes/t-091.f-0006-2013/rawdata/
+Sat Mar 23 07:23:10 2013 BoaDir          W: list empty, populating...
+Sat Mar 23 07:23:17 2013 BoaDir          W: APEX-10816-2013-03-23-T-091.F-0006-2013 different number of rows in ARRAYDATA and DATAPAR for subscan 7 - still readable
+Sat Mar 23 07:23:26 2013 BoaDir          W: APEX-10818-2013-03-23-T-091.F-0006-2013 different number of rows in ARRAYDATA and DATAPAR for subscan 6 - still readable
+Sat Mar 23 07:25:53 2013 boa.BoaFocus    E: must specify baseband for dataset 10842
+Sat Mar 23 07:26:01 2013 boa.BoaFocus    I: Scan number 10842 : RASTER  ONOFF on 3c279 contains   2 subscan(s),    53/   53 records
+Sat Mar 23 07:26:01 2013 boa.BoaFocus    I: HET230-PBE_A -   1/  1/  1 channels at 229 GHz (1) - FE/BE Gain:  1/  1
+Sat Mar 23 07:26:01 2013 boa.BoaDataEnti I: selected channels = 1
+Sat Mar 23 07:26:07 2013 boa.BoaFocus    I: Scan number 10842 : RASTER  ONOFF on 3c279 contains   2 subscan(s),    53/   53 records
+Sat Mar 23 07:26:07 2013 boa.BoaFocus    I: HET230-PBE_A -   1/  1/  1 channels at 229 GHz (1) - FE/BE Gain:  1/  1
+Sat Mar 23 07:26:07 2013 boa.BoaDataEnti I: selected channels = 1
+Sat Mar 23 07:26:09 2013 boa.BoaFocus    E: no data for baseband 1213213 in dataset 10842
+Sat Mar 23 07:26:12 2013 boa.BoaFocus    E: no data for baseband 16 in dataset 10842
+Sat Mar 23 07:26:14 2013 boa.BoaFocus    E: no data for baseband 3 in dataset 10842
+Sat Mar 23 07:26:16 2013 boa.BoaFocus    I: Scan number 10842 : RASTER  ONOFF on 3c279 contains   2 subscan(s),    53/   53 records
+Sat Mar 23 07:26:16 2013 boa.BoaFocus    I: HET230-PBE_A -   1/  1/  1 channels at 229 GHz (1) - FE/BE Gain:  1/  1
+Sat Mar 23 07:26:16 2013 boa.BoaDataEnti I: selected channels = 1
+Sat Mar 23 07:26:18 2013 boa.BoaFocus    E: must specify baseband for dataset 10842
+Sat Mar 23 07:26:20 2013 boa.BoaFocus    I: Scan number 10842 : RASTER  ONOFF on 3c279 contains   2 subscan(s),    53/   53 records
+Sat Mar 23 07:26:20 2013 boa.BoaFocus    I: HET230-PBE_A -   1/  1/  1 channels at 229 GHz (1) - FE/BE Gain:  1/  1
+Sat Mar 23 07:26:20 2013 boa.BoaDataEnti I: selected channels = 1
+Sat Mar 23 07:26:22 2013 boa.BoaFocus    I: plotting signal
+Sat Mar 23 07:26:22 2013 MultiPlot       W: no device open
+Sat Mar 23 07:26:22 2013 DeviceHandler   I: current device = 1
+Sat Mar 23 07:26:22 2013 DeviceHandler   L: open devices   = [1]
+Sat Mar 23 07:26:33 2013 boa.BoaFocus    I: Scan number 10842 : RASTER  ONOFF on 3c279 contains   2 subscan(s),    53/   53 records
+Sat Mar 23 07:26:33 2013 boa.BoaFocus    I: HET230-PBE_A -   1/  1/  1 channels at 229 GHz (1) - FE/BE Gain:  1/  1
+Sat Mar 23 07:26:33 2013 boa.BoaDataEnti I: selected channels = 1
+Sat Mar 23 07:26:36 2013 boa.BoaFocus    I: plotting signal

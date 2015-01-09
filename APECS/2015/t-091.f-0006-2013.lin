@@ -1,0 +1,14 @@
+! Spectral line catalog for project T-090.F-0006-2012
+!   229.343414
+vlbifreq      229.323000   GHz   LSB   ! continuum center freq used in 2013?
+sio217        217.104980   GHz   LSB   ! SiO line (...) rest freq
+sio215        215.595950   GHz   LSB   ! SiO line (v=1, J=5-4) rest freq
+!
+! Date: Mon, 22 Dec 2014 20:21:37 -0500 (EST)
+! From: "Lynn D. Matthews" <lmatthew@haystack.mit.edu>
+! ...
+! I computed the sky frequencies for this line.
+! At 06:00 UT on January 11, I find the following:
+! APEX: 215570.481824 MHz
+! ALMA: 215570.481808 MHz
+! SPT:  215570.584747 MHz

@@ -1,0 +1,2 @@
+source('NGC7027')
+go()

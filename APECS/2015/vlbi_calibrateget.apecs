@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+#
+# APEX - Atacama Pathfinder EXperiment Project
+#
+# Copyright (C) 2011
+#
+# Max-Planck-Institut fuer Radioastronomie, Bonn, Germany
+#
+# Jan Wagner, based on example by Dirk Muders
+#
+# Executed remotely by FieldSystem to read back current/new Tsys results
+
+import sys
+import os
+
+# own library -- needs commands/vlbi_apecs.py
+#homepath = os.getenv("HOME")
+#sys.path.append(homepath + '/commands')
+#print homepath+'/commands'
+#import vlbi_commands
+#vlbi_commands.vlbi_get_calibration()
+
+# poll calibration data -- brute force to get vlbi commands into local namespace not seen in APECS cmdline
+execfile('vlbi_commands.py')
+vlbi_get_calibration()

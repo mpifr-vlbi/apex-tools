@@ -1,0 +1,48 @@
+# HET3230 Setup File for project T-091.F-0006-2013 (VLBI)
+
+# Load special commands for SHFI observations
+exec_apecs_script('shfi_commands') 
+
+remote_control('on')
+
+# User source catalog
+sourcecats(['t-091.f-0006-2013.cat'])
+
+# User line catalog for APEX-1
+linecats('t-091.f-0006-2013.lin')
+
+# Frontend/backend setup for HET230
+setup_shfi(fename='het230',linename='vlbifreq',sideband='',mode='cont', cats='user')
+
+# Turn off any doppler correction
+het230.configure(doppler='off')
+
+# Target sources 2013
+#   source('3C273', cats='user')
+#   source('3C279', cats='user')
+#   source('ORION-KL', cats='user')
+#   source('IRC+10216', cats='user')
+# Target sources 2015
+source('J0522-363', cats='user')
+source('B1244-255', cats='user')
+source('VYCMa', cats='user')
+
+# Reference position (just for safety in this macro as well...)
+use_ref('on')
+
+# Put a dummy reference position, just in case...
+reference(x=180.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='rel', system='ho', epoch=2000.0)
+
+# Load APEX-1 observing functions:
+execfile('/homes/software/apecs/start_het230.apecs')
+
+# Load VLBI observing functions
+# Contains 'vlbi_init' that re-does the above setup
+execfile('/homes/t-091.f-0006-2013/vlbi_commands.py')
+
+# LS correction should be default as of 09-Apr-2011 - MDU
+use_linear_sensors('on')
+use_tiltmeters('on')
+
+# Automatically call VLBI-Init to override the above settings
+vlbi_init()
