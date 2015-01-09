@@ -7,6 +7,9 @@ The subdirectories are
 ./APECS 
 Some VLBI related files for the APEX telescope control system
 
+./DBBC2
+Some DBBC2 related files for APEX telescope VLBI
+
 ./GPIB-tools
 Tools to read VLBI related GPIB counter data, with some
 improvements over their earlier year 2013 version.
