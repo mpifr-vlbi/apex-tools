@@ -25,7 +25,8 @@ improvements over their earlier year 2013 version.
    e.g., estimate the H-maser drift rate against GPS
 
 ./R2DBE
-Tools and settings related to the Roach2 Digital Backend
+Settings and new tools related to the Roach2 Digital Backend,
+some of them later to be found at https://github.com/sma-wideband
 
 ./sensors
 Some 'lm-sensors' package related things to allow Mark6
