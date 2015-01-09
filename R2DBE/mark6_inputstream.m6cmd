@@ -1,4 +1,5 @@
-input_stream=add:r2dbe:vdif:8224:50:0:eth2:10.10.1.2:4001;
+input_stream=add:r2dbe0:vdif:8224:50:0:eth2:10.10.1.5:4001;
+##input_stream=add:r2dbe1:vdif:8224:50:0:eth3:10.10.1.21:4001;
 input_stream=commit; 
 input_stream?
 
