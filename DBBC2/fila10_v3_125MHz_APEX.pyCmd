@@ -1,0 +1,61 @@
+# This file can be executed by the consoleFILA10G.py program
+# that offers both command upload and console.
+#
+# The commands set up the DBBC2-internal FILA10G. Settings include
+# VDIF format, time sync using the DBBC2-internal GPS module,
+# and the IP addresses (source, destination) for streaming
+# the VDIF data over 10GbE to the Mark6.
+#
+# These settings are for an ALMA-style 2-IF x 16-channel PFB x 62.5 MHz
+# wide frequency band allocation. The DBBC2 PFB channels however do
+# not have the 50% overlap of the ALMA channel layout (N. Pradel)
+
+reboot
+
+# Switching to VSI1/VSI2(2Gbps) or VSI1-2(4Gbp)
+# APEX DBBC with FILA10G firmware v2.0 takes clock from VSI2
+# so we can not use this FILA10G to stream VSI1-only, and
+# must feed out VSI1 to FILA10GSA.
+
+inputselect vsi1-2
+vsi_samplerate 125000000
+splitmode on
+
+reset
+
+# The following line (with two # comment markers!) will trigger a time synchronization
+# to the computer local time
+## auto_timesync_fila10g
+#
+# However on the APEX DBBC/FILA10G we have connected the GPS module and GPS antenna
+# so the automatic GPS time sync below is used:
+timesync
+
+# wait a bit longer since ALMA-compat. firmware plus GPS timesync seems a bit slower...
+wait
+wait
+
+# APEX
+# Mark6 4 x 10GbE have been configured to have four subnets on 10.10.1.x,
+# namely 10.10.1.1/28 and 10.10.1.16/28 and 10.10.1.32/28 and 10.10.1.48/28
+# For DBBC just the first two will be used.
+# Because the ARP handling in FILA10G is not yet able to properly split
+# the last IP number into subnets, we just use /27 to span both subnets...
+
+tengbcfg eth0 ip=10.10.1.5 nm=27
+destination 0 10.10.1.1
+
+tengbcfg eth1 ip=10.10.1.21 nm=27
+destination 1 10.10.1.17
+
+vdif_station ap
+vdif_frame 2 16 8000
+start vdif
+
+tengbinfo eth0
+tengbinfo eth1
+sysstat
+
+# For Mark5C recording ARP should be off, but for Mark6 it is okay
+arp on
+
