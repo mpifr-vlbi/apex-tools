@@ -18,8 +18,9 @@ if (Narg==0) or (Narg%2 == 1) or (Nfiles <= 2):
 	usage()
 	sys.exit(-1)
 
-files = []
+print '\nChecking the first timestamp of each file...\n'
 
+files = []
 tstart_latest = 0.0
 
 for n in range(Nfiles):
@@ -42,12 +43,25 @@ for n in range(Nfiles):
 	fileinfos = {'framesize':hdr.frame_length*8, 'fps':fps, 'starttime':tfile, 'filename':fname}
 	files.append(fileinfos)
 
-print 'File offsets to reach common start time of approx. %.6f seconds:' % (tstart_latest)
+print '\nThe file offsets to reach a common start time of approx. %.6f seconds are:\n' % (tstart_latest)
 
+offsets = []
 for n in range(Nfiles):
 	fi = files[n]
 	tdiff = tstart_latest - fi['starttime']
 	pdiff = int(tdiff * fi['fps'])
 	bdiff = pdiff * fi['framesize']
+	offsets.append(bdiff)
 	print 'File %s : dT=%.12f sec : dFrames=%d : offset=%d' % (fi['filename'],tdiff,pdiff,bdiff)
+
+print '\nRespective commands for a time alignment with "dd":\n'
+
+for n in range(Nfiles):
+	if not(offsets[n] == 0):
+		fn = files[n]['filename']
+		bs = files[n]['framesize']
+		skip = offsets[n]/bs
+		print 'dd if=%s of=%s.aligned bs=%d skip=%d' % (fn,fn,bs,skip)
+
+print ''
 
