@@ -8,8 +8,8 @@ def zerob;
      exper_name = zerob;
      exper_description = dummy;
      ** Update time **
-     exper_nominal_start = 2015y007d16h19m04s;
-     exper_nominal_stop  = 2015y007d16h19m14s;
+     exper_nominal_start = 2015y010d20h27m32s;
+     exper_nominal_stop  = 2015y010d20h27m34s;
 enddef;
 * -----------------------------------------------------------------------------------------
 $STATION;
@@ -31,7 +31,7 @@ def MODE1;
      *ref $TRACKS = VDIF.16Ch2bit1to1.4000Mbps.8032B: Da:Db ; * DBBC 8032-byte
      ref $TRACKS = VDIF.1Ch2bit1to1.4000Mbps.8032B: Da:Db ; * DBBC 8032-byte
      *ref $TRACKS = VDIF.1Ch2bit1to1.4096Mbps.8032B: Da:Db ; * DBBC 8032-byte
-     ref $TRACKS = VDIF.1Ch2bit1to1.8192Mbps.8224B: Ra:Db ; * R2DBE 8224-byte
+     ref $TRACKS = VDIF.1Ch2bit1to1.8192Mbps.8224B: Ra:Rb ; * R2DBE 8224-byte
      ref $IF = IF_KVN:Da:Db:Ra:Rb;
      ref $BBC = BBC_KVN:Da:Db:Ra:Rb;
      ref $DAS = Mark6:Da:Db:Ra:Rb;
@@ -285,7 +285,7 @@ scan No0001;
      mode=MODE1;
      source=DUMMY;
      ** Update time **
-     start=2015y007d16h19m04s;
+     start=2015y010d20h27m32s;
      station=Da:    0 sec:   10 sec:     ::    : 1;
      station=Db:    0 sec:   10 sec:     ::    : 1;
      station=Ra:    0 sec:   10 sec:     ::    : 1;
