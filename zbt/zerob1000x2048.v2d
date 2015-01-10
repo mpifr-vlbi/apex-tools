@@ -2,25 +2,22 @@ vex = zerob1000x2048.vex
 antennas = Da, Db, Ra, Rb
 singleScan = 1
 maxReadSize = 250000000
+minLength = 0.5
 
 ##################################################################################
 
-# m5time /home/oper/vdif/Ra.vdif VDIF_8192-8192-1-2
-#   MJD = 57029/16:19:03.59
-#   2015y007d16h19m04s
 # m5time /home/oper/vdif/Da.vdif VDIF_8000-4000-16-2
-#   MJD = 57029/16:19:03.55
-#   2015y007d16h19m04s
+# m5time /home/oper/vdif/Ra.vdif VDIF_8192-8192-1-2
 
-mjdStart = 2015y007d16h19m04s
-mjdStop  = 2015y007d16h19m10s
+mjdStart = 2015y010d20h27m32s
+mjdStop  = 2015y010d20h27m34s
 
-# /usr/local/src/difx/applications/espresso/trunk/getEOP.py 2015y007d16h19m04s
-EOP 57028 { xPole=0.027930 yPole=0.283550 tai_utc=35 ut1_utc=-0.463659 }
-EOP 57029 { xPole=0.027260 yPole=0.284450 tai_utc=35 ut1_utc=-0.464369 }
-EOP 57030 { xPole=0.026340 yPole=0.285370 tai_utc=35 ut1_utc=-0.465179 }
-EOP 57031 { xPole=0.025300 yPole=0.286340 tai_utc=35 ut1_utc=-0.466105 }
-EOP 57032 { xPole=0.024230 yPole=0.287310 tai_utc=35 ut1_utc=-0.467137 }
+# /usr/local/src/difx/applications/espresso/trunk/getEOP.py 2015y010d20h27m32s
+EOP 57031 { xPole=0.024540 yPole=0.286120 tai_utc=35 ut1_utc=-0.466023 }
+EOP 57032 { xPole=0.023300 yPole=0.286840 tai_utc=35 ut1_utc=-0.467054 }
+EOP 57033 { xPole=0.022210 yPole=0.287520 tai_utc=35 ut1_utc=-0.468157 }
+EOP 57034 { xPole=0.021220 yPole=0.288310 tai_utc=35 ut1_utc=-0.469293 }
+EOP 57035 { xPole=0.020270 yPole=0.289190 tai_utc=35 ut1_utc=-0.470457 }
 
 ##################################################################################
 
@@ -103,12 +100,11 @@ SETUP default
 {
   tInt = 0.5
   doPolar = False 
-  specRes = 0.5
 
-  # For 16 x 62.5 MHz against 1 x 2048 MHz:
+  # For 1x1000 MHz or 16x62.5 MHz against 1x2048 MHz:
   ## gcd(62.5e6,2048e6) = 0.5 MHz
-  # specRes = 0.5
-  # guardNS = 150
+  specRes = 0.5
+  guardNS = 150
   strideLength = 1
   xmacLength = 1
 }
