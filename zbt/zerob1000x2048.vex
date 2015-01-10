@@ -279,8 +279,9 @@ scan No0001;
      source=DUMMY;
      ** Update time **
      start=2015y007d16h19m04s;
-     station=D0:    0 sec:   10 sec:     ::    : 1;
-     station=D1:    0 sec:   10 sec:     ::    : 1;
-     station=R0:    0 sec:   10 sec:     ::    : 1;
+     station=Da:    0 sec:   10 sec:     ::    : 1;
+     station=Db:    0 sec:   10 sec:     ::    : 1;
+     station=Ra:    0 sec:   10 sec:     ::    : 1;
+     station=Rb:    0 sec:   10 sec:     ::    : 1;
 endscan;
 * -----------------------------------------------------------------------------------------
