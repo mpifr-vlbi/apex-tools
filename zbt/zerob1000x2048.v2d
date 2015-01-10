@@ -1,6 +1,7 @@
 vex = zerob1000x2048.vex
-antennas = Da, Db, Ra. Rb
+antennas = Da, Db, Ra, Rb
 singleScan = 1
+maxReadSize = 250000000
 
 ##################################################################################
 
@@ -50,7 +51,7 @@ ANTENNA Ra
   clockRate=0
   clockEpoch=2014y343d12h00m00s
   X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
-  zoom = wide2almaLow
+  zoom = wide2048to1000
 }
 ANTENNA Rb
 {
@@ -60,9 +61,17 @@ ANTENNA Rb
   clockRate=0
   clockEpoch=2014y343d12h00m00s
   X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
-  zoom = wide2almaLow
+  zoom = wide2048to1000
 }
 
+ZOOM wide2048to1000
+{
+  addZoomFreq = freq@45000.00/bw@1000.0/noparent@true
+}
+ZOOM wide2048to1024
+{
+  addZoomFreq = freq@45000.00/bw@1024.0/noparent@true
+}
 ZOOM wide2almaLow
 {
   # The freqs should match the VEX file FREQ_16chPFB_1000MHz_Low 
@@ -89,15 +98,19 @@ ZOOM wide2almaLow
 # todo, similar to wide2almaLow, but add 1000 MHz to freq@'s (always equal to lowest band edge
 # even when data are LSB)
 
+
 SETUP default
 {
-  tInt = 1.0
-  # gcd(62.5e6,2048e6) = 0.5 MHz
+  tInt = 0.5
+  doPolar = False 
   specRes = 0.5
-  guardNS = 150
+
+  # For 16 x 62.5 MHz against 1 x 2048 MHz:
+  ## gcd(62.5e6,2048e6) = 0.5 MHz
+  # specRes = 0.5
+  # guardNS = 150
   strideLength = 1
   xmacLength = 1
-  doPolar = False 
 }
 
 # This, along with SETUP default above, should always be done
