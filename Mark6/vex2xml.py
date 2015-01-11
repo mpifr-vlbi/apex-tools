@@ -98,11 +98,11 @@ class Scan:
         def __str__(self):
                 return ''.join([
                         '<scan ',
-                        'experiment="%s", '%self._experiment_name,
-                        'source="%s", '%self._source,
-                        'station_code="%s", '%self._station,
-                        'start_time="%s", '%self._start_time,
-                        'duration="%s", '%self._duration,
+                        'experiment="%s" '%self._experiment_name,
+                        'source="%s" '%self._source,
+                        'station_code="%s" '%self._station,
+                        'start_time="%s" '%self._start_time,
+                        'duration="%s" '%self._duration,
                         'scan_name="%s"'%self._scan_name,
                         '/>'
                         ])
@@ -372,9 +372,9 @@ class ScheduleParser:
                 st_scans = [ s for s in scans]
                 experiment_file = open(experiment_file_name, 'w')
 
-                exp_st = "<experiment name="+experiment_name
-                exp_st += ", station="+st+", start="+exp_start_time
-                exp_st += ", end="+exp_end_time+"> \n"
+                exp_st = '<experiment name="' + experiment_name
+                exp_st += '" station="' +st + '" start="' +exp_start_time + '" '
+                exp_st += ' end="' + exp_end_time +'"> \n'
                 experiment_file.write(exp_st)
                 try:
                     rdbe_ip = os.environ['rdbe']
