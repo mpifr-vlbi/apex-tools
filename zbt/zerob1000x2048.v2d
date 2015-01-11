@@ -1,0 +1,116 @@
+vex = zerob1000x2048.vex
+antennas = Da, Db, Ra, Rb
+singleScan = 1
+maxReadSize = 250000000
+minLength = 0.5
+
+##################################################################################
+
+# m5time /home/oper/vdif/Da.vdif VDIF_8000-4000-16-2
+# m5time /home/oper/vdif/Ra.vdif VDIF_8192-8192-1-2
+
+mjdStart = 2015y010d20h27m32s
+mjdStop  = 2015y010d20h27m34s
+
+# /usr/local/src/difx/applications/espresso/trunk/getEOP.py 2015y010d20h27m32s
+EOP 57031 { xPole=0.024540 yPole=0.286120 tai_utc=35 ut1_utc=-0.466023 }
+EOP 57032 { xPole=0.023300 yPole=0.286840 tai_utc=35 ut1_utc=-0.467054 }
+EOP 57033 { xPole=0.022210 yPole=0.287520 tai_utc=35 ut1_utc=-0.468157 }
+EOP 57034 { xPole=0.021220 yPole=0.288310 tai_utc=35 ut1_utc=-0.469293 }
+EOP 57035 { xPole=0.020270 yPole=0.289190 tai_utc=35 ut1_utc=-0.470457 }
+
+##################################################################################
+
+ANTENNA Da
+{
+  file = /home/oper/vdif/Da.vdif
+  format = VDIF/8032
+  clockOffset=0
+  clockRate=0
+  clockEpoch=2014y343d12h00m00s
+  X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
+}
+ANTENNA Db
+{
+  file = /home/oper/vdif/Db.vdif
+  format = VDIF/8032
+  clockOffset=0
+  clockRate=0
+  clockEpoch=2014y343d12h00m00s
+  X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
+}
+
+ANTENNA Ra
+{
+  file = /home/oper/vdif/Ra.vdif
+  format = VDIF/8224
+  clockOffset=0
+  clockRate=0
+  clockEpoch=2014y343d12h00m00s
+  X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
+  zoom = wide2048to1000
+}
+ANTENNA Rb
+{
+  file = /home/oper/vdif/Rb.vdif
+  format = VDIF/8224
+  clockOffset=0
+  clockRate=0
+  clockEpoch=2014y343d12h00m00s
+  X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
+  zoom = wide2048to1000
+}
+
+ZOOM wide2048to1000
+{
+  addZoomFreq = freq@45000.00/bw@1000.0/noparent@true
+}
+ZOOM wide2048to1024
+{
+  addZoomFreq = freq@45000.00/bw@1024.0/noparent@true
+}
+ZOOM wide2almaLow
+{
+  # The freqs should match the VEX file FREQ_16chPFB_1000MHz_Low 
+  # except for first PFB channel that is spans -fs/2 to fs/2
+  addZoomFreq = freq@45000.00/bw@31.25/noparent@true # PFB Ch01 0...+fs/2
+  addZoomFreq = freq@45031.25/bw@62.50/noparent@true
+  addZoomFreq = freq@45093.75/bw@62.50/noparent@true
+  addZoomFreq = freq@45156.25/bw@62.50/noparent@true
+  addZoomFreq = freq@45218.75/bw@62.50/noparent@true
+  addZoomFreq = freq@45281.25/bw@62.50/noparent@true
+  addZoomFreq = freq@45343.75/bw@62.50/noparent@true
+  addZoomFreq = freq@45406.25/bw@62.50/noparent@true # PFB Ch08
+  addZoomFreq = freq@45468.75/bw@62.50/noparent@true
+  addZoomFreq = freq@45531.25/bw@62.50/noparent@true
+  addZoomFreq = freq@45593.75/bw@62.50/noparent@true
+  addZoomFreq = freq@45656.25/bw@62.50/noparent@true
+  addZoomFreq = freq@45718.75/bw@62.50/noparent@true
+  addZoomFreq = freq@45781.25/bw@62.50/noparent@true
+  addZoomFreq = freq@45843.75/bw@62.50/noparent@true 
+  addZoomFreq = freq@45906.25/bw@62.50/noparent@true # PFB Ch16
+  #addZoomFreq= freq@45968.75/bw@31.25/noparent@true # PFB Ch01 -fs/2...0
+}
+# ZOOM wide2almaHigh {}
+# todo, similar to wide2almaLow, but add 1000 MHz to freq@'s (always equal to lowest band edge
+# even when data are LSB)
+
+
+SETUP default
+{
+  tInt = 0.5
+  doPolar = False 
+
+  # For 1x1000 MHz or 16x62.5 MHz against 1x2048 MHz:
+  ## gcd(62.5e6,2048e6) = 0.5 MHz
+  specRes = 0.5
+  guardNS = 150
+  strideLength = 1
+  xmacLength = 1
+}
+
+# This, along with SETUP default above, should always be done
+RULE default
+{
+  setup = default
+}
