@@ -1,0 +1,136 @@
+#!/usr/bin/env python
+
+'''An APEX VLBI Calibrator Client for sending results to Field System.'''
+
+# FieldSystem_Hosts = ["oper@mark5c1", "oper@mark5c2"]
+FieldSystem_Hosts = ["oper@mark5c2"]
+
+import os, sys, time, signal, subprocess, datetime
+
+from Acspy.Nc.Consumer import Consumer
+import apexCDS
+import apexObsUtils
+
+# Avoid printing PyQt deprecation warnings.
+import warnings
+warnings.simplefilter('ignore', DeprecationWarning)
+
+#=====================================================================
+
+def sendToFieldsystem(mstr, hosts):
+	flog = open('processCalEvt_out.log', 'a')
+	prefix = '"\\\"'
+	postfix = '\"'
+	for h in hosts:
+		flog.write('Message for host %s: %s\n' % (h,mstr))
+		ret = subprocess.call(["ssh", h, "/usr2/fs/bin/inject_snap", prefix + str(mstr) + postfix])
+		print 'Return code from SSH %s inject_snp of %s: %s' % (str(h),str(mstr),str(ret))
+	flog.close()
+
+#=====================================================================
+
+class calibratorClientEventConsumer:
+
+    def __init__(self):
+        self._NCConsumer = Consumer("CalClientChannel")
+        self.calibrator = apexObsUtils.getApexCalibrator()
+        self.connected = 0
+
+    def connect(self):
+
+        try:
+            self._NCConsumer.addSubscription(apexCDS.displayEvent,self.eventHandler)
+            self._NCConsumer.consumerReady()
+            self.connected = 1
+        except Exception, e:
+            print "Error connecting to NC",e
+            self.connected = 0
+
+    def disconnect(self):
+        
+        ''' Disconnect from CORBA channel '''
+
+        try:
+            if(self.connected == 1):
+                self._NCConsumer.disconnect()
+                self.connected == 0
+        except Exception, e:
+            print "Error disconnecting from NC",e
+            self.connected = 0
+       
+
+    #-----------------------------------------------------------------
+    
+    def eventHandler (self,receivedData):
+
+        ''' CORBA notification channel event handling '''
+
+	# dummy = apexCal.CalResult(projectID='T-090.F-0001-2012', date='2013-03-18', scanNum=9057, feeds=[1], \
+	# tSys=[188.18189138854746], tRx=[110.0311825240067], tCal=[301.99231895210988], cSky=[52975244676606.438], \
+	# cHot=[132704804258107.2], water=[2.3198135449705726], waterRM=[-999.0], cCold=[59990831283004.492], \
+	# tauSig=[0.11131986343356677], tauIma=[0.099100985523400742], tAmb=[272.69], tHot=[286.06000000000006], \
+	# tCold=[73.587000000000003], tSpill=[275.36400000000003], feff=[0.94999998807907104], gainImage=[0.10000000149011612])
+
+	print str(receivedData)
+        cr = self.calibrator.getCalResult(receivedData.FEBE,receivedData.band,0)
+	print str(cr)
+
+	# End of Sky-Hot-Cold sequence?
+	if (cr.cCold[0] > 0):
+		Tsys = cr.tSys[0]
+		Tcal = cr.tCal[0]
+		Tsky = cr.cSky[0]
+		Thot = cr.tHot[0]
+		Tcld = cr.tCold[0]
+		Tstr = 'tsys=%.2f/tcal=%.2f/tsky=%.2f/thot=%.2f/tcold=%.2f/apecsScanNr=%d' % (Tsys,Tcal,Tsky,Thot,Tcld,int(cr.scanNum))
+		print Tstr
+		sendToFieldsystem(Tstr, FieldSystem_Hosts)
+	
+	# Tau, pwr: during 2013 VLBI no radiometer available! it's under repair :(
+
+#=====================================================================
+
+def main(args):
+    c = calibratorClientEventConsumer()
+    c.connect()
+    # Idle loop waiting for signals.
+    try:
+	sendToFieldsystem('APECS processCalEvents went online', FieldSystem_Hosts)
+        signal.pause() # Wait forever for a signal
+    finally:
+        print 'END APEX VLBI Calibrator Client'
+	sendToFieldsystem('APECS processCalEvents went OFFLINE', FieldSystem_Hosts)
+        print
+
+if __name__=="__main__":
+    main(sys.argv)
+
+#=====================================================================
+
+
+# Trigger manual sky-hot-cold
+#
+# APECS-SIM> calibrate time=5
+# APECS-SIM> tolerance 20
+#
+# Data results are packed into events in format of
+# APECS-SIM> import apexCal
+# APECS-SIM> cr=apexCal.CalResult(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+#
+# APECS-SIM> cr.
+# cr._NP_ClassName     cr.cSky              cr.tHot
+# cr._NP_RepositoryId  cr.date              cr.tRx
+# cr.__class__         cr.feeds             cr.tSpill
+# cr.__doc__           cr.feff              cr.tSys
+# cr.__init__          cr.gainImage         cr.tauIma
+# cr.__module__        cr.projectID         cr.tauSig
+# cr.__repr__          cr.scanNum           cr.water
+# cr._tuple            cr.tAmb              cr.waterRM
+# cr.cCold             cr.tCal              
+# cr.cHot              cr.tCold    
+#
+# Dirk says might want to ignore all CR where cr.cCold==0
+# i.e. that are not the end of the Sky-Hot-Cold sequence.
+# Note two results per subscan, IF4 with -749.9MHz and 
+# IF4 with +750.0 Mhz offsets. Can use either.
+#
