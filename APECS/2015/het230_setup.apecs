@@ -12,7 +12,8 @@ sourcecats(['t-091.f-0006-2013.cat'])
 linecats('t-091.f-0006-2013.lin')
 
 # Frontend/backend setup for HET230
-setup_shfi(fename='het230',linename='vlbifreq',sideband='',mode='cont', cats='user')
+# setup_shfi(fename='het230',linename='vlbifreq',sideband='',mode='cont', cats='user')
+setup_shfi(fename='het230',linename='sio215',sideband='',mode='cont', cats='user')
 
 # Turn off any doppler correction
 het230.configure(doppler='off')
@@ -23,9 +24,11 @@ het230.configure(doppler='off')
 #   source('ORION-KL', cats='user')
 #   source('IRC+10216', cats='user')
 # Target sources 2015
-source('J0522-363', cats='user')
+# source('J0522-363', cats='user')
 source('B1244-255', cats='user')
-source('VYCMa', cats='user')
+# source('VYCMa', cats='user')
+# source('R-Dor', cats='all')
+source ('R-Hya', velocity=0, cats='all')
 
 # Reference position (just for safety in this macro as well...)
 use_ref('on')
@@ -38,6 +41,7 @@ execfile('/homes/software/apecs/start_het230.apecs')
 
 # Load VLBI observing functions
 # Contains 'vlbi_init' that re-does the above setup
+
 execfile('/homes/t-091.f-0006-2013/vlbi_commands.py')
 
 # LS correction should be default as of 09-Apr-2011 - MDU

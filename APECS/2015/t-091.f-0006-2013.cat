@@ -35,6 +35,10 @@ BLLAC           EQ 2000  22:02:43.29  +42:16:40.0      LSR     0.0  !
 ! VY CMa:    07h22m58.3287s -25d46m03.235s (J2000.0; from SIMBAD; not corrected for proper motion)
 !                                           http://arxiv.org/pdf/1109.3036v1.pdf
 !                                           about 2.7 mas/yr; VLA@2006.5 07h22m58.3259 -25d46m03.063s to ~0.01 as
-J0522-363	EQ 2000  05:22:57.98  -36:27:30.8      LSR     0.0  !
-B1244-255       EQ 2000  12:46:46.80  -25:47:49.3      LSR     0.0  !
+J0522-363	EQ 2000  05:22:57.98  -36:27:30.8      LSR     0.0  !  NED: ESO 362- G 021 : coords match with Lynn's
+B1244-255       EQ 2000  12:46:46.80  -25:47:49.3      LSR     0.0  !  NED: [HB89] 1244-255: 12h46m46.8s -25d47m49s
 VYCMa           EQ 2000  07:22:58.33  -25:46:03.2      LSR     0.0  !
+!
+! other
+RHya		EQ 2000  13:29:42.78  -23:16:52.8      LSR     0.0  ! 50 Jy SiO 215 GHz + H2O 658 GHz
+WHya		EQ 2000  13:49:02.00  -28:22:03.5      LSR     0.0  ! 20 Jy(?) SiO 215 GHz + H2O -"-

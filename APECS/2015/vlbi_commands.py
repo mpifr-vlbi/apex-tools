@@ -30,8 +30,8 @@ import os
 #############################################################################
 
 def vlbi_send_str(strout,dest,port,infostr=''):
-
     '''Send a string in UDP packet to host (typically FieldSystem)'''
+
     try:
         ss = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         ss.sendto(strout, (dest, int(port)) )
@@ -56,7 +56,6 @@ def vlbi_send_str(strout,dest,port,infostr=''):
 #############################################################################
 
 def vlbi_init(gain=0.1):
-
     '''Initialize APEX VLBI setup.'''
 
     print 'Configuring 1mm VLBI'
@@ -69,36 +68,12 @@ def vlbi_init(gain=0.1):
     # List of line frequencies,  currently just 'vlbifreq' for VLBI PFB backend setup
     linecats('t-091.f-0006-2013.lin')
 
-    # Frontend SHeFI-1 without Doppler correction
-    if False:
-       # Original in 2012, apparently wrong, Pocket Backend gets IF4 Error
-       # due to misconfigured IF4 C2, C1 frequency window offsets
-       frontends('het230')
-       het230.configure(ratios=[gain], doppler='off')
-       het230.line('vlbi230', 229.323, 'lsb')  # 2011: 229.345 GHz,  2012: 229.323 GHz
-       het230.backends('pbe_a')
-    else:
-       exec_apecs_script('shfi_commands')
-       setup_shfi ('het230', mode='cont', doppler='off', linename='vlbifreq')
-       het230.line('vlbi230', 229.323, 'lsb')
-          # no further shfi commands, otherwise setup is messed up again and Total Power recording fails
+    # Acquire SHeFI commands (==/data/soft/apecs/APECS-3.0/share/apecs/shfi_commands.apecs)
+    exec_apecs_script('shfi_commands')  
 
-       # APECS-SIM> show()
-       # Date: 2013-03-17 TAI: 02:25:00 UTC: 02:24:25 LST: 09:32:44
-       # Project: T-089.F-0006-2012 Operator: NN Observer: NN
-       # Source: mysrc
-       # Coordinates: 12:54:48.8700, -90:00:00.0000 (J2000) Vel.: 0.00 km/s LSR
-       # Obs Mode: CAL RASTER SINGLE Offset: (00:00:00, 00:00:00) (REL, EQ)
-       # Stroke Mode: Linear
-       # Switch Mode: Total Power.
-       # Frontend-Backend Setups:
-       # HET230 Band: LSB Dopp.: OFF
-       # +-IF4:C2-PBE_A G2 B2 Continuum @ 229.32 GHz/Bw 2.5 GHz/1 Ch/-749.9 MHz
-       # +-IF4:C1-PBE_A G1 B1 Continuum @ 229.32 GHz/Bw 2.5 GHz/1 Ch/750.0 MHz
-       # Continuous data taking: OFF. Skipping hardware setups: OFF.
-       # Pcorr offsets: CA (Az): 0.00". IE (El): 0.00".
-       # Fcorr offsets: X: 0.00 mm Y: 0.00 mm Z: 0.00 mm XT: 0.00" YT: 0.00".
-       # Foc(T): ON
+    # Frontend SHeFI-1 without Doppler correction
+    setup_shfi(fename='het230',linename='sio215',sideband='',mode='spec', cats='user')
+    het230.configure(doppler='off')
 
     # Run in Total Power mode, no freq or position switching/wobbler
     tp()
@@ -110,7 +85,6 @@ def vlbi_init(gain=0.1):
 
 
 def vlbi_close():
-
     '''Clean up after VLBI.'''
 
     print 'Cleaning up 1mm VLBI'
@@ -127,7 +101,6 @@ def vlbi_close():
 
 
 def vlbi_tpoint():
-
     '''Total power pointing for VLBI.'''
 
     tp()
@@ -135,14 +108,12 @@ def vlbi_tpoint():
 
 
 def vlbi_tp_onsource():
-
     '''Total power pointing for VLBI. Taken while tracking source.'''
 
     track()
     on(drift='no',time=30)
 
 def vlbi_wpoint():
-
     '''Wobbler pointing for VLBI.'''
 
     wob(75, 1)
@@ -151,7 +122,6 @@ def vlbi_wpoint():
 
 
 def vlbi_focus(axis='Z'):
-
     '''Focus scan for VLBI.'''
 
     vlbi_focus.func_defaults = (axis,)
@@ -162,18 +132,17 @@ def vlbi_focus(axis='Z'):
 
 
 def vlbi_get_tracking_status(dest,port):
-
     '''Report the current ONSOURCE status.'''
-    # Simulation mode: ABM0
+    # Simulation mode: ABM0   
     # Observing mode : ABM1
     status = apexObsUtils.getMCPoint('ABM[1,0]:ANTMOUNT:mode')
     vlbi_send_str(status,dest,port,'ONSOURCE= ')
+
     # print 'Tracking status is %s, sending to %s:%s' % (status,dest,port)
 
 # Called from FieldSystem. Results are later polled by FieldSystem. 
 # TODO: Python Corba event listener to inject results into FieldSystem (remote-exec of 'inject_snap')
 def vlbi_initiate_tsys():
-
     '''Start a calibration (Tsys measurement).'''
 
     reference (-1000,0)
@@ -181,7 +150,6 @@ def vlbi_initiate_tsys():
 
 
 def vlbi_get_calibration():
-
     '''Collect VLBI meta data for FS log and inject it via remote ssh execute (TODO: daemon)'''
 
     onlineCal = apexObsUtils.getApexCalibrator()
@@ -287,7 +255,8 @@ def vlbi_get_calibration():
     prefix = '"\\\"'
     postfix = '\"'
 
-    fs_host = "oper@10.0.2.103" # 10.0.2.103 = mark6-4031, must have ssh key added 
+    fs_host = "oper@10.0.2.95" # 10.0.2.95 = mark5c2 since FieldSystem failed to work on Mark6
+    # oper@10.0.2.95:.ssh/authorized_keys has key of t-091.f-0006-2013@observer3
     ret = subprocess.call(["ssh", fs_host, "/usr2/fs/bin/inject_snap", prefix + calStr + postfix]);
     ret = subprocess.call(["ssh", fs_host, "/usr2/fs/bin/inject_snap", prefix + gpsFormStr + postfix]);
     ret = subprocess.call(["ssh", fs_host, "/usr2/fs/bin/inject_snap", prefix + gpsMaserStr + postfix]);
