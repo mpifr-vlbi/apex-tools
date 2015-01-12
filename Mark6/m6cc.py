@@ -151,7 +151,7 @@ def main(input_fn, m6_host, m6_port, rate_mbps):
             errmsg = ("Parsed input schedule file %s" % input_fn)
             proceed = True
         except Exception, e:
-            errmsg = ("Unparsable %s: %s" % e)
+            errmsg = ("Unparsable %s: %s" % (input_fn,e))
     else:
         errmsg = ("Session XML file %s does not exist " % (input_fn))
 
