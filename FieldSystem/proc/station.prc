@@ -56,9 +56,9 @@ define  postob        00000000000x
 sy=/usr2/proc/apecscmd.sh 'cancel()' &
 !+2s
 "caltsys
-mk5=rtime?;
-mk5=dir_info?;
-mk5=disk_serial?;
+"mk5=rtime?;
+"mk5=dir_info?;
+"mk5=disk_serial?;
 enddef
 
 define  midtp         00000000000
@@ -131,11 +131,11 @@ xdisp=on
 "enter 'cont' to continue without the mk5
 xdisp=off
 halt
-disc_serial
+"disc_serial
 "mk5=vsn?;
-disc_pos
-mk5=dir_info?;
-mk5=rtime?;
+"disc_pos
+"mk5=dir_info?;
+"mk5=rtime?;
 enddef
 
 define  change_pack   00000000000x
@@ -144,11 +144,11 @@ xdisp=on
 "the disk module that is not selected can now be replaced (or so you wish...)
 wakeup
 xdisp=off
-disc_serial
+"disc_serial
 "mk5=vsn?;
-disc_pos
-mk5=dir_info?;
-mk5=rtime?;
+"disc_pos
+"mk5=dir_info?;
+"mk5=rtime?;
 enddef
 
 define  calofffp      00000000000
@@ -256,11 +256,11 @@ enddef
 
 define  mk5panic      00000000000x
 "please panic
-disc_end
+"disc_end
 "mk5=bank_set=inc;
 !+10s
-disc_serial
-mk5=bank_set?;
+"disc_serial
+"mk5=bank_set?;
 "mk5=vsn?;
 enddef
 
