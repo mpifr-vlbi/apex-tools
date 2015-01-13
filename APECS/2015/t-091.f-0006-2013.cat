@@ -47,6 +47,8 @@ VYCMa           EQ 2000  07:22:58.33  -25:46:03.2      LSR     0.0  !
 ! Inserted for ALMA, src names as in VEX/FieldSystem
 CENA		EQ 2000  13:25:27.62  -43:01:08.8      LSR     0.0
 ORION-SIO       EQ 2000  05:35:14.50  -05:22:29.6      LSR     0.0 
+V0838_Mon	EQ 2000  07:04:05.07  -03:50:46.3      LSR     0.0
+
 !
 ! Additional starts to check for SiO and suitability 
 ! for tuning & subband/channel alignment checks between stations
