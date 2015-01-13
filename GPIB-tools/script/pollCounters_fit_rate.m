@@ -30,19 +30,27 @@ sigma_d = 1/10e6;
 err_corr_r = 1.0; % assume fully correlated error in measuring timestamp and clock offset
 [a,b,sigma_a,sigma_b,b_save] = york_fit(t',d',sigma_t,sigma_d,err_corr_r);
 fit_d = a + b*t;
+fit_e = d - fit_d;
 fprintf(1, 'Rate by York regression : %.12e\n', b);
 
 figure(1); clf; hold on;
   thours = t / 3600;
   tYoffset = mean(d);
-  plot(thours,d-tYoffset, 'kx');
-  plot(thours,fit_d-tYoffset, 'r-');
-  xlabel('Time (hours)')
-  ylabel(['Time (s) as an offset from ' num2str(tYoffset,'%.12f')])
-  xlim([min(thours) max(thours)]);
-  legend('Data', ['York regression, best-fit rate (' num2str(b,'%.12e') ' s/s)']);
-  fntidy = strrep(filename, '_', '\_');
-  title(['Data and fit for ' fntidy]);
+  subplot(2,1,1),
+    plot(thours,d-tYoffset, 'kx'), hold on;
+    plot(thours,fit_d-tYoffset, 'r-');
+    xlabel('Time (hours)')
+    ylabel(['Time (s) as an offset from ' num2str(tYoffset,'%.12f')])
+    xlim([min(thours) max(thours)]);
+    legend('Data', ['York regression, best-fit rate (' num2str(b,'%.12e') ' s/s)']);
+    fntidy = strrep(filename, '_', '\_');
+    title(['Data and fit for ' fntidy]);
+  subplot(2,1,2),
+    plot(thours, fit_e, 'kx');
+    xlabel('Time (hours)')
+    ylabel('Residual')
+    xlim([min(thours) max(thours)]);
+    
 
   % Fill PDF page
   border = 0.25; 

@@ -197,6 +197,7 @@ int main(int argc, char **argv) {
              reconfigure();
              break;
           }
+          close(sockfd);
        }
 
        /* Jump back to data "FETCH" */
