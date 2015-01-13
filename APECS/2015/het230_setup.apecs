@@ -27,15 +27,22 @@ het230.configure(doppler='off')
 # source('ORION-KL', cats='user')
 # source('IRC+10216', cats='user')
 
-# Target sources 2015
+# Possible maser/line candidates 2015 for band setpoint calibration
 # source('VYCMa', cats='user')
 # source('R-Dor', cats='all')
 # source('R-Hya', velocity=0, cats='all')
+# source('V0838_Mon', cats='user')
+# source('DY-GEM', cats='user')
+# source('R-GEM', cats='user')
+# source('FU-MON', cats='user')
+
+# Target sources 2015
 # source('3C279', cats='user')
 # source('J0522-363', cats='user')
 # source('B1244-255', cats='user')
 # source('CENA', cats='user')
 source('ORION-SIO', cats='user')
+
 
 # Reference position (just for safety in this macro as well...)
 use_ref('on')
