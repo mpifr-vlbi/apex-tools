@@ -1,8 +1,8 @@
 ! Spectral line catalog for project T-090.F-0006-2012
 !   229.343414
-vlbifreq      229.323000   GHz   LSB   ! continuum center freq used in 2013?
+vlbifreq2013  229.323000   GHz   LSB   ! continuum center freq used in 2013?
 sio217        217.104980   GHz   LSB   ! SiO line (...) rest freq
-sio215        215.595950   GHz   LSB   ! SiO line (v=1, J=5-4) rest freq
+! -- Lynn/old sio215        215.595950   GHz   LSB   ! SiO line (v=1, J=5-4) rest freq
 !
 ! Date: Mon, 22 Dec 2014 20:21:37 -0500 (EST)
 ! From: "Lynn D. Matthews" <lmatthew@haystack.mit.edu>
@@ -14,6 +14,10 @@ sio215        215.595950   GHz   LSB   ! SiO line (v=1, J=5-4) rest freq
 ! SPT:  215570.584747 MHz
 !
 ! 1999MNRAS.304..906G
-sio1j54 215.596 GHz LSB
+!
+sio1j54 215.596 GHz LSB ! <--- obs
 sio2j54 214.089 GHz LSB
-
+!
+vlbifreq     214.052000  GHz LSB  ! sky freq, net sideband USB (1st/SHeFI:LSB 2nd/VLBI:LSB)
+                                  ! SHeFI first LO should read 12280.5 MHz
+vlbifreq2    215.049 GHz LSB ! shifted 

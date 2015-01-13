@@ -72,7 +72,9 @@ def vlbi_init(gain=0.1):
     exec_apecs_script('shfi_commands')  
 
     # Frontend SHeFI-1 without Doppler correction
-    setup_shfi(fename='het230',linename='sio215',sideband='',mode='spec', cats='user')
+    # setup_shfi(fename='het230',linename='sio1j54',sideband='',mode='spec', cats='user')
+    setup_shfi(fename='het230',linename='vlbifreq2',sideband='',mode='cont', cats='user')
+
     het230.configure(doppler='off')
 
     # Run in Total Power mode, no freq or position switching/wobbler
@@ -147,7 +149,7 @@ def vlbi_initiate_tsys():
 
     reference (-1000,0)
     calibrate()
-
+    reference (0,0)
 
 def vlbi_get_calibration():
     '''Collect VLBI meta data for FS log and inject it via remote ssh execute (TODO: daemon)'''

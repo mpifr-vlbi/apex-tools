@@ -13,22 +13,28 @@ linecats('t-091.f-0006-2013.lin')
 
 # Frontend/backend setup for HET230
 # setup_shfi(fename='het230',linename='vlbifreq',sideband='',mode='cont', cats='user')
-setup_shfi(fename='het230',linename='sio215',sideband='',mode='cont', cats='user')
+# setup_shfi(fename='het230',linename='sio215',sideband='',mode='cont', cats='user')
+# setup_shfi(fename='het230',linename='sio1j54',sideband='',mode='cont', cats='user')
+setup_shfi(fename='het230',linename='vlbifreq2',sideband='',mode='cont', cats='user')
+
 
 # Turn off any doppler correction
 het230.configure(doppler='off')
 
 # Target sources 2013
-#   source('3C273', cats='user')
-#   source('3C279', cats='user')
-#   source('ORION-KL', cats='user')
-#   source('IRC+10216', cats='user')
+# source('3C273', cats='user')
+# source('3C279', cats='user')
+# source('ORION-KL', cats='user')
+# source('IRC+10216', cats='user')
+
 # Target sources 2015
+# source('ORION-KL', cats='user')
 # source('J0522-363', cats='user')
-source('B1244-255', cats='user')
+# source('B1244-255', cats='user')
 # source('VYCMa', cats='user')
 # source('R-Dor', cats='all')
-source ('R-Hya', velocity=0, cats='all')
+# source ('R-Hya', velocity=0, cats='all')
+source('3C279', cats='user')
 
 # Reference position (just for safety in this macro as well...)
 use_ref('on')
