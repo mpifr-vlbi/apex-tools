@@ -4,6 +4,8 @@ from VexLib import vex
 import sys
 import datetime
 
+src_file = 'vlbi-sources.cat'
+
 def usage():
 	print ''
 	print 'Usage: vex2apecs.py <vexfile> <siteID>'
@@ -125,6 +127,8 @@ def obs_writeFooter(fd):
 	fd.write('%s\n' % (80*'#'))
 
 def obs_writeStandardsetup(fd):
+        global src_file
+	obs_writeLine(fd, '@always',  2, 'sourcecats(\'%s\')' % (src_file))
 	obs_writeLine(fd, '@always', 10, 'vlbi_clockoffsets()')
 	obs_writeLine(fd, '@always', 10, 'vlbi_tuning()')
 
@@ -179,6 +183,8 @@ def obs_writeScans(fd,scans):
 			fd.write('#     %d seconds until next scan\n' % (int(Lscangap)) )
 
 def run(args):
+	global src_file
+
 	if (len(args) != 3):
 		usage()
 		sys.exit(-1)
@@ -191,6 +197,7 @@ def run(args):
 	fp.close()
 
 	obsfile = v['GLOBAL']['EXPER'] + site + '.obs'
+	src_file = 'vlbi-sources-' + v['GLOBAL']['EXPER'] + '.cat'
 	(site_name,site_ID) = getSite(site, v)
 
 	if (site_name == None):
@@ -207,5 +214,14 @@ def run(args):
 	obs_writeScans(fd,scans)
 	obs_writeFooter(fd)
 	fd.close()
+	print 'Wrote obs file       : %s' % (obsfile)
+
+	fd = open(src_file, 'w')
+	fd.write('#### VLBI targets for %s\n' % (v['GLOBAL']['EXPER']))
+	for s in v['SOURCE']:
+		src = getSource(s,v)
+		fd.write('%-20s EQ %-4s  %s %s\n' % (src['source'],src['eq'],src['ra'],src['dec']))
+	fd.close()
+	print 'Wrote source catalog : %s' % (src_file)
 
 run(sys.argv)
