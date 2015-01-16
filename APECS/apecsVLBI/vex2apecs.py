@@ -56,10 +56,10 @@ def getSource(source_name, v):
 		dec = dec.replace('"', '')
 
 		si = {}
-		si['source'] = v['SOURCE'][src]['source_name']
-		si['eq']  = v['SOURCE'][src]['ref_coord_frame'][1:]
-		si['ra']  = ra
-		si['dec'] = dec
+		si['name'] = v['SOURCE'][src]['source_name']
+		si['eq']   = v['SOURCE'][src]['ref_coord_frame'][1:]
+		si['ra']   = ra
+		si['dec']  = dec
 
 		sourceinfo = si
 		break
@@ -152,14 +152,14 @@ def obs_writeScans(fd,scans):
 		else:
 			Tstart_next = None
 
-		sheading = '%s/%s/%s' % (si['name'],si['source']['source'],si['mode'])
+		sheading = '%s/%s/%s' % (si['name'],si['source']['name'],si['mode'])
 		fd.write('#### %s %s\n' % (sheading, '#'*(80-6-len(sheading))))
 
 		T = si['start']
 		Ldur = int(si['dur_sec'])
 
 		T = T + datetime.timedelta(seconds=-Lpre)
-		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(..TODO..)')
+		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(\'%s\')' % (si['source']['name']))
 		T = T + datetime.timedelta(seconds=Lpre-5)
 		obs_writeLine(fd, datetime2SNP(T), 5, 'doppler(\'off\')')
 
@@ -214,14 +214,17 @@ def run(args):
 	obs_writeScans(fd,scans)
 	obs_writeFooter(fd)
 	fd.close()
+
+	print ''
 	print 'Wrote obs file       : %s' % (obsfile)
 
 	fd = open(src_file, 'w')
 	fd.write('#### VLBI targets for %s\n' % (v['GLOBAL']['EXPER']))
 	for s in v['SOURCE']:
 		src = getSource(s,v)
-		fd.write('%-20s EQ %-4s  %s %s\n' % (src['source'],src['eq'],src['ra'],src['dec']))
+		fd.write('%-20s EQ %-4s  %s %s\n' % (src['name'],src['eq'],src['ra'],src['dec']))
 	fd.close()
 	print 'Wrote source catalog : %s' % (src_file)
+	print ''
 
 run(sys.argv)
