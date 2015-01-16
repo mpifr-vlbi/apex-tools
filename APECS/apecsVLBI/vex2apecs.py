@@ -83,9 +83,21 @@ def getScans(site_ID, v):
 
 
 def obs_writeHeader(fd,site_name,site_ID,v):
+	T = datetime.datetime.utcnow()
+	T = datetime2SNP(T)
+	expname = v['GLOBAL']['EXPER']
+	exp = v['EXPER'][expname]
+	Tstart = 'n/a'; Tstop = 'n/a'; PI = 'n/a'
+	try:
+		Tstart = exp['exper_nominal_start']
+		Tstop = exp['exper_nominal_stop']
+		PI = exp['PI_email']
+	except Error:
+		pass
 	fd.write('#\n')
-	fd.write('# APEX observing script for station %s (%s), experiment %s\n' % (site_name,site_ID,v['GLOBAL']['EXPER']))
-	fd.write('# File created on %s UT\n' % (str(datetime.datetime.utcnow)))
+	fd.write('# APEX observing script for station %s (%s), experiment %s\n' % (site_name,site_ID,expname))
+	fd.write('# Experiment starts %s, ends %s. PI contact: %s\n' % (Tstart,Tstop,PI))
+	fd.write('# File created on %s UT\n' % (T))
 	fd.write('#\n')
 	fd.write('# Columns: 1) Start time 2) Duration in seconds 3) APECS command \n')
 	fd.write('# Details on the columns:\n')
@@ -97,6 +109,9 @@ def obs_writeHeader(fd,site_name,site_ID,v):
 	fd.write('#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...\n')
 	fd.write('#\n')
 	fd.write('# %-22s %-10s %-30s\n' % ('Time', 'Duration', 'Command'))
+
+def datetime2SNP(t):
+	return t.strftime('%Y.%j.%H:%M:%S')
 
 def run(args):
 	if (len(args) != 3):
