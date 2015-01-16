@@ -12,6 +12,14 @@ def usage():
 	print 'The .obs file can later be run with apecsVLBI.py'
 	print ''
 
+def datetime2SNP(t):
+	# Example SNP timestamp: 2015.016.07:30:00
+	return t.strftime('%Y.%j.%H:%M:%S')
+
+def VEX2datetime(snp):
+	# Example VEX timestamp: 2015y016d07h30m00s
+	return datetime.datetime.strptime(snp, '%Yy%jd%Hh%Mm%Ss')
+
 def getSite(site, v):
 	site_name = None
 	site_ID = None
@@ -66,11 +74,11 @@ def getScans(site_ID, v):
 			if (st[0] == site_ID):
 				scaninfo = {}
 				scaninfo['name']    = s
-				scaninfo['start']   = v['SCHED'][s]['start']
+				scaninfo['start']   = VEX2datetime(v['SCHED'][s]['start'])
 				scaninfo['source']  = getSource(v['SCHED'][s]['source'], v)
 				scaninfo['mode']  = v['SCHED'][s]['mode']
-				scaninfo['pre_sec'] = st[1]  # the VEX 'data good after' field
-				scaninfo['dur_sec'] = st[2]  # scan length in seconds
+				scaninfo['pre_sec'] = st[1].replace(' sec','')  # the VEX 'data good after' field
+				scaninfo['dur_sec'] = st[2].replace(' sec','')  # scan length in seconds
 				scaninfo['rec_len'] = st[3]  # typically GByte
 				scans.append(scaninfo)
 				found_match = True
@@ -81,6 +89,8 @@ def getScans(site_ID, v):
 			print 'Scan %s does not include station %s' % (s, site_ID)
 	return scans
 
+def obs_writeLine(fd, time,dur,cmd):
+	fd.write('%-22s %-10s %s\n' % (time,str(dur),cmd))
 
 def obs_writeHeader(fd,site_name,site_ID,v):
 	T = datetime.datetime.utcnow()
@@ -108,10 +118,56 @@ def obs_writeHeader(fd,site_name,site_ID,v):
 	fd.write('#       quotes around the command ("cmd").\n')
 	fd.write('#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...\n')
 	fd.write('#\n')
-	fd.write('# %-22s %-10s %-30s\n' % ('Time', 'Duration', 'Command'))
+	fd.write('# %-20s %-10s %s\n' % ('Time', 'Duration', 'Command'))
 
-def datetime2SNP(t):
-	return t.strftime('%Y.%j.%H:%M:%S')
+def obs_writeStandardsetup(fd):
+	obs_writeLine(fd, '@always', 10, 'vlbi_clockoffsets()')
+	obs_writeLine(fd, '@always', 10, 'vlbi_tuning()')
+
+def obs_writeScans(fd,scans):
+	Nscans = len(scans)
+
+	Lpre    = 10  # preobs 10 seconds before scan
+	Lpost   =  5  # postobs 5 seconds after scan
+	Ltsys   = 50  # seconds it takes for APECS to do a calibrate()
+	Lmeters = 15  # seconds it takes to read clock offsets, PWV, WX data
+
+	for ii in range(Nscans):
+		si = scans[ii]
+		if (ii>=1):
+			Tstart_prev = scans[ii-1]['start']
+		else:
+			Tstart_prev = None
+		if (ii<(Nscans-1)):
+			Tstart_next = scans[ii+1]['start']
+		else:
+			Tstart_next = None
+
+		sheading = '%s/%s/%s' % (si['name'],si['source']['source'],si['mode'])
+		fd.write('#### %s %s\n' % (sheading, '#'*(80-6-len(sheading))))
+
+		T = si['start']
+		Tdur = int(si['dur_sec'])
+
+		T = T + datetime.timedelta(seconds=-Lpre)
+		obs_writeLine(fd, datetime2SNP(T), Lpre, 'source(..TODO..)')
+
+		T = T + datetime.timedelta(seconds=+Lpre)
+		obs_writeLine(fd, datetime2SNP(T), si['dur_sec'], 'track()')
+		T = T + datetime.timedelta(seconds=Tdur)
+
+		T = T + datetime.timedelta(seconds=Lpost)
+		obs_writeLine(fd, datetime2SNP(T), Ltsys, 'calibrate()')
+
+		T = T + datetime.timedelta(seconds=Ltsys+5)
+		obs_writeLine(fd, datetime2SNP(T), Lmeters, 'readMeters()')
+
+		if (Tstart_next != None):
+			Lscangap = (Tstart_next - si['start'])
+			Lscangap = Lscangap - datetime.timedelta(seconds=Lpost)
+			Lscangap = Lscangap - datetime.timedelta(seconds=Ltsys+5)
+			Lscangap = Lscangap - datetime.timedelta(seconds=Lmeters+5)
+			fd.write('#   gap: %s seconds\n' % (str(Lscangap)) )
 
 def run(args):
 	if (len(args) != 3):
@@ -138,6 +194,8 @@ def run(args):
 
 	fd = open(obsfile, 'w')
 	obs_writeHeader(fd,site_name,site_ID,v)
+	obs_writeStandardsetup(fd)
+	obs_writeScans(fd,scans)
 	fd.close()
 
 run(sys.argv)
