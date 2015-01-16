@@ -114,8 +114,7 @@ def obs_writeHeader(fd,site_name,site_ID,v):
 	fd.write('#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)\n')
 	fd.write('#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past\n')
 	fd.write('#    2) estimated duration of the command in seconds\n')
-	fd.write('#    3) APECS command and parameters to execute. If the command includes whitespace, use\n')
-	fd.write('#       quotes around the command ("cmd").\n')
+	fd.write('#    3) APECS command and parameters to execute. If the command includes whitespace.\n')
 	fd.write('#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...\n')
 	fd.write('#\n')
 	fd.write('# %-20s %-10s %s\n' % ('Time', 'Duration', 'Command'))
@@ -136,7 +135,7 @@ def obs_writeScans(fd,scans):
 	Lpost   =  5  # postobs x seconds after scan
 	Ltsys   = 50  # seconds it takes for APECS to do a calibrate()
 	Lmeters = 15  # seconds it takes to read clock offsets, PWV, WX data
-	L_minimum_for_interactive = 600 # seconds required to allow interactive input from observer
+	L_minimum_for_interactive = 480 # seconds required to allow interactive input from observer
 
 	for ii in range(Nscans):
 		si = scans[ii]
@@ -169,15 +168,15 @@ def obs_writeScans(fd,scans):
 
 		T = T + datetime.timedelta(seconds=Ltsys+5)
 		obs_writeLine(fd, datetime2SNP(T), Lmeters, 'readMeters()')
+		T = T + datetime.timedelta(seconds=Lmeters)
 
 		if (Tstart_next != None):
-			Lscangap = (Tstart_next - si['start'])
-			Lscangap = Lscangap - datetime.timedelta(seconds=Ldur)
-			Lscangap = Lscangap - datetime.timedelta(seconds=Lpost)
-			Lscangap = Lscangap - datetime.timedelta(seconds=Ltsys+5)
-			Lscangap = Lscangap - datetime.timedelta(seconds=Lmeters+5)
+			Lscangap = (Tstart_next - T)
 			Lscangap = Lscangap.total_seconds()
-			fd.write('#     %s seconds until next scan\n' % (str(Lscangap)) )
+			if (Lscangap >= L_minimum_for_interactive):
+				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
+				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
+			fd.write('#     %d seconds until next scan\n' % (int(Lscangap)) )
 
 def run(args):
 	if (len(args) != 3):
