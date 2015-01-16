@@ -84,7 +84,7 @@ def getScans(site_ID, v):
 				found_match = True
 				break
 		if found_match:
-			print 'Scan %s : %s' % (s,scaninfo)
+			print 'Scan %s : added' % (s)
 		else:
 			print 'Scan %s does not include station %s' % (s, site_ID)
 	return scans
@@ -120,6 +120,11 @@ def obs_writeHeader(fd,site_name,site_ID,v):
 	fd.write('#\n')
 	fd.write('# %-20s %-10s %s\n' % ('Time', 'Duration', 'Command'))
 
+def obs_writeFooter(fd):
+	fd.write('%s\n' % (80*'#'))
+	fd.write('### end of schedule\n')
+	fd.write('%s\n' % (80*'#'))
+
 def obs_writeStandardsetup(fd):
 	obs_writeLine(fd, '@always', 10, 'vlbi_clockoffsets()')
 	obs_writeLine(fd, '@always', 10, 'vlbi_tuning()')
@@ -127,10 +132,11 @@ def obs_writeStandardsetup(fd):
 def obs_writeScans(fd,scans):
 	Nscans = len(scans)
 
-	Lpre    = 10  # preobs 10 seconds before scan
-	Lpost   =  5  # postobs 5 seconds after scan
+	Lpre    = 15  # preobs  x seconds before scan
+	Lpost   =  5  # postobs x seconds after scan
 	Ltsys   = 50  # seconds it takes for APECS to do a calibrate()
 	Lmeters = 15  # seconds it takes to read clock offsets, PWV, WX data
+	L_minimum_for_interactive = 600 # seconds required to allow interactive input from observer
 
 	for ii in range(Nscans):
 		si = scans[ii]
@@ -147,14 +153,16 @@ def obs_writeScans(fd,scans):
 		fd.write('#### %s %s\n' % (sheading, '#'*(80-6-len(sheading))))
 
 		T = si['start']
-		Tdur = int(si['dur_sec'])
+		Ldur = int(si['dur_sec'])
 
 		T = T + datetime.timedelta(seconds=-Lpre)
-		obs_writeLine(fd, datetime2SNP(T), Lpre, 'source(..TODO..)')
+		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(..TODO..)')
+		T = T + datetime.timedelta(seconds=Lpre-5)
+		obs_writeLine(fd, datetime2SNP(T), 5, 'doppler(\'off\')')
 
-		T = T + datetime.timedelta(seconds=+Lpre)
+		T = T + datetime.timedelta(seconds=5)
 		obs_writeLine(fd, datetime2SNP(T), si['dur_sec'], 'track()')
-		T = T + datetime.timedelta(seconds=Tdur)
+		T = T + datetime.timedelta(seconds=Ldur)
 
 		T = T + datetime.timedelta(seconds=Lpost)
 		obs_writeLine(fd, datetime2SNP(T), Ltsys, 'calibrate()')
@@ -164,10 +172,12 @@ def obs_writeScans(fd,scans):
 
 		if (Tstart_next != None):
 			Lscangap = (Tstart_next - si['start'])
+			Lscangap = Lscangap - datetime.timedelta(seconds=Ldur)
 			Lscangap = Lscangap - datetime.timedelta(seconds=Lpost)
 			Lscangap = Lscangap - datetime.timedelta(seconds=Ltsys+5)
 			Lscangap = Lscangap - datetime.timedelta(seconds=Lmeters+5)
-			fd.write('#   gap: %s seconds\n' % (str(Lscangap)) )
+			Lscangap = Lscangap.total_seconds()
+			fd.write('#     %s seconds until next scan\n' % (str(Lscangap)) )
 
 def run(args):
 	if (len(args) != 3):
@@ -196,6 +206,7 @@ def run(args):
 	obs_writeHeader(fd,site_name,site_ID,v)
 	obs_writeStandardsetup(fd)
 	obs_writeScans(fd,scans)
+	obs_writeFooter(fd)
 	fd.close()
 
 run(sys.argv)
