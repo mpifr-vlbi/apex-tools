@@ -10,11 +10,12 @@ import socket
 
 logfile = None
 
-# APECS system runs from abm.apex-telesc .IRIG. with is running TAI
-# The TAI-UTC offset is 35 seconds until June 2015
+# APECS system runs from abm.apex-telesc .IRIG. that is running TAI
+# The TAI time leads UTC by 35 seconds until June 2015 
+# http://www.leapsecond.com/java/gpsclock.htm
 import utilsNTP
-ntpserver = 'nist1-lnk.binary.net'
-offsetUTC = 35
+ntpserver = 'time.nist.gov' #'nist1-lnk.binary.net'
+offsetUTC = 35   
 
 # Ctrl-C
 gotCtrlC = False
@@ -47,15 +48,15 @@ def waitUntil(T,Tsnp='',msg=''):
 	global offsetUTC, gotCtrlC
 	iter = 0
 	while True:
-		Tcurr = datetime.datetime.utcnow()
+		Tcurr = datetime.datetime.utcnow() + datetime.timedelta(seconds=-offsetUTC)
 		dT = T - Tcurr
-		dT = dT.total_seconds() - offsetUTC
+		dT = dT.total_seconds()
 		if (dT <= 0) or gotCtrlC:
 			break
 		# print dT
 		iter = iter + 1
 		sys.stdout.write('\r')
-		sys.stdout.write('Still %d seconds until %s to do %s' % (int(dT),Tsnp,msg))
+		sys.stdout.write('Still %ds from now (%s) to start (%s) of %s' % (int(dT),datetime2SNP(Tcurr),Tsnp,msg))
 		sys.stdout.flush()
 		time.sleep(0.25)
 
@@ -120,7 +121,7 @@ def execCommand(cmd):
 
 def writeLog(s):
 	global logfile
-	T = datetime.datetime.utcnow() + datetime.timedelta(seconds=offsetUTC)
+	T = datetime.datetime.utcnow() + datetime.timedelta(seconds=-offsetUTC)
 	T = datetime2SNP(T)
 	info = '%s;\"%s' % (T,s)
 	logfile.write(info + '\n')
@@ -156,15 +157,17 @@ def handleTask(t):
 def apecsVLBI(obsfile):
 	global ntpserver, offsetUTC, gotCtrlC, logfile
 
-	waitUntil(datetime.datetime.utcnow())
-
 	logfile = open(obsfile + '.log', 'a')
 
 	offsetUTC = utilsNTP.get_UTC_offset(ntpserver)	
 	offsetUTC = int(offsetUTC)
 
 	writeLog('----------| START OF %s |----------' % (obsfile))
-	writeLog('Using UTC-TAI offset of %+d seconds' % (offsetUTC))
+	writeLog('Using TAI-UTC offset of %+d seconds' % (offsetUTC))
+
+	if False: # test
+		T0 = datetime.datetime.utcnow()
+		waitUntil(T0,datetime2SNP(T0),'test')
 
 	fd = open(obsfile, 'r')
 	for line in fd:
