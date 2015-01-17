@@ -1,0 +1,56 @@
+
+# Additional VLBI related commands invoked remotely by apecsVLBI.py
+import datetime
+
+def readMeters():
+	onlineCal = apexObsUtils.getApexCalibrator()
+	offsetUTC = 35  # TODO: update automatically to most recent TAI (APECS computer) vs UTC time offset
+
+	try:
+		calResult = onlineCal.getCalResult('HET230-PBE_A',1,0)
+		# this data has no timestamp?
+		calStr = 'tsys/%f,trx/%f,gainimage/%f,tausig/%f,tauima/%f,wvr/%f,wvrrm/%f,thot/%f,tcold/%f' % ( \
+			calResult.tSys[0], \
+			calResult.tRx[0], \
+			calResult.gainImage[0], \
+			calResult.tauSig[0], \
+			calResult.tauIma[0], \
+			calResult.water[0], \
+			calResult.waterRM[0], \
+			calResult.tHot[0], \
+			calResult.tCold[0] )
+	except:
+		calStr = 'tsys/nodata'
+
+	try:
+		temperature = apexObsUtils.getMCPoint('APEX:WEATHERSTATION:temperature')
+		timestamp = apexObsUtils.getMCPointTS('APEX:WEATHERSTATION:temperature')
+	except:
+		temperature = -273
+		timestamp = (-1, -1)
+	try:
+		dewPoint = apexObsUtils.getMCPoint('APEX:WEATHERSTATION:dewPoint')
+	except:
+		dewPoint = -273
+	try:
+		humidity = apexObsUtils.getMCPoint('APEX:WEATHERSTATION:humidity')
+	except:
+		humidity = 0
+	try:
+		pressure = apexObsUtils.getMCPoint('APEX:WEATHERSTATION:pressure')
+	except:
+		pressure = 0
+	try:
+		pwv = apexObsUtils.getMCPoint('APEX:RADIOMETER:RESULTS:pwv')
+	except:
+		pwv = -1
+
+	wxStr = 'wx/temp/%f,dew/%f,hum/%f,p/%f,windspeed/%f,winddir/%f,pwv/%f' % (temperature,  dewPoint,  humidity, pressure, pwv)
+
+	T = datetime.datetime.utcnow() + datetime.timedelta(seconds=-offsetUTC)
+        T_snp = t.strftime('%Y.%j.%H:%M:%S')
+
+	fd = open('vlbi-cals.log', 'a')
+	fd.write('%s;%s\n' % (T_snp,calStr))
+	fd.write('%s;%s\n' % (T_snp,wxStr))
+	fd.close()
