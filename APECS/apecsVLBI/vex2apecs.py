@@ -20,9 +20,9 @@ def datetime2SNP(t):
 	# Example SNP timestamp: 2015.016.07:30:00
 	return t.strftime('%Y.%j.%H:%M:%S')
 
-def VEX2datetime(snp):
+def VEX2datetime(tvex):
 	# Example VEX timestamp: 2015y016d07h30m00s
-	return datetime.datetime.strptime(snp, '%Yy%jd%Hh%Mm%Ss')
+	return datetime.datetime.strptime(tvex, '%Yy%jd%Hh%Mm%Ss')
 
 def getSite(site, v):
 	site_name = None
