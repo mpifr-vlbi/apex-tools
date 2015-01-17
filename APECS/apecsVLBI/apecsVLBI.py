@@ -3,12 +3,25 @@
 import sys
 import datetime
 import time
+import signal
+
+## Globals
 
 # APECS system runs from abm.apex-telesc .IRIG. with is running TAI
 # The TAI-UTC offset is 35 seconds until June 2015
 import utilsNTP
 ntpserver = 'nist1-lnk.binary.net'
 offsetUTC = 35
+
+# Ctrl-C
+gotCtrlC = False
+
+## Functions
+
+def signal_handler(signal, frame):
+	global gotCtrlC
+	gotCtrlC = True
+        print('Ctrl-C pressed, stopping...')
 
 def usage():
 	print ''
@@ -20,20 +33,26 @@ def usage():
 	print ''
 
 
-def waitUntil(T):
+def waitUntil(T,Tsnp='',msg=''):
 	'''Waits until UTC datetime T, corrected for local clock offset (e.g. TAI time)'''
-	global offsetUTC
+	global offsetUTC, gotCtrlC
 	iter = 0
 	while True:
 		Tcurr = datetime.datetime.utcnow()
 		dT = T - Tcurr
 		dT = dT.total_seconds() - offsetUTC
-		if (dT <= 0):
+		if (dT <= 0) or gotCtrlC:
 			break
 		# print dT
 		iter = iter + 1
-		time.sleep(0.1)
+		sys.stdout.write('\r')
+		sys.stdout.write('Still %d seconds until %s to do %s' % (int(dT),Tsnp,msg))
+		sys.stdout.flush()
+		time.sleep(0.25)
+
 	# print 'waitUntil %s / now=%s : dT=%s iter=%d' % (T,Tcurr,str(dT),iter)
+	if gotCtrlC:
+		return False	# Cancelled
 	if (iter > 0):
 		return True	# Time reached by waiting
 	else:
@@ -74,6 +93,7 @@ def execCommand(cmd):
 
 def handleTask(t):
 	'''Task is a list of [tstart,tdur,cmd] as returned by splitLine() for one line on the .obs file'''
+	global gotCtrlC
 	if (len(t) != 3):
 		print 'Invalid task %s' % (str(t))
 		return None
@@ -85,7 +105,9 @@ def handleTask(t):
 		return True
 
 	Tstart = SNP2datetime(t[0]) 
-	reached = waitUntil(Tstart)
+	reached = waitUntil(Tstart, Tsnp=t[0],msg=cmd)
+	if gotCtrlC:
+		return False
 	if not(reached):
 		print 'Time %s for command %s already passed. Skipping.' % (t[0],cmd)
 		return False
@@ -94,25 +116,32 @@ def handleTask(t):
 	return True
 
 
-def run(args):
-	global ntpserver, offsetUTC
+def apecsVLBI(obsfile):
+	global ntpserver, offsetUTC, gotCtrlC
 
-	if (len(args) != 2):
-		usage()
-		sys.exit(-1)
 	waitUntil(datetime.datetime.utcnow())
 
 	offsetUTC = utilsNTP.get_UTC_offset(ntpserver)	
 	offsetUTC = int(offsetUTC)
 	print 'Using UTC-TAI offset of %+d seconds' % (offsetUTC)
 
-	fd = open(args[1], 'r')
+	fd = open(obsfile, 'r')
 	for line in fd:
 		line = line.strip()
 		if (len(line)<1) or (line[0]=='#'):
 			continue
 		task = splitLine(line)
 		handleTask(task)
+		if gotCtrlC:
+			break
 	fd.close()
 
-run(sys.argv)
+
+signal.signal(signal.SIGINT, signal_handler)
+
+if (len(sys.argv) != 2):
+	usage()
+	sys.exit(-1)
+else:
+	apecsVLBI(sys.argv[1])
+
