@@ -130,6 +130,7 @@ def obs_writeFooter(fd):
 
 def obs_writeStandardsetup(fd):
         global src_file, lin_file
+	obs_writeLine(fd, '@always',  2, 'execfile(\'vlbi_commands_def.apecs\')')
 	obs_writeLine(fd, '@always',  2, 'sourcecats(\'%s\')' % (src_file))
 	obs_writeLine(fd, '@always',  2, 'linecats(\'%s\')' % (lin_file))
 	obs_writeLine(fd, '@always',  2, 'exec_apecs_script(\'shfi_commands\')')
