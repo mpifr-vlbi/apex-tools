@@ -145,7 +145,7 @@ def obs_writeStandardsetup(fd):
 def obs_writeScans(fd,scans):
 	Nscans = len(scans)
 
-	Lpre    = 15  # preobs  x seconds before scan
+	Lpre    = 10  # preobs  x seconds before scan
 	Lpost   =  5  # postobs x seconds after scan
 	Ltsys   = 50  # seconds it takes for APECS to do a calibrate()
 	Lmeters = 15  # seconds it takes to read clock offsets, PWV, WX data
@@ -169,11 +169,13 @@ def obs_writeScans(fd,scans):
 		Ldur = int(si['dur_sec'])
 
 		T = T + datetime.timedelta(seconds=-Lpre)
-		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(\'%s\')' % (si['source']['name']))
-		T = T + datetime.timedelta(seconds=Lpre-5)
-		obs_writeLine(fd, datetime2SNP(T), 5, 'doppler(\'off\')')
 
+		obs_writeLine(fd, datetime2SNP(T), 5, 'doppler(\'off\')')
 		T = T + datetime.timedelta(seconds=5)
+
+		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(\'%s\',cats=\'user\')' % (si['source']['name']))
+		T = T + datetime.timedelta(seconds=Lpre-5)
+
 		obs_writeLine(fd, datetime2SNP(T), si['dur_sec'], 'track()')
 		T = T + datetime.timedelta(seconds=Ldur)
 
@@ -191,6 +193,9 @@ def obs_writeScans(fd,scans):
 				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
 				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
 			fd.write('#     %d seconds until next scan\n' % (int(Lscangap)) )
+
+	obs_writeLine(fd, datetime2SNP(T), 1, 'remote_control(\'off\')')
+
 
 def run(args):
 	global src_file, lin_file
