@@ -20,15 +20,48 @@ def usage():
 	print ''
 
 def waitUntil(T):
-	'''Waits until UTC datetime T'''
+	'''Waits until UTC datetime T, corrected for local clock offset (e.g. TAI time)'''
+	global offsetUTC
 	while True:
 		Tcurr = datetime.datetime.utcnow()
 		dT = T - Tcurr
-		dT = dT.total_seconds()
+		dT = dT.total_seconds() - offsetUTC
 		if (dT <= 0):
 			break
 		# print dT
 		time.sleep(0.1)
+
+def splitLine(l):
+	'''Splits .obs file line with date/time, duration, and command into respective pieces'''
+	l = l.strip()
+	while (l.find('  ') >= 0):
+		l = l.replace('  ', ' ')
+	i1 = l.find(' ')
+	i2 = l.find(' ', i1+1)
+	tstart = l[:i1]
+	tdur   = l[(i1+1):i2]
+	cmd    = l[(i2+1):]
+	return [tstart,tdur,cmd]
+
+def execCommand(cmd):
+	# TODO: log
+	global offsetUTC, ntpserver
+	try:
+		eval(cmd, globals(), locals())
+		return True
+	except:
+		print 'Command %s failed with : %s' % (cmd,sys.exc_info()[0])
+		return False
+
+def handleTask(t):
+	'''Task is a list of [tstart,tdur,cmd] as returned by splitLine() for one line on the .obs file'''
+	if (len(t) != 3):
+		print 'Invalid task %s' % (str(t))
+		return None
+	if (t[0] == '@always'):
+		execCommand(t[2])
+		return True
+
 
 def run(args):
 	global ntpserver, offsetUTC
@@ -41,5 +74,14 @@ def run(args):
 	offsetUTC = utilsNTP.get_UTC_offset(ntpserver)	
 	offsetUTC = int(offsetUTC)
 	print 'Using UTC-TAI offset of %+d seconds' % (offsetUTC)
+
+	fd = open(args[1], 'r')
+	for line in fd:
+		line = line.strip()
+		if (len(line)<1) or (line[0]=='#'):
+			continue
+		task = splitLine(line)
+		handleTask(task)
+	fd.close()
 
 run(sys.argv)
