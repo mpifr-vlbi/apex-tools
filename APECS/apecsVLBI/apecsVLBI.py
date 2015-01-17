@@ -4,6 +4,7 @@ import sys
 import datetime
 import time
 import signal
+import socket
 
 ## Globals
 
@@ -15,6 +16,12 @@ offsetUTC = 35
 
 # Ctrl-C
 gotCtrlC = False
+
+# APECS remote mode
+use_remote_mode = True
+APECS_host = "10.0.2.170"   # IP of observer3.apex-telescope.org
+APECS_port = 22122          # UDP port on which APECS accepts commands (APECS: remote_control('on'))
+
 
 ## Functions
 
@@ -81,19 +88,41 @@ def splitLine(l):
 
 
 def execCommand(cmd):
-	# TODO: log
-	global offsetUTC, ntpserver
-	try:
-		eval(cmd, globals(), locals())
+	global APECS_host, APECS_port, use_remote_mode
+
+	T = datetime.datetime.utcnow() + datetime.timedelta(seconds=offsetUTC)
+	T = datetime2SNP(T)
+	print '%s;\"%s' % (T,cmd)
+
+	if (cmd.find('interactive') > 0):
+		print '>>> VLBI execution paused, without timeout on pause, to allow'
+		print '>>> user commands entered into APECS. Be careful not to exceed'
+		print '>>> scan gap time. When done in APECS type \'cont\' to continue here.'
+		while True:
+                	l = raw_input('type \'cont\' to continue VLBI> ')
+			if (l.lower().strip() == 'cont'):
+				break	
 		return True
-	except:
-		print 'Command %s failed with : %s' % (cmd,sys.exc_info()[0])
-		return False
+
+	if not(use_remote_mode):
+		# Local mode, apecsVLBI.py should be invoked from within APECS
+		try:
+			eval(cmd, globals(), locals())
+			return True
+		except:
+			print 'Command %s failed with : %s' % (cmd,sys.exc_info()[0])
+			return False
+	else:
+		# Remote mode, commands are sent to APECS over UDP (requires remote_control('on')) in APECS)
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		sock.sendto(cmd, (APECS_host, APECS_port))
+		sock.close()
 
 
 def handleTask(t):
 	'''Task is a list of [tstart,tdur,cmd] as returned by splitLine() for one line on the .obs file'''
 	global gotCtrlC
+
 	if (len(t) != 3):
 		print 'Invalid task %s' % (str(t))
 		return None
@@ -102,6 +131,7 @@ def handleTask(t):
 
 	if (t[0] == '@always'):
 		execCommand(cmd)
+		time.sleep(2)
 		return True
 
 	Tstart = SNP2datetime(t[0]) 
