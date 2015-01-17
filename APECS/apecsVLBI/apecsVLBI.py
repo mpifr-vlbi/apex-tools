@@ -8,6 +8,8 @@ import socket
 
 ## Globals
 
+logfile = None
+
 # APECS system runs from abm.apex-telesc .IRIG. with is running TAI
 # The TAI-UTC offset is 35 seconds until June 2015
 import utilsNTP
@@ -90,9 +92,7 @@ def splitLine(l):
 def execCommand(cmd):
 	global APECS_host, APECS_port, use_remote_mode
 
-	T = datetime.datetime.utcnow() + datetime.timedelta(seconds=offsetUTC)
-	T = datetime2SNP(T)
-	print '%s;\"%s' % (T,cmd)
+	writeLog(cmd)
 
 	if (cmd.find('interactive') > 0):
 		print '>>> VLBI execution paused, without timeout on pause, to allow'
@@ -118,6 +118,13 @@ def execCommand(cmd):
 		sock.sendto(cmd, (APECS_host, APECS_port))
 		sock.close()
 
+def writeLog(s):
+	global logfile
+	T = datetime.datetime.utcnow() + datetime.timedelta(seconds=offsetUTC)
+	T = datetime2SNP(T)
+	info = '%s;\"%s' % (T,s)
+	logfile.write(info + '\n')
+	print info
 
 def handleTask(t):
 	'''Task is a list of [tstart,tdur,cmd] as returned by splitLine() for one line on the .obs file'''
@@ -147,25 +154,31 @@ def handleTask(t):
 
 
 def apecsVLBI(obsfile):
-	global ntpserver, offsetUTC, gotCtrlC
+	global ntpserver, offsetUTC, gotCtrlC, logfile
 
 	waitUntil(datetime.datetime.utcnow())
 
+	logfile = open(obsfile + '.log', 'a')
+
 	offsetUTC = utilsNTP.get_UTC_offset(ntpserver)	
 	offsetUTC = int(offsetUTC)
-	print 'Using UTC-TAI offset of %+d seconds' % (offsetUTC)
+
+	writeLog('----------| START OF %s |----------' % (obsfile))
+	writeLog('Using UTC-TAI offset of %+d seconds' % (offsetUTC))
 
 	fd = open(obsfile, 'r')
 	for line in fd:
 		line = line.strip()
 		if (len(line)<1) or (line[0]=='#'):
+			writeLog(line)
 			continue
 		task = splitLine(line)
 		handleTask(task)
 		if gotCtrlC:
+			writeLog('----------| USER-REQUESTED STOP OF  %s |----------' % (obsfile))
 			break
 	fd.close()
-
+	logfile.close()
 
 signal.signal(signal.SIGINT, signal_handler)
 
