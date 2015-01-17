@@ -5,13 +5,15 @@ import sys
 import datetime
 
 src_file = 'vlbi-sources.cat'
+lin_file = 'vlbi-freqs.lin'
 
 def usage():
 	print ''
 	print 'Usage: vex2apecs.py <vexfile> <siteID>'
 	print ''
 	print 'Produces an .obs file that contains timed APECS commands for the VLBI observation.'
-	print 'The .obs file can later be run with apecsVLBI.py'
+	print 'The .obs file can later be run with apecsVLBI.py. Does not yet support frequency'
+	print 'changes during an observation (different MODEs in VEX).'
 	print ''
 
 def datetime2SNP(t):
@@ -127,10 +129,18 @@ def obs_writeFooter(fd):
 	fd.write('%s\n' % (80*'#'))
 
 def obs_writeStandardsetup(fd):
-        global src_file
+        global src_file, lin_file
 	obs_writeLine(fd, '@always',  2, 'sourcecats(\'%s\')' % (src_file))
-	obs_writeLine(fd, '@always', 10, 'vlbi_clockoffsets()')
-	obs_writeLine(fd, '@always', 10, 'vlbi_tuning()')
+	obs_writeLine(fd, '@always',  2, 'linecats(\'%s\')' % (lin_file))
+	obs_writeLine(fd, '@always',  2, 'exec_apecs_script(\'shfi_commands\')')
+	obs_writeLine(fd, '@always',  2, 'setup_shfi(fename=\'het230\',linename=\'vlbifreq\',sideband=\'\',mode=\'cont\', cats=\'user\')')
+	obs_writeLine(fd, '@always',  2, 'het230.configure(doppler=\'off\')')
+	obs_writeLine(fd, '@always',  2, 'tp()')
+	obs_writeLine(fd, '@always',  2, 'offset(0,0)')
+	obs_writeLine(fd, '@always',  2, 'reference(0,0)')
+	obs_writeLine(fd, '@always',  2, 'use_ref(\'off\')')
+	#obs_writeLine(fd, '@always', 10, 'vlbi_clockoffsets()')
+	#obs_writeLine(fd, '@always', 10, 'vlbi_tuning()')
 
 def obs_writeScans(fd,scans):
 	Nscans = len(scans)
@@ -183,7 +193,7 @@ def obs_writeScans(fd,scans):
 			fd.write('#     %d seconds until next scan\n' % (int(Lscangap)) )
 
 def run(args):
-	global src_file
+	global src_file, lin_file
 
 	if (len(args) != 3):
 		usage()
@@ -198,6 +208,7 @@ def run(args):
 
 	obsfile = v['GLOBAL']['EXPER'] + site + '.obs'
 	src_file = 'vlbi-sources-' + v['GLOBAL']['EXPER'] + '.cat'
+	lin_file = 'vlbi-freqs-' + v['GLOBAL']['EXPER'] + '.lin'
 	(site_name,site_ID) = getSite(site, v)
 
 	if (site_name == None):
@@ -205,6 +216,7 @@ def run(args):
 		sys.exit(-1)
 
 	print 'Creating .obs file for site %s (full info: %s)' % (site_name,str(v['SITE'][site_name]))
+	print ''
 
 	scans = getScans(site_ID, v)
 
@@ -214,17 +226,22 @@ def run(args):
 	obs_writeScans(fd,scans)
 	obs_writeFooter(fd)
 	fd.close()
-
-	print ''
 	print 'Wrote obs file       : %s' % (obsfile)
 
 	fd = open(src_file, 'w')
 	fd.write('#### VLBI targets for %s\n' % (v['GLOBAL']['EXPER']))
 	for s in v['SOURCE']:
 		src = getSource(s,v)
-		fd.write('%-20s EQ %-4s  %s %s\n' % (src['name'],src['eq'],src['ra'],src['dec']))
+		fd.write('%-20s EQ %-4s  %s %s  LSR  0.0\n' % (src['name'],src['eq'],src['ra'],src['dec']))
 	fd.close()
 	print 'Wrote source catalog : %s' % (src_file)
+
+	fd = open(lin_file, 'w')
+	fd.write('#### VLBI frequency(ies) for %s\n' % (v['GLOBAL']['EXPER']))
+	fd.write('vlbifreq 215.049 GHz LSB\n')
+	fd.close()
+	print 'Wrote freqs catalog  : %s  (PLEASE EDIT!)' % (lin_file)
+
 	print ''
 
 run(sys.argv)
