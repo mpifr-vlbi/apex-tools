@@ -54,16 +54,16 @@ figure(1); clf; hold on;
 
   % Fill PDF page
   border = 0.25; 
-  papersize = get(gcf(), "papersize");
-  set (gcf(), "paperposition", [border, border, (papersize - 2*border)]);
+  papersize = get(gcf(), 'papersize');
+  set (gcf(), 'paperposition', [border, border, (papersize - 2*border)]);
 
   % To change orientation 
-  orientation = get (gcf(), "paperorientation"); 
-  papersize = get (gcf(), "papersize"); 
-  paperposition = get (gcf(), "paperposition"); 
-  set (gcf(), "paperposition", paperposition([2, 1, 4, 3])); 
-  set (gcf(), "papersize", papersize ([2, 1])); 
-  set (gcf(), "paperorientation", "landscape");
+  orientation = get (gcf(), 'paperorientation'); 
+  papersize = get (gcf(), 'papersize'); 
+  paperposition = get (gcf(), 'paperposition'); 
+  set (gcf(), 'paperposition', paperposition([2, 1, 4, 3])); 
+  set (gcf(), 'papersize', papersize ([2, 1])); 
+  set (gcf(), 'paperorientation', 'landscape');
 
   print('pollCounters_fit_rate.pdf', '-dpdf');
   fprintf(1, 'Wrote plot to file  pollCounters_fit_rate.pdf\n');
