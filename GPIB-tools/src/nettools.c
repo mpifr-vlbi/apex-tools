@@ -46,6 +46,7 @@ int tcp_client(const char *servIP, const char *servPort, int timeout_secs)
   if (errn < 0) {
     snprintf(buff, sizeof(buff), "connect error: %s", strerror(errno));
     printf("%s\n", buff);
+    close(sockfd);
     return -1;
   }
 
