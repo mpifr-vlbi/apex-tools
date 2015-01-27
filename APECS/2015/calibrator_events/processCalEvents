@@ -21,8 +21,9 @@ def sendToFieldsystem(mstr, hosts):
 	flog = open('processCalEvt_out.log', 'a')
 	prefix = '"\\\"'
 	postfix = '\"'
+	tstr = str(datetime.datetime.utcnow())
 	for h in hosts:
-		flog.write('Message for host %s: %s\n' % (h,mstr))
+		flog.write('Message for host %s (current UT time %s): %s\n' % (h,tstr,mstr))
 		ret = subprocess.call(["ssh", h, "/usr2/fs/bin/inject_snap", prefix + str(mstr) + postfix])
 		print 'Return code from SSH %s inject_snp of %s: %s' % (str(h),str(mstr),str(ret))
 	flog.close()

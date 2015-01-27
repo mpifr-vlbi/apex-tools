@@ -142,8 +142,9 @@ def vlbi_get_tracking_status(dest,port):
 
     # print 'Tracking status is %s, sending to %s:%s' % (status,dest,port)
 
-# Called from FieldSystem. Results are later polled by FieldSystem. 
-# TODO: Python Corba event listener to inject results into FieldSystem (remote-exec of 'inject_snap')
+# Called from FieldSystem. Must run the Python Corba event listener 
+# calibrator_events/processCalEvents to inject the measurement
+# results back into FieldSystem.
 def vlbi_initiate_tsys():
     '''Start a calibration (Tsys measurement).'''
 

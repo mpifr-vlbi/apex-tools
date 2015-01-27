@@ -21,3 +21,6 @@ sio2j54 214.089 GHz LSB
 vlbifreq     214.052000  GHz LSB  ! sky freq, net sideband USB (1st/SHeFI:LSB 2nd/VLBI:LSB)
                                   ! SHeFI first LO should read 12280.5 MHz
 vlbifreq2    215.049 GHz LSB ! shifted 
+!
+! tuning freq such that CO line frequency is in VLBI band
+!...
