@@ -1,0 +1,26 @@
+dplane (1.15) UNRELEASED; urgency=low
+
+  * added ability to record into sub-group of modules
+  * Required new communication mechanism with cplane in messages.h
+
+ -- Chet <cruszczyk@tigress.haystack.mit.edu>  Mon, 16 Jun 2014 19:40:24 +0000
+
+dplane (1.14) UNRELEASED; urgency=low
+
+  * fix fill frame logic re packet lengths
+
+ -- Chester Ruszczyk <chester@haystack.mit.edu>  Fri, 23 May 2014 15:03:55 +0000
+
+dplane (1.13) UNRELEASED; urgency=low
+
+  * for vdif, overwrite boilerplate fillframe threadid with actual threadid
+  * fix psn checking bug
+
+ -- Chester Ruszczyk <chester@haystack.mit.edu>  Tue, 20 May 2014 15:03:55 +0000
+
+dplane (1.12) UNRELEASED; urgency=low
+
+  * new feature to defeat psn checking if offset -1
+
+ -- Chester Ruszczyk <chester@haystack.mit.edu>  Mon, 19 May 2014 15:03:55 +0000
+

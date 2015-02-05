@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Mon, 30 Jun 2014 15:40:24 +0000
+Source: mark6-sc-module
+Binary: mark6-sc-module
+Architecture: source amd64
+Version: 0.10
+Distribution: UNRELEASED
+Urgency: low
+Maintainer: Chet Ruszczyk <chester@haystack.mit.edu>
+Changed-By: Chet <cruszczyk@tigress.haystack.mit.edu>
+Description: 
+ mark6-sc-module - Pyhthon Utilites for the Mark6 VLBI system to support scan check
+Changes: 
+ mark6-sc-module (0.10) UNRELEASED; urgency=low
+ .
+   * bug fix : Added sg_reopen() and corrected final packet of the file.
+Checksums-Sha1: 
+ be1a5f84252745afa26f09e77a8b84d20ab9322c 620 mark6-sc-module_0.10.dsc
+ 276925b38c3ea28277079e27b05afe474616d7a2 20727 mark6-sc-module_0.10.tar.gz
+ a710dd93cf8f408239293b39c180a95cd923e13f 17922 mark6-sc-module_0.10_amd64.deb
+Checksums-Sha256: 
+ d822dd1e882a42318d9bc20fda643e00597b44c6f92c3db9d7e28ac6669d0c08 620 mark6-sc-module_0.10.dsc
+ 63fa789a98fd3df0d36658d89a8fa31918d11aaf47e59d0fe24192b06457cf76 20727 mark6-sc-module_0.10.tar.gz
+ 37437b0c57621e1dfba0bd2792afec147ec23bd2bda4f3ed57f0bbb25f598993 17922 mark6-sc-module_0.10_amd64.deb
+Files: 
+ ea8e227ed5f76079a10f62c3925ccb0b 620 misc optional mark6-sc-module_0.10.dsc
+ 4e5a615132a62f0f03240c9e29007c2c 20727 misc optional mark6-sc-module_0.10.tar.gz
+ d2d39f13520905e001085f01a85ff60c 17922 misc optional mark6-sc-module_0.10_amd64.deb

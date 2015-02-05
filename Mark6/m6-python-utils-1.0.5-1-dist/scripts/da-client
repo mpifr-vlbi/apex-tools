@@ -1,0 +1,88 @@
+#!/usr/bin/python
+
+import socket
+import atexit
+import os
+import readline
+import rlcompleter
+import sys
+import getopt
+import string
+
+historyPath = os.path.expanduser("~/pyhistory")
+
+def save_history(historyPath=historyPath):
+    import readline
+    readline.write_history_file(historyPath)
+
+if os.path.exists(historyPath):
+    readline.read_history_file(historyPath)
+    
+parms = {'-h': '127.0.0.1', '-p':14242}
+try:
+    opts, pargs = getopt.getopt(sys.argv[1:], "h:p")
+except getopt.GetoptError, msg:
+    sys.exit(msg)
+
+for o,v in opts:
+    print o,v
+    parms[o] = v
+
+host = parms['-h']
+port = int(parms['-p'])
+
+print "Host:", host, "port:", port
+
+# --- USING TCP SOCKETS. 
+for res in socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_STREAM):
+    af, socktype, proto, canonname, sa = res
+
+    try:
+        s = socket.socket(af,socktype, proto)
+    except socket.error, msg:
+        print "ERROR socket could not be configured: ", msg
+        sys.exit(0)
+    
+    try:
+        s.connect(sa)
+    except socket.error, msg:
+        print "\n\t ERROR socket could not connect to: ", host
+        s.close()
+        print '\t ', msg
+        sys.exit(0)
+
+while 1:
+    try:
+        arg = raw_input(">> ")
+    except EOFError:
+        print ''
+        break
+
+    if arg in ('', ';'):
+        continue
+    
+    #IF NOT QUIT 
+    if arg != "quit":
+
+        # ADD ; TO END IF NOT THERE
+        arg = string.strip(arg)
+        if arg[-1] != ';':
+            arg = arg + ';'
+
+        # SEND COMMAND
+        s.sendall(arg)
+        # WAIT FOR RESPONSE
+        ret = s.recv(8192)
+        check = ret.find("\n")
+        if check < 0:
+            print "<< ", ret
+        else:
+            print "<< ", ret.rstrip("\n")
+            
+    # ELSE TERMINATE SESSION
+    else:
+        break
+
+s.close()
+atexit.register(save_history)
+

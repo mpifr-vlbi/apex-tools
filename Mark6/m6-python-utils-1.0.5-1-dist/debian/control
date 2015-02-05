@@ -1,0 +1,17 @@
+Source: m6-python-utils
+Section: misc
+Priority: optional
+Maintainer: Chet Ruszczyk <chester@haystack.mit.edu>
+Build-Depends: python-all-dev, debhelper (>= 7), python-support (>= 0.8.4) 
+XS-Python-Version: current
+Standards-Version: 3.8.4
+Homepage: http://www.haystack.edu/tech/vlbi/mark6/index.html
+
+Package: m6-python-utils
+Architecture: amd64
+Depends: ${python:Depends}, ${misc:Depends}, ${shlibs:Depends}
+XB-Python-Version: ${python:Versions}
+Provides: ${python:Versions}
+Description: Pyhthon Utilites for the Mark6 VLBI system
+ da-clients, both command line plus other useful stuff
+

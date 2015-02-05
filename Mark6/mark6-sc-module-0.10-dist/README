@@ -1,0 +1,13 @@
+This describes how to rebuild the network and modules (netinfo.so, and m6sc.so) 
+python wrappers that are used by c-plane so that also other
+functions can be added.
+
+To build and install the wrappers simply run as root or sudo:
+python setup.py install
+python m6scsetup.py install
+
+to build the wrapper locally:
+python setup.py build_ext --inplace
+python m6scsetup.py build_ext --inplace
+
+More information to come.

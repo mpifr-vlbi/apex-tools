@@ -1,0 +1,11 @@
+mark6-sc-module (0.10) UNRELEASED; urgency=low
+
+  * bug fix : Added sg_reopen() and corrected final packet of the file. 
+
+ -- Chet <cruszczyk@tigress.haystack.mit.edu>  Mon, 30 Jun 2014 15:40:24 +0000
+
+mark6-sc-module (0.9-1) UNRELEASED; urgency=low
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Chester Ruszczyk <chester@haystack.mit.edu>  Thu, 03 Apr 2014 15:04:25 +0000

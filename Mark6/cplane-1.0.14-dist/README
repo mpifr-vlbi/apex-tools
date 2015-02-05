@@ -1,0 +1,13 @@
+The setup.py and MANIFEST.in are files used with distributing and packaging
+python modules.
+
+With the command:
+
+python setup.py sdist -> will create a source distribution
+python setup.py bdist_rpm -> will create the appropriate source and binary 
+	redhat distribution 
+
+To create a Debian Distribtion we recommend following the PackagingGuid/Python 
+tutorial. Specifically following the CDBS and debhelper guidelines.
+The link is https://wiki.ubuntu.com/PackagingGuide/Python
+
