@@ -1,0 +1,75 @@
+Experiment:
+
+  8 Gbit/s in wideband mode (1 channel per 22/43/86/129 GHz)
+
+  Yonsei : VOA VSI-to-10 GbE
+
+  Ulsan  : FILA10G with 1280-byte VDIF payload (1312-byte frames) to match VOA size
+
+  Note that future tests should use at least 8032-byte VDIF frames on FILA10G to 
+  avoid data loss during Mark6 recording (CPU/IRQ overload with 1312-byte frames).
+  Also VOA should use at least 8032-byte frames, but unfortunately, VOA can not
+  be changed to do this...
+
+
+Issues in VOA VDIF that have to be fixed so that DiFX correlation is possible:
+
+  - re-label data as 2 bit/sample rather than the incorrect VOA label of 1 bit/sample
+     (can use 'modifyVDIF')
+
+  - for DiFX interleaved vdif parsing to work, 'dd' must be used to remove
+    from the start of the files any vdif-frames that are not present in all 4 threads
+
+$ vdifheader2.pl p14sl01c-No00035-06h50m12s-VOA.vdif | less
+ I:0 L:0 1-ch 2-bit 1312-byte th:4 EP:29 T:10392613 sec F#58270 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:3 EP:29 T:10392613 sec F#58271 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:1 EP:29 T:10392613 sec F#58271 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:2 EP:29 T:10392613 sec F#58271 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:4 EP:29 T:10392613 sec F#58271 06:50:13
+ --> must use 'dd' to remove first frame 58270 since it is found for thread 4 only
+
+$ vdifheader2.pl p14sl01c-No00038-07h17m19s-VOA.vdif | head -8
+ I:0 L:0 1-ch 2-bit 1312-byte th:2 EP:29 T:10394240 sec F#46050 07:17:20
+ I:0 L:0 1-ch 2-bit 1312-byte th:4 EP:29 T:10394240 sec F#46050 07:17:20
+ I:0 L:0 1-ch 2-bit 1312-byte th:3 EP:29 T:10394240 sec F#46051 07:17:20
+ I:0 L:0 1-ch 2-bit 1312-byte th:1 EP:29 T:10394240 sec F#46051 07:17:20
+ I:0 L:0 1-ch 2-bit 1312-byte th:2 EP:29 T:10394240 sec F#46051 07:17:20
+ --> must use 'dd' to remove first two frames 46050 since they are found for threads 2 and 4 only
+
+  frame size is 1312 byte, thus using dd with block size parameter "bs=1312" byte
+
+$ dd if=p14sl01c-No00035-06h50m12s-VOA.vdif of=p14sl01c-No00035-06h50m12s-VOA.dd.vdif bs=1312 skip=1
+$ dd if=p14sl01c-No00038-07h17m19s-VOA.vdif of=p14sl01c-No00038-07h17m19s-VOA.dd.vdif bs=1312 skip=2
+
+$ vdifheader2.pl p14sl01c-No00035-06h50m12s-VOA.dd.vdif|less
+ I:0 L:0 1-ch 2-bit 1312-byte th:3 EP:29 T:10392613 sec F#58271 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:1 EP:29 T:10392613 sec F#58271 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:2 EP:29 T:10392613 sec F#58271 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:4 EP:29 T:10392613 sec F#58271 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:3 EP:29 T:10392613 sec F#58272 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:1 EP:29 T:10392613 sec F#58272 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:2 EP:29 T:10392613 sec F#58272 06:50:13
+ I:0 L:0 1-ch 2-bit 1312-byte th:4 EP:29 T:10392613 sec F#58272 06:50:13
+ --> looks good now
+
+
+VDIF start timestamps of two scans at Ulsan and Yonsei:
+
+$ m5time /scratch0/n14st02c_8Gbps_fringetest/Ku/p14sl01c-No00035-06h50m12s-FILA10G.vdif VDIF_1280-8192-4-2
+MJD = 56959/06:50:13.15
+$ m5time /scratch0/n14st02c_8Gbps_fringetest/Ku/p14sl01c-No00038-07h17m19s-FILA10G.vdif VDIF_1280-8192-4-2
+MJD = 56959/07:17:20.12
+
+$ m5time /scratch0/n14st02c_8Gbps_fringetest/Ky/p14sl01c-No00035-06h50m12s-VOA.dd.vdif  VDIF_1280-2048-1-2
+MJD = 56959/06:50:13.29
+$ m5time /scratch0/n14st02c_8Gbps_fringetest/Ky/p14sl01c-No00038-07h17m19s-VOA.vdif VDIF_1280-2048-1-2
+MJD = 56959/07:17:20.23
+
+
+After DiFX, difx2fits, loading into AIPS, FRING:
+
+FRING1: Ant(02): Phas=  98.9 rate=      2.76 delay=     12.78 SNR=  55.2
+FRING1: Standard RMS errors (deg, mHz, nsec):
+FRING1: Ant(02): Phas=  1.04 rate=     0.599 delay=     0.010
+FRING1: Found        6 good solutions
+FRING1: Failed on        2 solutions
