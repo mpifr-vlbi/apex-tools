@@ -1,0 +1,7 @@
+
+Copy of basic "zoom band"-like processing and correlation in Matlab 
+written by Laura Vertatschitsch, with some adaptions/fixes made here.
+
+The first station has VDIF data from a DBBC running 16 x 62.5 MHz PFB firmware.
+
+The second station has VDIF data from R2DBE running 1 x 2048 MHz wideband firmware.
