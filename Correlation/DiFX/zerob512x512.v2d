@@ -1,0 +1,57 @@
+vex = zerob512x512.vex
+antennas = K1, K2
+singleScan = 1
+
+# DBBC internal zero baseline test, 16 x 32 MHz PFB firmware (rather than 16 x 62.5 or 16 x 64) 
+
+mjdStart = 2014y349d17h17m03s
+mjdStop  = 2014y349d17h17m06s
+
+ANTENNA K1
+{
+  file = /home/oper/correlation/file1.vdif  # symlink to actual file
+  format = VDIF/8032
+# note: 8032=8000-byte payload, should have been 8192+32 byte to get integer nr of frames per sec
+  clockOffset=0
+  clockRate=0
+  clockEpoch=2014y343d12h00m00s
+  X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
+}
+
+ANTENNA K2
+{
+  file = /home/oper/correlation/file2.vdif
+  format = VDIF/8032
+  clockOffset=0
+  clockRate=0
+  clockEpoch=2014y343d12h00m00s
+  X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
+}
+
+SETUP default
+{
+  tInt = 1.0
+  nChan = 1024
+  doPolar = False # No cross hand correlations
+#  freqId = 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+}
+
+# This, along with SETUP default above, should always be done
+RULE default
+{
+  setup = default
+}
+
+# getEOP.py 2014y2014y348d12h00m00s
+EOP 57004 { xPole=0.058300 yPole=0.267330 tai_utc=35 ut1_utc=-0.436939 }
+EOP 57005 { xPole=0.056250 yPole=0.268350 tai_utc=35 ut1_utc=-0.438140 }
+EOP 57006 { xPole=0.054370 yPole=0.269310 tai_utc=35 ut1_utc=-0.439341 }
+EOP 57007 { xPole=0.052590 yPole=0.270220 tai_utc=35 ut1_utc=-0.440572 }
+EOP 57008 { xPole=0.050820 yPole=0.271110 tai_utc=35 ut1_utc=-0.441803 }
+
+# getEOP.py 2014y353d12h00m00s
+EOP 57009 { xPole=0.049090 yPole=0.271970 tai_utc=35 ut1_utc=-0.442977 }
+EOP 57010 { xPole=0.047400 yPole=0.272850 tai_utc=35 ut1_utc=-0.444055 }
+EOP 57011 { xPole=0.045730 yPole=0.273750 tai_utc=35 ut1_utc=-0.445036 }
+EOP 57012 { xPole=0.044060 yPole=0.274650 tai_utc=35 ut1_utc=-0.445957 }
+EOP 57013 { xPole=0.042420 yPole=0.275530 tai_utc=35 ut1_utc=-0.446867 }
