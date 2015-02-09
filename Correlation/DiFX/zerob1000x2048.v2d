@@ -72,7 +72,7 @@ ZOOM wide2048to1024
 ZOOM wide2almaLow
 {
   # The freqs should match the VEX file FREQ_16chPFB_1000MHz_Low 
-  # except for first PFB channel that is spans -fs/2 to fs/2
+  # except for the first PFB channel that spans -fs/2 to fs/2
   addZoomFreq = freq@45000.00/bw@31.25/noparent@true # PFB Ch01 0...+fs/2
   addZoomFreq = freq@45031.25/bw@62.50/noparent@true
   addZoomFreq = freq@45093.75/bw@62.50/noparent@true
