@@ -4,7 +4,9 @@ Experiment:
 
   Yonsei : VOA VSI-to-10 GbE
 
-  Ulsan  : FILA10G with 1280-byte VDIF payload (1312-byte frames) to match VOA size
+  Ulsan  : FILA10G with 1280-byte VDIF payload (1312-byte frames) to match VOA size.
+           Data from the four VSI inputs carrying single-IF wideband data were 
+           rearranged with 'chan_perm' register settings to produce single-threaded VDIF.
 
   Note that future tests should use at least 8032-byte VDIF frames on FILA10G to 
   avoid data loss during Mark6 recording (CPU/IRQ overload with 1312-byte frames).
