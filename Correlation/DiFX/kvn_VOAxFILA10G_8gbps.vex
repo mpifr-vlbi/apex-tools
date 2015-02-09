@@ -1,0 +1,2277 @@
+VEX_rev = 1.5B;
+*------------------------------------------------------------------------------
+$GLOBAL;
+*
+    ref $EXPER = p14sl01c;
+*   ref $PROCEDURES = STD_1BEAM;
+*
+*------------------------------------------------------------------------------
+$EXPER;
+*
+* Nominal_start_date_UTC: 2014.10.29-02:00:00.000
+* Duration:                24.00 hours
+*
+def p14sl01c;
+    target_correlator = VLBADIFX;
+    exper_name = p14sl01c;
+    exper_description = "8 Gbps Test During iMOGABA18";
+    exper_nominal_start = 2014y302d02h00m00s;
+    exper_nominal_stop  = 2014y303d02h00m00s;
+enddef;
+*
+*------------------------------------------------------------------------------
+$MODE;
+*
+* Names of 7 procedures:
+*
+* 1) First observation in the schedule
+* 2) Observations with    Tsys measurements
+* 3) Observations with    CROSS pointing (PREOBS_LONG)
+* 4) Procedure for tape change at VERA or SECZ measurements at the KVN
+* 5) Last observation in the schedule
+* 6) Pointing observation with maser line source
+* 7) Observation for flux calibration using a planet
+*
+* __MODE_Definitions__ GEO_FIRST GEO_WITH_TSYS GEO_CROSS GEO_SECZ GEO_FINAL GEO_POINTING_LINE GEO_FLUX_CALIB
+*
+def GEO_CROSS;
+     ref $PROCEDURES = PROC_CROSS:Kt:Ku:Ky;
+     ref $FREQ = KVN_KQWD_8GBPS:Ky:Ku:Kt;
+     ref $IF = IF_KQWD:Ky:Ku:Kt;
+     ref $BBC = BBC_KQWD:Ky:Ku:Kt;
+     ref $DAS = START/STOP:Ky:Ku:Kt;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Ky:Ku:Kt;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ky:Ku:Kt;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Ky:Ku:Kt;
+enddef;
+*
+def GEO_WITH_TSYS;
+     ref $PROCEDURES = PROC_WITH_TSYS:Kt:Ku:Ky;
+     ref $FREQ = KVN_KQWD_8GBPS:Ky:Ku:Kt;
+     ref $IF = IF_KQWD:Ky:Ku:Kt;
+     ref $BBC = BBC_KQWD:Ky:Ku:Kt;
+     ref $DAS = START/STOP:Ky:Ku:Kt;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Ky:Ku:Kt;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ky:Ku:Kt;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Ky:Ku:Kt;
+enddef;
+*
+def GEO_SECZ;
+     ref $PROCEDURES = PROC_SECZ:Ky:Ku:Kt;
+     ref $FREQ = KVN_KQWD_8GBPS:Ky:Ku:Kt;
+     ref $IF = IF_KQWD:Ky:Ku:Kt;
+     ref $BBC = BBC_KQWD:Ky:Ku:Kt;
+     ref $DAS = START/STOP:Ky:Ku:Kt;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Ky:Ku:Kt;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ky:Ku:Kt;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Ky:Ku:Kt;
+enddef;
+*
+def GEO_FIRST;
+     ref $PROCEDURES = PROC_SECZ:Ky:Ku:Kt;
+     ref $FREQ = KVN_KQWD_8GBPS:Ky:Ku:Kt;
+     ref $IF = IF_KQWD:Ky:Ku:Kt;
+     ref $BBC = BBC_KQWD:Ky:Ku:Kt;
+     ref $DAS = START/STOP:Ky:Ku:Kt;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Ky:Ku:Kt;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ky:Ku:Kt;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Ky:Ku:Kt;
+enddef;
+*
+def GEO_FINAL;
+     ref $PROCEDURES = PROC_FINAL:Ky:Ku:Kt;
+     ref $FREQ = KVN_KQWD_8GBPS:Ky:Ku:Kt;
+     ref $IF = IF_KQWD:Ky:Ku:Kt;
+     ref $BBC = BBC_KQWD:Ky:Ku:Kt;
+     ref $DAS = START/STOP:Ky:Ku:Kt;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Ky:Ku:Kt;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ky:Ku:Kt;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Ky:Ku:Kt;
+enddef;
+*
+def GEO_POINTING_LINE;
+     ref $PROCEDURES = PROC_POINTING_LINE:Ky:Ku:Kt;
+     ref $FREQ = KVN_KQWD_8GBPS:Ky:Ku:Kt;
+     ref $IF = IF_KQWD:Ky:Ku:Kt;
+     ref $BBC = BBC_KQWD:Ky:Ku:Kt;
+     ref $DAS = START/STOP:Ky:Ku:Kt;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Ky:Ku:Kt;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ky:Ku:Kt;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Ky:Ku:Kt;
+enddef;
+*
+def GEO_FLUX_CALIB;
+     ref $PROCEDURES = PROC_FLUX_CALIB:Ky:Ku:Kt;
+     ref $FREQ = KVN_KQWD_8GBPS:Ky:Ku:Kt;
+     ref $IF = IF_KQWD:Ky:Ku:Kt;
+     ref $BBC = BBC_KQWD:Ky:Ku:Kt;
+     ref $DAS = START/STOP:Ky:Ku:Kt;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Ky:Ku:Kt;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ky:Ku:Kt;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Ky:Ku:Kt;
+enddef;
+*
+*------------------------------------------------------------------------------
+$PROCEDURES;
+*
+def PROC_CROSS;
+    preob_cal  =  on :   30 sec : R_SKY;
+    preob_cal  =  on :   120 sec : CROSS;
+enddef;
+*
+def PROC_WITH_TSYS;
+enddef;
+*
+def PROC_SECZ;
+*    preob_cal  =  on :   10 sec : SECZ   : 200 sec;
+    preob_cal  =  on :   30 sec : R_SKY;
+    preob_cal  =  on :   120 sec : CROSS;
+enddef;
+*
+def PROC_FINAL;
+    preob_cal  =  on :   10 sec : R_SKY;
+    preob_cal  =  on :   120 sec : CROSS;
+*    postob_cal =  on : 10 sec : SECZ : 200 sec;
+enddef;
+*
+def PROC_POINTING_LINE;
+    preob_cal  =  on :   150 sec : FIVE;
+*    preob_cal  =  on :   150 sec : FOCUS;
+enddef;
+*
+def PROC_FLUX_CALIB;
+    preob_cal  =  on :   30 sec : R_SKY;
+    preob_cal  =  on :   120 sec : CROSS;
+enddef;
+*
+*------------------------------------------------------------------------------
+$STATION;
+*
+def Ky;
+     ref $SITE = KVNYS;
+     ref $ANTENNA = KVNYS;
+     ref $DAS = 2NONE+MARK5B<;
+enddef;
+*
+def Ku;
+     ref $SITE = KVNUS;
+     ref $ANTENNA = KVNUS;
+     ref $DAS = 2NONE+MARK5B<;
+enddef;
+*
+def Kt;
+     ref $SITE = KVNTN;
+     ref $ANTENNA = KVNTN;
+     ref $DAS = 2NONE+MARK5B<;
+enddef;
+*
+*------------------------------------------------------------------------------
+$SITE;
+*
+def KVNYS;
+     site_type = fixed;
+     site_name = KVNYS;
+     site_ID = Ky;
+*    elev=  121.72 long=-126:56:27. lat= 37:33:54.6
+     site_position =-3042280.91370 m: 4045902.71640 m: 3867374.35440 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2011y270d;
+     site_position_epoch =   55831;
+     horizon_map_az =  0.0 deg: 20.0: 40.0: 60.0: 80.0:100.0:120.0:140.0:160.0:
+                               180.0:200.0:220.0:240.0:260.0:280.0:300.0:320.0:
+                               340.0:360.0;
+     horizon_map_el = 10.0 deg: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0:
+                                10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0:
+                                10.0: 10.0;
+enddef;
+*
+def KVNUS;
+     site_type = fixed;
+     site_name = KVNUS;
+     site_ID = Ku;
+*    elev=  161.42 long=-129:14:59. lat= 35:32:44.2
+     site_position =-3287268.61860 m: 4023450.17990 m: 3687380.01980 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2009y253d;
+     site_position_epoch =   55084;
+     horizon_map_az =  0.0 deg: 20.0: 40.0: 60.0: 80.0:100.0:120.0:140.0:160.0:
+                               180.0:200.0:220.0:240.0:260.0:280.0:300.0:320.0:
+                               340.0:360.0;
+     horizon_map_el = 10.0 deg: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0:
+                                10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0:
+                                10.0: 10.0;
+enddef;
+*
+def KVNTN;
+     site_type = fixed;
+     site_name = KVNTN;
+     site_ID = Kt;
+*    elev=  441.32 long=-126:27:34. lat= 33:17:20.4
+     site_position =-3171731.55800 m: 4292678.48780 m: 3481038.72520 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2009y225d;
+     site_position_epoch =   55056;
+     horizon_map_az =  0.0 deg: 20.0: 40.0: 60.0: 80.0:100.0:120.0:140.0:160.0:
+                               180.0:200.0:220.0:240.0:260.0:280.0:300.0:320.0:
+                               340.0:360.0;
+     horizon_map_el = 10.0 deg: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0:
+                                10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0: 10.0:
+                                10.0: 10.0;
+enddef;
+*
+*------------------------------------------------------------------------------
+$ANTENNA;
+*
+def KVNYS;
+     axis_type = az : el;
+     antenna_motion = el : 177.0 deg/min :  2 sec;  *    3.000 deg/sec/sec
+     antenna_motion = az : 177.0 deg/min :  2 sec;  *    3.000 deg/sec/sec
+*     pointing_sector = &ccw: az : -90 :   0 : el : 5 : 85 ;
+*     pointing_sector = &n  : az :   0 : 360 : el : 5 : 85 ;
+*     pointing_sector = &cw : az : 360 : 450 : el : 5 : 85 ;
+     axis_offset =    0.00000 m;
+enddef;
+*
+def KVNUS;
+     axis_type = az : el;
+     antenna_motion = el : 177.0 deg/min :  2 sec;  *    3.000 deg/sec/sec
+     antenna_motion = az : 177.0 deg/min :  2 sec;  *    3.000 deg/sec/sec
+*     pointing_sector = &ccw: az : -90 :   0 : el : 5 : 85 ;
+*     pointing_sector = &n  : az :   0 : 360 : el : 5 : 85 ;
+*     pointing_sector = &cw : az : 360 : 450 : el : 5 : 85 ;
+     axis_offset =    0.00000 m;
+enddef;
+*
+def KVNTN;
+     axis_type = az : el;
+     antenna_motion = el : 177.0 deg/min :  2 sec;  *    3.000 deg/sec/sec
+     antenna_motion = az : 177.0 deg/min :  2 sec;  *    3.000 deg/sec/sec
+*     pointing_sector = &ccw: az : -90 :   0 : el : 5 : 85 ;
+*     pointing_sector = &n  : az :   0 : 360 : el : 5 : 85 ;
+*     pointing_sector = &cw : az : 360 : 450 : el : 5 : 85 ;
+     axis_offset =    0.00000 m;
+enddef;
+*
+*------------------------------------------------------------------------------
+$DAS;
+*
+def 2NONE+MARK5B<;
+     record_transport_type = Mark5B;
+*    electronics_rack_type = none;
+     number_drives = 2;
+     headstack = 1 :            : 0 ;
+     headstack = 2 :            : 1 ;
+     tape_motion = adaptive : 0 min: 0 min: 10 sec;
+enddef;
+*
+*
+*------------------------------------------------------------------------------
+$SOURCE;
+*
+def 0218+35A;
+*   source_position_ref = J0221+355A; TAG
+    source_name = 0218+35A;
+    IAU_name = 0218+35A;
+    ra = 02h21m05.460000s;
+    dec = +35d56'13.70000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 0235+164;
+*   source_position_ref = J0238+1636; TAG
+    source_name = 0235+164;
+    IAU_name = 0235+164;
+    ra = 02h38m38.930000s;
+    dec = +16d36'59.20000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 3C84    ;
+*   source_position_ref = J0319+4130; TAG
+    source_name = 3C84    ;
+    IAU_name = 3C84    ;
+    ra = 03h19m48.160000s;
+    dec = +41d30'42.10000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 0420-014;
+*   source_position_ref = J0423-0120; TAG
+    source_name = 0420-014;
+    IAU_name = 0420-014;
+    ra = 04h23m15.800000s;
+    dec = -01d20'33.00000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 3C111   ;
+*   source_position_ref = J0530+1331; TAG
+    source_name = 3C111   ;
+    IAU_name = 3C111   ;
+    ra = 05h30m56.410000s;
+    dec = +13d31'55.10000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 0716+714;
+*   source_position_ref = J0721+7120; TAG
+    source_name = 0716+714;
+    IAU_name = 0716+714;
+    ra = 07h21m53.440000s;
+    dec = +71d20'36.30000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 0727-115;
+*   source_position_ref = J0730-1141; TAG
+    source_name = 0727-115;
+    IAU_name = 0727-115;
+    ra = 07h30m19.110000s;
+    dec = -11d41'12.60000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 0735+178;
+*   source_position_ref = J0738+1742; TAG
+    source_name = 0735+178;
+    IAU_name = 0735+178;
+    ra = 07h38m07.390000s;
+    dec = +17d42'18.90000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 0827+243;
+*   source_position_ref = J0830+2410; TAG
+    source_name = 0827+243;
+    IAU_name = 0827+243;
+    ra = 08h30m52.080000s;
+    dec = +24d10'59.80000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 0836+710;
+*   source_position_ref = J0841+7053; TAG
+    source_name = 0836+710;
+    IAU_name = 0836+710;
+    ra = 08h41m24.360000s;
+    dec = +70d53'42.10000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def OJ287   ;
+*   source_position_ref = J0854+2006; TAG
+    source_name = OJ287   ;
+    IAU_name = OJ287   ;
+    ra = 08h54m48.870000s;
+    dec = +20d06'30.60000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 4C39.25 ;
+*   source_position_ref = J0927+3902; TAG
+    source_name = 4C39.25 ;
+    IAU_name = 4C39.25 ;
+    ra = 09h27m03.010000s;
+    dec = +39d02'20.80000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def Mrk421  ;
+*   source_position_ref = J1104+3812; TAG
+    source_name = Mrk421  ;
+    IAU_name = Mrk421  ;
+    ra = 11h04m27.310000s;
+    dec = +38d12'31.70000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 1156+295;
+*   source_position_ref = J1159+2914; TAG
+    source_name = 1156+295;
+    IAU_name = 1156+295;
+    ra = 11h59m31.830000s;
+    dec = +29d14'43.80000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 1222+216;
+*   source_position_ref = J1224+2122; TAG
+    source_name = 1222+216;
+    IAU_name = 1222+216;
+    ra = 12h24m54.450000s;
+    dec = +21d22'46.30000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 3C273B  ;
+*   source_position_ref = J1229+0203; TAG
+    source_name = 3C273B  ;
+    IAU_name = 3C273B  ;
+    ra = 12h29m06.690000s;
+    dec = +02d03'08.50000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def M87     ;
+*   source_position_ref = J1230+1223; TAG
+    source_name = M87     ;
+    IAU_name = M87     ;
+    ra = 12h30m49.420000s;
+    dec = +12d23'28.00000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 3C279   ;
+*   source_position_ref = J1256-0547; TAG
+    source_name = 3C279   ;
+    IAU_name = 3C279   ;
+    ra = 12h56m11.160000s;
+    dec = -05d47'21.50000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 1308+326;
+*   source_position_ref = J1310+3220; TAG
+    source_name = 1308+326;
+    IAU_name = 1308+326;
+    ra = 13h10m28.660000s;
+    dec = +32d20'43.70000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 1510-089;
+*   source_position_ref = J1512-0905; TAG
+    source_name = 1510-089;
+    IAU_name = 1510-089;
+    ra = 15h12m50.530000s;
+    dec = -09d05'59.80000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 1611+343;
+*   source_position_ref = J1613+3412; TAG
+    source_name = 1611+343;
+    IAU_name = 1611+343;
+    ra = 16h13m41.060000s;
+    dec = +34d12'47.90000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 4C38.41 ;
+*   source_position_ref = J1635+3808; TAG
+    source_name = 4C38.41 ;
+    IAU_name = 4C38.41 ;
+    ra = 16h35m15.490000s;
+    dec = +38d08'04.50000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 3C345   ;
+*   source_position_ref = J1642+3948; TAG
+    source_name = 3C345   ;
+    IAU_name = 3C345   ;
+    ra = 16h42m58.800000s;
+    dec = +39d48'36.90000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def NRAO530 ;
+*   source_position_ref = J1733-1304; TAG
+    source_name = NRAO530 ;
+    IAU_name = NRAO530 ;
+    ra = 17h33m02.700000s;
+    dec = -13d04'49.50000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def SGR-A   ;
+*   source_position_ref = J1745-2900; TAG
+    source_name = SGR-A   ;
+    IAU_name = SGR-A   ;
+    ra = 17h45m40.030000s;
+    dec = -29d00'28.10000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 1749+096;
+*   source_position_ref = J1751+0939; TAG
+    source_name = 1749+096;
+    IAU_name = 1749+096;
+    ra = 17h51m32.810000s;
+    dec = +09d39'00.70000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 1921-293;
+*   source_position_ref = J1924-2914; TAG
+    source_name = 1921-293;
+    IAU_name = 1921-293;
+    ra = 19h24m51.050000s;
+    dec = -29d14'30.10000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def BLLAC   ;
+*   source_position_ref = J2202+4216; TAG
+    source_name = BLLAC   ;
+    IAU_name = BLLAC   ;
+    ra = 22h02m43.290000s;
+    dec = +42d16'39.90000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def CTA102  ;
+*   source_position_ref = J2232+1143; TAG
+    source_name = CTA102  ;
+    IAU_name = CTA102  ;
+    ra = 22h32m36.400000s;
+    dec = +11d43'50.90000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 3C454.3 ;
+*   source_position_ref = J2253+1608; TAG
+    source_name = 3C454.3 ;
+    IAU_name = 3C454.3 ;
+    ra = 22h53m57.740000s;
+    dec = +16d08'53.50000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 4C28.07 ;
+*   source_position_ref = J0237+2848; TAG
+    source_name = 4C28.07 ;
+    IAU_name = 4C28.07 ;
+    ra = 02h37m52.400000s;
+    dec = +28d48'08.90000";
+    ref_coord_frame = J2000;
+enddef;
+*
+def 3C279CAL;
+*   source_position_ref = C1256-0547; CAL
+    source_name = 3C279CAL;
+    IAU_name = 3C279CAL;
+    ra = 12h56m21.166000s;
+    dec = -05d47'31.52000";
+    ref_coord_frame = J2000;
+enddef;
+*
+*----------------------- begin $FREQ        ----------------------*
+*
+$FREQ;
+*
+def KVN_KQWD;
+     sample_rate = 32.000 Ms/sec;
+     chan_def = &R1: 21700.000000 MHz: U: 16.00 MHz: &CH01 : &BBCa : &NoCal;
+     chan_def = &R1: 21732.000000 MHz: L: 16.00 MHz: &CH02 : &BBCa : &NoCal;
+     chan_def = &R1: 21732.000000 MHz: U: 16.00 MHz: &CH03 : &BBCa : &NoCal;
+     chan_def = &R1: 21764.000000 MHz: L: 16.00 MHz: &CH04 : &BBCa : &NoCal;
+     chan_def = &R2: 43400.000000 MHz: U: 16.00 MHz: &CH05 : &BBCb : &NoCal;
+     chan_def = &R2: 43432.000000 MHz: L: 16.00 MHz: &CH06 : &BBCb : &NoCal;
+     chan_def = &R2: 43432.000000 MHz: U: 16.00 MHz: &CH07 : &BBCb : &NoCal;
+     chan_def = &R2: 43464.000000 MHz: L: 16.00 MHz: &CH08 : &BBCb : &NoCal;
+     chan_def = &R3: 86800.000000 MHz: U: 16.00 MHz: &CH09 : &BBCc : &NoCal;
+     chan_def = &R3: 86832.000000 MHz: L: 16.00 MHz: &CH10 : &BBCc : &NoCal;
+     chan_def = &R3: 86832.000000 MHz: U: 16.00 MHz: &CH11 : &BBCc : &NoCal;
+     chan_def = &R3: 86864.000000 MHz: L: 16.00 MHz: &CH12 : &BBCc : &NoCal;
+     chan_def = &R4: 129300.000000 MHz: U: 16.00 MHz: &CH13 : &BBCd : &NoCal;
+     chan_def = &R4: 129332.000000 MHz: L: 16.00 MHz: &CH14 : &BBCd : &NoCal;
+     chan_def = &R4: 129332.000000 MHz: U: 16.00 MHz: &CH15 : &BBCd : &NoCal;
+     chan_def = &R4: 129364.000000 MHz: L: 16.00 MHz: &CH16 : &BBCd : &NoCal;
+enddef;
+*
+def KVN_KQWD_8GBPS;
+     sample_rate = 1024.000 Ms/sec;
+     chan_def = &R1: 21476.000000 MHz: U: 512.00 MHz: &CH01 : &BBCa : &NoCal;
+     chan_def = &R2: 43176.000000 MHz: U: 512.00 MHz: &CH02 : &BBCb : &NoCal;
+     chan_def = &R3: 86576.000000 MHz: U: 512.00 MHz: &CH03 : &BBCc : &NoCal;
+     chan_def = &R4: 129588.000000 MHz: L: 512.00 MHz: &CH04 : &BBCd : &NoCal;
+enddef;
+*
+*----------------------- end   $FREQ        ----------------------*
+*----------------------- begin $IF          ----------------------*
+$IF;
+*
+* KVN IF set up for K-, Q-, W-, D-band Observation
+def IF_KQWD;
+     if_def = &IF_R1: 1: L: 13250.0 MHz: U ;
+     if_def = &IF_R2: 2: L: 34110.0 MHz: U ;
+     if_def = &IF_R3: 3: L: 78500.0 MHz: U ;
+     if_def = &IF_R4: 4: L: 138000.0 MHz: L ;
+enddef;
+*
+*----------------------- begin $BBC         ----------------------*
+$BBC;
+*
+def BBC_KQWD;
+     BBC_assign = &BBCa:  1: &IF_R1;
+     BBC_assign = &BBCb:  2: &IF_R2;
+     BBC_assign = &BBCc:  3: &IF_R3;
+     BBC_assign = &BBCd:  4: &IF_R4;
+enddef;
+*
+*----------------------- end   $BBC         ----------------------*
+*----------------------- begin $PHASE_CAL_DETECT -----------------*
+$PHASE_CAL_DETECT;
+*
+def NoDetect;
+     phase_cal_detect = &NoCal;
+enddef;
+*----------------------- end   $PHASE_CAL_DETECT -----------------*
+*----------------------- begin $TRACKS           -----------------*
+$TRACKS;
+*
+def VDIF.4Ch2bit1to1;
+* mode =  1    stations =Ky:Ku:Kt
+* mode =  2    stations =Ky:Ku:Kt
+*    format = VDIF, and fan-out = 1
+*    mode requires  32.00Mb/s/tr; stations using disks
+     track_frame_format = VDIF/1312;
+     fanout_def =   : &CH01 : sign : 1:  2;
+     fanout_def =   : &CH01 :  mag : 1:  3;
+     fanout_def =   : &CH02 : sign : 1:  4;
+     fanout_def =   : &CH02 :  mag : 1:  5;
+     fanout_def =   : &CH03 : sign : 1:  6;
+     fanout_def =   : &CH03 :  mag : 1:  7;
+     fanout_def =   : &CH04 : sign : 1:  8;
+     fanout_def =   : &CH04 :  mag : 1:  9;
+enddef;
+*
+def MARK5B.16Ch2bit1to1;
+* mode =  1    stations =Ky:Ku:Kt
+* mode =  2    stations =Ky:Ku:Kt
+*    format = MARK5B, and fan-out = 1
+*    mode requires  32.00Mb/s/tr; stations using disks
+     track_frame_format = MARK5B;
+     fanout_def =   : &CH01 : sign : 1:  2;
+     fanout_def =   : &CH01 :  mag : 1:  3;
+     fanout_def =   : &CH02 : sign : 1:  4;
+     fanout_def =   : &CH02 :  mag : 1:  5;
+     fanout_def =   : &CH03 : sign : 1:  6;
+     fanout_def =   : &CH03 :  mag : 1:  7;
+     fanout_def =   : &CH04 : sign : 1:  8;
+     fanout_def =   : &CH04 :  mag : 1:  9;
+     fanout_def =   : &CH05 : sign : 1: 10;
+     fanout_def =   : &CH05 :  mag : 1: 11;
+     fanout_def =   : &CH06 : sign : 1: 12;
+     fanout_def =   : &CH06 :  mag : 1: 13;
+     fanout_def =   : &CH07 : sign : 1: 14;
+     fanout_def =   : &CH07 :  mag : 1: 15;
+     fanout_def =   : &CH08 : sign : 1: 16;
+     fanout_def =   : &CH08 :  mag : 1: 17;
+     fanout_def =   : &CH09 : sign : 1: 18;
+     fanout_def =   : &CH09 :  mag : 1: 19;
+     fanout_def =   : &CH10 : sign : 1: 20;
+     fanout_def =   : &CH10 :  mag : 1: 21;
+     fanout_def =   : &CH11 : sign : 1: 22;
+     fanout_def =   : &CH11 :  mag : 1: 23;
+     fanout_def =   : &CH12 : sign : 1: 24;
+     fanout_def =   : &CH12 :  mag : 1: 25;
+     fanout_def =   : &CH13 : sign : 1: 26;
+     fanout_def =   : &CH13 :  mag : 1: 27;
+     fanout_def =   : &CH14 : sign : 1: 28;
+     fanout_def =   : &CH14 :  mag : 1: 29;
+     fanout_def =   : &CH15 : sign : 1: 30;
+     fanout_def =   : &CH15 :  mag : 1: 31;
+     fanout_def =   : &CH16 : sign : 1: 32;
+     fanout_def =   : &CH16 :  mag : 1: 33;
+enddef;
+*----------------------- end   $TRACKS           -----------------*
+*----------------------- begin $HEAD_POS         -----------------*
+$HEAD_POS;
+def DiskVoid;
+* mode =  1    stations =Ky:Ku:Kt
+* mode =  2    stations =Ky:Ku:Kt
+* mode =  3    stations =Ky:Ku:Kt
+* mode =  4    stations =Ky:Ku:Kt
+* mode =  5    stations =Ky:Ku:Kt
+*     Head positions irrelevant for Disk: empty def
+enddef;
+*----------------------- end   $HEAD_POS         -----------------*
+*----------------------- begin $PASS_ORDER       -----------------*
+$PASS_ORDER;
+*
+def DiskVoid;
+* mode =  1    stations =Ky:Ku:Kt
+* mode =  2    stations =Ky:Ku:Kt
+* mode =  3    stations =Ky:Ku:Kt
+* mode =  4    stations =Ky:Ku:Kt
+* mode =  5    stations =Ky:Ku:Kt
+*     Pass orders irrelevant for Disk: empty def
+enddef;
+*
+*----------------------- end   $PASS_ORDER       -----------------*
+*----------------------- begin $ROLL             -----------------*
+$ROLL;
+*
+def NoRoll;
+* mode =  1    stations =Ky:Ku:Kt
+* mode =  2    stations =Ky:Ku:Kt
+* mode =  3    stations =Ky:Ku:Kt
+* mode =  4    stations =Ky:Ku:Kt
+* mode =  5    stations =Ky:Ku:Kt
+*    barrel-roll set to 'roll_off', so reverse-roll by  0 (1 head)
+     roll = off;
+enddef;
+*----------------------- end    $ROLL            -----------------*
+*
+*
+*------------------------------------------------------------------------------
+$SCHED;
+*
+scan No00001;
+    mode=GEO_CROSS;
+    start=2014y302d02h02m44s;
+    source=3C279;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00002;
+    mode=GEO_CROSS;
+    start=2014y302d02h10m44s;
+    source=1308+326;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00003;
+    mode=GEO_CROSS;
+    start=2014y302d02h18m48s;
+    source=3C279   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00004;
+    mode=GEO_CROSS;
+    start=2014y302d02h26m40s;
+    source=M87     ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00005;
+    mode=GEO_CROSS;
+    start=2014y302d02h34m32s;
+    source=1222+216;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00006;
+    mode=GEO_CROSS;
+    start=2014y302d02h42m28s;
+    source=1156+295;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00007;
+    mode=GEO_CROSS;
+    start=2014y302d02h50m24s;
+    source=Mrk421  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00008;
+    mode=GEO_CROSS;
+    start=2014y302d02h59m00s;
+    source=4C38.41 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+endscan;
+*
+scan No00009;
+    mode=GEO_SECZ;
+    start=2014y302d03h08m08s;
+    source=1308+326;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00010;
+    mode=GEO_CROSS;
+    start=2014y302d03h16m20s;
+    source=3C279   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00011;
+    mode=GEO_CROSS;
+    start=2014y302d03h24m16s;
+    source=M87     ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00012;
+    mode=GEO_CROSS;
+    start=2014y302d03h32m08s;
+    source=1222+216;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00013;
+    mode=GEO_CROSS;
+    start=2014y302d03h40m52s;
+    source=3C345   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+endscan;
+*
+scan No00014;
+    mode=GEO_CROSS;
+    start=2014y302d03h50m04s;
+    source=1510-089;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00015;
+    mode=GEO_CROSS;
+    start=2014y302d03h58m24s;
+    source=4C38.41 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00016;
+    mode=GEO_CROSS;
+    start=2014y302d04h07m16s;
+    source=1308+326;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+endscan;
+*
+scan No00017;
+    mode=GEO_SECZ;
+    start=2014y302d04h17m08s;
+    source=3C279   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00018;
+    mode=GEO_CROSS;
+    start=2014y302d04h25m04s;
+    source=M87     ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00019;
+    mode=GEO_CROSS;
+    start=2014y302d04h33m48s;
+    source=3C345   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+endscan;
+*
+scan No00020;
+    mode=GEO_CROSS;
+    start=2014y302d04h42m56s;
+    source=1510-089;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00021;
+    mode=GEO_CROSS;
+    start=2014y302d04h51m24s;
+    source=4C38.41 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00022;
+    mode=GEO_CROSS;
+    start=2014y302d04h59m40s;
+    source=SGR-A   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00023;
+    mode=GEO_CROSS;
+    start=2014y302d05h07m52s;
+    source=1611+343;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00024;
+    mode=GEO_CROSS;
+    start=2014y302d05h16m32s;
+    source=3C279   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00025;
+    mode=GEO_SECZ;
+    start=2014y302d05h25m04s;
+    source=NRAO530 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00026;
+    mode=GEO_CROSS;
+    start=2014y302d05h33m40s;
+    source=3C345   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00027;
+    mode=GEO_CROSS;
+    start=2014y302d05h42m36s;
+    source=1510-089;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00028;
+    mode=GEO_CROSS;
+    start=2014y302d05h51m08s;
+    source=4C38.41 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00029;
+    mode=GEO_CROSS;
+    start=2014y302d05h59m52s;
+    source=SGR-A   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00030;
+    mode=GEO_CROSS;
+    start=2014y302d06h08m12s;
+    source=1611+343;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00031;
+    mode=GEO_CROSS;
+    start=2014y302d06h16m36s;
+    source=1749+096;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00032;
+    mode=GEO_CROSS;
+    start=2014y302d06h24m28s;
+    source=NRAO530 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00033;
+    mode=GEO_SECZ;
+    start=2014y302d06h33m20s;
+    source=3C345   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00034;
+    mode=GEO_CROSS;
+    start=2014y302d06h41m12s;
+    source=4C38.41 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00035;
+    mode=GEO_CROSS;
+    start=2014y302d06h49m20s;
+    source=1510-089;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00036;
+    mode=GEO_CROSS;
+    start=2014y302d06h57m20s;
+    source=SGR-A   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00037;
+    mode=GEO_CROSS;
+    start=2014y302d07h05m40s;
+    source=1611+343;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00038;
+    mode=GEO_CROSS;
+    start=2014y302d07h13m56s;
+    source=1749+096;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00039;
+    mode=GEO_CROSS;
+    start=2014y302d07h21m48s;
+    source=NRAO530 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00040;
+    mode=GEO_CROSS;
+    start=2014y302d07h30m08s;
+    source=3C345   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00041;
+    mode=GEO_SECZ;
+    start=2014y302d07h38m16s;
+    source=4C38.41 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00042;
+    mode=GEO_CROSS;
+    start=2014y302d07h46m36s;
+    source=SGR-A   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00043;
+    mode=GEO_CROSS;
+    start=2014y302d07h54m36s;
+    source=1510-089;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00044;
+    mode=GEO_CROSS;
+    start=2014y302d08h02m44s;
+    source=1921-293;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00045;
+    mode=GEO_CROSS;
+    start=2014y302d08h10m44s;
+    source=1749+096;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00046;
+    mode=GEO_CROSS;
+    start=2014y302d08h18m36s;
+    source=NRAO530 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00047;
+    mode=GEO_CROSS;
+    start=2014y302d08h26m48s;
+    source=3C345   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00048;
+    mode=GEO_CROSS;
+    start=2014y302d08h35m20s;
+    source=BLLAC   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+endscan;
+*
+scan No00049;
+    mode=GEO_SECZ;
+    start=2014y302d08h44m40s;
+    source=SGR-A   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00050;
+    mode=GEO_CROSS;
+    start=2014y302d08h52m32s;
+    source=1921-293;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00051;
+    mode=GEO_CROSS;
+    start=2014y302d09h00m44s;
+    source=CTA102  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00052;
+    mode=GEO_CROSS;
+    start=2014y302d09h09m12s;
+    source=1749+096;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00053;
+    mode=GEO_CROSS;
+    start=2014y302d09h17m44s;
+    source=3C454.3 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00054;
+    mode=GEO_CROSS;
+    start=2014y302d09h26m28s;
+    source=1611+343;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+endscan;
+*
+scan No00055;
+    mode=GEO_CROSS;
+    start=2014y302d09h35m00s;
+    source=BLLAC   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00056;
+    mode=GEO_CROSS;
+    start=2014y302d09h43m56s;
+    source=SGR-A   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00057;
+    mode=GEO_SECZ;
+    start=2014y302d09h52m08s;
+    source=1921-293;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00058;
+    mode=GEO_CROSS;
+    start=2014y302d10h00m16s;
+    source=CTA102  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00059;
+    mode=GEO_CROSS;
+    start=2014y302d10h09m00s;
+    source=3C345   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00060;
+    mode=GEO_CROSS;
+    start=2014y302d10h17m44s;
+    source=3C454.3 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00061;
+    mode=GEO_CROSS;
+    start=2014y302d10h26m28s;
+    source=4C38.41 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00062;
+    mode=GEO_CROSS;
+    start=2014y302d10h34m52s;
+    source=BLLAC   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+endscan;
+*
+scan No00063;
+    mode=GEO_CROSS;
+    start=2014y302d10h43m13s;
+    source=4C38.41 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00064;
+    mode=GEO_SECZ;
+    start=2014y302d10h52m08s;
+    source=CTA102  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00065;
+    mode=GEO_CROSS;
+    start=2014y302d11h00m19s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00066;
+    mode=GEO_CROSS;
+    start=2014y302d11h08m32s;
+    source=3C454.3 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00067;
+    mode=GEO_CROSS;
+    start=2014y302d11h16m44s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00068;
+    mode=GEO_CROSS;
+    start=2014y302d11h24m32s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00069;
+    mode=GEO_CROSS;
+    start=2014y302d11h32m52s;
+    source=BLLAC   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+endscan;
+*
+scan No00070;
+    mode=GEO_CROSS;
+    start=2014y302d11h41m12s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00071;
+    mode=GEO_CROSS;
+    start=2014y302d11h49m44s;
+    source=CTA102  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00072;
+    mode=GEO_CROSS;
+    start=2014y302d11h58m04s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00073;
+    mode=GEO_SECZ;
+    start=2014y302d12h06m48s;
+    source=3C454.3 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00074;
+    mode=GEO_CROSS;
+    start=2014y302d12h15m12s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00075;
+    mode=GEO_CROSS;
+    start=2014y302d12h23m01s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00076;
+    mode=GEO_CROSS;
+    start=2014y302d12h31m32s;
+    source=BLLAC   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+endscan;
+*
+scan No00077;
+    mode=GEO_CROSS;
+    start=2014y302d12h40m04s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00078;
+    mode=GEO_CROSS;
+    start=2014y302d12h48m44s;
+    source=CTA102  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00079;
+    mode=GEO_CROSS;
+    start=2014y302d12h57m12s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00080;
+    mode=GEO_SECZ;
+    start=2014y302d13h06m04s;
+    source=3C454.3 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00081;
+    mode=GEO_CROSS;
+    start=2014y302d13h14m36s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00082;
+    mode=GEO_CROSS;
+    start=2014y302d13h22m27s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00083;
+    mode=GEO_CROSS;
+    start=2014y302d13h31m00s;
+    source=BLLAC   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+endscan;
+*
+scan No00084;
+    mode=GEO_CROSS;
+    start=2014y302d13h39m32s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00085;
+    mode=GEO_CROSS;
+    start=2014y302d13h48m16s;
+    source=CTA102  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00086;
+    mode=GEO_CROSS;
+    start=2014y302d13h56m48s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00087;
+    mode=GEO_SECZ;
+    start=2014y302d14h04m56s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00088;
+    mode=GEO_CROSS;
+    start=2014y302d14h13m32s;
+    source=3C454.3 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00089;
+    mode=GEO_CROSS;
+    start=2014y302d14h22m00s;
+    source=0235+164;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00090;
+    mode=GEO_CROSS;
+    start=2014y302d14h30m04s;
+    source=0218+35A;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00091;
+    mode=GEO_CROSS;
+    start=2014y302d14h37m56s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00092;
+    mode=GEO_CROSS;
+    start=2014y302d14h45m52s;
+    source=3C111   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00093;
+    mode=GEO_CROSS;
+    start=2014y302d14h54m32s;
+    source=CTA102  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00094;
+    mode=GEO_CROSS;
+    start=2014y302d15h03m08s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00095;
+    mode=GEO_SECZ;
+    start=2014y302d15h12m04s;
+    source=3C454.3 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00096;
+    mode=GEO_CROSS;
+    start=2014y302d15h20m24s;
+    source=0235+164;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00097;
+    mode=GEO_CROSS;
+    start=2014y302d15h29m04s;
+    source=0218+35A;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00098;
+    mode=GEO_CROSS;
+    start=2014y302d15h37m24s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00099;
+    mode=GEO_CROSS;
+    start=2014y302d15h45m32s;
+    source=3C111   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00100;
+    mode=GEO_CROSS;
+    start=2014y302d15h53m48s;
+    source=0836+710;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00101;
+    mode=GEO_CROSS;
+    start=2014y302d16h02m44s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00102;
+    mode=GEO_CROSS;
+    start=2014y302d16h10m56s;
+    source=0420-014;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00103;
+    mode=GEO_SECZ;
+    start=2014y302d16h19m20s;
+    source=0235+164;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00104;
+    mode=GEO_CROSS;
+    start=2014y302d16h27m28s;
+    source=0218+35A;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00105;
+    mode=GEO_CROSS;
+    start=2014y302d16h35m36s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00106;
+    mode=GEO_CROSS;
+    start=2014y302d16h44m40s;
+    source=3C111   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00107;
+    mode=GEO_CROSS;
+    start=2014y302d16h53m00s;
+    source=0836+710;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00108;
+    mode=GEO_CROSS;
+    start=2014y302d17h00m48s;
+    source=0716+714;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00109;
+    mode=GEO_CROSS;
+    start=2014y302d17h09m28s;
+    source=0420-014;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00110;
+    mode=GEO_CROSS;
+    start=2014y302d17h17m36s;
+    source=0235+164;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00111;
+    mode=GEO_SECZ;
+    start=2014y302d17h25m52s;
+    source=4C28.07 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00112;
+    mode=GEO_CROSS;
+    start=2014y302d17h34m20s;
+    source=3C111   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00113;
+    mode=GEO_CROSS;
+    start=2014y302d17h42m36s;
+    source=4C39.25 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00114;
+    mode=GEO_CROSS;
+    start=2014y302d17h50m36s;
+    source=0836+710;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00115;
+    mode=GEO_CROSS;
+    start=2014y302d17h58m24s;
+    source=0716+714;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00116;
+    mode=GEO_CROSS;
+    start=2014y302d18h07m12s;
+    source=0420-014;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00117;
+    mode=GEO_CROSS;
+    start=2014y302d18h15m32s;
+    source=OJ287   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00118;
+    mode=GEO_CROSS;
+    start=2014y302d18h24m12s;
+    source=3C84    ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+endscan;
+*
+scan No00119;
+    mode=GEO_SECZ;
+    start=2014y302d18h33m44s;
+    source=3C111   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00120;
+    mode=GEO_CROSS;
+    start=2014y302d18h42m24s;
+    source=0836+710;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00121;
+    mode=GEO_CROSS;
+    start=2014y302d18h50m12s;
+    source=0716+714;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00122;
+    mode=GEO_CROSS;
+    start=2014y302d18h59m08s;
+    source=0420-014;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00123;
+    mode=GEO_CROSS;
+    start=2014y302d19h07m44s;
+    source=4C39.25 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00124;
+    mode=GEO_CROSS;
+    start=2014y302d19h15m52s;
+    source=0735+178;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00125;
+    mode=GEO_CROSS;
+    start=2014y302d19h23m48s;
+    source=OJ287   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00126;
+    mode=GEO_CROSS;
+    start=2014y302d19h32m12s;
+    source=3C111   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00127;
+    mode=GEO_SECZ;
+    start=2014y302d19h41m12s;
+    source=0836+710;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+endscan;
+*
+scan No00128;
+    mode=GEO_CROSS;
+    start=2014y302d19h49m00s;
+    source=0716+714;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+endscan;
+*
+scan No00129;
+    mode=GEO_CROSS;
+    start=2014y302d19h57m52s;
+    source=0727-115;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00130;
+    mode=GEO_CROSS;
+    start=2014y302d20h06m12s;
+    source=4C39.25 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00131;
+    mode=GEO_CROSS;
+    start=2014y302d20h14m28s;
+    source=0735+178;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00132;
+    mode=GEO_CROSS;
+    start=2014y302d20h22m28s;
+    source=OJ287   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00133;
+    mode=GEO_CROSS;
+    start=2014y302d20h30m16s;
+    source=0827+243;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00134;
+    mode=GEO_CROSS;
+    start=2014y302d20h38m44s;
+    source=0836+710;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00135;
+    mode=GEO_SECZ;
+    start=2014y302d20h46m52s;
+    source=0716+714;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+endscan;
+*
+scan No00136;
+    mode=GEO_CROSS;
+    start=2014y302d20h55m44s;
+    source=0727-115;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00137;
+    mode=GEO_CROSS;
+    start=2014y302d21h04m12s;
+    source=4C39.25 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00138;
+    mode=GEO_CROSS;
+    start=2014y302d21h12m44s;
+    source=0735+178;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00139;
+    mode=GEO_CROSS;
+    start=2014y302d21h20m48s;
+    source=OJ287   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00140;
+    mode=GEO_CROSS;
+    start=2014y302d21h28m44s;
+    source=0827+243;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00141;
+    mode=GEO_CROSS;
+    start=2014y302d21h37m08s;
+    source=Mrk421  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00142;
+    mode=GEO_CROSS;
+    start=2014y302d21h45m24s;
+    source=0716+714;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+endscan;
+*
+scan No00143;
+    mode=GEO_SECZ;
+    start=2014y302d21h54m44s;
+    source=0727-115;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00144;
+    mode=GEO_CROSS;
+    start=2014y302d22h02m40s;
+    source=0735+178;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00145;
+    mode=GEO_CROSS;
+    start=2014y302d22h11m20s;
+    source=4C39.25 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+endscan;
+*
+scan No00146;
+    mode=GEO_CROSS;
+    start=2014y302d22h20m12s;
+    source=OJ287   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00147;
+    mode=GEO_CROSS;
+    start=2014y302d22h28m08s;
+    source=0827+243;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00148;
+    mode=GEO_CROSS;
+    start=2014y302d22h36m52s;
+    source=Mrk421  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00149;
+    mode=GEO_CROSS;
+    start=2014y302d22h44m56s;
+    source=3C279   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00150;
+    mode=GEO_CROSS;
+    start=2014y302d22h52m48s;
+    source=M87     ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00151;
+    mode=GEO_SECZ;
+    start=2014y302d23h00m56s;
+    source=1222+216;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00152;
+    mode=GEO_CROSS;
+    start=2014y302d23h08m44s;
+    source=1156+295;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00153;
+    mode=GEO_CROSS;
+    start=2014y302d23h17m20s;
+    source=OJ287   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00154;
+    mode=GEO_CROSS;
+    start=2014y302d23h25m12s;
+    source=0827+243;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00155;
+    mode=GEO_CROSS;
+    start=2014y302d23h33m12s;
+    source=4C39.25 ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00156;
+    mode=GEO_CROSS;
+    start=2014y302d23h41m56s;
+    source=Mrk421  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &cw  : 1;
+endscan;
+*
+scan No00157;
+    mode=GEO_CROSS;
+    start=2014y302d23h51m24s;
+    source=3C279   ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00158;
+    mode=GEO_CROSS;
+    start=2014y302d23h59m20s;
+    source=1222+216;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00159;
+    mode=GEO_SECZ;
+    start=2014y303d00h07m32s;
+    source=1156+295;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00160;
+    mode=GEO_CROSS;
+    start=2014y303d00h15m28s;
+    source=M87     ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00161;
+    mode=GEO_CROSS;
+    start=2014y303d00h23m20s;
+    source=3C273B  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00162;
+    mode=GEO_CROSS;
+    start=2014y303d00h31m28s;
+    source=1308+326;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00163;
+    mode=GEO_CROSS;
+    start=2014y303d00h40m12s;
+    source=Mrk421  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &ccw : 1;
+endscan;
+*
+scan No00164;
+    mode=GEO_CROSS;
+    start=2014y303d00h49m04s;
+    source=1510-089;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00165;
+    mode=GEO_CROSS;
+    start=2014y303d00h57m08s;
+    source=1222+216;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00166;
+    mode=GEO_CROSS;
+    start=2014y303d01h05m08s;
+    source=1156+295;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00167;
+    mode=GEO_SECZ;
+    start=2014y303d01h13m24s;
+    source=M87     ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00168;
+    mode=GEO_CROSS;
+    start=2014y303d01h21m36s;
+    source=1308+326;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00169;
+    mode=GEO_CROSS;
+    start=2014y303d01h29m52s;
+    source=3C273B  ;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00170;
+    mode=GEO_CROSS;
+    start=2014y303d01h37m40s;
+    source=3C279;
+    station=Ky:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  300 sec:    0 sec:      : &n   : 1;
+endscan;
+*
+scan No00171;
+    mode=GEO_FINAL;
+    start=2014y303d01h45m55s;
+    source=OJ287   ;
+    station=Ky:    0 sec:  450 sec:    0 sec:      : &n   : 1;
+    station=Ku:    0 sec:  450 sec:    0 sec:      : &n   : 1;
+    station=Kt:    0 sec:  450 sec:    0 sec:      : &n   : 1;
+endscan;
+*

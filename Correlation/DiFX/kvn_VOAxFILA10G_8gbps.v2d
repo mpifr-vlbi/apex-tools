@@ -1,0 +1,61 @@
+vex = kvn_VOAxFILA10G_8gbps.vex
+
+maxGap = 36000
+maxLength = 100000
+maxSize = 100000
+antennas = KU, KY
+startSeries = 1
+
+# No0035 : .vex start 2014y302d06h49m20s : files start ~2014y302d06h50m13s
+# No0038 : .vex start 2014y302d07h13m56s : files start ~2014y302d07h17m20s
+
+mjdStart = 2014y302d06h50m13s  mjdStop =  2014y302d06h50m22s   # No0035
+# mjdStart = 2014y302d07h17m20s  mjdStop =  2014y302d07h17m28s  # No0038
+
+# Clock offsets: 
+#   kvnuser@KVNAOC:/home/KVN/Log/VLBI$ grep CLOCK n14st02c*.log
+# --> TN constant -1.2usec, US constant +0.1usec, YS constant -1.3usec
+# The DiFX .v2d clockOffset and .vex clock use an opposite sign convention.
+
+ANTENNA KU
+{
+  file = /scratch0/n14st02c_8Gbps_fringetest/Ku/p14sl01c-No00035-06h50m12s-FILA10G.vdif
+  # file = /scratch0/n14st02c_8Gbps_fringetest/Ku/p14sl01c-No00038-07h17m19s-FILA10G.vdif
+  format = VDIF/1312
+  clockOffset = -0.1
+  clockRate = 0
+  clockEpoch = 2014y302d04h30m00s
+  phaseCalInt = 0
+}
+
+ANTENNA KY
+{
+  file = /scratch0/n14st02c_8Gbps_fringetest/Ky/p14sl01c-No00035-06h50m12s-VOA.dd.vdif
+  # file = /scratch0/n14st02c_8Gbps_fringetest/Ky/p14sl01c-No00038-07h17m19s-VOA.dd.vdif
+  format = INTERLACEDVDIF/1:2:3:4/1312/2
+  clockOffset = +1.3
+  clockRate = 0
+  clockEpoch = 2014y302d04h30m00s
+  phaseCalInt = 0
+}
+
+SETUP default
+{
+  tInt = 1.024
+  nChan = 8192
+  doPolar = False
+}
+
+RULE default
+{
+  setup = default
+}
+
+# getEOP.py 2014y302d02h00m00s
+#EOPs downloaded at 2014-11-01 13:48:47 (+0900)
+EOP 56957 { xPole=0.142580 yPole=0.257960 tai_utc=35 ut1_utc=-0.381621 }
+EOP 56958 { xPole=0.140640 yPole=0.257210 tai_utc=35 ut1_utc=-0.382604 }
+EOP 56959 { xPole=0.138840 yPole=0.256780 tai_utc=35 ut1_utc=-0.383616 }
+EOP 56960 { xPole=0.137050 yPole=0.256390 tai_utc=35 ut1_utc=-0.384694 }
+EOP 56961 { xPole=0.135280 yPole=0.255950 tai_utc=35 ut1_utc=-0.385866 }
+
