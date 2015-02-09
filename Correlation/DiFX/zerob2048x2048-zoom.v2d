@@ -1,0 +1,78 @@
+# same as zerob2048x2048.v2d but testing zoom bands to
+# split one full 2048 MHz IF into several IFs that are then
+# correlated the other full 2048 MHz IF
+
+vex = zerob2048x2048.vex
+antennas = K1, K2
+singleScan = 1
+
+mjdStart = 2014y350d10h12m44s
+mjdStop  = 2014y350d10h12m47s
+
+ANTENNA K1
+{
+  file = /scratch0/1.3mmVLBI/r2dbe_r2dbe_r2dbe_zbt20_t0.vdif
+  format = VDIF/8224
+  clockOffset=0
+  clockRate=0
+  clockEpoch=2014y343d12h00m00s
+  X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
+  zoom = simulateDBBC3
+}
+
+ANTENNA K2
+{
+  file = /scratch0/1.3mmVLBI/r2dbe_r2dbe_r2dbe_zbt20_t1.vdif
+  format = VDIF/8224
+  clockRate=0
+  clockEpoch=2014y343d12h00m00s
+  X = -3171731.5580 Y = 4292678.4878 Z = 3481038.7252
+  zoom = simulateDBBC3
+}
+
+ZOOM simulateDBBC3
+{
+  addZoomFreq = freq@45000.0/bw@62.50/noparent@true
+  addZoomFreq = freq@45062.5/bw@62.50/noparent@true
+  addZoomFreq = freq@45125.0/bw@62.50/noparent@true
+  addZoomFreq = freq@45187.5/bw@62.50/noparent@true
+  addZoomFreq = freq@45250.0/bw@62.50/noparent@true
+  addZoomFreq = freq@45312.5/bw@62.50/noparent@true
+  addZoomFreq = freq@45375.0/bw@62.50/noparent@true
+  addZoomFreq = freq@45437.5/bw@62.50/noparent@true
+  addZoomFreq = freq@45500.0/bw@62.50/noparent@true
+  addZoomFreq = freq@45562.5/bw@62.50/noparent@true
+  addZoomFreq = freq@45625.0/bw@62.50/noparent@true
+  addZoomFreq = freq@45687.5/bw@62.50/noparent@true
+  addZoomFreq = freq@45750.0/bw@62.50/noparent@true
+  addZoomFreq = freq@45812.5/bw@62.50/noparent@true
+  addZoomFreq = freq@45875.0/bw@62.50/noparent@true
+  addZoomFreq = freq@45937.5/bw@62.50/noparent@true
+}
+
+SETUP default
+{
+  tInt = 1.0
+  specRes = 0.5
+  doPolar = False
+
+  ## settings required for zoom band mode
+  FFTSpecRes = 0.5
+  guardNS = 150
+  strideLength = 1
+  xmacLength = 1
+}
+
+# This, along with SETUP default above, should always be done
+RULE default
+{
+  setup = default
+}
+
+#EOPs downloaded at 2014-12-16 05:32:14 (-0500)
+EOP 57005 { xPole=0.055660 yPole=0.268380 tai_utc=35 ut1_utc=-0.438159 }
+EOP 57006 { xPole=0.052980 yPole=0.269300 tai_utc=35 ut1_utc=-0.439388 }
+EOP 57007 { xPole=0.050600 yPole=0.270050 tai_utc=35 ut1_utc=-0.440660 }
+EOP 57008 { xPole=0.048270 yPole=0.270780 tai_utc=35 ut1_utc=-0.441942 }
+EOP 57009 { xPole=0.046160 yPole=0.271480 tai_utc=35 ut1_utc=-0.443182 }
+
