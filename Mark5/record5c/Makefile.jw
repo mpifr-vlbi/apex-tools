@@ -1,0 +1,17 @@
+
+SSD      = /usr/local/src/streamstor/linux
+CFLAGS   = -I$(SSD)/include/
+CXXFLAGS = -I$(SSD)/include/ -pthread
+LDFLAGS  = -L/usr/lib/ -L$(SSD)/driver/lib/ -L$(SSD)/lib/ -L$(SSD)/lib/gcc_v4/
+LDLIBS   = -lpthread -lssapi -lwdapi1021 -lm -lstdc++ -lrt
+
+CXX = g++
+CXXDEPMODE = depmode=gcc3
+
+all: record5c_standalone
+
+clean:
+	rm -f *.o
+
+record5c_standalone: record5c_standalone.o watchdog.o mark5dir.o
+
