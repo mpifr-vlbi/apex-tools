@@ -1,0 +1,11 @@
+
+If the DBBC WinXP remote desktop login complains a user is already logged 
+in then one can either
+
+   install the program XP Unlimited (http://www.xpunlimited.com/),
+   or http://www.aads-worldwide.hk/, to allow more user sessions
+
+or issue this
+
+   net rpc shutdown -r -f -t 5 -U DBBC -S 134.104.17.26
+

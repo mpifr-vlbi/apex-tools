@@ -1,0 +1,253 @@
+Mark5C-Ef 134.104.17.51
+Mark5C-Ap 134.104.17.224
+
+After power up of all units:
+
+1) DBE setup and 1PPS sync
+
+   Runs behind Lantronix UDS-1100 with xx-xx-xx-90-FA
+
+   oper@mark5-803:~/APEX/DBE/dbe$ export DBE_IP=134.104.25.130
+   oper@mark5-803:~/APEX/DBE/dbe$ ./dbers232 -u $DBE_IP 10001 -arm     # IF0/1 in, sync 1PPS
+   oper@mark5-803:~/APEX/DBE/dbe$ ./dbers232 -u $DBE_IP 10001 -g 9000  # set all gains
+
+     # Cheat sheet:
+     # ./dbers232 -u $DBE_IP 10001 -sgfile0 fn # multiply current channel gains by numbers in bstate file fn
+     # ./dbers232 -u $DBE_IP 10001 -r          # read gains
+     # ./dbers232 -u $DBE_IP 10001 -pow        # show power levels (of Real part)
+     # ./dbers232 -u $DBE_IP 10001 -pinterp    # show power levels from Interp(olator?)
+     # ./dbers232 -u $DBE_IP 10001 -arm         # chooses IF0&IF1 for data and resyncs to 1PPS
+
+   Later from Mike Titus: http://www.haystack.edu/ast/uvlbi/mm/memo.html  memo #029
+   Two DBE edge channels 0,1 or 14,15 have 180deg phase shift.
+   To correct Nyquist zone 2/LSB:
+      pc_phases abcdefghijklmno 180 180 0 0 0 0 0 0 0 0 0 0 0 0 0
+   To correct Nyquist zone 3/USB:
+      pc_phases bcdefghijklmnop 0 0 0 0 0 0 0 0 0 0 0 0 0 180 180
+
+2) FILA10G setup and VSI 1PPS sync
+
+   Program the firmware using IMPACT: /home/oper/APEX/FILA10G/FILA10G.bit
+
+      mark5-803:~$ /opt/Xilinx/13.4/LabTools/LabTools/bin/lin/impact
+
+   To configure FILA10G:
+
+   jwagner@mark5-803:~/APEX/FILA10G$ ./configureFILA10G.py 134.104.25.21 23
+   jwagner@mark5-803:~/APEX/FILA10G$ ./timesyncFILA10G.py 134.104.25.21 23
+
+   For automatic configration of both DBE and then FILA10G:
+
+   oper@mark5-803:~/APEX$ ./resync_DBE_FILA10G.sh  # runs dbers232 -arm, fila10G configure, fila10G timesync
+
+   For a manual console, when using Telnet from linux:  escape CTRL+], then telnet> set crlf
+
+3) DBE "automatic" gain control
+
+   dbers232 -u $DBE_IP 10001 -g 9000
+   record5c_standalone -p 40 -s 5008 -m 0 -t 3 A levels-g9000.m5b
+   m5bstate /mnt/diskpack/levels-g9000.m5b Mark5B-2048-16-2 1000 | tail -16 > gain9000.bstate
+
+   dbers232 -u $DBE_IP 10001 -sgfile0 gain9000.bstate
+   less gains.log   # written by my dbers232 modification: |col#1:channel|col#2:old gain|col#3:new gain|
+
+4) RDBE -- static IP 134.104.25.231 in the lab with NFS root from Mark5C-Ef
+
+   first cold boot usually fails, use front power button to restart
+
+   ssh roach@134.104.25.231
+      login roach/roach
+
+   (screen#1)
+   roach@eff-rdbe2:~$ sudo bash
+    root@eff-rdbe2:~$ /root/setup.sh
+    root@eff-rdbe2:~# ./rdbe_sw/rdbe_server_jan2012 5000 2
+
+   (screen#2)
+   root@eff-rdbe2:~$ cd /root
+   root@eff-rdbe2:/root$ ./initRDBE.py   # uses geo-PFBG v1.4 firmware, can edit code to change to Oct13
+
+      All current server versions have a negative DOY in the timestamp during 14Mar2012--31Dec2012.
+      !dbe_dot?0:2012-926000000:syncerr_le_3:2012074151232:-86454752:00000000;
+
+      Time synchronization and data streaming do not work during that time.
+      Earlier and later dates are fine.
+      Chet is working on a fix (status 15/03/2012)
+
+  Negative DOY is due to a server code bug, the firmware is fine (probably).
+  Workaround: change the system year to any year but 2012
+
+     killall ntpd
+     /usr/bin/ntpdate -u ntp1  # force sync once to ntp1 server
+     date --set="2010/`date +'%m/%d %H:%M:%S'`"  # modify our year, but not time of day
+
+  Run script for a really persistent re-sync to 1PPS (writes firmware registers and
+  loops until the RDBE sync looks stable enough, method according to Dave's and Chet's
+  comments):
+
+     root@eff-rdbe2:/root$ ./reconfRDBE.py pfbg_1_4.conf
+
+  Enable data streaming:
+
+     root@eff-rdbe2:/root# ./streamRDBE.py
+
+5) Recording
+
+   oper@mark5-803:~/mk5tests/mk5scripts/$ ./parallel_rec5c.sh zbt010
+
+      This concurrently executes a command on each Mark5's via ssh login:
+
+        ./record5c_standalone -p 40 -s 5008 -m 0 -t 3 A zbt010-aa.m5b  # on 1st mark5
+        ./record5c_standalone -p 40 -s 5008 -m 0 -t 3 A zbt010-bb.m5b  # on 2nd mark5
+
+           (same as DRS command "packet=40:0:5008:0:0;")
+
+      The record5c_standalone program is the DiFX utility record5c, without
+      any dependencies on DiFX compiled in.
+
+      Unlike DRS the record5c program runs recordings from the command line,
+      does not need any text commands piped into it over netcat, and exits
+      after the specified time (-t 3 for 3 seconds) has elapsed, with or
+      without any data actually captured.
+
+     oper@mark5-803:~$ fuseMk5 /mnt/diskpack
+     oper@mark5-ef:~$ fuseMk5 /mnt/diskpack
+
+     oper@mark5-803:~$ /usr/src/scripts/extract_second5B.py \
+           /mnt/diskpack/zbt010-aa.m5b  zbt010-aa-sec1.m5b +1 1
+     oper@mark5-803:~$ /usr/src/scripts/extract_second5B.py \
+           /mnt/diskpack/zbt010-aa.m5b  zbt010-aa-sec2.m5b +2 1
+
+     oper@mark5-ef:~$ /usr/src/scripts/extract_second5B.py \
+           /mnt/diskpack/zbt010-bb.m5b  zbt010-bb-sec1.m5b +1 1
+     oper@mark5-ef:~$ /usr/src/scripts/extract_second5B.py \
+           /mnt/diskpack/zbt010-bb.m5b  zbt010-bb-sec2.m5b +2 1
+
+     Syntax: extract_second5B.py <inputfile> <outputfile> <+seconds|hh:mm:ss> [<duration>]
+
+        the +0 format tells how many seconds in the inputfile to skip before
+        starting to copy 'duration' amount of seconds into the output file
+
+        the hh:mm:ss indicates the desired time stamp directly
+
+        if mark5b header sync words are lost in the inputfile, the script scans
+        for the next valid frame ; all data in between is not copied to the
+        outputfile
+
+6) toy correlation
+
+    $ vlbi2 zbt010-aa-sec1.m5b zbt010-bb-sec1.m5b -2bit 1 -tforce 1
+    $ mv dd1.pos xcorr.ps  ; gv xcorr.ps
+
+7) DBBC polyphase filterbank setup
+
+   DBBC firmware _newer_ than in the 04/2011 APEX setup, supports
+   both ADB2 and ADB1; firmware setting defaults to ADB1
+
+   DBBC firmware five operating modes, default is single-IF 16 channels,
+   others are dual-IF interleaved (RCP/LCP), single-IF single 512M channel,
+   and others
+
+   FILA10G firmware unchanged (Virtex4 FX60 firmware version for new
+   non-prototype FILA10G's, prototypes had Virtex4 FX100)
+
+   Cabling: DBBC VSI#1 Out to standalone FILA10G(FX60) VSI#1 In
+
+   Polyphase command window:
+
+    reg_write=<board>,?,0      # 0 to use 512-1024 MHz zone
+    reg_write=<board>,3,256    # configure system to use ADB2 data layout
+
+   Verification:
+     - inject test tone at off-center frequency into IF1
+     - 'powers=<brd>' to plot powers, verify tone present in one channel only
+     - if tone and mirror image, reg_write ADB1/2 choice is wrong
+
+   Run .bat to set up FILA10G via serial port (commands: inputselect vsi1,
+   arp off, reset; are the most crucial)
+
+   Record data
+
+   Note1: fila10g(fx60) vsi#2 apparently not working, perhaps clock not routed
+   or connector obstructed by baseplate mounting stud&screw
+   Note2: second standalone fila10g showed a huge bit loss/corruption in
+   two channels, tested in DBBC DDC firmware, seen by ChipScoping the
+   dbbc's last fpga data prior to output as well as fila10g fpga after input.
+
+-------------------------------------------------------------------------------
+
+5.5.2012 -- 16:47
+Zero baseline test
+
+  Station IF while pointing at Orion
+
+    DBE  : VLBI-IF input IF0
+    DBBC : VLBI-IF selected, data from DBBC VSI#2
+         ifa=0,agc,0           ifa => agc_att=22,thresh=45000
+         ifb=0,agc,0           ifb => agc_att=56,thresh=45000
+         reg_write=1,3,256
+         reg_write=2,3,256
+
+  1PPS resynch
+
+    Maser is drifting quickly vs GPS, thus need to do these in
+    quick succession:
+      1) DBBC client: 'synch'
+      2) DBE : "dbers232 -arm"
+    Finally relock FILA10G's onto the new VSI 1PPS:
+      1) DBBC:  prepfila10g.bat                 (has DBBC-APEX-A/VSI2 selected)
+      2) linux: timesyncFila10G.py 10.0.2.99 23 (has DBE/VSI1 selected)
+
+  DBE automatic gain adjustment
+
+    oper@mark5-803:~/mk5scripts$ ./dbeAutoGain.sh
+       # uses gain=4500 (dbers232 -g) for first diskless network capture (mk5netdump),
+       # then checks captured channel statistics (m5bstate) and finally
+       # uploads new per-channel gains to the DBE (dbers232 -sgfile0)
+
+  Simultaneous recording
+
+    oper@ap-m5c:~$ cd /usr/local/src/Mark5C/src/ ; ./drs.py
+    oper@mark5-803:~$ drs
+
+    oper@ap-m5c:~/mk5scripts$ ./parallel_rec5c.sh on sky05may16h47m.m5c
+    ...
+    oper@ap-m5c:~/mk5scripts$ ./parallel_rec5c.sh off now
+
+    oper@ap-m5c:~$ edrs
+    oper@mark5-803:~$ edrs
+
+  Access to data via FUSE
+
+    oper@mark5-803:~$ fuseMk5 /mnt/diskpack/
+    oper@mark5-803:~/mk5scripts$ ll /mnt/diskpack/dbe-sky05may16h47m.m5c => 71GB
+    oper@ap-m5c:/usr/local/src/Mark5C/src$ fuseMk5 /mnt/diskpack
+    oper@ap-m5c:~/mk5scripts$ ll /mnt/diskpack/dbbc-sky05may16h47m.m5c => 69GB
+
+  File access to other Mark5 via sshfs
+
+    oper@mark5-803:~/mk5scripts$ cd /recordings/
+    oper@mark5-803:/recordings$ sshfs oper@mark5c1:/mnt/diskpack/ sshfs/
+
+  Automatic +-1sec extraction and cross correlation
+
+    # Use vlbi2tool.sh to extract 2MByte from the start of 3 integer second boundaries
+    # from each file and cross-correlate them in different combinations
+
+    oper@mark5-803:/recordings$ /usr/src/scripts/vlbi2tool.sh \
+            /mnt/diskpack/dbe-sky05may16h47m.m5c \
+            /recordings/sshfs/dbbc-sky05may16h47m.m5c
+
+      =>  xcorr_s1s1.ps : file#1(dbe) second 1  X  file#2(dbbc) second 1
+          xcorr_s2s1.ps : file#1(dbe) second 2  X  file#2(dbbc) second 1
+          etc etc
+
+  Cleanup:
+
+    oper@mark5-803:/recordings$ gv *.ps
+        => very good correlation!!  no 1-second offsets either
+
+    oper@mark5-803:/recordings$ fusermount -u sshfs/
+    oper@mark5-803:/recordings$ fusermount -u /mnt/diskpack/
+    oper@ap-m5c:~/mk5scripts$ fusermount -u /mnt/diskpack
+
