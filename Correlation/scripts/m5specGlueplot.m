@@ -15,7 +15,7 @@ function m5specGlueplot(fn)
  for ii=1:Nif,
      semilogy(f + (ii-1)*fmax, dd(:,ii+1), '-', 'color', cm(ii,:));
      amax = max([amax, max(dd(:,ii+1))]);
-     amin = min([amin, min(dd(:,ii+1))]);
+     amin = max([0.1 min([amin, min(dd(:,ii+1))])]);
      hold on;
  end
  aa = [0 Nif*fmax amin amax];
