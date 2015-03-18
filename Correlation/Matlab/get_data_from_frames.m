@@ -7,11 +7,10 @@ if nchan==0
 end
 
 % concat data from frames
-    dr={};
-    for ch=1:nchan
-        dr{ch}=[];
-        for f=1:nframes
-            dr{ch} = [dr{ch} r_frames{f}.ch{ch}.data];
-        end
-
-    end    
+dr={};
+for ch=1:nchan
+    dr{ch}=[];
+    for f=1:nframes
+        dr{ch} = [dr{ch} r_frames{f}.ch{ch}.data];
+    end
+end    
