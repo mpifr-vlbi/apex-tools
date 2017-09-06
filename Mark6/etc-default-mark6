@@ -1,0 +1,25 @@
+# /etc/default/mark6
+
+# Default settings for mark6 and specifically dplane.
+# This file is sourced by /bin/sh from
+# /etc/init.d/mark6.
+
+# Options to pass to mark6 which take effect with restart.
+
+# This specifies the ethernet ports to be used for incoming traffic.
+# (Up to 4 ports are supported; list only the ones actually to be used.)
+MK6_OPTS=eth2:eth5
+MK6_DRVR=myri10ge
+
+# Specifies the running directory--both planes log by default there.
+MK6_RDIR=/var/log/mark6
+
+# dplane log level
+MK6_DLOG=3
+
+# cdplane log level
+MK6_CLOG=1
+
+# process umask
+MK6_MASK=0002
+
