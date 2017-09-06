@@ -1,0 +1,6 @@
+
+# JanW: required for "Field System for APEX"
+/usr2/fs/bin/fsalloc
+/usr2/st/bin/stalloc
+sleep 6
+
