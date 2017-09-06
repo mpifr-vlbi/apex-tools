@@ -4,3 +4,26 @@
 /usr2/st/bin/stalloc
 sleep 6
 
+# --- set up the myricom drivers
+modprobe igb
+
+modules=$(lsmod | grep pf_ring | awk '{print $1}')
+
+for module in $modules; do
+    echo $module
+    if [ $module  = "pf_ring" ]; then
+        echo removing pf_ring driver
+        rmmod pf_ring
+        sleep 2
+    fi
+done
+
+echo pf_ring driver not loaded loading
+modprobe pf_ring
+
+# -- DiFX
+# /usr/local/difx/bin/startCalcServer
+
+/sbin/sysctl kernel.msgmnb=65536
+exit 0
+
