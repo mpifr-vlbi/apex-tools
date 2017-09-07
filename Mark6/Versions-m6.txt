@@ -32,3 +32,40 @@ though Python 2.6 is installed in parallel to 2.7 the  mark6-sc-module
 pacakge fails to install. This --force-* option works:
 
 $ dpkg --force-depends-version -i mark6-sc-module_0.13-1_amd64.deb
+$ dpkg --force-depends-version -i python-m6utils_1.0.7-2_amd64.deb
+
+$ dpkg --force-depends-version -i python-cplane_1.0.20-1_amd64.deb
+  python-cplane depends on python-pynetinfo (>= 0.2.4); however:
+  Package python-pynetinfo is not installed.
+$ dpkg --force-depends-version --force-depends -i python-cplane_1.0.20-1_amd64.deb
+
+Could modify the depends:
+
+ mark6-sc-module : Depends: python (< 2.7) but 2.7.3-4+deb7u1 is to be installed
+ python-cplane : Depends: python (< 2.7) but 2.7.3-4+deb7u1 is to be installed
+                 Depends: python-pynetinfo (>= 0.2.4) but it is not installable
+ python-m6utils : Depends: python (< 2.7) but 2.7.3-4+deb7u1 is to be installed
+
+$ sudo apt-get remove mark6-sc-module python-cplane python-m6utils
+
+oper@mark6-4038 trunk Mark6_1.2j> ../apex-tools/Mark6/edit-deb-deps.sh mark6-sc-module_0.13-1_amd64.deb
+
+  Depends: python (<< 2.7), python (>= 2.6), python-support (>= 0.90.0), libc6 (>= 2.2.5)
+  -->
+  Depends: python (>= 2.6), python-support (>= 0.90.0), libc6 (>= 2.2.5)
+
+oper@mark6-4038 trunk Mark6_1.2j> ../apex-tools/Mark6/edit-deb-deps.sh python-cplane_1.0.20-1_amd64.deb
+  
+  Depends: python (<< 2.7), python (>= 2.6), python-support (>= 0.90.0), python-pynetinfo (>= 0.2.4), mark6-sc-module (>= 0.12)
+  -->
+  Depends: python (>= 2.6), python-support (>= 0.90.0), mark6-sc-module (>= 0.12)
+
+oper@mark6-4038 trunk Mark6_1.2j> ../apex-tools/Mark6/edit-deb-deps.sh python-m6utils_1.0.7-2_amd64.deb
+
+  Depends: python (<< 2.7), python (>= 2.6), python-support (>= 0.90.0)
+  --
+  Depends: python (>= 2.6), python-support (>= 0.90.0)
+
+$ dpkg -i mark6-sc-module_0.13-1_amd64.modfied.deb
+$ dpkg -i python-m6utils_1.0.7-2_amd64.modfied.deb
+$ dpkg -i python-cplane_1.0.20-1_amd64.modfied.deb
