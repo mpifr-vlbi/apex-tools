@@ -35,6 +35,7 @@ iface eth2 inet static
         address 10.10.1.1
         broadcast 10.10.1.15
         netmask 255.255.255.240
+        mtu 9000
 
 allow-hotplug eth3
 iface eth3 inet static
@@ -42,6 +43,7 @@ iface eth3 inet static
         address 10.10.1.17
         broadcast 10.10.1.31
         netmask 255.255.255.240
+        mtu 9000
 
 allow-hotplug eth4
 iface eth4 inet static
@@ -49,6 +51,7 @@ iface eth4 inet static
         address 10.10.1.33
         broadcast 10.10.1.47
         netmask 255.255.255.240
+        mtu 9000
 
 allow-hotplug eth5
 iface eth5 inet static
@@ -56,4 +59,5 @@ iface eth5 inet static
         address 10.10.1.49
         broadcast 10.10.1.63
         netmask 255.255.255.240
+        mtu 9000
 
