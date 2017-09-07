@@ -5,3 +5,5 @@
 # APEX: R2DBE has IP 10.0.2.101 on 255.255.255.0
 #
 /srv/roach2_boot 10.0.2.101/24(rw,subtree_check,no_root_squash,insecure)
+/srv/roach2_boot 10.0.2.99/24(rw,subtree_check,no_root_squash,insecure)
+
