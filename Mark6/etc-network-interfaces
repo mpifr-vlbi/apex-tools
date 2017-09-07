@@ -7,7 +7,7 @@
 # search mpifr-bonn.mpg.de
 # nameserver 134.104.18.187
 # nameserver 134.104.18.57
-# $ apt-get apt-get remove --purge network-manager network-manager-gnome network-manager-pptp network-manager-pptp-gnome
+# $ apt-get remove --purge network-manager network-manager-gnome network-manager-pptp network-manager-pptp-gnome
 # $ apt-get purge network-manager network-manager-gnome knetworkmanager
 
 # The loopback network interface
