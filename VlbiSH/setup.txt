@@ -1,0 +1,10 @@
+
+$ wget http://www.jive.nl/~verkout/evlbi/vlbish
+
+$ sudo aptitude install python-mysql.connector python-mysqldb
+
+How to create a hardware database for own site as JIVE's correlator
+database db0.jive.nl is not reachable:
+
+  TODO
+
