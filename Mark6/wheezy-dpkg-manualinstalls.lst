@@ -66,6 +66,7 @@ fftw-dev
 fftw2
 file
 findutils
+firmware-myricom
 flex
 flex-doc
 fonts-liberation

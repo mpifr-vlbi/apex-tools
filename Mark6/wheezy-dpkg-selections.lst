@@ -160,6 +160,7 @@ file						install
 file-roller					deinstall
 findutils					install
 firefox-esr					install
+firmware-myricom				install
 flex						install
 flex-doc					install
 folks-common					install
