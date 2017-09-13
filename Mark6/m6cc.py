@@ -129,6 +129,20 @@ def mark6_recv(m6_s, st, qore, where):
     rnn = ret.translate(None, '\0')
     return '', rnn
 
+def log_cplane_init(m6_s, st):
+    '''
+    This method explicitly logs the c-plane configuration for this log.
+    '''
+    global logger
+    wh0 = mark6_send(m6_s, st, 'group?;\n', 'init-0')
+    wr0, rt0 = mark6_recv(m6_s, st, "?", 'init-0')
+    wh1 = mark6_send(m6_s, st, 'mstat?;\n', 'init-1')
+    wr1, rt1 = mark6_recv(m6_s, st, "?", 'init-1')
+    wh2 = mark6_send(m6_s, st, 'input_stream?;\n', 'init-2')
+    wr2, rt2 = mark6_recv(m6_s, st, "?", 'init-2')
+    logger.info("%s - init: %s%s%s%s%s%s%s%s%s", st,
+        wh0, wr0, rt0, wh1, wr1, rt1, wh2, wr2, rt2)
+
 def vextime(jt):
     '''
     Convert YYYYDOYHHMMSS into vextime YYYYyDOYdHHhMMmSSs
@@ -151,7 +165,7 @@ def main(input_fn, m6_host, m6_port, rate_mbps):
             errmsg = ("Parsed input schedule file %s" % input_fn)
             proceed = True
         except Exception, e:
-            errmsg = ("Unparsable %s: %s" % (input_fn,e))
+            errmsg = ("Unparsable %s: %s" % (input_fn, e))
     else:
         errmsg = ("Session XML file %s does not exist " % (input_fn))
 
@@ -189,6 +203,9 @@ def main(input_fn, m6_host, m6_port, rate_mbps):
     # --- dboss status every second
     os.system('dboss s 1')
     logger.info("%s - boosted dplane status to every second")
+
+    # --- cplane initial status
+    log_cplane_init(m6_s, st)
 
     scan_no = 0
     # --- for the remainder of the list process the scan information
