@@ -1,4 +1,24 @@
-Directories here
+Extra notes
+=======================================
+
+The users .bashrc should contain
+
+  export PATH=$PATH:/usr2/fs/bin:/usr2/st/bin
+
+To properly initialize shared memory areas used by fs (st) the
+startup file /etc/rc.local should contain
+
+  /usr2/fs/bin/fsalloc
+  /usr2/st/bin/stalloc
+
+The compile of 'oprin' component of fs needs some extra effort,
+
+  $ sudo aptitude install lib32readline-dev libreadline-dev  
+  $ cp oprin-Makefile /usr2/fs/oprin/
+      was fixed to use -m32 flags to compile as 32bit
+  $ cd /usr2/fs/oprin/ ; make
+
+Subdirectories here
 =======================================
 
 st/antcn : sends track() commands with source coordinates from FieldSystem over to APECS
@@ -30,6 +50,7 @@ dpkg --add-architecture i386
 apt-get update
 apt-get install libc6-i386
 apt-get install libc6-dev-i386
+# apt-get install libf2c2:i386 # fails for now...
 
 Install 32-bit f2c (this will probably zap 64-bit f2c, doesn't matter)
 Install 32-bit libfl.a (needed for flex)
@@ -45,4 +66,14 @@ Call make. Sometimes 'oprin/readline' directory fails to compile. Fix by adding
 
 Check that all compiled files are 32-bit using 'file */*.o | grep 64'. This shows
 any remaining 64-bit files.
+
+Threre is (by Jay B.?) a script that modifies the Makefiles
+and adds -m32 to the compile options. Updated the script now
+to also modify the link options.
+
+$ cp mk64.pl /usr2/fs/
+$ cd /usr2/fs/
+$ ./mk64.pl
+$ aptitude install fortran77-compiler
+$ FC=f77 make
 
