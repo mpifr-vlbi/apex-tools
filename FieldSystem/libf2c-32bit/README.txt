@@ -30,6 +30,9 @@ vim makefile.u
 
 make -f debian/rules
 
-make -f debian/rules binary  # does the install
+sudo make -f debian/rules binary  # does the install but into a local subdir
 
+sudo cp -a debian/libf2c2/usr/lib32/* /usr/lib32/
+
+sudo cp -a debian/libf2c2-dev/usr/lib32/*.a /usr/lib32/
 
