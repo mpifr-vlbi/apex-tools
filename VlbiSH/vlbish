@@ -1,0 +1,2479 @@
+#!/usr/bin/env python
+#
+#   vlbish -- control local and remote (== @stations) Mark5s, FlexBuffs, FiLa10Gs, sfxc cluster nodes from one place.
+#
+#   Usage:  vlbish [options] [command [command]]
+#           see 'vlbish --help' for [options]
+#
+#   Options:
+#            --help             show short help
+#            --usage            show this built-in help
+#            --version          print version and exit succesfully
+#            --nosql            do not attempt to connect to DB
+#            --debug            print debug output
+#            --queries          print queries as they are sent to the DB
+#            --testdb           connect to test database in stead of production
+#
+#   Description:
+#
+#   vlbish reads lines of input from stdin, file or command line arguments.
+#
+#   Each line of input either sends VSI/S commands via TCP/IP to a selection of hosts,
+#   executes shell command(s) using ssh on a selection of hosts or is a vlbish built-in command. 
+#
+#   There are three (3) formats for a line of input:
+#
+#       [<selection>] / <commands>
+#           (attempts to) send the VSI/S commands to all machines in <selection> using TCP/IP
+#
+#       [<selection>] ! <shell commands>
+#           (attempts to) execute the shell commands on all machines in <selection> using ssh
+#                         if no selection given uses last-known selection
+#
+#       <commands>
+#           if recognized as vlbish built-in command, executes as that, otherwise
+#           interpreted as VSI/S and sent to last-known selection using TCP/IP
+#
+#   In this version of vlbish it is possible to put multiple 'logical' lines of
+#   input on one physical line of input (all characters up to and including the
+#   newline) by separating the logical lines with two or more semicolons:
+#
+#       > 0/tstat?;; sleep 2;; 0!uname -a
+#
+#   is now interpreted and executed as if three separate lines of input were given: a VSI/S
+#   command, a vlbish builtin command and a shell command.
+#
+#   vlbish has lots of built-in knowledge to resolve <selection> into user/ip/port tuples. It also connects
+#   to the database @JIVE in order to resolve names and associations and equipment types. It is possible to
+#   set options in <selection> affecting the execution of <commands> (see below).
+#
+#   default ports used:
+#       <VSI/S command>  = 2620 [mark5 control port]
+#       <shell command>  = 22   [ssh]
+#   default user names:
+#       Mark5 (@JIVE)     :  jops
+#       Mark5 (not @JIVE) :  oper
+#       SFXC cluster nodes:  sfxc
+#       FlexBuff          :  jops
+#
+#  ==============================================================================================
+#                   built-in commands
+#  ==============================================================================================
+#  
+#  As always: parameters in []'s are optional.
+#
+#    q                        - quit
+#    h                        - this message
+#    timeout [<amount>]       - set or query the socket timeout for 
+#                               communicating with the mk5s
+#    stripnl [true|false]     - strip trailing CR/LF and replace with \0 before
+#                               sending the command. Some equipment (e.g. DBBC) doesn't
+#                               use NUL character as termination character
+#    resolve [<sel>]          - resolve the indicated <selection> or current
+#                               selection if no arg given. shows ip/port/user.
+#    symbolicresolve [<sel>]  - show what <sel> symbolically resolves to
+#    resolve/trace [<sel>]    - display intermediate steps whilst resolving <sel>
+#    kill <jobid>             - stop the background job with id <jobid>.
+#                               A background job is started with a special
+#                               entry in the <selection>, explained below
+#    sleep [<amount>]         - sleep the indicated amount of seconds or 'infinite'
+#                               if no <amount> given. Typically used in batchmode,
+#                               to keep vlbish from exiting immediately when running
+#                               a background job. 
+#                               In interactive mode can be interrupted by ^C
+#    alias [alias] [def]      - without any arguments displays all aliases,
+#                               with one argument display the definition
+#                               of alias 'alias', with two arguments
+#                               define alias 'alias' to 'def'
+#    d[el[ete]] <alias>       - remove alias 'alias'
+#    play <file> [args]       - play the commands found in file 'file'.
+#                               A script can take arguments (space separated)
+#                               detailed explanation below.
+#    record <file>            - record all successive commands into 'file'
+#    stop                     - stop recording
+#
+#
+#  ==============================================================================================
+#                   <selection> is comma separated list of:
+#  ==============================================================================================
+#
+#   0...n      resolve to Mark5#0, Mark5#1, ... Mark5#n at JIVE (see 'c' and 'fb' modifiers below)
+#   ys,ef,..   resolve to EVN station Mark5
+#   a-l0-3     resolve to sfxc cluster nodes a0, a1, ... l2, l3
+#   alle       resolves to all currently e-VLBI sending equipment
+#   stations   resolves to the list of currently active e-VLBI stations
+#   num1-num2  resolves to num1, num1+1, ..., num2 (inclusive)
+#   any        the special port designator 'any' (see below)
+#   \          escape character: do not resolve the following token
+#              but pass it on as plain text (e.g. '\k3' prevents 'k3' being
+#              interpreted as cluster node k3)
+#   X.Y.Z.A    IPv4 dotted quad address
+#   host.name  DNS resolvable host name
+#   key=value  set option with name <key> to value <value> (<value> may not contain ',')
+#              some special options are:
+#                 repeat=<d>[:<n>] repeatedly execute command(s) every <d>
+#                                  seconds for <n> times. <n> defaults to 'unlimited'
+#                 experiment=<id>  restrict lookup(s) to experiment
+#                 subjob=<n>       restrict lookup(s) to subjob
+#                 runtime=<name>   auto prefix VSI/S commands with "runtime=<name>;"
+#                 stripnl=<t|f>    change CRLF line termination to NULL if true
+#                                  (DBBCCtrl.exe needs NULL termination character i.s.o. CRLF)
+#                 fila=<t|f>       auto prefix command with "fila10g=" e.g. for comms with
+#                                  FiLa10G through DBBCServer.exe
+#
+#   (Entries in) the selection can be modified, using one or more of the 
+#   following supported modifiers. It is possible to combine multiple
+#   modifiers, although not all of them make sense.
+#
+#  ==============================================================================================
+#                                  Supported modifiers:
+#  ==============================================================================================
+#
+#   ( ... )    generic grouping operator - handy for 'user@' prefix,
+#              ':port' suffix (see below) or any other modifier to apply
+#
+#   c  ...     resolves to Mark5C number '...' at JIVE
+#
+#   r  ...     resolves to the ssh tunnel ("127.0.0.1:localport") defined
+#              for whatever follows. Parses your ~/.ssh/config to find 
+#              entries that look like:
+#              " ... LocalForward <lclport>:<remote host>:<remote port> ..."
+#
+#   fb ...     resolves to the flexbuff associated with whatever follows
+#              fb 0     resolves to flexbuf0 at JIVE
+#              fb ys    resolves to the flexbuff installed at Ys station
+#
+#   *  ...     resolve to associated entry for whatever follows
+#              * ys     resolves to 'the flexbuff(s) at JIVE that belong to Ys'
+#              * fb ... resolves to 'the station(s) that store their data on fb '...'
+#                       (i.e. this is a combined modifier)
+#
+#   fila ...   resolves to the FiLa10G (dbbc proxy) ip:port for whatever follows OR
+#              filters out anything that is-a fila out of "..." OR transforms '...'
+#              into a fila (automatically sets 'stripnl' and 'fila' options!)
+#
+#   dbbc ...   resolves to the DBBC proxy ip:port for whatever follows OR
+#              filters out anything that is-a dbbc out of "..." OR transforms '...'
+#              into a dbbc (automatically sets 'stripnl' option!)
+#
+#   dst  ...   resolves to whatever is sending to what is specified in ...
+#   src  ...   resolves to whatever has ... as source
+#
+#   Supported pre/suffix:
+#   <user>@ ...   replaces default user with given user name in
+#                 host(s) specified by '...'
+#
+#   ... : port    replaces the (default) port number on host(s) specified by '...'
+#
+#  ==============================================================================================
+#                                  script files
+#  ==============================================================================================
+#
+#  It is possible to put vlbish commands in textfiles. Each line is treated as
+#  if it was read from the commandline interactive shell. As such, vlbish recognizes
+#  comments by ignoring everything on the line after the "#" character.
+#
+#  It is possible to pass arguments to script files. The arguments are
+#  whitespace separated strings.
+#
+#  Using the positional arguments in the scripts is done like Python string
+#  formatting; basically each line in a script file is taken to be a format
+#  string and the arguments are supplied to the ".format()" string member
+#  function.
+#
+#  Thus, inside your script you can access the first argument using "{0}", the
+#  second using "{1}" etc. All formatting possibilities that Python offers
+#  therefore apply. For more details see:
+#    http://docs.python.org/2/library/string.html#format-string-syntax
+#
+#  Example:
+#
+#    $> cat init5b
+#    # example vlbish script file
+#    #   expect parameters:
+#    #   <mk5blist> <bitstreammask> <clockrate>
+#    {0}/mode=ext:{1};clock_set={2}:int:{2}
+#
+#    $> vlbish
+#    Welcome to vlbish [history mysql evlbilookup]
+#     q to quit, h for help
+#    > play init5b ys,ef 0xff 8
+#    ...
+#    > play init5b hh,16 0xffffff 32
+#
+#
+#  ==============================================================================================
+#                                     Examples:
+#  ==============================================================================================
+#
+#   > mk5 alle/version?
+#     Sends the VSI/S query "version?" to all currently transmitting Mark5s
+#
+#   > repeat=2, 0-9, c 0-3/tstat?
+#     Every two seconds, send the "tstat?" VSI/S query to Mark5#0 - Mark5#9 and
+#     Mark5C#0 - Mark5C#3 (notice: end points are inclusive)
+#
+#   > dst e01:any
+#     Find out who/what is sending to cluster nodes e0 or e1 on any port (if the
+#     'any' port was not specified, it would default to searching for who is sending
+#     to e0:2620 or e1:2620)
+#
+#   > sfxc @ (fb 0-3) ! uname -m
+#     Execute shell command 'uname -m' on flexbuf0, flexbuf1, flexbuf2 and flexbuf3 at JIVE,
+#     using sfxc as the user name in stead of jops (i.e. "ssh sfxc@flexbufX 'uname -m'" )
+#
+#
+# Author:  Harro Verkouter  3 Sep 2010
+# Rewrite: Harro Verkouter 24 Nov 2016
+import sys, os, re, time, socket, traceback, pickle, fcntl, termios, struct, copy, threading, importlib, collections, argparse
+from functools import partial
+from itertools import product, repeat
+from operator  import truth, contains, eq, is_not, attrgetter, itemgetter, methodcaller, __add__, is_
+
+# some global stuff
+version     = "$Id: vlbish,v 1.15 2017-03-09 13:21:10 jive_cc Exp $"
+description =  "Control local and remote (== @stations) Mark5s, FlexBuffs, FiLa10Gs, sfxc cluster nodes from one place"
+
+# everybody SHOULD love function composition :-)
+compose     = lambda *fns   : (lambda x: reduce(lambda acc, f: f(acc), reversed(fns), x))
+choice      = lambda p, t, f: (lambda x: t(x) if p(x) else f(x))  # branch
+choice_kw   = lambda p, t, f: (lambda x, **kwargs: t(x, **kwargs) if p(x, **kwargs) else f(x, **kwargs))  # branch
+ylppa       = lambda x      : (lambda f: f(x))                    # ylppa is 'apply' in reverse ...
+combine     = lambda f, *fns: (lambda x: f(*map(ylppa(x), fns)))  # f( fn[0](x), fn[1](x), ... )
+swap_args   = lambda f      : (lambda a, b, *args, **kwargs: f(b, a, *args, **kwargs))
+logic_or    = lambda x, y   : x or y                              # operator.__or__ / __and__ are /bitwise/ ops!
+logic_and   = lambda x, y   : x and y                             #               ..
+const       = lambda x      : (lambda y: x)                       # return the same value irrespective of input
+between     = lambda a, b   : (lambda x: a<=x<b)                  # missing from module 'operator'?
+m_itemgetter= lambda *idx   : (lambda x: map(x.__getitem__, idx)) # _ALWAYS_ returns [...], irrespective of #-of-indices
+                                                                  #   for laughs, look up 'operator.itemgetter()' => 3 (three!)
+                                                                  #   different types of return type depending on arguments! FFS!
+# reorder_args: call f with the arguments indicated by idx:
+# call f with args[idx[n]] for 0 <= n < len(idx)
+# f will be called with len(idx) arguments. can also be used to select/repeat arguments
+reorder_args= lambda f, *idx: (lambda *args, **kwargs: f(*m_itemgetter(*idx)(args), **kwargs))
+hasattr_    = lambda a             : partial(reorder_args(hasattr, 1, 0), a)
+getattr_    = lambda a             : partial(reorder_args(getattr, 1, 0), a)
+# it is "setattr(o, a, v)" but we call it as "setattr_(a, v)(o)" thus a,v,o needs to be reorderd to o, a, v, i.e. 2,0,1
+# note that setattr_ returns the object itself so it can be chained
+setattr_    = lambda a, v          : combine(logic_or, partial(reorder_args(setattr, 2, 0, 1), a, v), identity)
+delattr_    = lambda a             : combine(logic_or, partial(reorder_args(delattr, 1, 0), a), identity)
+maybe_get   = lambda a, d=None     : choice(hasattr_(a), getattr_(a), const(d))
+maybe_set   = lambda a, v          : choice(const(is_not_none(v)), setattr_(a, v), identity)
+identity    = lambda x, *a, **kw   : x
+mk_query    = lambda c, t, w, *args: "SELECT {0} FROM {1} WHERE {2}{3}".format(c, t, w, "" if not args else " and "+args[0])
+do_update   = lambda x, y          : x.update(y) or x
+d_filter    = lambda keys          : (lambda d: dict(((k,v) for k,v in d.iteritems() if k in keys)))
+d_filter_n  = lambda keys          : (lambda d: dict(((k,v) for k,v in d.iteritems() if k not in keys)))
+printf      = lambda x, y : x.printfn(y)
+collectf    = lambda x, y : x.collectfn(y)
+
+filter_true = partial(filter, truth)
+is_not_kw   = lambda x, y, **kwargs   : is_not(x, y)
+is_not_none = partial(is_not, None)
+is_not_none_kw = partial(is_not_kw, None)
+is_iterable = combine(logic_or, hasattr_('__iter__'), hasattr_('__getitem__'))
+listify     = choice(is_iterable, identity, lambda x: [x])
+mk_list     = lambda *args: list(args)
+mk_tuple    = lambda *args: args
+truth_tbl   = lambda *args: tuple(map(truth, args))
+
+# wrap f and catch exception if "f(...)" throws. Return "eret" in that case
+def maybe_exec(f, eret):
+    def try_it(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except Exception as E:
+            print traceback.format_exc() if userinput.debug else str(E)
+        return eret
+    return try_it
+
+# Can pass in None or "/path/to/file" and returns None or proc("/path/to/file") or eret
+# if proc(..) threw an exception
+maybe_process_f  = lambda proc, e=None: choice(choice(is_not_none, os.path.exists, const(e)), maybe_exec(proc, e), const(e))
+process_f        = lambda proc, e=None: choice(is_not_none, maybe_exec(proc, e), const(e))
+
+def do_raise(x):
+    def actually_raise(*args):
+        raise x
+    return actually_raise
+
+################ argparse / command-line handling ###############################
+class PrintHelp(argparse.Action):
+    def __call__(self, the_parsert, *args):
+        the_parsert.print_help() or sys.exit( 0 )
+
+arg0_or_zero = choice(truth, itemgetter(0), const(0))
+def usage(*args):
+    # http://stackoverflow.com/a/1676860
+    import pydoc, inspect
+    # extract the documentation at the top of this module, put it through pydoc.pager and then exit :-)
+    return compose(const(arg0_or_zero(args)), pydoc.pager, inspect.getcomments, itemgetter(__name__))(sys.modules)
+
+class PrintUsage(argparse.Action):
+    def __call__(self, the_parsert, *args):
+        sys.exit( usage() )
+
+parsert = argparse.ArgumentParser(description=description, add_help=False)
+parsert.add_argument('--help',   nargs=0, action=PrintHelp, help="Show this help message and exit succesfully")
+parsert.add_argument('--usage',  nargs=0, action=PrintUsage, help="Show built-in usage")
+parsert.add_argument('--debug',  dest='debug', action='store_true', default=False, 
+                     help="Print debugging information")
+parsert.add_argument('--queries',  dest='queries', action='store_true', default=False, 
+                     help="Print queries as they are sent to the DB")
+parsert.add_argument('--testdb', dest='db', action='store_const', default="db0.jive.nl", const="db-test.jive.nl",
+                     help="Use test database in stead of production")
+parsert.add_argument('--nosql', dest='sql', action='store_false', default=True,
+                    help="Do not attempt to connect to a database at all")
+parsert.add_argument('--version', action='version', version=version, help="Print current version and exit succesfully")
+parsert.add_argument("commands", nargs='*',
+                     help="Execute the commands given on the command line")
+
+# deal with command line
+userinput = parsert.parse_args()
+
+
+# mysql - enable lookup of eVLBI stations' ip address and a lot more stuff from the database@JIVE
+try:
+    MYSQL = importlib.import_module('MySQLdb') if userinput.sql else None
+except ImportError:
+    MYSQL = None
+
+# if we have readline, go on, use it then!
+# we attempt to save the history across invocations of this prgrm
+try:
+    READLINE = importlib.import_module('readline')
+except ImportError:
+    READLINE = None
+
+# frikkin' python. gvd! 2.7 has a WILDLY different api for
+# spawning subprocessessess. 
+try:
+    SUBPROCESS = importlib.import_module('subprocess')
+except ImportError:
+    SUBPROCESS = None
+
+# get the terminal/screen size
+def getScreenSize():
+    try:
+        hw = struct.unpack('hh', fcntl.ioctl(sys.stdout, termios.TIOCGWINSZ, '1234'))
+    except:
+        try:
+            hw = map(int, (os.environ['LINES'], os.environ['COLUMNS']))
+        except:  
+            hw = None
+    return hw
+screenSize = getScreenSize()
+
+
+# debug?
+def print_debug(pfx):
+    realpfx = "{0}:".format(pfx)
+    def print_it(x):
+        print realpfx,x
+        return x
+    return print_it
+
+D  = print_debug("DEBUG") if userinput.debug else identity
+DD = (lambda y: print_debug(y)) if userinput.debug else (lambda y: identity)
+
+# queries?
+def print_query(x):
+    print "QUERY: ",x
+    return x
+Q = print_query if userinput.queries else identity
+
+# regexen
+rxAlias     = re.compile(r"^alias((\s+(?P<alias>\S+))(\s+(?P<selection>\S.+))?)?$", re.I).match
+rxDelete    = re.compile(r"^d(el(ete)?)?(\s+(?P<alias>\S+))?$", re.I).match
+rxPlay      = re.compile(r"^play\s+(?P<file>\S+)(\s+(?P<args>\S.*))?$", re.I).match
+rxQuit      = re.compile(r"^q(uit)?$", re.I).match
+rxRecord    = re.compile(r"^(?P<donotrecord>\b)record\s+(?P<file>\S+)$", re.I).match
+rxStop      = re.compile(r"^(?P<donotrecord>\b)stop$", re.I).match
+rxHelp      = re.compile(r"^h(elp)?$", re.I).match
+rxKill      = re.compile(r"^kill(\s+(?P<tid>[0-9]+))?$", re.I).match
+rxTimeout   = re.compile(r"^timeout(\s+(?P<timeout>\S+))?$", re.I).match
+rxSleep     = re.compile(r"^sleep(\s+(?P<timeout>\S+))?$", re.I).match
+rxResolve   = re.compile(r"^(?P<symbolic>symbolic)?resolve(?P<trace>/trace)?(\s+(?P<selection>.+))?$", re.I).match
+rxCommand   = re.compile(r"^((?P<m5spec>[^/!]+)?(?P<type>[/!]))?(?P<cmd>.+)$").match
+
+def partition(predicate, iterable):
+    ltrue, lfalse = [], []
+    for item in iterable:
+        ltrue.append( item ) if predicate(item) else lfalse.append( item )
+    return (ltrue, lfalse)
+
+# go through ~/.ssh/config finding LocalForwards
+#   use the ip/host + destination port as key and the
+#   local portnumber as value
+searchFwd = re.compile(r"LocalForward\s+(?P<lclport>[0-9]+)\s+(?P<remoteip>[^:]+):(?P<remoteport>[0-9]+)").search
+def proc_fwd(acc, fwd):
+    acc[(fwd.group('remoteip'), int(fwd.group('remoteport')))] = int(fwd.group('lclport'))
+    return acc
+
+# Attempt to parse ~/.ssh/config for "LocalForward ...." definitions
+getfwds  = compose(partial(reorder_args(reduce, 0, 2, 1), proc_fwd, {}), filter_true, partial(map, searchFwd), open)
+forwards = maybe_process_f(getfwds, {})( os.path.join(os.getenv('HOME'), ".ssh", "config") )
+
+##### Support for simple queries
+##  c = list of columns to get
+##  t = table
+##  w = where clause
+##  automatically adds constraints that column(s) should not be NULL
+is_not_null    = compose("({0} is not NULL)".format, str.strip)
+strip_distinct = partial(re.compile(r"\bdistinct\b", re.IGNORECASE).sub, "")
+def query(db, c, t, w):
+    try:
+        cursor = db.cursor()
+        cursor.execute(Q( mk_query(",".join(c), t, w, " and ".join(map(compose(is_not_null, strip_distinct), c))) ))
+        return DD('QUERY-RESULT: ')( cursor.fetchall() )
+    except AttributeError:
+        Q( "No database available for query" )
+        return []
+
+def raw_query(db, q):
+    try:
+        cursor = db.cursor()
+        cursor.execute(Q( q ))
+        return DD('RAW-QUERY RESULT: ')( cursor.fetchall() )
+    except AttributeError:
+        Q( "No database available for query" )
+        return []
+
+# if we can't connect locally, try looking for a forward. if that also fails we assume
+# we have no datenbank to talk to.
+def getdbconnection(db, host, port):
+    # attempt databaseconnections - stop when no exception is thrown 
+    for attempt in [(host, port, db), ("127.0.0.1", forwards.get((host, port)), db)]:
+        try:
+            return MYSQL.connect(host=attempt[0], port=attempt[1], db=attempt[2], read_default_file="~/.my.cnf")
+        except Exception as E:
+            print traceback.format_exc() if userinput.debug else str(E)
+            pass
+    return None
+
+# For when we don't have sql/user passed '--nosql'
+class NoDBManager(object):
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def get(self, db):
+        return None
+
+
+class YesDBManager(collections.defaultdict):
+    
+    def __init__(self, dbs):
+        super(YesDBManager, self).__init__()
+        self.databases   = dbs
+
+    def __missing__(self, key):
+        return getdbconnection(key, *self.databases[key])
+
+    def get(self, db):
+        return self.test_conn(db, self[db])
+
+    def test_conn(self, db, conn):
+        if conn is None:
+            return None
+        try:
+            conn.ping()
+            return conn
+        except Exception as E:
+            print traceback.format_exc() if userinput.debug else str(E)
+            del self[db]
+            return self.get(db)
+
+# ccs: SU_Params, eVLBI_Params
+# correlator_control: routing
+# hardware: local_flexbuff, remote_flexbuff, sfxc_node
+dbHost    = userinput.db
+dbManager = NoDBManager() if not userinput.sql else YesDBManager({'ccs'               : (dbHost, 3306), 
+                                                                  'correlator_control': (dbHost, 3306),
+                                                                  'hardware'          : (dbHost, 3306) })
+
+
+############################################################################################
+##
+##                                      Aliases
+##
+############################################################################################
+
+
+## cycle_detect: Return a list of all cycles in the given graph
+##    Uses depth-first search and a stack of 'seen' nodes to detect
+##    if we cross a node we've seen before.
+##    graph = { "n":["n1","n2"], "m":["n3","n4"], ....}
+
+# helper function: the caching depth-first-search
+def dfs_seen(node, graph, seen, cycles):
+    if node in seen:
+        cycles.add(frozenset(seen[seen.index(node):]))
+    else:
+        seen.append(node)
+        if node in graph:
+            map(lambda x: dfs_seen(x, graph, copy.deepcopy(seen), cycles), graph[node])
+    return cycles
+
+def cycle_detect(graph):
+    # for each starting point, start with a fresh 'seen' and collect all cycles
+    # IF there is a cycle with 'n' nodes in it, we would end up with
+    # 'n' entries of the same "seen" set, therefore our accumulation is a set:
+    # it will automatically weed out the duplicates
+    return list(reduce(lambda acc, k: dfs_seen(k, graph, list(), acc), graph, set()))
+
+def handleAlias(env, aliasmatch):
+    (name, definition) = compose(itemgetter('alias', 'selection'), methodcaller('groupdict'))(aliasmatch)
+
+    # First, if necessary, update the alias definitions
+    if definition:
+        # cannot redefine dynamic 'aliases'
+        if name in ["alle", "stations"]:
+            raise RuntimeError, "The '{0}' dynamic alias cannot be redefined".format(name)
+
+        # also should not allow to define recursive aliases!
+        # so: add the alias to a tmp copy and verify that it does not lead to cycles
+
+        # (1) create an updated alias definition set, including the new definition
+        tmpAliases       = copy.deepcopy(env.aliases)
+        tmpAliases[name] = definition
+
+        # (2) transform into a graph:
+        #       name => [list, of, entities]
+        #     (for each alias, compile the list of 
+        #      alias names that are found in the value)
+
+        # (2a): transform list of alias names into a list of functions that
+        #       search a string for the occurrence of that alias
+        keyFinders = map(compose(partial(partial, re.search), r"\b{}\b".format), tmpAliases.keys())
+        # (2b): keySearch is a function that scans a string for all defined aliases and
+        #       returns a list of aliases that occurred in the string
+        keySearch  = compose(partial(map, methodcaller('group')), filter_true, partial(reorder_args(map, 1, 0), keyFinders), ylppa)
+        # (2c): build graph of aliases containing other alias(es)
+        graph      = reduce(lambda acc, arg: (acc.setdefault(arg[0], keySearch(arg[1])) is None) or acc, tmpAliases.iteritems(), {})
+
+        # (3) detect cycles
+        if DD("cycle_detect: ")(cycle_detect(graph)):
+            raise RuntimeError, "The definition of {0} => {1} would lead to a cycle in your aliases".format(name, definition)
+        # (5) Profit!
+        env.aliases[name] = definition
+
+    # now we either print one or all aliases
+    for (nm, defn) in ((choice(is_not_none, compose(d_filter, listify), const(identity))(name))(env.aliases)).iteritems():
+        collectf(env, "{0} => {1}".format(nm, defn))
+    return env
+
+def handleDelete(env, aliasmatch):
+    which = aliasmatch.group('alias')
+    try:
+        del env.aliases[ which ]
+    except KeyError:
+        raise RuntimeError, "{0}: no such alias defined".format( which )
+    return env
+
+
+######################################################################################################
+##
+##                           Deal with recording of commands into a file
+##
+######################################################################################################
+is_recording = maybe_get('record')
+
+handleRecord = lambda *args: \
+                setattr_('record',
+                         compose(choice(is_not_none,
+                                        do_raise(RuntimeError("Already recording - maybe stop it first?")),
+                                        const(open(args[1].group('file'), 'w'))),
+                                 is_recording)(args[0]))(args[0])
+
+handleStop   = combine(logic_or, 
+                       compose(choice(is_not_none,
+                                      methodcaller('close'),
+                                      do_raise(RuntimeError("Not recording yet, why don't you start it first?"))),
+                               is_recording),
+                       delattr_('record'))
+
+get_jobid = compose(choice(is_not_none, int, identity), methodcaller('group', 'tid'))
+def handleKill(env, killmatch):
+    jobid = get_jobid( killmatch )
+
+    # do explicit test for None as tid==0 
+    # could be a valid jobid and the
+    # test "if not haveTid" would succeed ....
+    env.acquire()
+    if jobid is None:
+        for (jobid, job) in env.jobs.iteritems():
+            collectf(env, "job[{0}] {1}".format(jobid, job.commandLine))
+    else:
+        if jobid not in env.jobs:
+            collectf(env, "Invalid jobid {0}!".format(jobid))
+        else:
+            env.release()
+            try:
+                env.jobs[ jobid ].do_stop()
+                del env.jobs[ jobid ]
+            except:
+                pass
+            env.acquire()
+    env.release()
+    return env
+
+def handleSleep(env, sleepmatch):
+    # if an argument was given in the sleep,
+    # sleep that amount of seconds
+    # otherwise wait for keyboardinterrupt
+    try:
+        sleeptime = sleepmatch.group('timeout')
+        time.sleep( float(sleeptime) if sleeptime else 100000.0 )
+    except KeyboardInterrupt:
+        pass
+    return env
+
+# open sokkit to ip:port
+def opensokkit(ip, port, timeout):
+    s = socket.socket()
+    s.settimeout(timeout)
+    s.connect((ip, port))
+    return s
+
+def handleTimeout(env, timeoutmatch):
+    timeoutstr = timeoutmatch.group('timeout')
+    if timeoutstr:
+        to = float(timeoutstr)
+        if to<0.0:
+            raise ValueError, "Negative timeout not allowed!"
+        env.timeout = to
+    collectf(env, "socket timeout: {0}".format(env.timeout))
+    return env
+
+def handleResolve(env, mo):
+    # if no selection given, get current selection, if any
+    selection = compose(choice(truth, identity,
+                               compose(choice(truth, identity, do_raise(RuntimeError('There is nothing to resolve'))),
+                                       const(env.selection))),
+                        methodcaller('group', 'selection'))( mo )
+    for entry in m5parser(maybe_resolve_alias(selection, aliases=env.aliases), 2620,
+                          resolver = (identity if mo.group('symbolic') else resolve),
+                          trace    = mo.group('trace')):
+        collectf(env, repr(entry))
+    return env
+
+def handleCommand(env, mo):
+    # See if we can make anything useful out of what the user typed
+
+    # default to "mk5command", may be shell execute if type of command given and equal to "!"
+    (fn, port) = compose(choice(combine(truth, partial(is_, "!")), const((shexecute, 22)), const((execute, 2620))),
+                         methodcaller('group', 'type'))( mo )
+
+    # if no selection given, get current selection, if any
+    selection = compose(choice(truth, identity, do_raise(RuntimeError('There is no selection to execute your command on'))),
+                        choice(truth, identity, const(env.selection)),
+                        methodcaller('group', 'm5spec'))( mo )
+    # can already unalias + resolve the selection; both fns need that
+    resolved  = m5parser(maybe_resolve_alias(selection, aliases=env.aliases), port)
+    # decide on current job id - in case a background job is to be started
+    env.acquire()
+    env.jobid = min( set(range(0, len(env.jobs)+1)) - set(env.jobs.keys()) )
+    env.release()
+    # do the actual execution
+    fn(env, resolved, mo.group('cmd'))
+    # if, after executing, the jobid is a key in env.jobs, this means that 
+    # some background thread(s) were started
+    env.acquire()
+    if env.jobid in env.jobs:
+        env.jobs[ env.jobid ].commandLine = mo.string
+        printf(env, "Started background JOB[{0:d}]".format(env.jobid))
+    env.release()
+    return setattr_('selection', selection)(env)
+
+
+################## Parsing support ##########################
+
+# if the tokenizer finds one of these, the next token will
+# be handed off to 'escape_type_instance.function' in stead of the token's own
+# transforming function
+class escape_type(object):
+    __slots__ = ['function']
+
+    def __init__(self, f):
+        self.function = f
+
+    def __call__(self, *args, **kwargs):
+        return self.function
+
+
+class token_type(object):
+    __slots__ = ['type', 'value', 'position']
+    # tokens must AT LEAST have a type. Most other things are optional
+    def __init__(self, tp, val=None, **kwargs):
+        self.type     = tp
+        self.value    = val
+        self.position = kwargs.get('position', -1)
+
+    def __str__(self):
+        return "Token(tp={0}, val={1}, pos={2})".format(self.type, self.value, self.position)
+
+    def __repr__(self):
+        return str(self)
+
+
+def mk_tokenizer(tokens):
+    filter_fn = compose(truth, itemgetter(0))
+    def do_tokenize(string, **env):
+        # when tokenizing a new string we can preprocess the tokenlist:
+        #    tokens = [ (rx, token_fn), ... ]
+        # into:
+        #    tokens = [ (rx_match_string_at_pos, token_fn), ... ]
+        # so the only input that 'rx_match_string_at_pos' is the position where to attempt the match
+        pp_tokens      = map(lambda rx_tp: (partial(rx_tp[0].match, string), rx_tp[1]), tokens)
+        # 'creator' is the function that makes the token -
+        (pos, creator) = (0, itemgetter(1))
+        while pos<len(string):
+            # Run all known regexps against the current string and filter out which one matched
+            moList  = map(lambda mo_tp: (mo_tp[0], (creator(mo_tp))(mo_tp[0], position=pos, **env)),
+                          filter(filter_fn,
+                                 map(lambda rx_tf: (rx_tf[0](pos), rx_tf[1]), pp_tokens)))
+            if len(moList)==0:
+                raise RuntimeError, "\n{0}\n{1:>{2}s}^\n{3} tokens matched here".format(string, "", pos, len(moList))
+            # extract match-object and the token from the result list
+            (mo, token)  = moList[0]
+            pos         += (mo.end() - mo.start())
+            if token is not None:
+                # If we find a token that is of the escape type, the next
+                # token will be passed to the escaper in stead of to the
+                # token's own 'creator', otherwise put back default
+                # behaviour
+                if isinstance(token, escape_type):
+                    creator = token
+                else:
+                    creator = itemgetter(1)
+                    yield token
+        yield token_type(None, None)
+    return do_tokenize
+
+#def mk_operator(which):
+#    ops = {'+':operator.add, '-':operator.sub, '*':operator.mul, '/':operator.truediv,
+#           '&&': operator.and_, '||': operator.or_, '!':operator.not_,
+#           'and': operator.and_, 'or': operator.or_, 'not':operator.not_,
+#           'in': lambda x, y: operator.contains(y, x), '=':operator.eq,
+#           '<': operator.lt, '<=':operator.le, '>=':operator.ge, '>':operator.gt }
+#    return ops[which]
+
+
+# Token makers
+token_def  = lambda pattern, fn: (re.compile(pattern), fn)
+ignore_t   = lambda      : lambda o, **k: None
+const_t    = lambda t, v : lambda o, **k: token_type(t, v, **k)
+escape_t   = lambda f    : lambda o, **k: escape_type(f)
+keyword_t  = lambda      : lambda o, **k: token_type(o.group(0), **k)
+simple_t   = lambda tp   : lambda o, **k: token_type(tp, **k)
+value_t    = lambda tp   : lambda o, **k: token_type(tp, o.group(0), **k)
+xform_t    = lambda tp, f: lambda o, **k: token_type(tp, f(o.group(0)), **k)
+xformmg_t  = lambda tp, f: lambda o, **k: token_type(tp, f(o), **k)
+xformmge_t = lambda tp, f: lambda o, **k: token_type(tp, f(o, **k), **k)
+#operator_t = lambda tp   : xform_t(tp, mk_operator)
+
+
+
+# Need a mk5spec grammar    add 'runtime = ... '?
+#
+#  mk5s     = mk5spec { ',' mk5spec } eof
+#  mk5spec  = option | addressee
+
+#  option   = key '=' value
+#  key      = alpha { alphanum }
+#  value    = anychar - ','
+#  alpha    = [a-zA-Z_]
+#  alphanum = alpha + [0-9]
+
+#  addressee= { user } address { port }
+#  address  = name | group
+#  name     = number | range | host | ipv4 | nodes | 'alle'
+#  group    = '(' mk5s ')' | modifier '(' mk5s ')'
+#  modifier = 'dbbc' | 'fila' | 'fb' | [cC] | [rR] | '*'
+
+#  range    = number '-' number
+#  ipv4     = number '.' number '.' number '.' number
+#  port     = ':' number
+#  user     = [a-z_][a-z0-9_]{0,30} '@'
+#  number   = [0-9]+
+#  host     = [a-zA-Z0-9_\.-]+
+
+#  nodes       = node-list node-numlist
+#  node-list   = node-names | node-range
+#  node-numlist= node-numbers | node-num-range
+#  node-names  = node-name { node-name }
+#  node-range  = node-name '-' node-name
+#  node-numbers= node-number { node-number }
+#  node-num-range = node-number '-' node-number
+#  node-name   = [a-l]
+#  node-number = [0-3]
+
+def pitem(item):
+    return "{0}:{1}".format(item[0], item[1])
+
+class resolved_name(object):
+    defaults = {'user':None, 'host':None, 'port':None, 'name':None}
+    def __init__(self, **kwargs):
+        # minimal set of attributes we set
+        my_attributes = resolved_name.defaults.copy()
+        my_attributes.update( kwargs )
+        self.update( **my_attributes )
+
+    def update(self, **kwargs):
+        return reduce(lambda acc, kv: setattr(acc, kv[0], kv[1]) or acc, kwargs.items(), self)
+
+    def options(self):
+        return dict(((k,v) for k,v in self.__dict__.iteritems() if k not in resolved_name.defaults.keys()))
+
+    def __repr__(self):
+        optDict = self.options()
+        return "{0} => {1}@{2}:{3}{4}".format(self.name, self.user, self.host, self.port, " "+repr(optDict) if optDict else "")
+
+
+crossproducts = lambda l1, l2: map(partial(str.join, ''), product(l1, l2))
+charrange     = lambda f,  l : map(chr, xrange(ord(f), ord(l)+1))
+
+maybe_set_port   = partial(maybe_set, 'port')
+maybe_set_user   = partial(maybe_set, 'user')
+maybe_set_subjob = partial(maybe_set, 'subjob')
+maybe_set_exper  = partial(maybe_set, 'experiment')
+maybe_get_port   = maybe_get('port')
+maybe_get_user   = maybe_get('user')
+maybe_get_host   = maybe_get('host')
+maybe_get_subjob = maybe_get('subjob')
+
+
+def maybe_lookup_flexbuff(num_or_station, by_station):
+    if by_station:
+        b = (["control_ip", "control_port"], "remote_flexbuff", "station='{0}' and type='flexbuff'".format(num_or_station))
+        mk_entry = lambda row: resolved_name(host=row[0], port=int(row[1]), user='oper')
+    else:
+        b = (["control_ip"], "local_flexbuff", "name='{0}'".format(num_or_station))
+        mk_entry = lambda row: resolved_name(host=row[0], user='jops')
+    return map(mk_entry, query(dbManager.get('hardware'), *b))
+
+def maybe_get_fb_ip_and_host(fb):
+    return reduce(__add__, map(combine(mk_list, itemgetter(0), itemgetter(1)),
+                               query(dbManager.get('hardware'),
+                                     ["name", "control_ip"], "local_flexbuff", "name='{0}'".format(fb_name(fb)))),
+                  [])
+
+
+# replace with the dbbc_proxy associated with the station
+def maybe_lookup_dbbc(estation):
+    rows = query(dbManager.get('ccs'), ["dbbc_proxy_ip", "dbbc_proxy_port"], "eVLBI_Params", "e_station_name='{0}'".format(estation))
+    return map(lambda row: resolved_name(name=estation, host=str(row[0]), port=int(row[1])), rows)
+
+
+def modifier_set_user(list_in, user, *args):
+    return map(methodcaller('update', user=user), list_in)
+
+def modifier_set_port(list_in, port, *args):
+    return map(methodcaller('update', port=port), list_in)
+
+#  ((([a-l])-([a-l]))|([a-l]+))((([0-3])-([0-3]))|([0-3]+))
+#  012       3        4        567       8        9
+def expand_nodes(mo):
+    g = mo.groups()
+    if g[2] and g[3] and g[3] < g[2]:
+        raise RuntimeError, "Last node name is smaller than first node name"
+    if g[7] and g[8] and g[8] < g[7]:
+        raise RuntimeError, "Last node number is smaller than first node number"
+    # we have either 2 or 3 and 4 for the nodes
+    nodes = g[4] if not (g[2] and g[3]) else charrange(g[2], g[3])
+    nums  = g[9] if not (g[7] and g[8]) else charrange(g[7], g[8])
+    return crossproducts(nodes, nums)
+
+#  (([0-9]+)-([0-9]+))
+#  01        2
+def expand_range(mo):
+    g = mo.groups()
+    (s, e) = (int(g[1]), int(g[2]))
+    if e < s:
+        raise RuntimeError, "{0}: Last number is smaller than first".format(g[0])
+    return xrange(s, e+1)
+
+####################################################################################
+##
+##                      Start of Resolvable and friends
+##
+####################################################################################
+
+fmt_options = choice(truth, compose(" [{0}]".format, repr), const(''))
+get_options = d_filter_n(['type', 'value'])
+
+class Resolveable(object):
+
+    def __init__(self, tp, value, **kwargs):
+        self.type = tp
+        self.value = value
+        D( self.update( **kwargs ) )
+
+    def update(self, **kwargs):
+        self.__dict__.update( get_options(kwargs) )
+        return self
+
+    def options(self):
+        return get_options(self.__dict__)
+
+    def __repr__(self):
+        return "<{0} => {1}{2}>".format(self.type, str(self.value), fmt_options(self.options()))
+
+class Mk5(Resolveable):
+    def __init__(self, m5, **kwargs):
+        super(Mk5, self).__init__('mk5', m5, **kwargs)
+
+    def options(self):
+        return do_update(self.value.options(), Resolveable.options(self))
+
+    def resolve(self):
+        # We resolve to Mark5# self.value 
+        # Mk5 => Number
+        # Mk5 => Modifier5C => Number
+        # Mk5 => Station [ look up in e-VLBI Params ]
+        ts     = type(self.value)
+        if ts in [Modifier5C, Number]:
+            n      = self.value.value
+            result = resolve_local_mk5(n.value, mk5c=True) if ts is Modifier5C else resolve_local_mk5(n)
+        elif ts is Station:
+            # search in e-VLBI params
+            result = maybe_lookup_evlbi(self.value.value)
+        return map(lambda rn: rn.update(**self.options()), result)
+
+    def resolve_as_source(self):
+        # look up where 'Mk5 <station>' is sending to
+        if type(self.value) in [Modifier5C, Number]:
+            return []
+        # based on set options, figure out which query to use
+        opts    = self.options()
+        exper   = opts.get('experiment')
+        subjob  = opts.get('subjob')
+        # entries in data_input/data_routing have "data_input_org = 'evlbi://<station>'"
+
+        strm_cond  = "data_routing.data_source_location = 'evlbi://{0}'".format(self.value.value)
+        rec_cond   = "data_type.data_source_location = 'evlbi://{0}'".format(self.value.value)
+
+        # transform query results
+        return map(get_receiver, raw_query(dbManager.get('correlator_control'),
+                                           query_select[truth_tbl(exper, subjob)] (
+                                                 experiment=exper, subjob=subjob,
+                                                 stream_conds=strm_cond,
+                                                 record_cond=rec_cond) ))
+
+class Number(Resolveable):
+    def __init__(self, number, **kwargs):
+        super(Number, self).__init__('number', number, **kwargs)
+
+    def options(self):
+        return Resolveable.options(self)
+
+    def resolve(self):
+        # We resolve to Mark5# self.value at JIVE
+        return Mk5(self)
+
+given_experiment   = "experiment = '{0}'".format
+current_experiment = "nominal_start <= utc_timestamp() and utc_timestamp() <= nominal_stop and experiment not like '%TEST'".format
+experiment_f       = compose(choice(is_not_none, given_experiment, current_experiment), methodcaller('get', 'experiment'))
+station_qry        = """
+    select distinct data_source_location
+        from experiment.exper
+        join data_input using (experiment)
+        where {0}
+            and station = '{1}'
+            and data_source_location not regexp ('^jive5ab://');
+""".format
+
+
+class Station(Resolveable):
+
+    def __init__(self, station, **kwargs):
+        super(Station, self).__init__('station', station, **kwargs)
+
+    def options(self):
+        return Resolveable.options(self)
+
+    # station by itself expands to whatever the current e-VLBI sender is
+    # that is - IF there is a current e-VLBI sender. Otherwise it will just expand to nothing
+    def resolve(self):
+        # if we have an experiment set, filter that one, otherwise go for the experiment that's observing now
+        # if no results from the database then resolve to just-a-name ...
+        rows = raw_query(dbManager.get('correlator_control'), station_qry(experiment_f(self.options()), self.value))
+        mk_rv = methodcaller('__call__', Station(self.value, **self.options()))
+        return map(compose(mk_rv, mk_ds, itemgetter(0)), rows) if rows else [resolved_name(host=self.value)]
+
+    def resolve_as_source(self):
+        # look up where this station is sending to
+        # based on set options, figure out which query to use
+        opts    = self.options()
+        exper   = opts.get('experiment')
+        subjob  = opts.get('subjob')
+        # entries in data_input/data_routing have "data_input_org = '<sender_type>://<station>'"
+
+        strm_cond  = "data_routing.data_source_location regexp ('^[^:]+://{0}')".format(self.value)
+        rec_cond   = "data_type.data_source_location regexp ('^[^:]+://{0}')".format(self.value)
+
+        # transform query results
+        return map(get_receiver, raw_query(dbManager.get('correlator_control'),
+                                           query_select[truth_tbl(exper, subjob)] (
+                                                 experiment=exper, subjob=subjob,
+                                                 stream_conds=strm_cond,
+                                                 record_cond=rec_cond) ))
+
+        # self.resolve() should yield "Mk5 <station>" or "FiLa <station>" or nothing
+        #return map(ModifierSRC, self.resolve())
+
+class DBBC(Resolveable):
+    def __init__(self, dbbc, **kwargs):
+        # automatically set stripnl flag
+        kwargs.update(stripnl=True)
+        super(DBBC, self).__init__('fila' if kwargs.get('fila') is not None else 'dbbc', dbbc, **kwargs)
+
+    def options(self):
+        return do_update(self.value.options(), Resolveable.options(self))
+
+    def resolve(self):
+        # if we were a generic host transformed to 'dbbc' then let the contained value resolve itself
+        if type(self.value) is Host:
+            return self.value.resolve()
+        return map(partial(resolved_name.update, **d_filter_n(['port'])(self.options())), maybe_lookup_dbbc(self.value.value))
+
+class FiLa(DBBC):
+    def __init__(self, fila, **kwargs):
+        # automatically set 'fila=True' flag
+        kwargs.update(fila=True)
+        super(FiLa, self).__init__(fila, **kwargs)
+
+    def options(self):
+        return do_update(self.value.options(), Resolveable.options(self))
+
+    def resolve(self):
+        # if we were a generic host transformed to 'fila' then let the contained value resolve itself
+        updatert = partial(resolved_name.update, **d_filter_n(['port'])(self.options()))
+        if type(self.value) is Host:
+            return updatert( self.value.resolve() )
+        return map(updatert, maybe_lookup_dbbc(self.value.value))
+
+    def resolve_as_source(self):
+        # look up where this FiLa is sending to
+        # based on set options, figure out which query to use
+        opts    = self.options()
+        exper   = opts.get('experiment')
+        subjob  = opts.get('subjob')
+        # entries in data_input/data_routing have "data_input_org = 'fila://<station>'"
+
+        strm_cond  = "data_routing.data_source_location = 'fila://{0}'".format(self.value.value)
+        rec_cond   = "data_type.data_source_location = 'fila://{0}'".format(self.value.value)
+
+        # transform query results
+        return map(get_receiver, raw_query(dbManager.get('correlator_control'),
+                                           query_select[truth_tbl(exper, subjob)] (
+                                                 experiment=exper, subjob=subjob,
+                                                 stream_conds=strm_cond,
+                                                 record_cond=rec_cond) ))
+
+class UnknownDataSource(Resolveable):
+    def __init__(self, station, **kwargs):
+        super(UnknownDataSource, self).__init__('unknown_data_source', station, **kwargs)
+
+    def options(self):
+        return do_update(self.value.options(), Resolveable.options(self))
+
+    def resolve(self):
+        # We resolve to nothing
+        return []
+
+
+which_port     = maybe_get('port', -1)
+port_condition = compose(choice(partial(eq, -1), const(""), ":{0}/".format), which_port)
+
+class Node(Resolveable):
+    def __init__(self, node, **kwargs):
+        super(Node, self).__init__('node', node, **kwargs)
+
+    def options(self):
+        return Resolveable.options(self)
+
+    def resolve(self):
+        return map(partial(resolved_name.update, **self.options()), maybe_resolve_sfxc_node(self.value))
+
+    # get destination(s) for this node
+    def resolve_as_destination(self):
+        # based on set options, figure out which query to use
+        opts    = self.options()
+        exper   = opts.get('experiment')
+        subjob  = opts.get('subjob')
+
+        # transform the IP addresses into "regexp ('^jive5ab://{ip}[{port}]')" conditions;
+        portcond   = port_condition(self)
+        # recorded entries
+        dt_dsl_rx  = "data_routing.data_dest_location regexp ('^[^:]+://{{0}}{0}')".format
+        di_dsl_rx  = "data_input_org.data_source_location regexp ('^[^:]+://sfxc-{0}.sfxc{1}')".format
+        strm_conds = map(compose(dt_dsl_rx(portcond).format, attrgetter('host')), maybe_resolve_sfxc_node(self.value))
+        rec_cond   = di_dsl_rx(self.value, portcond)
+
+        # transform query results
+        return map(get_sender, raw_query(dbManager.get('correlator_control'),
+                                         query_select[truth_tbl(exper, subjob)] (
+                                                 experiment=exper, subjob=subjob,
+                                                 stream_conds=" or ".join(strm_conds),
+                                                 record_cond=rec_cond) ))
+
+
+class Recorded(Resolveable):
+    def __init__(self, item, **kwargs):
+        super(Recorded, self).__init__('recorded', item, **kwargs)
+
+    def options(self):
+        return Resolveable.options(self)
+
+    # Recorded <mk5 <Station>>
+    # Recorded <fila <Station>>
+    def resolve(self):
+        return self.value
+
+    # get destination(s) for this node
+    def resolve_as_destination(self):
+        # when the Recorded was created, the destination (could) have been stored in the 'receiver' option
+        return choice_kw(is_not_none_kw, identity, const([]))(self.options().get('receiver'), **self.options())
+
+
+def maybe_unmap_sfxc_control_ip(ip):
+    return map(lambda row: Node(row[0]),
+               query(dbManager.get('hardware'), ["name"], "sfxc_node", "control_ip='{0}'".format(ip)))
+
+extract_mk5_from_name = re.compile(r"^(?P<mk5c>c)?(?P<number>[0-9]+)$").match
+def process_mk5_row(row):
+    mo = extract_mk5_from_name(row)
+    return compose(Modifier5C if mo.group('mk5c') else identity, Mk5, Number, int)( mo.group('number') )
+
+def maybe_unmap_local_mk5_control_ip(ip):
+    return map(process_mk5_row, query(dbManager.get('hardware'), ["name"], "mark5", "control_ip='{0}'".format(ip)))
+
+def maybe_unmap_remote_mk5_control_ip(ip):
+    return map(compose(Mk5, Station),
+               query(dbManager.get('ccs'), ["e_station_name"], "eVLBI_Params", "e_station_control_ip='{0}'".format(ip)))
+
+def maybe_unmap_local_flexbuff_control_ip(ip):
+    return map(compose(combine(lambda fb_t, fb_i: FlexBuff(fb_t(fb_i)), get_fb_type, get_fb_id), methodcaller('groups'), match_flexbuff, itemgetter(0)),
+               query(dbManager.get('hardware'), ["name"], "local_flexbuff", "control_ip='{0}'".format(ip)))
+
+def maybe_unmap_remote_flexbuff_control_ip(ip):
+    return map(compose(FlexBuff, Station, itemgetter(0)),
+               query(dbManager.get('hardware'), ["station"], "remote_flexbuff", "control_ip='{0}'".format(ip)))
+
+def mk_host(mo):
+    # mo.group(1) == {host}   mo.group(2) == {port}
+    # Look through our Mk5, SFXC node or FlexBuff tables if we find an entry with name {host}
+    unmapped =  reduce(__add__, map(ylppa(mo.group(1)),
+                                    [maybe_unmap_sfxc_control_ip, maybe_unmap_local_mk5_control_ip,
+                                     maybe_unmap_remote_mk5_control_ip, maybe_unmap_local_flexbuff_control_ip,
+                                     maybe_unmap_remote_flexbuff_control_ip]), [])
+    return map(methodcaller('update', port=int(mo.group(2))), unmapped if unmapped else [Host(mo.group(1))])
+
+
+############################################
+##   fb = Number | Host
+##
+## All 4 queries below return:
+## station, experiment, subjob_id, receiver_type, sender_type
+## 0        1           2          3              4
+##
+## receiver_type = ^...://{host}:{port}/....
+#mk_host     = lambda mo: Host(host=mo.group(1), port=int(mo.group(2)))
+mk_receiver = compose(choice(is_not_none, mk_host, const((None,None))),
+                       re.compile(r"^[^:]+://([^:]+):([0-9]+)", re.I).search)
+def get_sender(row):
+    # maybe extract+set host/port from receiver type, maybe set subjob
+    updater = compose(maybe_set('receiver', mk_receiver(row[3])), maybe_set_subjob(row[2]))
+    return updater(mk_ds(row[4])(Station(row[0], experiment=row[1])))
+
+def get_receiver(row):
+    # receiver is either flexbuff, host or sfxc node
+    return compose(maybe_set('sender', mk_ds(row[4])), maybe_set_subjob(row[2]), maybe_set_exper(row[1]))( mk_recorder(row[3]) )
+
+
+fb_name = choice(compose(partial(is_, Number), type), compose("flexbuf{0}".format, attrgetter('value')), attrgetter('value'))
+class FlexBuff(Resolveable):
+    def __init__(self, fb, **kwargs):
+        super(FlexBuff, self).__init__('flexbuff', fb, **kwargs)
+
+    def options(self):
+        return do_update(self.value.options(), Resolveable.options(self))
+
+    def resolve(self):
+        # FlexBuff <number>  => FlexBuff[s] @ JIVE
+        # FlexBuff <station> => FlexBuff[s] @ Station
+        # FlexBuff <host>    => Flexbuff with name <host>, if any
+        return map(partial(resolved_name.update, **self.options()),
+                   maybe_lookup_flexbuff(fb_name(self.value), type(self.value) is Station))
+
+    # get destination(s) for this flexbuf
+    # i.e. which transfer(s) end at this particular flexbuff?
+    #   we can look in data_input for entries 'jive5ab://flexbuf[n]{ : <port>}' (data is being recorded)
+    #   but also in data_routing for entries 'jive5ab://[ip-of-flexbuf]{ :<port> }'
+
+    # if subjob known, limit query to cj_subjob.start_time/cj_subjob.end_time
+    # otherwise limit to experiment, if given,
+    # otherwise default to experiment being observed now
+    def resolve_as_destination(self):
+        # we cannot look up destinations for FlexBuff <station>
+        if type(self.value) is Station:
+            return []
+        # if we're looking up FlexBuff <number> we need to scan for both IP and Host name *sigh*
+        names    = maybe_get_fb_ip_and_host(self.value) if type(self.value) is Number else [self.value.value]
+        # Now it's time to go a-lookin
+        opts     = self.options()
+        exper    = opts.get('experiment')
+        subjob   = opts.get('subjob')
+        portcond = port_condition(opts)
+        #map(D, [opts, exper, subjob, portcond, names])
+        # transform the IP addresses into "regexp ('^jive5ab://{ip}[{port}]')" conditions;
+        dt_dsl_rx  = "data_routing.data_source_location regexp ('^jive5ab://{{0}}{0}')".format
+        di_dsl_rx  = "data_input_org.data_source_location regexp ('^jive5ab://{{0}}{0}')".format
+        strm_conds = map(dt_dsl_rx(portcond).format, names)
+        rec_cond   = "(" + " or ".join(map(di_dsl_rx(portcond).format, names)) + ")"
+
+        # transform query results; see above
+        return map(compose(get_sender, D), raw_query(dbManager.get('correlator_control'),
+                                         query_select[truth_tbl(exper, subjob)] (
+                                                 experiment=exper, subjob=subjob,
+                                                 stream_conds=" or ".join(strm_conds),
+                                                 record_cond=rec_cond) ))
+
+class Host(Resolveable):
+    def __init__(self, host, **kwargs):
+        super(Host, self).__init__('host', host, **kwargs)
+
+    def options(self):
+        return Resolveable.options(self)
+
+    def resolve(self):
+        return resolved_name(host=self.value).update( **self.options() )
+
+    def resolve_as_destination(self):
+        # Now it's time to go a-lookin
+        opts   = self.options()
+        exper  = opts.get('experiment')
+        subjob = opts.get('subjob')
+
+        portcond   = port_condition(self)
+        # transform the IP addresses into "regexp ('^jive5ab://{ip}[{port}]')" conditions;
+        dt_dsl_rx  = "data_routing.data_source_location regexp ('^jive5ab://{{0}}{0}')".format
+
+        # transform query results; see above
+        # note: we disable the 'record_cond' because we don't want entries
+        # from the "recorded e-VLBI" section of data_input
+        return map(get_sender, raw_query(dbManager.get('correlator_control'),
+                                         query_select[truth_tbl(exper, subjob)] (
+                                                 experiment=exper, subjob=subjob,
+                                                 stream_conds=dt_dsl_rx(portcond).format(self.value),
+                                                 record_cond="1=0") ))
+
+
+filter_host_port = d_filter_n(['host', 'port'])
+class Remote(Resolveable):
+
+    def __init__(self, destination, **kwargs):
+        super(Remote, self).__init__('remote', destination, **kwargs)
+
+    # we do NOT pass on 'host=' and 'port=' options because that's what we're replacing
+    def options(self):
+        return filter_host_port(do_update(self.value.options(), Resolveable.options(self)))
+
+    def resolve(self):
+        # We must resolve our contained item in order to be able to lookup
+        # if there is a tunnel defined for the destination
+        mk_remote = lambda port: resolved_name(host='127.0.0.1', port=port).update( **self.options() )
+        return map(mk_remote,
+                   filter(truth,
+                          map(partial(reorder_args(forwards.get, 1, 0), None),
+                              map(combine(mk_tuple, maybe_get_host, maybe_get_port),
+                                  resolve([self.value])))))
+
+# modifiers
+class Modifier5C(Resolveable):
+
+    def __init__(self, item, **kwargs):
+        super(Modifier5C, self).__init__('c', item, **kwargs)
+
+    def options(self):
+        return do_update(self.value.options(), Resolveable.options(self))
+
+    # We can only operate on type 'Number'
+    modifyable_types = [ Number ]
+
+    @staticmethod
+    def modify(number):
+        return Mk5(Modifier5C(number))
+
+
+class ModifierRemote(Resolveable):
+    def __init__(self, item, **kwargs):
+        super(ModifierRemote, self).__init__('r', item, **kwargs)
+
+    modifyable_types = [Number, Mk5, FiLa, DBBC]
+
+    @staticmethod
+    def modify(item):
+        return Remote(item)
+
+class ModifierFlexBuff(Resolveable):
+    def __init__(self, item, **kwargs):
+        super(ModifierFlexBuff, self).__init__('fb', item, **kwargs)
+
+    # flexbuff modifier can be:
+    #    flexbuff <number>           [flexbuff @JIVE]
+    #    flexbuff <station>          [flexbuff @station]
+    #    flexbuff <host>             [eventually attempt to find flexbuff with name <host>]
+    #    flexbuff flexbuff *         [no-op/filter]
+    modifyable_types = [ Number, Station, Host, FlexBuff ]
+
+    @staticmethod
+    def modify(item):
+        if type(item) is FlexBuff:
+            return item
+        return FlexBuff(item)
+
+class ModifierMk5(Resolveable):
+    def __init__(self, item, **kwargs):
+        super(ModifierMk5, self).__init__('mk5', item, **kwargs)
+
+    # mk5 modifier can be
+    #    mk5 <number>       [mk5 @JIVE]
+    #    mk5 <station>      [mk5 @station]
+    #    mk5 <mk5|...>      [act as filter/only let pass type mk5]
+    modifyable_types = [ Station, Number, Mk5 ]
+    @staticmethod
+    def modify(item):
+        if type(item) in [Station, Number]:
+            return Mk5(item)
+        if type(item) is Mk5:
+            return item
+        return []
+
+class ModifierFiLa(Resolveable):
+    def __init__(self, item, **kwargs):
+        super(ModifierFiLa, self).__init__('fila', item, **kwargs)
+
+    # fila modifier can be:
+    #    fila <station>      [fila @station]
+    #    fila <dbbc>         [transform fila => dbbc]
+    #    fila <host>         [transform any host into 'fila']
+    #    fila <fila|...>     [act as filter/only let pass type FiLa]
+    modifyable_types = [ Station, FiLa, DBBC, Host ]
+    @staticmethod
+    def modify(item):
+        if type(item) in [Station, Host]:
+            return FiLa(item)
+        if type(item) is DBBC:
+            return FiLa(item.value)
+        if type(item) is FiLa:
+            return item
+        return []
+
+class ModifierDBBC(Resolveable):
+    def __init__(self, item, **kwargs):
+        super(ModifierDBBC, self).__init__('dbbc', item, **kwargs)
+
+    # dbbc modifier can be:
+    #    dbbc <station>      [dbbc @station]
+    #    dbbc <fila>         [transform from FiLa => DBBC]
+    #    dbbc <host>         [transform any host into 'dbbc']
+    #    dbbc dbbc *         [no-op/filter]
+    modifyable_types = [ Station, FiLa, DBBC, Host ]
+    @staticmethod
+    def modify(item):
+        if type(item) in [Station, Host]:
+            return DBBC(item)
+        if type(item) is FiLa:
+            return DBBC(item.value)
+        if type(item) is DBBC:
+            return item
+        return []
+
+match_fb  = "flexbuff='{0}'".format
+match_st  = "station='{0}'".format
+class ModifierAssociation(Resolveable):
+    def __init__(self, item, **kwargs):
+        super(ModifierAssociation, self).__init__('*', item, **kwargs)
+
+    #    '*' flexbuff <number>  [Station]  (which stations send data to flexbuff <number>)
+    #    '*' flexbuff <host>    [Station]  (which stations send data to flexbuff <host>)
+    #    '*' flexbuff <station> [FlexBuff] which FlexBuffs @JIVE are associated with <station>
+    modifyable_types = [FlexBuff]
+
+    @staticmethod
+    def modify(item):
+        if type(item) is FlexBuff:
+            whichfbtype = type(item.value)
+            if whichfbtype in [Number, Host]:
+                # return list-of-stations sending to flexbuf <number> [including flexbuff <aribox>]
+                return map(lambda row: Station(row[0], **item.options()),
+                           query(dbManager.get('hardware'), ["station"], "station_flexbuff_assignment", match_fb(fb_name(item.value))))
+            elif whichfbtype is Station:
+                # figure out what the local flexbuff(s) are associated with Station
+                return map(lambda row: FlexBuff(Host(row[0]), **item.options()),
+                           query(dbManager.get('hardware'), ["flexbuff"], "station_flexbuff_assignment", match_st(item.value.value)))
+        return []
+
+
+class ModifierDST(Resolveable):
+    def __init__(self, item, **kwargs):
+        super(ModifierDST, self).__init__('dst', item, **kwargs)
+
+    # dst <node>    : who is sending to node <node> [ :<port> ]
+    # dst <host>    : who is sending to host <host> [ :<port> ]
+    # dst <flexbuff>: who is sending to this flexbuff 
+    # dst <recorded>: where was the recorded thing being recorded on?
+    def resolve(self):
+        dst_type = type(self.value)
+        if dst_type in [Node, FlexBuff, Host, Recorded]:
+            return self.value.resolve_as_destination()
+
+    modifyable_types = [Node, Host, FlexBuff, Recorded]
+
+    @staticmethod
+    def modify(item):
+        return ModifierDST(item)
+
+class ModifierSRC(Resolveable):
+    def __init__(self, item, **kwargs):
+        super(ModifierSRC, self).__init__('src', item, **kwargs)
+
+    # src <mk5>     : where is <mk5> sending to?
+    # src <fila>    : where is <fila> sending to?
+    # src <station> : where is <station> sending to?
+    # src <recorded>: what was the source of the recording?
+    # src dst <item>: first resolve item, THEN ask for receiver being set
+    def resolve(self):
+        if type(self.value) in [ModifierDST, Recorded]:
+            return filter(truth,
+                          map(compose(methodcaller('get', 'receiver'), methodcaller('options')),
+                              self.value.value.resolve_as_destination() if type(self.value) is ModifierDST else [self]))
+        # To be done
+        return self.value.resolve_as_source()
+
+    modifyable_types = [Mk5, Station, FiLa, Recorded, ModifierDST]
+    @staticmethod
+    def modify(item):
+        return ModifierSRC(item)
+
+# need modifier reductors
+def mk_reduce_modifier(m):
+    is_m_modifyable = compose(partial(contains, m.modifyable_types), type)
+    def do_reduce(acc, item):
+        if is_m_modifyable(item):
+            return acc + listify(m.modify(item))
+        return acc
+    return do_reduce
+
+def mk_mapping_maker(m):
+    def do_make(l, **kwargs):
+        return map(partial(m, **kwargs), l)
+    return do_make
+
+is_e_station = compose(partial(query, dbManager.get('ccs'), ["e_station_name"], "eVLBI_Params"), "e_station_name='{0}'".format)
+def host_or_station(token, **kwargs):
+    # check if token was a valid station name
+    return choice(is_e_station, Station, Host)(token).update( **kwargs )
+    
+
+ops = { 'c':    mk_reduce_modifier(Modifier5C),
+        'r':    mk_reduce_modifier(ModifierRemote),
+        '*':    mk_reduce_modifier(ModifierAssociation),
+        'fb':   mk_reduce_modifier(ModifierFlexBuff),
+        'mk5':  mk_reduce_modifier(ModifierMk5),
+        'dst':  mk_reduce_modifier(ModifierDST),
+        'src':  mk_reduce_modifier(ModifierSRC),
+        'fila': mk_reduce_modifier(ModifierFiLa),
+        'dbbc': mk_reduce_modifier(ModifierDBBC) }
+def get_modifier(which):
+    return ops[which.lower()]
+
+
+# Now that we have types + modifiers it is time to start adressing resolving
+is_unresolved = lambda x: issubclass(type(x), Resolveable)
+just_resolve  = compose(listify, methodcaller('resolve'))
+def trace_resolve(item):
+    res = just_resolve(item)
+    print "TRACE: ", item
+    print "  ====>", res
+    return res
+
+def do_resolve(list_in, real_resolver=just_resolve):
+    return reduce(__add__, map(real_resolver, list_in), [])
+
+def resolve(list_in, trace=False):
+    # keep on resolving until everything is resolved
+    unresolved, result = list_in, []
+    resolver           = trace_resolve if trace else just_resolve
+    while unresolved:
+        (unresolved, resolved) = partition(is_unresolved, do_resolve(unresolved, real_resolver = resolver))
+        result                 = result + resolved
+    return result
+
+###################################################################
+##
+## The 'alle_qry_*' queries return columns:
+##    station, experiment, subjob_id, receiver_type, sender_type
+##
+## Stations that are being recorded have subjob_id ==  -1
+##
+###################################################################
+alle_qry_subjob = """
+select data_type.station, data_type.experiment, -1 as subjob_id, data_input_org.data_source_location AS receiver_type, data_type.data_source_location as sender_type
+    from data_input as data_input_org
+    join cj_correlation_job using (experiment)
+    join cj_subjob using (job_id)
+    join experiment.exper using (experiment)
+    join data_input as data_type using (experiment, station)
+    where subjob_id = {0}
+      and cj_subjob.start_time >= data_input_org.start_time
+      and cj_subjob.end_time <= data_input_org.end_time
+      and data_input_org.data_source_location regexp ('^jive5ab://')
+      and data_input_org.data_source_location != data_type.data_source_location
+
+union distinct
+select station, experiment, subjob_id, data_dest_location as data_source_location, data_source_location as sender_type
+    from data_routing
+    join cj_subjob using (subjob_id)
+    join data_logbook using (subjob_id)
+    join cj_correlation_job using (job_id)
+    join experiment.exper using (experiment)
+    where subjob_id = {0}
+      and data_source_location not regexp ('^jive5ab://');
+""".format
+
+alle_qry_now = """
+select data_type.station, data_type.experiment, -1 as subjob_id, data_input_org.data_source_location AS receiver_type, data_type.data_source_location as sender_type
+    from data_input as data_input_org
+    join experiment.exper using (experiment)
+    join data_input as data_type using (experiment, station)
+    where data_input_org.start_time <= utc_timestamp() and utc_timestamp() <= data_input_org.end_time
+      and experiment not like '%TEST'
+      and data_input_org.data_source_location regexp ('^jive5ab://')
+      and data_input_org.data_source_location != data_type.data_source_location
+
+union distinct
+select station, experiment, subjob_id, data_dest_location as data_source_location, data_source_location as sender_type
+    from data_routing
+    join cj_subjob using (subjob_id)
+    join data_logbook using (subjob_id)
+    join cj_correlation_job using (job_id)
+    join experiment.exper using (experiment)
+    where cj_subjob.start_time <= utc_timestamp() and utc_timestamp() <= cj_subjob.end_time
+      and correlator_status = 'UNKNOWN'
+      and experiment not like '%TEST'
+      and data_source_location not regexp ('^jive5ab://');
+""".format
+
+#  \balle(\(([0-9]+\))|\b)
+#        1  2
+# each row contains 'station, experiment, subjob_id, receiver_type, sender_type'
+#                    0        1           2          3              4
+# need to transform appropriately:
+#   subjob_id == -1 means it was a recorded station; 
+#   sender_type always tells us which type is sending:
+#       'evlbi://', 'collector://', 'forking://' (Mk5)
+#       'fila://' (FiLa) 
+#       still anything left that contains "://"? then delete it
+# evlbi, forking, collector map to type 'mk5'
+# only one left is fila, which maps to 'fila'
+to_mk5     = partial(re.compile(r"^(evlbi|collector|forking)://.*$", re.I).sub, "mk5")
+to_fila    = partial(re.compile(r"^fila://.*$", re.I).sub, "fila")
+to_nothing = partial(re.compile(r"^[^:]+://.*$", re.I).sub, "")
+ds_to_type = {'mk5': Mk5, 'fila': FiLa, "": UnknownDataSource }
+mk_ds      = compose(ds_to_type.get, compose(to_nothing, to_mk5, to_fila))
+
+# if data is being recorded, the receiver_type looks like:
+#     jive5ab://<host>:<port>/ ....
+#     <host> = 'flexbuf<N>' | 'aribox'  => recorded on one of the flexbuffs, parse to appropriate FB
+match_recording = re.compile(r"^jive5ab://([^:]+):([0-9]+)/.*$", re.I).match
+match_flexbuff  = re.compile(r"^flexbuf([0-9]+)|(aribox)", re.I).match
+match_sfxc      = re.compile(r"^sfxc-([a-z][0-9]).sfxc", re.I).match
+# match_flexbuff.groups() delivers: (None, 'aribox') or (<number>, None) on match
+#  so filter the not-None entry out of that tuple and return the first element of the result
+get_fb_id       = compose(itemgetter(0), filter_true)
+# return the subtype of the flexbuff: Number (for flexbuf<Number>) or Host (for aribox: flexbuf<Host>)
+get_fb_type     = choice(itemgetter(0), const(Number), const(Host))
+def mk_recorder(s):
+    mo = match_recording(s)
+    return setattr_('port', int(mo.group(2)))( mk_host(mo)[0] )
+
+#def mk_recorder_old(s):
+#    # FORCE the system to match
+#    (host, port) = match_recording(s).groups()
+#    fb    = match_flexbuff(host)
+#    sfxc  = match_sfxc(host)
+#    return setattr_('port', int(port))(
+#                FlexBuff(get_fb_type(fb.groups())(get_fb_id(fb.groups()))) if fb else
+#                    Node(sfxc.group(1)) if sfxc else Host(host) )
+
+def mk_sender(row):
+    D( row )
+    maybe_recorded = partial(Recorded, receiver=mk_recorder(row[3])) if int(row[2])==-1 else identity
+    return maybe_recorded( mk_ds(row[4])(Station(row[0], experiment=row[1])) )
+
+def expand_alle(mo):
+    subjob = mo.group(2)
+    return map(compose(maybe_set('subjob', subjob), mk_sender),
+               raw_query(dbManager.get('correlator_control'), (alle_qry_now if subjob is None else alle_qry_subjob)(subjob)))
+
+###################################################################
+##
+## The 'stations_qry_*' queries return columns:
+##    station, experiment
+##
+###################################################################
+stations_qry_subjob = """
+select distinct station, experiment
+    from data_input 
+    join experiment.exper using (experiment)
+    join cj_correlation_job using (experiment)
+    join cj_subjob using (job_id)
+    where subjob_id = {0};
+""".format
+
+stations_qry_now = """
+select distinct station, experiment
+    from data_input 
+    join experiment.exper using (experiment)
+    where nominal_start <= utc_timestamp() and utc_timestamp() <= nominal_stop
+      and experiment not like '%TEST';
+""".format
+
+#  \bstations(\(([0-9]+\))|\b)
+#            1  2
+# each row of the query contains 'experiment, station' so transform that
+# into Station(<station>, experiment=<experiment>)
+mk_station       = lambda row: Station(row[0], experiment=row[1])
+def expand_stations(mo):
+    subjob = mo.group(2)
+    return map(compose(maybe_set('subjob', subjob), mk_station),
+               raw_query(dbManager.get('correlator_control'), (stations_qry_now if subjob is None else stations_qry_subjob)(subjob)))
+
+
+# return the string with all aliases recursively expanded
+def maybe_resolve_alias(txt_in, **env):
+    # pre-process the aliases
+    def procAlias(alias):
+        return partial(re.sub, re.compile(r"\b{0}\b".format(alias[0])), alias[1])
+    return maybe_resolve_alias_s(txt_in, map(procAlias, env.get("aliases", {}).iteritems()))
+
+def maybe_resolve_alias_s(txt_in, aliases):
+    # attempt to replace any of the aliases
+    txt_out = reduce(lambda acc, alias: alias(acc), aliases, txt_in)
+    if txt_in == txt_out:
+        # no substitutions made, so we're done
+        return txt_in
+    # give it another try of trying to substitute any of the known aliases
+    return maybe_resolve_alias_s(txt_out, aliases)
+
+
+# resolvers
+mk_mk5 = lambda name: (lambda row: resolved_name(name=name, user='jops', host=row[0]))
+def resolve_local_mk5(n, port=None, mk5c=False, user=None):
+    #print "Resolve local mk5: n=",n, " port=",port, " mk5c=",mk5c, " user=",user
+    name = (("{0:d}" if not mk5c else "c{0:02d}") if isinstance(n, int) else "{0}").format( n )
+    return map(compose(maybe_set_port(port), maybe_set_user(user), mk_mk5(name)), 
+               query(dbManager.get('ccs'), ["assoc_du_ip"], "SU_Params", "name='{0}'".format(name)))
+
+
+def maybe_resolve_sfxc_node(node):
+    return map(lambda row: resolved_name(host=row[0], user='sfxc'),
+               query(dbManager.get('hardware'), ["control_ip"], "sfxc_node", "name='{0}'".format(node)))
+
+def maybe_lookup_evlbi(estation):
+    return map(lambda row: resolved_name(name=estation, host=row[0], user='oper'),
+               query(dbManager.get('ccs'), ["e_station_control_ip"], "eVLBI_Params", "e_station_name='{0}'".format(estation)))
+
+# parser state
+class state_type:
+    def __init__(self, tokenizer, input_text):
+        self.input_text  = input_text
+        self.tokenstream = tokenizer(self.input_text)
+        self.depth       = 0
+        self.token       = None
+        self.next()
+
+    def next(self):
+        self.prev        = self.token
+        self.token       = self.tokenstream.next()
+        return self
+
+    def syntax_error(self, msg):
+        pos = len(self.input_text) if self.token.position<0 else self.token.position
+        raise SyntaxError, "\n{0}\n{1:>{2}s}^\n{3}".format(self.input_text, "", pos, msg)
+
+tok      = attrgetter('token')
+prev     = attrgetter('prev')
+tok_tp   = compose(attrgetter('type'), tok)
+tok_val  = compose(attrgetter('value'), tok)
+
+isOption = partial(swap_args(isinstance), dict)
+
+class Mk5Parser(object):
+    # basic lexical elements - these are the tokens for the tokenizer
+    tokens = [ 
+        token_def(r"\balle(\(([0-9]+)\)|\b)",            xformmg_t('stations', expand_alle)),     # dynamically evaluated
+        token_def(r"\bstations(\(([0-9]+)\)|\b)",        xformmg_t('stations', expand_stations)), # dynamically evaluated
+        token_def(r"\bany\b",                            const_t('number', -1)),
+        token_def(r"(\b(fila|dbbc|fb|mk5|src|dst|[cCrR])\b|\*)",
+                                                         xform_t('modifier', get_modifier)), # modifier
+        token_def(r"\b\d+(\.\d+){3}\b",                  value_t('ipv4')),                   # ipv4 dotted decimal
+        # sfxc nodes :-)
+        token_def(r"\b((([a-l])-([a-l]))|([a-l]+))((([0-3])-([0-3]))|([0-3]+))\b",
+                                                         xformmg_t('nodes', expand_nodes)),
+        # numerical range and number
+        token_def(r"\b(([0-9]+)-([0-9]+))\b",            xformmg_t('range', expand_range)),
+        token_def(r"[0-9]*\.[0-9]+|0-9]+\.[0-9]*",       xform_t('float', float)),
+        token_def(r"[0-9]+",                             xform_t('number', int)),
+        # Operators that just stand for themselves
+        token_def(r"\(",                                 simple_t('lparen')),
+        token_def(r"\)",                                 simple_t('rparen')),
+        token_def(r",",                                  simple_t('comma')),
+        token_def(r":",                                  simple_t('colon')),
+        token_def(r"@",                                  simple_t('at')),
+        token_def(r"=",                                  simple_t('equal')),
+        token_def(r"\\",                                 escape_t(value_t('text'))),
+        # Textual stuff: discriminate between identifiers and generic text
+        token_def(r"\b[^(),:@= \t]+\b",                  value_t('text')),
+        token_def(r"\s+",                                ignore_t())
+    ]
+
+    makers = { 
+            'number'  : Number,
+            'stations': lambda l, **kwargs: map(methodcaller('update', **kwargs), l), 
+            'range'   : mk_mapping_maker(Number), 
+            'nodes'   : mk_mapping_maker(Node),
+            'ipv4'    : Host,
+            'text'    : host_or_station #Station
+    }
+
+
+    def __init__(self):
+        self.tokenizer    = mk_tokenizer(Mk5Parser.tokens)
+        self.isIdentifier = re.compile(r"^[a-zA-Z_][a-zA-Z_0-9]*$").match
+        self.isUserName   = re.compile(r"^[a-z_][a-z0-9_]{0,30}$").match
+        
+    def __call__(self, selection, default_port, resolver=resolve, trace=False):
+        state  = state_type(self.tokenizer, selection)
+        result = self.parse_mk5s(state, default_port, {})
+        # if there's any depth left, we have unbalanced parenthesis!
+        if state.depth>0:
+            state.syntax_error("Unbalanced parenthesis")
+        # the only token left should be 'eof' AND, after consuming it,
+        # the stream should be empty. Anything else is a syntax error
+        try:
+            next(state)
+        except StopIteration:
+            if not result:
+                raise RuntimeError, "No actual addressees specified?"
+            return resolver(result, trace=trace)
+        state.syntax_error("Tokens left after parsing")
+
+    #  mk5s     = mk5spec { ',' mk5spec } eof
+    #  mk5spec  = option | addressee
+    def parse_mk5s(self, s, default_port, opts, endtoken=None):
+        parseResult     = []
+        localOpts       = {}
+        while True:
+            m5spec = self.parse_mk5spec(s, default_port, {}, endtoken)
+            if isOption(m5spec):
+                localOpts.update( m5spec )
+            else:
+                if m5spec is None:
+                    s.syntax_error("'None' is not really a valid host specification here")
+                # parse mk5spec returns []
+                # At this point we MAY see a port
+                port        = self.maybe_parse_port(s)
+                if port:
+                    m5spec = partial(swap_args(modifier_set_port), port)( m5spec )
+                parseResult = parseResult + m5spec
+            # the next token should be 'comma' or endtoken
+            if tok_tp(s) in [endtoken, None]:
+                break
+            if tok_tp(s) is not 'comma':
+                s.syntax_error("Unexpected token {0}, expected ',' or {1}".format(tok(s), "end-of-input" if endtoken is None else endtoken))
+            # consume the comma
+            next(s)
+        # propagate all options to the resolved names
+        return map(methodcaller('update', **localOpts), parseResult)
+
+    #  mk5spec   = option | addressee
+    #  option    = key '=' value
+    #  addressee = { modifiers } name | group
+    def parse_mk5spec(self, s, default_port, opts, endtoken=None):
+        # could be looking at modifiers first, then group, an option or an addressee
+        modifiers = self.maybe_parse_modifiers(s)
+        # let's first see if it is something unambiguous because for an
+        # option or a user '@' prefix we must look at the next token first
+        user      = None
+        addressee = self.maybe_parse_address(s, default_port)
+        if addressee is None:
+            # We did not find an addressee yet. So at this point we
+            # *must* be looking at text?
+            if tok_tp(s) is not 'text':
+                s.syntax_error( "Unexpected token {0}, expect an address here".format(tok(s)) )
+
+            # not entirely obvious what we're looking at yet:
+            #   text '@' addressee   {user prefix}
+            #   text '=' value       {option}
+            #   text ':' port        {port suffix}
+            #   text                 {hostname}
+            # so we need to move on to next token to see what to do next
+            # but first save current value of the text field
+            textField = tok_val(s)
+            next(s)
+            option = self.maybe_parse_option(s)
+            if option:
+                # modifiers cannot apply to an option
+                if modifiers:
+                    s.syntax_error("Modifiers cannot be applied to an option")
+                return option
+            # ok not an option
+            user = self.maybe_parse_user(s)
+            # if we've seen user@ we MUST see an address now, otherwise interpret textField as just-a-name
+            addressee = self.parse_address(s, default_port) if user else listify( Mk5Parser.makers['text'](textField, port=default_port) )
+        # before returning, set the user if one was given
+        if addressee is not None and user is not None:
+            addressee = partial(swap_args(modifier_set_user), user)(addressee) 
+        # and apply all modifiers that are in action
+        # modifiers are now reductors so we must reduce a list of reductors
+        # red0, red1, red2 =>
+        #    total_reduce([r0, r1, r2], list_in, []) ->
+        #            l2 = reduce(r2, list_in, []),
+        #            l1 = reduce(r1, l2,      []),
+        #            l0 = reduce(r0, l1,      [])
+        # reduce(r0, reduce(r1, reduce(r2, list_in, []), []), [])
+        #
+        #  reduce( f, list, start )
+        #     f(start, f( list[0], f( list[1], list[2] ) ) )
+        # so f = lambda acc, l: reduce(l, acc, [])
+        def reductor(acc, l):
+            return reduce(l, acc, [])
+        return reduce(reductor, reversed(modifiers), addressee)
+
+    #  address   = { modifiers } , name | group
+    #  name      = number | range | host | ipv4 | nodes | 'alle' | job
+    #  job       = 'job' { '(' number ')' }
+    #  modifiers = modifier , { modifiers }
+    #  modifier  = 'c' | 'C' | '*' | 'r' | 'R' | 'fila' | 'fb' | 'dbbc'
+    #  group     = '(' mk5s ')' 
+    def parse_address(self, s, default_port):
+        # someone believes we must be looking at name | group
+        # so if we're not looking at  modifier or '(' then it MUST be name
+        if tok_tp(s) in ['lparen']:
+            return self.parse_group(s, default_port, {})
+        return self.parse_name(s, default_port)
+
+    def parse_name(self, s, default_port):
+        if tok_tp(s) not in ['ipv4', 'stations', 'nodes', 'range', 'number', 'text']:
+            s.syntax_error("We really expect you to enter a valid host specification here")
+        name = tok(s)
+        # consume the token ...
+        next(s)
+        port = self.maybe_parse_port(s)
+        return listify( Mk5Parser.makers[name.type](name.value, port = (default_port if port is None else port)) )
+
+    # at the current position we _may_ be looking at an address but we're not sure yet
+    # so we only return something IF it's unambiguous what we're looking at
+    def maybe_parse_address(self, s, default_port):
+        # if we see any of these tokens then they'd better be valid all the way down,
+        # no ambiguity here
+        if tok_tp(s) in ['lparen']:
+            return self.parse_group(s, default_port, {})
+        # only return something if it's unambiguous that it is a direct 'name'
+        return self.maybe_parse_name(s, default_port)
+
+    # only return something if we're sure what it is we're looking at
+    def maybe_parse_name(self, s, default_port):
+        if tok_tp(s) not in ['ipv4', 'nodes', 'stations', 'range', 'number']:
+            return None
+        name = tok(s)
+        # consume token and return what we found
+        next(s)
+        port = self.maybe_parse_port(s)
+        return listify( Mk5Parser.makers[name.type](name.value, port = (default_port if port is None else port)) )
+
+    def maybe_parse_user(self, s):
+        # someone thinks we're looking at text '@'
+        if tok_tp(s) is not 'at':
+            return None
+        # verify that the 'text' was a valid user name
+        user = prev(s).value
+        if not self.isUserName(user):
+            s.syntax_error("The user name '{0}' does not seem to be a valid user name".format( user ))
+        # Fine! consume the '@' and return the user name
+        next(s)
+        return user
+   
+    def maybe_parse_modifiers(self, s):
+        l = []
+        while tok_tp(s) is 'modifier':
+            l.append( tok_val(s) )
+            next(s)
+        return l
+
+    # parse a '(' ... ')' structure
+    def parse_group(self, s, default_port, opts):
+        # extract the modification function, if any
+        # now we know we _must_ be looking at '('
+        if tok_tp(s) is not 'lparen':
+            s.syntax_error("Unexpected token - expected '('")
+        # consume the left parenthesis and move on
+        s.depth = s.depth + 1
+        next(s)
+        # yada yada parse until first closing paren
+        grp = self.parse_mk5s(s, default_port, {}, 'rparen')
+        # now we _must_ see ')'
+        if tok_tp(s) is not 'rparen':
+            s.syntax_error("Missing close parenthesis")
+        # consume the parenthesis
+        next(s)
+        s.depth = s.depth - 1
+        return grp
+
+    def maybe_parse_port(self, s):
+        # check if we're looking at ':' followed by number
+        if tok_tp(s) is not 'colon':
+            return None
+        # consume the colon and then we expect a number
+        next(s)
+        if tok_tp(s) is not 'number':
+            s.syntax_error("Port number must be a number")
+        number = tok_val(s)
+        # and consume the number
+        next(s)
+        return number
+
+    #  option   = key '=' value
+    #  key      = alpha { alphanum }
+    #  value    = anychar - ','
+    #  alpha    = [a-zA-Z_]
+    #  alphanum = alpha + [0-9]
+    def maybe_parse_option(self, s):
+        # we enter here because someone thinks they may have seen 'text'
+        # in a position where 'text = value' may be appropriate.
+        # So we NEED to be looking at '=' in order to be an option at all.
+        if tok_tp(s) != 'equal':
+            return None
+        # Rite. We're looking at '='
+        # Thus prev() == 'key' and next() had better be 'text', or 'value'
+        key = prev(s).value
+        # verify that the key is a proper identifier, not some random text
+        if not self.isIdentifier(key):
+            s.syntax_error("Option key '{0}' is not a valid alphanumeric identifier".format( key ))
+        next(s)
+        # collect all tokens that are 'text', 'number', 'float' or ':'
+        value = ""
+        while tok_tp(s) in ['text', 'number', 'float', 'colon']:
+            value = value + (str(tok_val(s)) if tok_tp(s) is not 'colon' else ':')
+            next(s)
+        if not value:
+            s.syntax_error("Unexpected token '{0}', expected option value?!".format( tok(s) ))
+        return {key: value }
+
+
+m5parser = Mk5Parser()
+
+
+
+try_cvt           = lambda cvt, err: compose(choice(is_not_none, identity, do_raise(err)), maybe_exec(cvt, None))
+
+is_a_true         = partial(contains, [True, 'true', 'True'])
+is_a_false        = partial(contains, [False, 'false', 'False', None])
+maybe_bool        = choice(is_a_true, const(True), choice(is_a_false, const(False), const(None)))
+to_bool           = try_cvt(maybe_bool, RuntimeError("Not a boolean"))
+need_stripnl      = compose(to_bool, maybe_get('stripnl', False))
+need_fila         = compose(to_bool, maybe_get('fila', False))
+maybe_get_runtime = maybe_get('runtime')
+maybe_repeat      = maybe_get('repeat')
+have_timeout      = compose(choice(is_not_none, float, const(None)), maybe_get('timeout'))
+crlf2nul          = partial(re.compile(r'[\r\n]*$').sub, r'\0')    # replace end-of-line with NUL (for FiLa10G/DBBC)
+add_semicolon     = partial(re.compile(r'([^;])$').sub, r'\1;')    # add semicolon if none present
+add_crlf          = partial(re.compile(r'$').sub, r'\r\n')         # add newline if none present
+
+
+def thread_exec(f):
+    def do_it(*args, **kwargs):
+        tid = threading.Thread(target=f, args=args, kwargs=kwargs)
+        tid.start()
+        return tid
+    return do_it
+    
+@thread_exec
+def do_repeat(env, rptspec, f):
+    # rptspec = <delay> [ : <niter> ]
+    parts = rptspec.split(':')
+    delay = float( parts[0] )
+    niter = -1 if len(parts)<2 else int(parts[1])
+    env.acquire()
+    jobid = env.jobid
+    job   = env.jobs[ jobid ]
+    env.release()
+    while niter!=0:
+        try:
+            f()
+        except socket.timeout:
+            pass
+        except Exception as E:
+            print traceback.format_exc() if userinput.debug else str(E)
+        if niter>0:
+            niter-=1
+        # only sleep when we must (if we've just
+        # completed our cycle there's very little
+        # to wait for ...)
+        if niter==0:
+           break
+        # check if we were wait to stop (or if a timeout occurred)
+        job.conditionVariable.acquire()
+        if not job.stop:
+            job.conditionVariable.wait( delay ) 
+        stop = job.stop
+        job.conditionVariable.release()
+        if stop:
+            break
+    if userinput.debug:
+        print "JOB[{0:d}/THRD {1}] terminating".format( jobid, threading.current_thread().ident )
+    env.acquire()
+    try:
+        job.threads.remove( threading.current_thread() )
+        # if every thread removed itself, the job can go
+        if not job.threads:
+            print "Removing background JOB[{0:d}]".format( jobid )
+            del env.jobs[ jobid ]
+    except:
+        pass
+    env.release()
+    return env
+
+def do_vsi_s(env, ip, port, timeout, cmd):
+    try:
+        s = opensokkit(ip, port, timeout)
+        s.sendall( cmd )
+        rv = s.recv(1024)
+        s.close()
+    except socket.timeout:
+        rv = "Woopsy - got a timeout"
+    # strip newline
+    printf(env, "{0}:{1}/{2}".format(ip, port, rv.strip("\n\r")))
+    return env
+
+def vsi_s(env, todo):
+    (address, cmd) = todo
+    have_to   = have_timeout(address)
+    terminate = crlf2nul if need_stripnl(address) else add_crlf
+    add_fila  = "fila10g={0}".format if need_fila(address) else identity
+    runtime   = maybe_get_runtime(address)
+    add_rt    = ("runtime={0};{{0}}".format(runtime)).format if runtime else identity
+    cmd       = compose(DD("vsi_s"), terminate, add_fila, add_rt, methodcaller('format', **address.options()))( cmd )
+    vsi_args  = (env, address.host, address.port, env.timeout if have_to is None else have_to, cmd)
+    rpt       = maybe_repeat( address )
+    if rpt is not None:
+        tid = do_repeat(env, rpt, lambda : do_vsi_s(*vsi_args)) 
+        env.acquire()
+        env.jobs[ env.jobid ].append( tid )
+        env.release()
+    else:
+        do_vsi_s(*vsi_args)
+    return env
+
+# run the indicated command on the indicated selection of mark5en. neat eh?
+def execute(env, parseResult, command):
+    return reduce(vsi_s, zip(parseResult, repeat(command)), env)
+
+def do_ssh_exec(env, address, sshcmd):
+    try:
+        if SUBPROCESS:
+            p = SUBPROCESS.Popen([sshcmd], shell=True, stdin=SUBPROCESS.PIPE, stdout=SUBPROCESS.PIPE, close_fds=True)
+            (cout, _cin) = (p.stdout, p.stdin)
+        else:
+            (cout, _cin) = os.popen2(l)
+        collectf(env, "{0}: {1}".format(address.host, cout.read().strip("\r\n")))
+    except:
+        collectf(env, "{0}/woops. {1}".format(address.host, [str(x) for x in sys.exc_info()[:2]]))
+    return env
+
+ssh_cmd = "ssh {port}{user}{host} '{cmd}'".format
+def ssh_exec(env, todo):
+    (address, cmd) = todo
+    rpt            = maybe_repeat( address )
+    # optionally add "-l <user>"
+    user           = compose(choice(is_not_none, "-l {0} ".format, const("")), maybe_get('user'))( address )
+    # optionally add "-p <port>"
+    port           = compose(choice(is_not_none, "-p {0} ".format, const("")), maybe_get('port'))( address )
+    ssh_args       = (env, address, ssh_cmd(port=port, user=user, host=address.host, cmd=cmd))
+    if rpt is not None:
+        tid = do_repeat(env, rpt, lambda : do_ssh_exec(*ssh_args)) 
+        env.acquire()
+        env.jobs[ env.jobid ].append( tid )
+        env.release()
+    else:
+        do_ssh_exec(*ssh_args)
+    return env
+
+def shexecute(env, parseResult, command):
+    return reduce(ssh_exec, zip(parseResult, repeat(command)), env)
+
+
+feature_test = lambda feature: ("" if feature[0] else "no") + feature[1]
+def getfeatures():
+    return " ".join(map(feature_test, [(READLINE, "history"), (MYSQL, "mysql"), (dbManager.get('ccs'), "evlbilookup")]))
+
+
+mk_prompt = compose(partial(swap_args(__add__), '> '), choice(truth, identity, const("")))
+class prompt:
+    def __init__(self):
+        self.set_prompt(None)
+    def get_prompt(self):
+        return self.prompt
+    def set_prompt(self, p):
+        self.prompt = mk_prompt(p)
+
+## Functors/functions to handle the output of the routines
+def printfn(x):
+    import pydoc
+    # if no screen size know, always page, otherwise only
+    # if txt to long
+    sz = screenSize[0]*screenSize[1] if screenSize else None
+    if not sz or len(x)>sz:
+        pydoc.pager(x)
+    else:
+        print x
+
+def ignorefn(*args):
+    pass
+
+class collector:
+    def __init__(self, listref):
+        self.items = listref
+
+    def __call__(self, x):
+        self.items.append(x)
+
+
+####################################################################
+##                      vlbish context
+####################################################################
+
+def xform_aliases(env, afn):
+    with open(afn) as aliasFile:
+        # transform aliases from [ ... ] to "..."
+        def xform_alias(acc, x):
+            (k, v) = x
+            if type(v) is list:
+                v = ','.join(v)
+            acc[k] = v
+            return acc
+        env.aliases = reduce(xform_alias, pickle.load(aliasFile).iteritems(), {})
+
+# one physical line can be slit into multiple logical ones by using 2 or more ';'s
+# note that we first partition the string into a part before comment, '#' and after the comment
+linesplit = compose(re.compile(r'\s*;;+\s*').split, itemgetter(0), methodcaller('partition', '#'))
+cleanup   = compose(str.strip, partial(re.compile(r'\s+;\s+').sub, ';'), partial(re.compile(r'^\s*;\s*').sub, ''))
+
+def playfile(fn, args):
+    try:
+        for line in open(fn):
+            if len(line):
+                yield line.rstrip('\n').format(*args)
+    except IOError, msg:
+        print "{0}: {1}".format(file, msg)
+    except EOFError:
+        raise StopIteration
+
+def readstdio(p):
+    while True:
+        try:
+            line = raw_input(p.get_prompt()).strip()
+            if len(line):
+                p.set_prompt( (yield line) )
+        except EOFError:
+            raise StopIteration
+
+def readstring(s):
+    for cmd in s.split('\n'):
+        yield cmd.strip()
+
+def readlist(l):
+    for line in l:
+        yield line.strip()
+
+def handlePlay(env, mo):
+    env.lijst.append( playfile(mo.group('file'), [] if mo.group('args') is None else mo.group('args').split()) )
+    return env
+
+class StopVLBIsh(Exception):
+    pass
+def stop_vlbish(*args):
+    raise StopVLBIsh
+
+class background_job(object):
+    def __init__(self):
+        self.stop              = False
+        self.threads           = []
+        self.conditionVariable = threading.Condition()
+
+    def append(self, item):
+        self.threads.append( item )
+        return self
+
+    def do_stop(self):
+        self.conditionVariable.acquire()
+        self.stop = True
+        self.conditionVariable.notify_all()
+        self.conditionVariable.release()
+        # join all threads
+        map(threading.Thread.join, self.threads)
+        return
+
+class vlbish_ctx(object):
+
+    def __init__(self, cmdgen, pfn, cfn, histFile):
+        self.lijst        = [cmdgen] if type(cmdgen) is not list else cmdgen # can now pass in list-of-generators ...
+        self.lines        = iter([])
+        self.lastGen      = self.lijst[-1]
+        self.printfn      = pfn
+        self.collectfn    = cfn
+        self.historyFile  = histFile
+        self.aliasFile    = os.path.join(os.getenv('HOME'), ".vlbish.aliases")
+        self.selection    = None
+        self.aliases      = { 'all': '0-15' }
+        self.jobs         = collections.defaultdict(background_job)
+        self.lockObject   = threading.Lock()
+        self.timeout      = 3.5
+
+    def __enter__(self):
+        # now need to do real work
+        # Load history, if exists
+        maybe_process_f(READLINE.read_history_file)( self.historyFile )
+        # load aliases [transform old-style alises into new-style ones] (if exist)
+        maybe_process_f(partial(xform_aliases, self))( self.aliasFile )
+        return self
+
+    def __exit__(self, etype, value, tb):
+        # clean up background jobs
+        for job in self.jobs.values():
+            job.do_stop()
+
+        # attempt to save history and aliases
+        try:
+            process_f(READLINE.write_history_file)( self.historyFile )
+        except Exception as E:
+            printf(self, "Failed to save history"+repr(E))
+        try:
+            process_f(compose(partial(pickle.dump, self.aliases), partial(swap_args(open), "w+b")))( self.aliasFile )
+        except Exception as E:
+            printf(self, "Failed to save aliases: "+repr(E))
+        printf(self, "\n*** kthxbye!")
+
+        # print exceptions that are not ones we're not interested in
+        if etype not in [None, StopVLBIsh]:
+            traceback.print_tb(tb) if userinput.debug else printf(self, repr(value))
+        # according to: http://effbot.org/zone/python-with-statement.htm
+        # "As an extra bonus, the __exit__ method can look at the exception, if any,
+        #  and suppress it or act on it as necessary.
+        #  To suppress the exception, just return a true value."
+        #
+        # Use this to treat 'StopVLBIsh' as not-really-an-exception
+        return etype == StopVLBIsh
+
+    def acquire(self):
+        return self.lockObject.acquire()
+    def release(self):
+        return self.lockObject.release()
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.next()
+
+    def next(self):
+        try:
+            return next(self.lines)
+        except StopIteration:
+            # if no more generators in lijst, then we're really done
+            if not self.lijst:
+                raise StopIteration
+            else:
+                try:
+                    # Current list of lines exhausted
+                    # attempt to get next line from generator
+                    # We must detect if a new generator was added 'behind our backs'
+                    # because the first time something is sent into a
+                    # generator, it MUST be None, according to the Pythonians
+                    toSend       = self.selection if self.lijst[-1] is self.lastGen else None
+                    self.lines   = iter(filter(truth, map(cleanup, linesplit(self.lijst[-1].send(toSend)))))
+                    self.lastGen = self.lijst[-1]
+                except StopIteration:
+                    # current line generator is exhausted, remove from stack
+                    self.lijst.pop()
+        # either a new set of lines have been generated or we popped a
+        # linegenerator so we need to trigger another 'next()' to see what's
+        # really next
+        return next(self)
+
+
+ewrap = lambda f, idx=0: (lambda *args: f(args[idx]))
+
+builtin_commands = [ 
+    (rxAlias,   handleAlias),
+    (rxDelete,  handleDelete),
+    (rxKill,    handleKill),
+    (rxRecord,  handleRecord),
+    (rxResolve, handleResolve),
+    (rxTimeout, handleTimeout),
+    (rxSleep,   handleSleep),
+    (rxPlay,    handlePlay),
+    (rxHelp,    usage),
+    (rxStop,    ewrap(handleStop)),
+    (rxQuit,    ewrap(setattr_('quit', True))),
+    (rxCommand, handleCommand),
+]
+
+maybe_record = lambda cmd: \
+    (lambda env: compose(const(env),
+                         choice(is_not_none, methodcaller('write', cmd+"\n"), identity),
+                         is_recording)(env))
+
+def commander(environment, cmd):
+    # prepare a function that maybe records this command, if necessary
+    record_cmd = maybe_record(cmd)
+    # run command against all known builtins [only allow for one builtin to be executed at a time]
+    for (mo, fn) in filter(itemgetter(0), map(lambda x: (x[0](cmd), x[1]), builtin_commands)):
+        # do not actually record the 'record ...' and 'stop' commands ... [or any built-in that's tagged with 'donotrecord']
+        record_this = identity if 'donotrecord' in mo.groupdict() else record_cmd
+        return compose(choice(maybe_get('quit'), stop_vlbish, identity), record_this)(maybe_exec(fn, environment)(environment, mo))
+    # Did the user specify a new selection?
+    return record_cmd(environment)
+
+def vlbish_main(reader, pfn, cfn, histf):
+    with vlbish_ctx(reader, pfn, cfn, histf) as env:
+        printf(env, "Welcome to vlbish {0} [{1}]".format(version, getfeatures()))
+        printf(env, " q to quit, h for help")
+        reduce(commander, env, env)
+
+## execute the commands found in the string!
+## No readline and no startup output cruft
+def vlbish(s):
+    rv = []
+    vlbish_main(readstring(s), ignorefn, collector(rv), None)
+    return rv
+
+
+#############################################################################################################
+##
+##
+##                                  Queries can be found below here
+##
+##
+#############################################################################################################
+
+
+query_datarouting_both = """
+select data_type.station, data_type.experiment, NULL as subjob_id, data_input_org.data_source_location AS
+receiver_type, data_type.data_source_location as sender_type
+    from data_input as data_input_org
+    join experiment.exper using (experiment)
+    join data_input as data_type using (experiment, station)
+    join cj_correlation_job using (experiment)
+    join cj_subjob using (job_id)
+    where experiment = '{experiment}'
+      and subjob_id = {subjob}
+      and data_input_org.start_time <= cj_subjob.start_time and cj_subjob.end_time <= data_input_org.end_time
+      and data_input_org.data_source_location != data_type.data_source_location
+      and {record_cond}
+union distinct
+select station, experiment, subjob_id, data_dest_location as receiver_type, data_source_location as sender_type
+    from data_routing
+    join cj_subjob using (subjob_id)
+    join cj_correlation_job using (job_id)
+    join experiment.exper using (experiment)
+    where subjob_id = {subjob} 
+      and ({stream_conds})
+""".format
+
+query_datarouting_experiment = """
+select distinct data_type.station, data_type.experiment, NULL as subjob_id, data_input_org.data_source_location AS
+receiver_type, data_type.data_source_location as sender_type
+    from data_input as data_input_org
+    join experiment.exper using (experiment)
+    join data_input as data_type using (experiment, station)
+    where experiment = '{experiment}'
+      and data_input_org.data_source_location != data_type.data_source_location
+      and {record_cond}
+""".format
+
+query_datarouting_subjob = """
+select data_type.station, data_type.experiment, NULL as subjob_id, data_input_org.data_source_location AS
+receiver_type, data_type.data_source_location as sender_type
+    from data_input as data_input_org
+    join experiment.exper using (experiment)
+    join data_input as data_type using (experiment, station)
+    join cj_correlation_job using (experiment)
+    join cj_subjob using (job_id)
+    where subjob_id = {subjob}
+      and data_input_org.start_time <= cj_subjob.start_time and cj_subjob.end_time <= data_input_org.end_time
+      and data_input_org.data_source_location != data_type.data_source_location
+      and {record_cond}
+union distinct
+select station, experiment, subjob_id, data_dest_location as receiver_type, data_source_location as sender_type
+    from data_routing
+    join cj_subjob using (subjob_id)
+    join cj_correlation_job using (job_id)
+    join experiment.exper using (experiment)
+    where subjob_id = {subjob}
+      and ({stream_conds})
+""".format
+
+query_datarouting_neither = """
+select data_type.station, data_type.experiment, NULL as subjob_id, data_input_org.data_source_location AS receiver_type, data_type.data_source_location as sender_type
+    from data_input as data_input_org
+    join experiment.exper using (experiment)
+    join data_input as data_type using (experiment, station)
+    where data_input_org.start_time <= utc_timestamp() and utc_timestamp() <= data_input_org.end_time
+      and experiment not like '%TEST'
+      and data_input_org.data_source_location != data_type.data_source_location
+      and {record_cond}
+
+union distinct
+select station, experiment, subjob_id, data_dest_location as data_source_location, data_source_location as sender_type
+    from data_routing
+    join cj_subjob using (subjob_id)
+    join data_logbook using (subjob_id)
+    join cj_correlation_job using (job_id)
+    join experiment.exper using (experiment)
+    where cj_subjob.start_time <= utc_timestamp() and utc_timestamp() <= cj_subjob.end_time
+      and correlator_status = 'UNKNOWN'
+      and experiment not like '%TEST'
+      and ({stream_conds})
+""".format
+
+query_select = {
+        (True, True):   query_datarouting_both,
+        (True, False):  query_datarouting_experiment,
+        (False, True):  query_datarouting_subjob,
+        (False, False): query_datarouting_neither
+}
+
+#############################################################################################################
+##
+##
+##                                  Drop into 'main()'
+##
+##
+#############################################################################################################
+
+if __name__ == '__main__':
+    # any non argument commandline arguments are taken to be vlbish commands
+    if userinput.commands:
+        # no history and no startup cruft
+        vlbish_main(readlist(userinput.commands), ignorefn, printfn, None)
+    else:
+        # interactive mode: history + startup cruft
+        historyFile = os.path.join( os.getenv('HOME'), ".vlbish.history") if READLINE else None
+        vlbish_main(readstdio(prompt()), printfn, printfn, historyFile)
+
