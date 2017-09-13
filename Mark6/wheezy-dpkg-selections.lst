@@ -152,6 +152,7 @@ exim4-base					install
 exim4-config					install
 exim4-daemon-light				install
 expat						install
+f2c						install
 fakeroot					install
 fftw-dev					install
 fftw2						install
@@ -175,6 +176,7 @@ fonts-stix					install
 foomatic-db-compressed-ppds			install
 foomatic-db-engine				install
 foomatic-filters				install
+fort77						install
 freepats					install
 ftp						install
 fuse						install
@@ -188,6 +190,7 @@ gcc-4.6						install
 gcc-4.6-base:amd64				install
 gcc-4.7						install
 gcc-4.7-base:amd64				install
+gcc-4.7-base:i386				install
 gcc-4.7-multilib				install
 gcc-multilib					install
 gccxml						install
@@ -404,8 +407,14 @@ lib32gcc1					install
 lib32gfortran3					install
 lib32gomp1					install
 lib32itm1					install
+lib32ncurses5					install
+lib32ncurses5-dev				install
 lib32quadmath0					install
+lib32readline6					install
+lib32readline6-dev				install
 lib32stdc++6					install
+lib32tinfo-dev					install
+lib32tinfo5					install
 liba52-0.7.4					install
 libaa1:amd64					install
 libaacs0:amd64					install
@@ -543,9 +552,11 @@ libbz2-1.0:amd64				install
 libc-bin					install
 libc-dev-bin					install
 libc6:amd64					install
+libc6:i386					install
 libc6-dev:amd64					install
 libc6-dev-i386					install
 libc6-i386					install
+libc6-i686:i386					install
 libcaca0:amd64					install
 libcairo-gobject2:amd64				install
 libcairo-perl					install
@@ -610,6 +621,7 @@ libcupsmime1:amd64				install
 libcupsppdc1:amd64				install
 libcurl3:amd64					install
 libcurl3-gnutls:amd64				install
+libcurses-perl					install
 libcwidget3					install
 libdaemon0					install
 libdatrie1:amd64				install
@@ -710,6 +722,7 @@ libgail-common:amd64				install
 libgail18:amd64					install
 libgc1c2					install
 libgcc1:amd64					install
+libgcc1:i386					install
 libgck-1-0					install
 libgconf-2-4:amd64				install
 libgconf2-4:amd64				install
@@ -966,6 +979,7 @@ libmythes-1.2-0					install
 libnatpmp1					deinstall
 libnautilus-extension1a				install
 libncurses5:amd64				install
+libncurses5-dev					install
 libncursesw5:amd64				install
 libneon27-gnutls				install
 libnet-dbus-perl				install
@@ -1093,8 +1107,10 @@ librasqal3					install
 libraw1394-11:amd64				install
 libraw5:amd64					deinstall
 librdf0						install
+libreadline-dev:amd64				install
 libreadline5:amd64				deinstall
 libreadline6:amd64				install
+libreadline6-dev:amd64				install
 libregexp-java					install
 libreoffice					install
 libreoffice-base				install
@@ -1208,6 +1224,7 @@ libtidy-0.99-0					install
 libtie-ixhash-perl				install
 libtiff4:amd64					install
 libtimedate-perl				install
+libtinfo-dev:amd64				install
 libtinfo5:amd64					install
 libtirpc1:amd64					install
 libtokyocabinet9:amd64				install
@@ -1363,6 +1380,7 @@ lp-solve					install
 lsb-base					install
 lsb-release					install
 lsof						install
+lsscsi						install
 luatex						install
 m4						install
 mahjongg					deinstall
@@ -1485,6 +1503,7 @@ python-apt					install
 python-apt-common				install
 python-aptdaemon				install
 python-aptdaemon.gtk3widgets			install
+python-argparse					install
 python-beautifulsoup				install
 python-brlapi					install
 python-cairo					install
@@ -1511,6 +1530,7 @@ python-gobject-2				install
 python-gtk2					install
 python-httplib2					install
 python-imaging					install
+python-importlib				install
 python-ipy					install
 python-libpcap					install
 python-libxml2					install
