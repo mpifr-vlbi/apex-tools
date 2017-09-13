@@ -69,6 +69,7 @@ findutils
 flex
 flex-doc
 fonts-liberation
+fort77
 ftp
 g++-multilib
 gcc-4.7-base
@@ -107,6 +108,8 @@ kmod
 krb5-locales
 laptop-detect
 less
+lib32ncurses5-dev
+lib32readline6-dev
 libacl1
 libapt-inst1.5
 libapt-pkg4.12
@@ -118,14 +121,15 @@ libboost-iostreams1.49.0
 libbz2-1.0
 libc-bin
 libc6
+libc6-dev-i386
+libc6-i386
 libclass-isa-perl
 libcomerr2
+libcurses-perl
 libcwidget3
 libdb5.1
 libept1.4.12
 libexpat1-dev
-libf2c2
-libf2c2-dev
 libfam0
 libfftw3-dev
 libfuse-dev
@@ -158,6 +162,7 @@ libpipeline1
 libpng12-dev
 libpopt0
 libprocps0
+libreadline-dev
 libreadline6
 libselinux1
 libsemanage-common
@@ -194,6 +199,7 @@ login
 logrotate
 lsb-base
 lsof
+lsscsi
 m4
 man-db
 manpages
@@ -235,9 +241,11 @@ procps
 pypibrowser
 python
 python-apt
+python-argparse
 python-cplane
 python-ctypeslib
 python-ethtool
+python-importlib
 python-libpcap
 python-m6utils
 python-matplotlib
