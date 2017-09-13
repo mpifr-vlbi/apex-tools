@@ -14,6 +14,8 @@ This subdirectory contains
 
  - script m6cc.py from Geoff, later also part of M6 Utils
 
+ - a better documented /etc/default/Mark6 file etc-default-mark6
+
 Two VEX-drived recording on Mark6, scripts by Geoff Crew (MIT Hays.):
 
     create-schedule.py
