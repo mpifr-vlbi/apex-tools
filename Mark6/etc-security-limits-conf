@@ -1,0 +1,5 @@
+#<domain>      <type>  <item>         <value>
+#
+oper             hard    memlock         unlimited
+oper             soft    memlock         unlimited
+
