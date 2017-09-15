@@ -1,0 +1,30 @@
+Format: 1.8
+Date: Fri, 27 Jun 2014 15:32:33 +0000
+Source: cplane
+Binary: python-cplane
+Architecture: source amd64
+Version: 1.0.14
+Distribution: unstable
+Urgency: low
+Maintainer: Chet Ruszczyk <chester@haystack.mit.edu>
+Changed-By: Chester Ruszczyk <chester@haystack.mit.edu>
+Description: 
+ python-cplane - VLBI Data Recording Service Control plane for Mark6 system
+Changes: 
+ cplane (1.0.14) unstable; urgency=low
+ .
+   * feature - support for subgrouping of disk modules by input_stream
+   * bug - reset=erase is now operational, data subdirectory is where data is recorded
+   * bug - removed debug pring statements, and many misc bugs.
+Checksums-Sha1: 
+ dec1860cb73ecc2f20fdf9551ccfbe3f94c26580 513 cplane_1.0.14.dsc
+ 283ef5315b4cc34c94996b2bc3db44db26720103 83285 cplane_1.0.14.tar.gz
+ 603e14f4b30d75d0b1e7b9d2f4c733fbed1be2b4 83406 python-cplane_1.0.14_amd64.deb
+Checksums-Sha256: 
+ 46e549c0d2ea3fc2cfc4300e6475de5d0d1e673c1e2124edb4fc48b21153f115 513 cplane_1.0.14.dsc
+ 88967e7e3ed213c59dc2ae5e372447a13de430489835c89b51329b76b88c5d9b 83285 cplane_1.0.14.tar.gz
+ 2208966f621ae01b6a719418e792ca68329d6a5693dcfbfb6d50eadb789b5271 83406 python-cplane_1.0.14_amd64.deb
+Files: 
+ 5e39d8125804568f732bb6609709e5b5 513 python optional cplane_1.0.14.dsc
+ aa42bcaf44cbf9f3389ff2f599da53e7 83285 python optional cplane_1.0.14.tar.gz
+ 4a29bf2633a9c6c2f520b5e36efd9109 83406 python optional python-cplane_1.0.14_amd64.deb

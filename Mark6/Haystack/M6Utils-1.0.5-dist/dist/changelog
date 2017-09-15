@@ -1,0 +1,3 @@
+version 1.0.5
+	* Bug - Makefile contained sectors.o which is not used any more, updated
+	

@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# Script to create required mount points
+#
+
+raid=/mnt/raid
+dsks=/mnt/disks/{1..4}/{0..7}
+meta=/mnt/disks/.meta/{1..4}/{0..7}
+
+eval set -- $raid $dsks $meta
+
+[ -d /mnt ] || mkdir /mnt
+
+for m ; do [ -d $m ] || mkdir -p $m ; done
+
+mounts=`find /mnt -type d -print | wc -l`
+
+[ "$mounts" = 76 ] || {
+    echo Expected 76 mounts in /mnt but $mounts mounts were found.
+    echo This might be a problem...please investigate.
+    exit 1
+}
+
+###########################################
+# to add mark6 group with oper and root added
+echo "Adding the mark6 group"
+eval "groupadd mark6"
+eval "adduser oper mark6"
+eval "adduser root mark6"
+
+# change the mount directory group
+echo "Changing the group of mount points"
+eval "chgrp -R mark6 /mnt/disks"
+eval "chgrp -R mark6 /mnt/raid"
+
+eval "chgrp mark6 /usr/local/bin/*"
+eval "chmod 2755 /usr/local/bin/dplane"
+eval "chgrp cplane /usr/bin/cplane"
+eval "chmod 2755 /usr/bin/cplane"
+
+#################
+# to update sudoers file
+echo '%mark6 ALL=NOPASSWD : /sbin/parted, /sbin/ifconfig, /sbin/ethtool, /bin/mount, /bin/umount, /sbin/mkfs.xfs, /usr/local/bin/dplane, /bin/chmod, /bin/chown' >> /etc/sudoers
+
+##################
+# add myri10ge to /etc/modprobe.d/blacklist.conf
+echo "# moved to the mark6 startup script to get WC enabled " >> /etc/modprobe.d/blacklist.conf
+echo "blacklist myri10ge" >> /etc/modprobe.d/blacklist.conf
+
+###############
+# replace rc.local filer
+echo "updating the rc.local file  "
+eval "mv /etc/rc.local /etc/rc.local.orig"
+eval "mv rc.local /etc"
+
+exit 0
+
+
+#
+# eof
+#
