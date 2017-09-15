@@ -37,10 +37,10 @@ FS on 64-bit machines:
     Runs slow, and can be starved of execution time.
 2)  Keep running a 64-bit Debian/Ubuntu but add "multiarch"/"multilib" support
     to install 32-bit system libraries on the 64-bit system, and then
-    compile FieldSystem with GCC/gfortran77 flags "-m32 -Wl,-melf-i386"
+    compile FieldSystem with GCC/gfortran77 flags "-m32 -Wl,-melf_i386"
 
-Option 2 looks better. This means changing many Makefiles because the
-build system in FieldSystem is literally from the last century.
+Option 2 has fever drawbacks. But it means changing many Makefiles,
+as the Makefile build system of FieldSystem is quite poorly designed.
 
 The script 'mk64.pl' partly the automates Makefile editing:
 
