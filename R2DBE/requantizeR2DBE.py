@@ -1,13 +1,34 @@
 #!/usr/bin/python
-import adc5g, corr
+"""
+Usage: requantizeR2DBE.py [<r2dbe hostname>]
 
+Readjust the quantization thresholds on the R2DBE.
+"""
+import adc5g, corr
+import sys, socket
+
+r2dbe_hostname = 'r2dbe-1'
+if len(sys.argv)==2:
+    r2dbe_hostname = sys.argv[1]
+
+# Check if we can resolve the host
+hip = ''
+try:
+    hip = socket.gethostbyname(r2dbe_hostname)
+except:
+    pass
+if len(hip) < 4:
+    print('Error: could not get host %s' % (r2dbe_hostname))
+    sys.exit(0)
+
+# Connect
 print 'Connecting...'
 roach2 = corr.katcp_wrapper.FpgaClient('r2dbe-1')
 roach2.wait_connected()
 
-# set default thresholds
+# Set default thresholds
 Nif = 2
-th = [64] * Nif
+th = [128] * Nif
 print 'Setting quantization levels to %s...' % (str(th))
 for ifnr in range(Nif):
 	roach2.write_int('r2dbe_quantize_%d_thresh' % (ifnr), th[ifnr])	
