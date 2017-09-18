@@ -2,8 +2,8 @@
 """
 Remotely configure a R2DBE after it has booted.
 
-Usage: ./APEX_config.py [-n|--noreconf] [-t|--threadIDs 0,1] [-s|--stationIDs Ap,Ar] [-p|--pols 0,0]
-                        [-a|--arp <IP[4],MAC>] [-S|--src IP1,IP2] [-D|--dst IP1,IP2]
+Usage: ./APEX_config.py [-n|--noreconf] [-t|--threadIDs 0,1] [-s|--stationIDs Ap,Ar] [-p|--pols 0,1]
+                        [-b|--rxsbands 0,0] [-B|besbands 0,0] [-a|--arp <IP[4],MAC>] [-S|--src IP1,IP2] [-D|--dst IP1,IP2]
                         [-i|--ifaces <eth2,eth3,...>]
                         <r2dbe hostname>
 
@@ -13,9 +13,11 @@ case after the R2DBE has successfully booted up.
 
 Options:
   --noreconf   skip reconfiguring the FPGA i.e. do not reprogram firmware (default: do reconfigure)
-  --threadIDs  a pair of comma-separated integer VDIF thread IDs to use on 10G ports (default: 0,1)
-  --stationIDs a pair of 2-letter VDIF station IDs to use on 10GbE ports (default: AR,Ar)
-  --pol        a pair of comma-separated integer VDIF pol-block IDs to use on 10G ports (default: 0,0)
+  --threadIDs  integer VDIF thread IDs per stream (default: 0,1)
+  --stationIDs two-letter VDIF station IDs per stream (default: Ap,Ap)
+  --pols       pol-block IDs per stream (default: 0,1; 0=L, 1=R)
+  --rxsbands   receiver sideband IDs per stream (default: 0,0; 0=USB, 1=LSB)
+  --besbands   backend baseband sideband IDs per stream (default: 0,0; 0=USB, 1=LSB)
   --arp        a pair of last-part-of-IPv4 and a MAC address, e.g. --arp 17,00:60:dd:44:46:38
                this argument can be specified multiple times to add more R2DBE ARP table entries
   --src        a list of source IP addresses (R2DBE-side IPs)
@@ -52,6 +54,10 @@ thread_id_0 = 0
 thread_id_1 = 1
 pol_block0 = 0
 pol_block1 = 0
+rec_sideband0 = 0
+rec_sideband1 = 0
+bdc_sideband0 = 0
+bdc_sideband1 = 0
 
 # Default ARP table : all broadcast
 arp = [0xffffffffffff] * 256  # last part of IP address <--> MAC
@@ -93,6 +99,22 @@ while len(args)>0 and args[0][0]=='-':
             sys.exit(0)
         pol_block0 = int(pids[0])
         pol_block1 = int(pids[1])
+        args = args[2:]
+    elif args[0]=='-b' or args[0]=='--rxsbands':
+        sbids = args[1].split(',')
+        if len(sbids) != 2:
+            print('Error: expected two comma-separated values for --rxsbands, got %s' % (args[1]))
+            sys.exit(0)
+        rec_sideband0 = int(sbids[0])
+        rec_sideband1 = int(sbids[1])
+        args = args[2:]
+    elif args[0]=='-B' or args[0]=='--besbands':
+        sbids = args[1].split(',')
+        if len(sbids) != 2:
+            print('Error: expected two comma-separated values for --besbands, got %s' % (args[1]))
+            sys.exit(0)
+        bdc_sideband0 = int(sbids[0])
+        bdc_sideband1 = int(sbids[1])
         args = args[2:]
     elif args[0]=='-a' or args[0]=='--arp':
         ipmac = args[1].split(',')
@@ -290,8 +312,8 @@ roach2.write_int('r2dbe_vdif_1_hdr_w3_station_id', station_id_1)
 
 eud_vers = 0x02
 
-w4_0 = eud_vers*2**24 + pol_block0
-w4_1 = eud_vers*2**24 + pol_block1
+w4_0 = eud_vers*2**24 + rec_sideband0*4 + bdc_sideband0*2 + pol_block0
+w4_1 = eud_vers*2**24 + rec_sideband1*4 + bdc_sideband1*2 + pol_block1
 
 roach2.write_int('r2dbe_vdif_0_hdr_w4',w4_0)
 roach2.write_int('r2dbe_vdif_1_hdr_w4',w4_1)

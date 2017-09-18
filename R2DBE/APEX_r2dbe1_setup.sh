@@ -8,9 +8,8 @@
 
 /etc/r2dbe/R2DBE_config.py --ifaces eth3,eth5 \
 	--stationIDs Ar,Ar --threadIDs 0,2 --pols 0,1 \
+	--rxsbands 0,0 --besbands 0,0 \
 	--src 192.168.1.13,192.168.1.15 \
 	--dst 192.168.1.3,192.168.1.5 \
 	--arp 3,0060dd440b75 --arp 5,0060dd4446c0 \
 	r2dbe-1
-
-
