@@ -26,7 +26,7 @@ if len(hip) < 4:
     sys.exit(0)
 
 # Connect and check timing
-roach2 = corr.katcp_wrapper.FpgaClient('r2dbe-1')
+roach2 = corr.katcp_wrapper.FpgaClient(r2dbe_hostname)
 roach2.wait_connected()
 while True:
 	t = int(time())
