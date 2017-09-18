@@ -22,42 +22,35 @@ auto eth0
 iface eth0 inet dhcp
 
 # Myricom cards eth2 - eth5
-# http://www.subnet-calculator.com/
-#  netmask 255.255.255.240 to use lower 4-bit for each net
-#  eth2 : 10.10.1.1  -- 10.10.1.14 net .0  bcast .15
-#  eth3 : 10.10.1.17 -- 10.10.1.30 net .16 bcast .31
-#  eth4 : 10.10.1.33 -- 10.10.1.46 net .32 bcast .47
-#  eth5 : 10.10.1.49 -- 10.10.1.62 net .48 bcast .63
 
 allow-hotplug eth2
 iface eth2 inet static
-        network 10.10.1.0
-        address 10.10.1.1
-        broadcast 10.10.1.15
-        netmask 255.255.255.240
+        address 192.168.1.2
+        netmask 255.255.255.0
+        network 192.168.1.0
+        broadcast 192.168.1.255
         mtu 9000
 
 allow-hotplug eth3
 iface eth3 inet static
-        network 10.10.1.16
-        address 10.10.1.17
-        broadcast 10.10.1.31
-        netmask 255.255.255.240
+        address 192.168.1.3
+        netmask 255.255.255.0
+        network 192.168.1.0
+        broadcast 192.168.1.255
         mtu 9000
 
 allow-hotplug eth4
 iface eth4 inet static
-        network 10.10.1.32
-        address 10.10.1.33
-        broadcast 10.10.1.47
-        netmask 255.255.255.240
+        address 192.168.1.4
+        netmask 255.255.255.0
+        network 192.168.1.0
+        broadcast 192.168.1.255
         mtu 9000
 
 allow-hotplug eth5
 iface eth5 inet static
-        network 10.10.1.48
-        address 10.10.1.49
-        broadcast 10.10.1.63
-        netmask 255.255.255.240
+        address 192.168.1.5
+        netmask 255.255.255.0
+        network 192.168.1.0
+        broadcast 192.168.1.255
         mtu 9000
-
