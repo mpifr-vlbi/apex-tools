@@ -54,16 +54,24 @@ print 'Configuring 10 GbE...'
 #  eth5 : 10.10.1.49 -- 10.10.1.62 net .48 bcast .63
 
 # ARP table : MAC <--> last part of IP address
+# arp     = [0xffffffffffff] * 256  # defaults
+# arp[1]  = 0x0060dd440b74     # mark6-4031 eth2
+# arp[17] = 0x0060dd440b75     # mark6-4031 eth3
+# arp[33] = 0x0060dd444618     # mark6-4031 eth4
+# arp[49] = 0x0060dd444619     # mark6-4031 eth5
+
+#APEX vlbi2
 arp     = [0xffffffffffff] * 256  # defaults
-arp[1]  = 0x0060dd440b74     # mark6-4031 eth2
-arp[17] = 0x0060dd440b75     # mark6-4031 eth3
-arp[33] = 0x0060dd444618     # mark6-4031 eth4
-arp[49] = 0x0060dd444619     # mark6-4031 eth5
+arp[2]  = 0x0060dd444638     # vlbi2 eth2
+arp[3]  = 0x0060dd444639     # vlbi2 eth3
+arp[4]  = 0x0060dd444642     # vlbi2 eth4
+arp[5]  = 0x0060dd444643     # vlbi2 eth5
+
 print 'Using ARP table : %s' % (str(arp))
 
 # Src and Dest IP
-ip_base = [10,10,1,1]
-for ip_part, name in ((1,'tengbe_0'), (17,'tengbe_1')):
+ip_base = [192,168,1,1]
+for ip_part, name in ((2,'tengbe_0'), (3,'tengbe_1')):
 
     # VDIF dest ip   = 10.10.1.<xx>
     # VDIF source ip = 10.10.1.<xx+4>
@@ -90,16 +98,22 @@ sleep(2)
 #######################################
 # set headers
 #######################################
+#changed 27/7/2015 to merge new r2bde_start.py with new clock epoch JB
 # calculate reference epoch
-ref_ep_num = 30 # 2014 part 2 = 29, 2015 part 1 = 30
-ref_ep_date = datetime(2015,1,1,0,0,0) # date of start of epoch January 1 2015
+utcnow = datetime.utcnow()
+ref_start = datetime(2000,1,1,0,0,0)
+
+nyrs = utcnow.year - ref_start.year 
+ref_ep_num = 2*nyrs+1*(utcnow.month>6)
+
+ref_ep_date = datetime(utcnow.year,6*(utcnow.month>6)+1,1,0,0,0) 
+# date ofstart of epoch 01 July 2015
 print 'Using VDIF reference epoch %d (%s)' % (ref_ep_num, str(ref_ep_date))
-print 'Synchronizing R2DBE to computer NTP time...'
 
 ##############
 #   W0
 ##############
-utcnow = datetime.utcnow()
+
 
 delta       = utcnow-ref_ep_date
 sec_ref_ep  = delta.seconds + 24*3600*delta.days
@@ -125,6 +139,7 @@ roach2.write_int('r2dbe_vdif_1_hdr_w0_sec_ref_ep',sec_ref_ep)
 roach2.write_int('r2dbe_vdif_0_hdr_w1_ref_ep',ref_ep_num)
 roach2.write_int('r2dbe_vdif_1_hdr_w1_ref_ep',ref_ep_num)
 
+
 #############
 #   W2
 #############
@@ -138,33 +153,43 @@ roach2.write_int('r2dbe_vdif_1_hdr_w1_ref_ep',ref_ep_num)
 roach2.write_int('r2dbe_vdif_0_hdr_w3_thread_id', thread_id_0)
 roach2.write_int('r2dbe_vdif_1_hdr_w3_thread_id', thread_id_1)
 
+# convert chars to 16 bit int
+#st0 = ord(station_id_0[0])*2**8 + ord(station_id_0[1])
+#st1 = ord(station_id_1[0])*2**8 + ord(station_id_1[1])
+
 roach2.write_int('r2dbe_vdif_0_hdr_w3_station_id', station_id_0)
 roach2.write_int('r2dbe_vdif_1_hdr_w3_station_id', station_id_1)
-
 
 ############
 #   W4
 ############
 
-# nothing to do
+#eud_vers = 0x02
+
+#w4_0 = eud_vers*2**24 + pol_block0
+#w4_1 = eud_vers*2**24 + pol_block1
+
+#roach2.write_int('r2dbe_vdif_0_hdr_w4',w4_0)
+#roach2.write_int('r2dbe_vdif_1_hdr_w4',w4_1)
 
 ############
 #   W5
 ############
 
-# nothing to do
+# the offset in FPGA clocks between the R2DBE internal pps
+# and the incoming GPS pps
 
 ############
 #   W6
 ############
 
-# nothing to do
+#  PSN low word, written by FPGA to VDIF header
 
-############
+###########
 #   W7
 ############
 
-# nothing to do
+# PSN high word, written by FPGA to VDIF header
 
 
 # select test data 
