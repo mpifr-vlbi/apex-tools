@@ -24,8 +24,7 @@ Options:
 import adc5g, corr
 from time import sleep
 from datetime import datetime, time, timedelta
-import netifaces
-import sys
+import netifaces, socket, sys
 
 is_test = 0
 
@@ -122,6 +121,16 @@ if len(args) not in [0,1]:
 
 if len(args)==1:
     r2dbe_hostname = args[0]
+
+# Check if we can resolve the host
+hip = ''
+try:
+    hip = socket.gethostbyname(r2dbe_hostname)
+except:
+    pass
+if len(hip) < 4:
+    print('Error: could not get host %s' % (r2dbe_hostname))
+    sys.exit(0)
 
 # print ('Parsed args : t0=%d t1=%d s0=%X s1=%X host=%s' % (thread_id_0,thread_id_1,station_id_0,station_id_1,r2dbe_hostname))
 
