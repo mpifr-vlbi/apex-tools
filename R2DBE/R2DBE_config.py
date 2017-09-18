@@ -4,6 +4,7 @@ Remotely configure a R2DBE after it has booted.
 
 Usage: ./APEX_config.py [-n|--noreconf] [-t|--threadIDs 0,1] [-s|--stationIDs Ap,Ar]
                         [-a|--arp <IP[4],MAC>] [-S|--src IP1,IP2,...] [-D|--dst IP1,IP2,...]
+                        [-i|--ifaces <eth2,eth3,...>]
                         <r2dbe hostname>
 
 The default R2DBE host name is r2dbe-1. The tcpborphserver3 must
@@ -18,6 +19,7 @@ Options:
                this argument can be specified multiple times to add more R2DBE ARP table entries
   --src        a list of source IP addresses (R2DBE-side IPs)
   --dst        a list of destibation IP addresses (Mark6-side IPs)
+  --ifaces     a list of Mark6 10G interface names in order as connected to R2DBE tengbe_0, tengbe_1
 """
 import adc5g, corr
 from time import sleep
@@ -106,6 +108,9 @@ while len(args)>0 and args[0][0]=='-':
             dest_ips[i] = IP2intarray(iplist[i])
             print ('Add dst IP : stream %d to %s' % (i,str(dest_ips[i])))
         do_local_IPs = False
+        args = args[2:]
+    elif args[0]=='-i' or args[0]=='--ifaces':
+        local_ifaces = args[1].split(',')
         args = args[2:]
     else:
         print('Error: unknown arg %s' % (args[0]))
