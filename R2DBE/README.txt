@@ -58,9 +58,19 @@ Basically:
 === Utilities
 ===========================================================================================
 
-APEX_config.py : based on VDIF_test.py from the SMA wideband correlator git repository,
-   configures the R2DBE (clock phase calibration, network setup, time sync, VDIF mode
-   setup (hard-coded VDIF epoch 30 = 01/01/2015), ...)
+R2DBE_config.py : based on VDIF_test.py from the SMA wideband correlator git repository,
+   configures the R2DBE (clock phase calibration, network setup, time sync, VDIF setup
+
+APEX_r2dbe1_setup.sh : invokes R2DBE_config.py with settings for EHT 2017 for r2dbe-1
+
+APEX_r2dbe2_setup.sh : invokes R2DBE_config.py with settings for EHT 2017 for r2dbe-2
+
+r2dbe_start.py : SMA's script r2dbe_start.py for configuring R2DBE, slightly modified
+   such that the config file now also contains 'thread_id' as one of thesettings
+
+eht-r2dbe-1.cfg : settings file for r2dbe_start.py with EHT 2017 config for r2dbe-1
+
+eht-r2dbe-2.cfg : settings file for r2dbe_start.py with EHT 2017 config for r2dbe-2
 
 dnsmasq.conf.r2dbe-APEX : settings for dnsmasq to respond to R2DBE's DHCP/BOOTP queries
    during the first stage of R2DBE network booting ; provides static IP and the location
