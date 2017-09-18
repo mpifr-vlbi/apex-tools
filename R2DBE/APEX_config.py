@@ -3,7 +3,8 @@
 Remotely configure a R2DBE after it has booted.
 
 Usage: ./APEX_config.py [-n|--noreconf] [-t|--threadIDs 0,1] [-s|--stationIDs Ap,Ar]
-                        [-a|--arp <IP[4],MAC>] [<hostname>]
+                        [-a|--arp <IP[4],MAC>] [-S|--src IP1,IP2,...] [-D|--dst IP1,IP2,...]
+                        <r2dbe hostname>
 
 The default R2DBE host name is r2dbe-1. The tcpborphserver3 must
 be running on the R2DBE host, usually this is automatically the
@@ -13,8 +14,10 @@ Options:
   --noreconf   skip reconfiguring the FPGA i.e. do not reprogram firmware (default: do reconfigure)
   --threadIDs  a pair of comma-separated integer VDIF thread IDs to use on 10GbE ports (default: 0,1)
   --stationIDs a pair of 2-letter VDIF station IDs to use on 10GbE ports (default: AR,Ar)
-  --arp        a pair of last-part-of-IPv4 and a MAC address, e.g., --arp 17,00:60:dd:44:46:38,
+  --arp        a pair of last-part-of-IPv4 and a MAC address, e.g. --arp 17,00:60:dd:44:46:38
                this argument can be specified multiple times to add more R2DBE ARP table entries
+  --src        a list of source IP addresses (R2DBE-side IPs)
+  --dst        a list of destibation IP addresses (Mark6-side IPs)
 """
 import adc5g, corr
 from time import sleep
@@ -50,6 +53,9 @@ thread_id_1 = 1
 arp = [0xffffffffffff] * 256  # last part of IP address <--> MAC
 do_local_ARP = True           # copy MACs from local computer interfaces
 local_ifaces = ['eth2','eth3','eth4','eth5']
+do_local_IPs = True           # determine src/dst IPs from local computer interfaces
+dest_ips = [[192,168,1,2], [192,168,1,3], [192,168,1,4], [192,168,1,5]]
+source_ips = [[192,168,1,6], [192,168,1,7], [192,168,1,8], [192,168,1,9]]
 
 # Command line options
 args = sys.argv[1:]
@@ -76,16 +82,52 @@ while len(args)>0 and args[0][0]=='-':
         station_id_0 = ord(sids[0][0])*256 + ord(sids[0][1])
         station_id_1 = ord(sids[1][0])*256 + ord(sids[1][1])
         args = args[2:]
+    elif args[0]=='-a' or args[0]=='--arp':
+        ipmac = args[1].split(',')
+        if len(ipmac) != 2:
+            print('Error: expected a pair of <IP addr part 4>,<MAC> (example: 17,00:60:dd:44:46:38) but got %s' % (ipmac))
+            sys.exit(0)
+        do_local_ARP = False
+        ip = int(ipmac[0])
+        mac = MACc2int(ipmac[1])
+        arp[ip] = mac
+        print ('Add ARP : dst %s : IPs x.x.x.%d mapped to MAC %012x' % ('eth*',ip,mac))
+        args = args[2:]
+    elif args[0]=='-S' or args[0]=='--src':
+        iplist = args[1].split(',')
+        for i in range(len(iplist)):
+            source_ips[i] = IP2intarray(iplist[i])
+            print ('Add src IP : stream %d from %s' % (i,str(source_ips[i])))
+        do_local_IPs = False
+        args = args[2:]
+    elif args[0]=='-D' or args[0]=='--dst':
+        iplist = args[1].split(',')
+        for i in range(len(iplist)):
+            dest_ips[i] = IP2intarray(iplist[i])
+            print ('Add dst IP : stream %d to %s' % (i,str(dest_ips[i])))
+        do_local_IPs = False
+        args = args[2:]
     else:
         print('Error: unknown arg %s' % (args[0]))
         sys.exit(0)
+
 if len(args) not in [0,1]:
     print('Error: too many args, %s was unexpected' % (str(args[1:])))
     sys.exit(0)
+
 if len(args)==1:
     r2dbe_hostname = args[0]
 
-print ('Parsed args : t0=%d t1=%d s0=%X s1=%X host=%s' % (thread_id_0,thread_id_1,station_id_0,station_id_1,r2dbe_hostname))
+# print ('Parsed args : t0=%d t1=%d s0=%X s1=%X host=%s' % (thread_id_0,thread_id_1,station_id_0,station_id_1,r2dbe_hostname))
+
+# Derive default R2DBE src/dst IP addresses using local interfaces
+if do_local_IPs:
+    for i in range(len(local_ifaces)):
+        iface = local_ifaces[i]
+        dest_ips[i] = IP2intarray( netifaces.ifaddresses(iface)[netifaces.AF_INET][0]['addr'] )
+        source_ips[i] = list(dest_ips[i])
+        source_ips[i][3] = source_ips[i][3] + 10
+        print ('Auto-IP : stream %d : adding src=%s dst[local %s]=%s' % (i, str(source_ips[i]),iface,str(dest_ips[i])))
 
 # Derive a default R2DBE ARP table using local IPs and MACs
 if do_local_ARP:
@@ -94,9 +136,6 @@ if do_local_ARP:
         mac = MACc2int( netifaces.ifaddresses(iface)[netifaces.AF_LINK][0]['addr'] )
         arp[ip_i4] = mac
         print ('Auto-ARP : dst %s : IPs x.x.x.%d mapped to MAC %012x' % (iface,ip_i4,mac))
-
-
-sys.exit(0)
 
 # Connect
 roach2 = corr.katcp_wrapper.FpgaClient(r2dbe_hostname)
@@ -127,28 +166,28 @@ adc5g.unset_test_mode(roach2, 0)
 adc5g.unset_test_mode(roach2, 1)
 
 # Set 10 gbe vals
-print 'Configuring 10 GbE...'
+for ip_idx, corename in ((0,'tengbe_0'), (1,'tengbe_1')):
 
-# Src and Dest IP
-ip_base = [192,168,1,1]
-for ip_part, name in ((2,'tengbe_0'), (3,'tengbe_1')):
+    print ('Configuring 10 GbE core %s...' % (corename))
 
     # VDIF dest ip   = 10.10.1.<xx>
     # VDIF source ip = 10.10.1.<xx+4>
     # tengbe_0 --> 10.10.1.1 (mark6-4031 eth2),  tengbe_1 --> 10.10.1.17 (mark6-4031 eth3)
     # tengbe_2 not in current firwmare,          tengbe_3 not in current firmware
-
-    dest_ip = (ip_base[0]<<24) + (ip_base[1]<<16) + (ip_base[2]<<8) + (ip_part + 0)
-    src_ip  = (ip_base[0]<<24) + (ip_base[1]<<16) + (ip_base[2]<<8) + (ip_part + 4)
+    d = dest_ips[ip_idx]
+    s = source_ips[ip_idx]
+    dest_ip = (d[0]<<24) + (d[1]<<16) + (d[2]<<8) + d[3]
+    src_ip = (s[0]<<24) + (s[1]<<16) + (s[2]<<8) + s[3]
     src_mac = (2<<40) + (2<<32) + 20 + src_ip
+    print ('   streaming from ip=%s mac=%012X to remote ip=%s port=%d' % (s,src_mac,d,dest_udp_port))
 
-    roach2.config_10gbe_core('r2dbe_' + name + '_core', src_mac, src_ip, 4000, arp)
-    roach2.write_int('r2dbe_' + name + '_dest_ip', dest_ip)
-    roach2.write_int('r2dbe_' + name + '_dest_port', dest_udp_port)
+    roach2.config_10gbe_core('r2dbe_' + corename + '_core', src_mac, src_ip, 4000, arp)
+    roach2.write_int('r2dbe_' + corename + '_dest_ip', dest_ip)
+    roach2.write_int('r2dbe_' + corename + '_dest_port', dest_udp_port)
 
     # reset tengbe (this is VITAL)
-    roach2.write_int('r2dbe_' + name + '_rst', 1)
-    roach2.write_int('r2dbe_' + name + '_rst', 0)
+    roach2.write_int('r2dbe_' + corename + '_rst', 1)
+    roach2.write_int('r2dbe_' + corename + '_rst', 0)
     
 # arm the one pps
 roach2.write_int('r2dbe_onepps_ctrl', 1<<31)
