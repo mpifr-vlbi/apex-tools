@@ -56,9 +56,9 @@ _REC_CHAR_TO_FLAG = {
 
 _DEFAULT_CONFIG = {
     'if0':
-        {'station_id':'lh','pol':'1','bdc_sideband':'0','rec_sideband':'0'},
+        {'station_id':'lh','thread_id':'0','pol':'1','bdc_sideband':'0','rec_sideband':'0'},
     'if1':
-        {'station_id':'ll','pol':'1','bdc_sideband':'1','rec_sideband':'1'}
+        {'station_id':'ll','thread_id':'0','pol':'1','bdc_sideband':'0','rec_sideband':'0'}
 }
 
 config = _DEFAULT_CONFIG
