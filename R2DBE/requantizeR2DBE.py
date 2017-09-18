@@ -23,7 +23,7 @@ if len(hip) < 4:
 
 # Connect
 print 'Connecting...'
-roach2 = corr.katcp_wrapper.FpgaClient('r2dbe-1')
+roach2 = corr.katcp_wrapper.FpgaClient(r2dbe_hostname)
 roach2.wait_connected()
 
 # Set default thresholds
