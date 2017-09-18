@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import adc5g, corr
 
 def get_th_16_84(x):
