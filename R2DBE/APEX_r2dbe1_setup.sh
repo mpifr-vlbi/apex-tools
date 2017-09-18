@@ -1,5 +1,5 @@
 #
-# Configure the R2DBE-1 attached to Mark6 vlbi1"
+# Configure the R2DBE-1 attached to Mark6 vlbi1
 #
 
 # If Mark6 (vlbi1) network cards change re-run this
