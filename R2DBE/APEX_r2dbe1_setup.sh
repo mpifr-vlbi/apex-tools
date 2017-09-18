@@ -13,3 +13,5 @@
 	--dst 192.168.1.3,192.168.1.5 \
 	--arp 3,0060dd440b75 --arp 5,0060dd4446c0 \
 	r2dbe-1
+
+# equivalent to "r2dbe_start.py -f eht-r2dbe-1.cfg -v  r2dbe-1" but also configures the R2DBE network settings

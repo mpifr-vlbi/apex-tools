@@ -14,3 +14,6 @@
 	--arp 3,0060dd444639 \
 	--arp 5,0060dd444643 \
 	r2dbe-2
+
+# equivalent to "r2dbe_start.py -f eht-r2dbe-2.cfg -v  r2dbe-2" but also configures the R2DBE network settings
+
