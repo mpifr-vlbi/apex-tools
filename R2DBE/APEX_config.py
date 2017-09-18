@@ -1,35 +1,118 @@
 #!/usr/bin/python
+"""
+Remotely configure a R2DBE after it has booted.
+
+Usage: ./APEX_config.py [-n|--noreconf] [-t|--threadIDs 0,1] [-s|--stationIDs Ap,Ar]
+                        [-a|--arp <IP[4],MAC>] [<hostname>]
+
+The default R2DBE host name is r2dbe-1. The tcpborphserver3 must
+be running on the R2DBE host, usually this is automatically the
+case after the R2DBE has successfully booted up.
+
+Options:
+  --noreconf   skip reconfiguring the FPGA i.e. do not reprogram firmware (default: do reconfigure)
+  --threadIDs  a pair of comma-separated integer VDIF thread IDs to use on 10GbE ports (default: 0,1)
+  --stationIDs a pair of 2-letter VDIF station IDs to use on 10GbE ports (default: AR,Ar)
+  --arp        a pair of last-part-of-IPv4 and a MAC address, e.g., --arp 17,00:60:dd:44:46:38,
+               this argument can be specified multiple times to add more R2DBE ARP table entries
+"""
 import adc5g, corr
 from time import sleep
 from datetime import datetime, time, timedelta
+import netifaces
 import sys
 
 is_test = 0
-dest_udp_port = 4001
 
+def usage():
+    print __doc__
+
+def MACc2int(mac):
+    mac_val = mac.replace(':','')
+    mac_val = int(mac_val,base=16)
+    return mac_val
+
+def IP2intarray(ip):
+    ip_vals = ip.split('.')
+    ip_vals = [int(v) for v in ip_vals]
+    return ip_vals
+
+# Defaults
+r2dbe_hostname = 'r2dbe-1'
+dest_udp_port = 4001
+do_reprogram = True    # upload the FPGA firmware again
 station_id_0  = 0x4152 # 'AR' for APEX R2DBE
 station_id_1  = 0x4172 # 'Ar' to discern other IF
-
-# set thread id for both blocks
-# perhaps thread is always 0?
 thread_id_0 = 0
 thread_id_1 = 1
 
-roach2 = corr.katcp_wrapper.FpgaClient('r2dbe-1')
+# Default ARP table : all broadcast
+arp = [0xffffffffffff] * 256  # last part of IP address <--> MAC
+do_local_ARP = True           # copy MACs from local computer interfaces
+local_ifaces = ['eth2','eth3','eth4','eth5']
+
+# Command line options
+args = sys.argv[1:]
+while len(args)>0 and args[0][0]=='-':
+    if args[0]=='-n' or args[0]=='--noreconf':
+        do_reprogram = False
+        args = args[1:]
+    elif args[0]=='-h' or args[0]=='--help':
+        usage()
+        sys.exit(0)
+    elif args[0]=='-t' or args[0]=='--threadIDs':
+        tids = args[1].split(',')
+        if len(tids) != 2:
+            print('Error: expected two comma-separated values for --threadIDs, got %s' % (args[1]))
+            sys.exit(0)
+        thread_id_0 = int(tids[0])
+        thread_id_1 = int(tids[1])
+        args = args[2:]
+    elif args[0]=='-s' or args[0]=='--stationIDs':
+        sids = args[1].split(',')
+        if (len(sids) != 2) or (len(sids[0]) != 2 or len(sids[1]) != 2):
+            print('Error: expected two two-letter comma-separated values for --stationIDs, got %s' % (args[1]))
+            sys.exit(0)
+        station_id_0 = ord(sids[0][0])*256 + ord(sids[0][1])
+        station_id_1 = ord(sids[1][0])*256 + ord(sids[1][1])
+        args = args[2:]
+    else:
+        print('Error: unknown arg %s' % (args[0]))
+        sys.exit(0)
+if len(args) not in [0,1]:
+    print('Error: too many args, %s was unexpected' % (str(args[1:])))
+    sys.exit(0)
+if len(args)==1:
+    r2dbe_hostname = args[0]
+
+print ('Parsed args : t0=%d t1=%d s0=%X s1=%X host=%s' % (thread_id_0,thread_id_1,station_id_0,station_id_1,r2dbe_hostname))
+
+# Derive a default R2DBE ARP table using local IPs and MACs
+if do_local_ARP:
+    for iface in local_ifaces:
+        ip_i4 = IP2intarray( netifaces.ifaddresses(iface)[netifaces.AF_INET][0]['addr'] )[3]
+        mac = MACc2int( netifaces.ifaddresses(iface)[netifaces.AF_LINK][0]['addr'] )
+        arp[ip_i4] = mac
+        print ('Auto-ARP : dst %s : IPs x.x.x.%d mapped to MAC %012x' % (iface,ip_i4,mac))
+
+
+sys.exit(0)
+
+# Connect
+roach2 = corr.katcp_wrapper.FpgaClient(r2dbe_hostname)
 roach2.wait_connected()
-
-if len(sys.argv)==1:
-	print 'Programming the R2DBE FPGA with firmware file r2dbe_rev2.bof...'
-	roach2.progdev('r2dbe_rev2.bof') # JanW: must do 'gzip -d r2dbe_rev2.bof.gz' manually 
-	roach2.wait_connected()
+if do_reprogram:
+    print 'Programming the R2DBE FPGA with firmware file r2dbe_rev2.bof...'
+    roach2.progdev('r2dbe_rev2.bof') # JanW: must do 'gzip -d r2dbe_rev2.bof.gz' manually 
+    roach2.wait_connected()
 else:
-	print 'Skipping R2DBE FPGA reconfiguration step, proceeding directly to settings change.'
+    print 'Skipping R2DBE FPGA reconfiguration step, proceeding directly to settings change.'
 
-# set data mux to ADC
+# Set data mux to ADC
 roach2.write_int('r2dbe_data_mux_0_sel', 1)
 roach2.write_int('r2dbe_data_mux_1_sel', 1)
 
-# calibrate ADCs
+# Calibrate ADCs
 print 'Calibrating ADC clock phase...'
 adc5g.set_test_mode(roach2, 0)
 adc5g.set_test_mode(roach2, 1)
@@ -43,31 +126,8 @@ print opt, glitches
 adc5g.unset_test_mode(roach2, 0)
 adc5g.unset_test_mode(roach2, 1)
 
-# set 10 gbe vals
+# Set 10 gbe vals
 print 'Configuring 10 GbE...'
-
-# APEX mark6-4031
-#  netmask 255.255.255.240 to use lower 4-bit for each net
-#  eth2 : 10.10.1.1  -- 10.10.1.14 net .0  bcast .15
-#  eth3 : 10.10.1.17 -- 10.10.1.30 net .16 bcast .31
-#  eth4 : 10.10.1.33 -- 10.10.1.46 net .32 bcast .47
-#  eth5 : 10.10.1.49 -- 10.10.1.62 net .48 bcast .63
-
-# ARP table : MAC <--> last part of IP address
-# arp     = [0xffffffffffff] * 256  # defaults
-# arp[1]  = 0x0060dd440b74     # mark6-4031 eth2
-# arp[17] = 0x0060dd440b75     # mark6-4031 eth3
-# arp[33] = 0x0060dd444618     # mark6-4031 eth4
-# arp[49] = 0x0060dd444619     # mark6-4031 eth5
-
-#APEX vlbi2
-arp     = [0xffffffffffff] * 256  # defaults
-arp[2]  = 0x0060dd444638     # vlbi2 eth2
-arp[3]  = 0x0060dd444639     # vlbi2 eth3
-arp[4]  = 0x0060dd444642     # vlbi2 eth4
-arp[5]  = 0x0060dd444643     # vlbi2 eth5
-
-print 'Using ARP table : %s' % (str(arp))
 
 # Src and Dest IP
 ip_base = [192,168,1,1]
