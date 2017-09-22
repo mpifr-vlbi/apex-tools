@@ -62,22 +62,37 @@ Check that data is arriving at Mark6
    so that 'jive5ab' is able to receive it (UDP capture), however
    it is less critical for 'dplane' (raw packet capture)
 
-$ vdiftimeUDP --offset=8 46227 --thread=0
-$ vdiftimeUDP --offset=8 46227 --thread=1
-$ vdiftimeUDP --offset=8 46227 --thread=2
-$ vdiftimeUDP --offset=8 46227 --thread=3
+$ vdiftimeUDP --offset=8 --thread=0 46227
+$ vdiftimeUDP --offset=8 --thread=1 46227
+$ vdiftimeUDP --offset=8 --thread=2 46227
+$ vdiftimeUDP --offset=8 --thread=3 46227
    (should show data arriving)
+
+Or start R2DBE
+
+$ /etc/r2de/APEX_r2dbe1_setup.sh
+$ /etc/r2de/APEX_r2dbe2_setup.sh
+
+$ vdiftimeUDP --offset=8 --thread=0 4001
+$ vdiftimeUDP --offset=8 --thread=2 4001
+   or 
+$ vdiftimeUDP --offset=8 --thread=1 4001
+$ vdiftimeUDP --offset=8 --thread=3 4001
 
 ---------------------------------------------------------------------------------
 
 Recording setup
 
-$ da-client -p 2620
+vlbi$ da-client -p 2620
+
+or
+
+vlbimc$ da-client -p 2620 -h vlbi1
 
 net_protocol=udpsnor : 768M : 256M : 4;
-mtu=9000;
-net_port=46227;
-set_disks=1:2:3:4;
+mtu = 9000;
+net_port = 46227;
+set_disks = 1:2:3:4;
 record = mk6 : 1;
 record = nthread : : 4 ;
 mode = VDIF_8192-4096-1-2;
@@ -87,6 +102,12 @@ mode = VDIF_8192-4096-1-2;
       record = nthread : <nreaders> : <nwriters> :: around 3 or 4 writers for 16 Gbit/s, more becomes counterproductive
       evlbi?                                     :: returns the loss% statistics of an ongoing recording
 
-record = on : j5test06 ;
+net_port = 46227;
+record = on : j5dbbc01 ;
+evlbi?
+record = off ;
+
+net_port = 4001;
+record = on : j5rdbe01 ;
 evlbi?
 record = off ;
