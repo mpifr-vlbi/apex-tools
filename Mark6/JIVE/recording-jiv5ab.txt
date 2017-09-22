@@ -35,10 +35,11 @@ writers.
 
 If network tuning config file not yet installed:
 
-$ sudo cp ../sysctl/40-jive5ab.conf /etc/sysctl.d/
-$ sudo /sbin/sysctl --system
-or
-$ sudo /sbin/sysctl -p /etc/sysctl.d/40-jive5ab.conf
+root$ cat ../sysctl/mixed.conf >> /etc/sysctl.conf
+root$ /sbin/sysctl --system
+  or
+root$ cat ../sysctl/mixed.conf >> /etc/sysctl.conf
+root$ /sbin/sysctl -p
 
 If da-client bug not yet fixed:
 
