@@ -1,0 +1,41 @@
+
+---- Harro, 21.09.2017
+
+Looks like you're on the right path! In short: no the initial loss is not actually expected.
+
+Because I don't know exactly what you've done so far, I may be stating 
+the obvious below, apologies in advance. Thing is that 16Gbps does 
+require a fair bit of configuring, not difficult but all necessary, 
+otherwise packets are lost.
+
+Initial packet loss could be caused by not having set the Linux buffers 
+large enough and also you have to make sure that dplane is not running!
+
+Also making sure that the network card interrupts are serviced by one 
+core (or each network card assigned to a specific core, that is best). 
+And you must make sure that jive5ab is running on the remaining core(s) 
+of the same physical CPU. (And make sure that hyperthreading is switched 
+off - these HT cores are fine for computing but for I/O they're absolute 
+worthless and actually make it worse.)
+
+On the Mark6 it is automatically started as a service, I have noticed. 
+But it hogs so many resources that ~8Gbps jive5ab can do with the 
+remainder but 16 is out of the question.
+
+Concerning your configuration: set nthread to ~4. That should be enough. 
+I have noticed that if the number of disk writers gets too large you 
+actually get a decrease in throughput - the threads are (apparently?) 
+fighting for the resources. We could (easily) sustain with 3 to 4 
+writers.
+
+---------------------------
+
+net_protocol=udpsnor : 768M : 256M : 4;
+mtu=9000;
+net_port=46227;
+set_disks=1:2:3:4;
+record=mk6:0;
+mode=VDIF_8192-4096-1-2;
+record = nthread : : 2 ;
+record = on : j5test04 ;
+
