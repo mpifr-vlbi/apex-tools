@@ -28,14 +28,64 @@ actually get a decrease in throughput - the threads are (apparently?)
 fighting for the resources. We could (easily) sustain with 3 to 4 
 writers.
 
----------------------------
+---------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------
+
+If network tuning config file not yet installed:
+
+$ sudo cp ../sysctl/40-jive5ab.conf /etc/sysctl.d/
+$ sudo /sbin/sysctl --system
+or
+$ sudo /sbin/sysctl -p /etc/sysctl.d/40-jive5ab.conf
+
+If da-client bug not yet fixed:
+
+$ sudo nano /usr/bin/da-client
+   opts, pargs = getopt.getopt(sys.argv[1:], "h:p")
+   --> should contain 'p:' to parse the -p <portnr> command line arg
+   opts, pargs = getopt.getopt(sys.argv[1:], "h:p:")
+
+To start jive5ab:
+
+$ sudo /etc/init.d/dplane stop
+$ m6sg_mount
+$ jivemark5a -m 2 -6 -f mk6
+
+Start DBBC3
+
+Check that data is arriving at Mark6
+
+   the DBBC3 10G config must have the correct destination IP+MAC addresses
+   so that 'jive5ab' is able to receive it (UDP capture), however
+   it is less critical for 'dplane' (raw packet capture)
+
+$ vdiftimeUDP --offset=8 46227 --thread=0
+$ vdiftimeUDP --offset=8 46227 --thread=1
+$ vdiftimeUDP --offset=8 46227 --thread=2
+$ vdiftimeUDP --offset=8 46227 --thread=3
+   (should show data arriving)
+
+---------------------------------------------------------------------------------
+
+Recording setup
+
+$ da-client -p 2620
 
 net_protocol=udpsnor : 768M : 256M : 4;
 mtu=9000;
 net_port=46227;
 set_disks=1:2:3:4;
-record=mk6:0;
-mode=VDIF_8192-4096-1-2;
-record = nthread : : 2 ;
-record = on : j5test04 ;
+record = mk6 : 1;
+record = nthread : : 4 ;
+mode = VDIF_8192-4096-1-2;
 
+   Notes:
+      record = mk6 : 1                           :: 0=flexbuff format, 1=Mark6 scatter-gather format
+      record = nthread : <nreaders> : <nwriters> :: around 3 or 4 writers for 16 Gbit/s, more becomes counterproductive
+      evlbi?                                     :: returns the loss% statistics of an ongoing recording
+
+record = on : j5test06 ;
+evlbi?
+record = off ;
