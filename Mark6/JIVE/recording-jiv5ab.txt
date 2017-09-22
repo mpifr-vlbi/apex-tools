@@ -70,24 +70,24 @@ $ vdiftimeUDP --offset=8 --thread=3 46227
 
 Or start R2DBE
 
-$ /etc/r2de/APEX_r2dbe1_setup.sh
-$ /etc/r2de/APEX_r2dbe2_setup.sh
+vlbi1$ /etc/r2de/APEX_r2dbe1_setup.sh
+vlbi$ /etc/r2de/APEX_r2dbe2_setup.sh
 
-$ vdiftimeUDP --offset=8 --thread=0 4001
-$ vdiftimeUDP --offset=8 --thread=2 4001
+vlbi1$ vdiftimeUDP --offset=8 --thread=0 4001
+vlbi1$ vdiftimeUDP --offset=8 --thread=2 4001
    or 
-$ vdiftimeUDP --offset=8 --thread=1 4001
-$ vdiftimeUDP --offset=8 --thread=3 4001
+vlbi2$ vdiftimeUDP --offset=8 --thread=1 4001
+vlbi2$ vdiftimeUDP --offset=8 --thread=3 4001
 
 ---------------------------------------------------------------------------------
 
 Recording setup
 
-vlbi$ da-client -p 2620
+  vlbi1$ da-client -p 2620
+    or
+  vlbimc$ da-client -p 2620 -h vlbi1
 
-or
-
-vlbimc$ da-client -p 2620 -h vlbi1
+with commands
 
 net_protocol=udpsnor : 768M : 256M : 4;
 mtu = 9000;
@@ -102,12 +102,44 @@ mode = VDIF_8192-4096-1-2;
       record = nthread : <nreaders> : <nwriters> :: around 3 or 4 writers for 16 Gbit/s, more becomes counterproductive
       evlbi?                                     :: returns the loss% statistics of an ongoing recording
 
+Test recording from DBBC3 (UDP port 46227)
+
 net_port = 46227;
 record = on : j5dbbc01 ;
 evlbi?
 record = off ;
 
+Test recording from R2DBE (UDP port 4001)
+
 net_port = 4001;
 record = on : j5rdbe01 ;
 evlbi?
 record = off ;
+
+Checking what we got
+
+record=off;
+
+vlbi1$ fuseMk6 -r "/mnt/disks/?/?/data/" /mnt/group1234/
+Found 256 scans, and 255 entries in JSON
+
+vlbi1$ vdifcontinuitycheck.py /mnt/group1234/j5rdbe01
+Thread 0 Second 7220328 :  43588 frames : #81412--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 43588 total
+Thread 2 Second 7220328 :  43584 frames : #81416--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 43584 total
+Thread 0 Second 7220329 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 2 Second 7220329 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 0 Second 7220330 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 2 Second 7220330 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 0 Second 7220331 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 2 Second 7220331 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+...
+Thread 0 Second 7220358 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 2 Second 7220358 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 0 Second 7220359 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 2 Second 7220359 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 0 Second 7220360 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+Thread 2 Second 7220360 : 125000 frames : #0--#124999 : 0 lost, 0 out-of-order, 0 invalid, of 125000 total
+...
+
+vlbi1$ fusermount -u /mnt/group1234/
+
