@@ -1,0 +1,8 @@
+
+
+jive5ab or jivemark5a or ... : http://www.jive.eu/~verkout/evlbi/
+The support-everyhing plus some more recorder, streaming, rearranging, etc application
+
+vbs_fs : http://www.jive.eu/~verkout/flexbuff/
+FUSE file system that transparently supports FlexBuff as well as Haystack scatter-gather formats
+
