@@ -1,10 +1,50 @@
 
-$ wget http://www.jive.nl/~verkout/evlbi/vlbish
+Dependencies
 
-$ sudo aptitude install python-mysql.connector python-mysqldb
+  $ sudo aptitude install python-mysql.connector python-mysqldb
 
-How to create a hardware database for own site as JIVE's correlator
-database db0.jive.nl is not reachable:
+Get the VlbiSh script
 
-  TODO
+  $ wget http://www.jive.nl/~verkout/evlbi/vlbish
+    or use the copy from Harro, included in this repo
+  $ cp vlbish.29sept2017 vlbish
+
+By default it accesses a database at JIVE. But it works
+fine also without a database, in this case one can add
+own host name aliases
+
+	alias mk6a oper@1.2.3.4:2620
+	alias mk6b oper@1.2.3.6:4004
+	alias allmk6 mk6a,mk6b
+
+Optional, create a hardware database for own site:
+
+------------------------------------------------------------------------------
+<<<info from Harro Verkouter from 22.09.2017>>>
+
+The database is called "ccs" and the table is "SU_Params" [these bits date
+back from the time of the hardware MarkIV correlator ...!] 
+
+The create table statement is:
+
+CREATE TABLE `SU_Params` (
+  `instance_no` int(11) NOT NULL DEFAULT '0',
+  `su_id` int(11) DEFAULT NULL,
+  `su_no` int(11) DEFAULT NULL,
+  `assoc_du_ip` varchar(32) DEFAULT NULL,
+  `assoc_ext_du_ip` varchar(32) DEFAULT NULL,
+  `assoc_du_serial` varchar(32) DEFAULT NULL,
+  `assoc_e_station_name` varchar(32) DEFAULT NULL,
+  `su_hw_code` varchar(32) DEFAULT NULL,
+  `log_phys_map` int(11) DEFAULT NULL,
+  `sfxc_ip` varchar(32) DEFAULT NULL,
+  `name` varchar(64) DEFAULT NULL,
+  UNIQUE KEY `idx1` (`instance_no`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 
+
+
+The columns used by the "resolve_local_mk5" query are `name` and the IP address
+it looks up by that name is stored in `assoc_du_ip`. This way you can put your own mapping in.
+------------------------------------------------------------------------------
 
