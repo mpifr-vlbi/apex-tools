@@ -1,0 +1,77 @@
+
+A set of scripts to automate DiFX zero baseline correlation.
+Prepares a VEX file and v2d file.
+
+Note 1: zero baseline has station codes 'Ap' and 'Ar'
+
+Note 2: VEX $EOP; section must be manually updated for now,
+        to match the day you made the VDIF recordings
+          $ geteop.pl 2018-064 5   
+          $ mv EOP.txt EOP_2018.txt
+          $ nano generate_zerobaseline_vex.template   # replace $EOP; section with contents of EOP_2018.txt
+        where 2018-064 is the day 2-3 days before(!) the VDIF date
+
+Note 3: if the backend is not properly synchronized to NTP then
+        the year and day might be wrong (too), take this into
+        account when creating the $EOP; as in Note 2
+
+--------------------------------------------------------------------------------
+
+$ ./generate_zerobaseline_vex.sh
+
+Usage: generate_zerobaseline_vex.sh <vdiffile1> <vdiffile2> <jobname>
+
+Produces:
+   zerobaseline_file1.lst pointing to VDIF file 1
+   zerobaseline_file2.lst pointing to VDIF file 2
+   zerobaseline.vex
+   jobname.v2d  referring to zerobaseline.vex and zerobaseline_file[1-2].lst
+
+--------------------------------------------------------------------------------
+
+Example usage (1) largely manually
+
+1) make two parallel recordings (e.g., vdifsnapshotUDP on two Mark6's)
+
+2) $ . ./generate_zerobaseline_vex.sh file1.vdif file2.vdif zbt16May2018
+
+3) $ startdifx zbt16May2018_1.input
+
+4) $ difx2mark4 -e 1234 zbt16May2018_1.difx
+
+5) $ fourfit -m1 1234
+
+6) $ fplot 1234
+
+Example usage (2) with scripts
+
+1) make a set of multiple parallel recordings (e.g., vdifsnapshotUDP on two Mark6's)
+
+2) use the prep_corr.sh script (modify it to match the file naming pattern you used)
+   and let it generate the zero baseline VEX&v2d&filelist files:
+
+    $ . ./prep_corr.sh lo 50
+    $ . ./prep_corr.sh lo 33
+    $ . ./prep_corr.sh lo 18
+    $ . ./prep_corr.sh lo 7
+
+   then correlate
+
+    $ startdifx *.input
+
+   then generate 'fourfit' fringe fits, store 'Ap-Ar LL' fourfit plot into PostScript file
+
+    $ . ./post_corr.sh lo50_1.difx
+    $ mv out.ps ZBCD_0-2048_50pc_fourfit.ps
+
+    $ . ./post_corr.sh lo33_1.difx
+    $ mv out.ps ZBCD_0-2048_33pc_fourfit.ps
+
+    $ . ./post_corr.sh lo18_1.difx
+    $ mv out.ps ZBCD_0-2048_18pc_fourfit.ps
+
+    $ . ./post_corr.sh lo7_1.difx
+    $ mv out.ps ZBCD_0-2048_7pc_fourfit.ps
+
+    $ . ./post_corr.sh lo3_1.difx
+    $ mv out.ps ZBCD_0-2048_3pc_fourfit.ps
