@@ -1,0 +1,205 @@
+#!/bin/bash
+#
+# --- SET UP THE IRQS SO THEY APPEAR ON DIFFERENT PROCESSORS
+# --- CPU0 CPU1 CPU2   CPU3   CPU4   CPU5    ...
+#     sas  sas  spool0 spool1 spool2 spool3
+#               eth?   eth?   eth?   eth?
+# --- THIS VERSION USES /ETC/DEFAULT/MARK6 FOR THE MK6_OPTS FOR THE INTERFACES,
+#     IF THE FILE DOES NOT EXIST IT ASSUMES eth2,eth3,eth4 and eth5 FOR THE
+#     USED INTERFACES.
+#
+# TODO: use an argument to adjust a subset of irq affinities;
+#       then it can be used in /etc/network/interfaces for ifup.
+#
+export PATH=/usr/bin:$PATH
+
+# --- REMOVE pf_ring driver
+echo Reloading pf_ring driver $DRVR...
+echo rmmod pf_ring
+rmmod pf_ring
+sleep 2
+echo modprobe pf_ring
+modprobe pf_ring 
+sleep 2
+
+# --- FIND 10GbE driver
+if [ -s "/etc/default/mark6" ] ; then
+    DRVR=$(awk '$1~/^MK6_DRVR=/ {print $0;exit;}' /etc/default/mark6 | cut -d= -f2)
+fi
+if [ -z "$DRVR" ] ; then
+    DRVR=myri10ge
+fi
+echo Reloading 10GbE driver $DRVR...
+echo rmmod $DRVR
+rmmod $DRVR
+# ---  REQUIRED FOR BUG ON SOME SYSTEMS THE DRIVER IS NOT REMOVED BE MODPROBE IS 
+# EXECUTED.  THE RESULTS IS ETH0 DOES NOT COME UP AND ACCESS TO THE SYSTEM
+# IS DISABLED.
+sleep 2       
+
+echo modprobe $DRVR ${DRVR}_initial_mtu=9000
+modprobe $DRVR ${DRVR}_initial_mtu=9000
+sleep 2
+
+
+# if only half the cores are physical
+#CORES=`cat /proc/cpuinfo | grep processor | tail -1 | awk '{print ($3+1)/2}'`
+PHYS=$((`grep core.id /proc/cpuinfo | sort -n | uniq | tail -1 | cut -d: -f2`+1))
+CORES=`nproc --all`
+echo There are $PHYS physical cpu cores with $CORES interrupt lines
+limit=1
+while [ $CORES -gt 0 ]
+do
+    limit=$((limit * 2))
+    CORES=$((CORES - 1))
+done
+
+IFS=$'\n'
+
+#first figure out how many cores we have and which 
+#CPU ID's map to which physical cores so we can avoid collisions
+CORES=`nproc --all`
+echo "number of cores are $CORES"
+CPUIDLIST=$(lscpu --parse | sed '/^#/ d' | awk -F ',' '{print $1}')
+COREIDLIST=$(lscpu --parse | sed '/^#/ d' | awk -F ',' '{print $2}')
+CPUIDARRAY=(${CPUIDLIST})
+COREIDARRAY=(${COREIDLIST})
+declare -a CPUIRQARRAY
+#simple check on core assignment (we only have two cases, either coreid = cpuid%2 or coreid = cpuid%PHYS )
+if [ ${CPUIDARRAY[1]} -eq ${COREIDARRAY[1]} ]; then
+    #assigning irqs to cpus in order: 0,1,2...(CORES-1)
+    index_list=$(seq $CORES)
+    for index in $index_list; do
+        CPUIRQARRAY[${index}-1]=$((${index}-1))
+    done
+else
+    #assigning irq to even cpus, then odd cpus: 0,2,4...(CORES-2),1,3,5...(CORES-1)
+    index_list=$(seq $CORES)
+    for index in $index_list; do
+        offset=0
+        if [ $index -gt $PHYS ]; then
+            offset=$((-1*CORES+1))
+        fi
+        CPUIRQARRAY[${index}-1]=$(( 2*(${index}-1) + ${offset} ))
+    done
+fi
+
+
+#get list of available sas irqs
+M2IRQS=$(cat /proc/interrupts | grep mpt2sas | awk '{print $1}' | sed 's/://')
+M3IRQS=$(cat /proc/interrupts | grep mpt3sas | awk '{print $1}' | sed 's/://')
+
+#initialize irq mask index
+mask_index=0
+
+echo Assigning IRQs to CPU in following order: ${CPUIRQARRAY[*]}
+
+if [ -z "$M2IRQS" ]; then
+    #we have a mpt3sas controller, for now we assign all 
+    #0(1) interrupts to the a common core, respectively
+    M3IRQS0=$(cat /proc/interrupts | grep mpt3sas0 | awk '{print $1}' | sed 's/://')
+    M3IRQS1=$(cat /proc/interrupts | grep mpt3sas1 | awk '{print $1}' | sed 's/://')
+    for IRQ in $M3IRQS0; do
+        mask=$((2**${CPUIRQARRAY[${mask_index}]}))
+        echo MIRQ is $IRQ, mask is $mask
+        echo $(printf "%x" $mask) >> /proc/irq/$IRQ/smp_affinity 
+    done
+    mask_index=$(($mask_index+1))
+    if [ $mask_index -ge $limit ]; then
+        mask_index=0 
+    fi
+    for IRQ in $M3IRQS1; do 
+        mask=$((2**${CPUIRQARRAY[${mask_index}]}))
+        echo MIRQ is $IRQ, mask is $mask
+        echo $(printf "%x" $mask) >> /proc/irq/$IRQ/smp_affinity 
+    done
+    mask_index=$(($mask_index+1))
+    if [ $mask_index -ge $limit ]; then
+        mask_index=0 
+    fi
+    echo Discovered irqs for mpt3sas: $M3IRQS0 $M3IRQS1
+else
+    #we have a mpt2sas controller
+    for IRQ in $M2IRQS; do 
+        mask=$((2**${CPUIRQARRAY[${mask_index}]}))
+        echo MIRQ is $IRQ, mask is $mask
+        echo $(printf "%x" $mask) >> /proc/irq/$IRQ/smp_affinity 
+        mask_index=$(($mask_index+1))
+        if [ $mask_index -ge $limit ]; then
+            mask_index=0 
+        fi
+    done
+    echo Discovered irqs for mpt2sas: $M2IRQS
+fi
+
+
+#unset IFS
+#EIRQS=$(cat /proc/interrupts | grep eth | awk '{print $1$15}')
+# --- to make generic based on number of cores, location is 3 greater in proc/interrupts
+EIRQS=$(cat /proc/interrupts | grep eth | awk '{print $1$'$((CORES+3))'}')
+echo All Discovered Ethernet IRQS: $EIRQS
+x=0
+#--- ASSIGN INTERFACES TO ARRAY FOR PROCESSING
+for i in $EIRQS; do 
+    eth[x]=$i
+    x=$((x+1))
+done
+
+#--- PRINT THE WHOLE ARRAY.
+echo Double-check ethernet irqs:'  ' ${eth[@]}
+
+#--- SET THE SEPERATOR TO :
+IFS=$':'
+# --- FIND OPTIONS SET
+if [ -s "/etc/default/mark6" ];  then 
+    OPTS=$(awk '$1~/^MK6_OPTS=/ {print $0;exit;}' /etc/default/mark6 | cut -d= -f2)
+fi
+if [ -z "$OPTS" ] ; then
+    OPTS="eth2:eth3:eth4:eth5"
+fi
+echo "MK6_OPTS is $OPTS"
+
+OP=($OPTS)
+len_OP=${#OP[@]} 
+# -- shift the mask past the sas irqs and the ones used by the spooler
+#if [[ $len_OP == 2 ]] ; then
+#    mask=$(( mask * 4))
+#    echo "setting mask to $mask for $len_OP eth ports"
+#elif [[ $len_OP == 1 ]] ; then
+#    mask=$(( mask * 2))
+#    echo "setting mask at $mask for $len_OP eth ports"
+#else
+#    # mask unchanged for 4 or other cases (you loose)
+#    echo "leaving mask at $mask for $len_OP eth ports"
+#fi
+
+IFS=$' '
+echo "eth[@] ${eth[@]}"
+for I in ${eth[@]}; do 
+    IFS=':' eth_split=($I)
+    eif=${eth_split[1]}
+    echo "eif -> $eif "
+    if [[ $eif  =~ "eth0" ]] || [[ $eif  =~ "eth1" ]]; then 
+        printf "(ignoring %s)\n" "$eif"
+    else
+        irq=${eth_split[0]}
+
+    for (( i=0; i < ${#OP[@]} ; i++)); do
+            #echo "op $i, ${OP[$i]}"
+
+        if [[ ${OP[$i]} =~ $eif ]];
+        then
+            mask=$((2**${CPUIRQARRAY[${mask_index}]}))
+            echo -n "assigning $mask to $eif to irq $irq : 0x"
+            echo $(printf "%x" $mask) >> /proc/irq/$irq/smp_affinity 
+            mask_index=$(($mask_index+1))
+            if [ $mask_index -ge $limit ]; then
+                mask_index=0 
+            fi
+        fi
+    done
+    fi
+done
+
+
+exit 0

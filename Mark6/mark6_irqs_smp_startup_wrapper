@@ -1,0 +1,24 @@
+#!/bin/bash
+export PATH=/usr/bin:$PATH
+
+#This script is a wrapper for the two scripts needed to set up 
+#the irq smp affinities on both major version's of the Mark6 hardware.
+#To do this we simply toggle off of the number of CPU's available.
+
+#determine the number of processors (this is the total number of hyperthreads)
+NCORES=$(nproc)
+
+if [ $NCORES -eq 12 ] || [ $NCORES -eq 6 ]; then
+    #execute the original irq smp_affinity start up script for six core machines
+    echo "Setting IRQS for 6 core machine"
+    source /usr/local/bin/mark6_irqs_smp_startup_sixcore
+elif [ $NCORES -eq 20 ]; then
+    #execute the updated irq smp_affinity start up script for the new ten core machines
+    echo "Setting IRQS for 10 core machine"
+    source /usr/local/bin/mark6_irqs_smp_startup_tencore
+else
+    #error message (unknown hardware type)
+    echo "Error, total number of processors on this machine is: " $NCORES ", not 12 or 20."
+fi
+
+exit 0
