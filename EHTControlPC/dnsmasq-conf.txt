@@ -1,0 +1,20 @@
+## APEX Recorder Room
+# vlbi1 eth1 78:24:af:84:04:6d
+# vlbi2 eth1 78:24:af:84:04:91
+# vlbi3 eth1 bc:5f:f4:97:0c:0b
+# vlbi4 eth1 78:24:af:85:3e:55
+dhcp-host=78:24:af:84:04:6d,recorder1,192.168.0.100,1h
+dhcp-host=78:24:af:84:04:91,recorder2,192.168.0.110,1h
+dhcp-host=bc:5f:f4:97:0c:0b,recorder3,192.168.0.120,1h
+dhcp-host=78:24:af:85:3e:55,recorder4,192.168.0.130,1h
+
+## APEX Instrument Container
+#  r2dbe 1 topmost  02:44:01:02:0B:01
+#  r2dbe 2          02:44:01:02:0B:17
+#  r2dbe 3          02:44:01:02:0A:31
+#  r2dbe 4 bottom   02:44:01:02:11:1B
+dhcp-host=02:44:01:02:0b:01,r2dbe1,192.168.0.102
+dhcp-host=02:44:01:02:0b:17,r2dbe2,192.168.0.112
+dhcp-host=02:44:01:02:0a:31,r2dbe3,192.168.0.122
+dhcp-host=02:44:01:02:11:1b,r2dbe3,192.168.0.132
+
