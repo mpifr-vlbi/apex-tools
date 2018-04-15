@@ -1,0 +1,18 @@
+# /usr/lib/systemd/system/dnsmasq.service
+
+[Unit]
+Description=A lightweight DHCP and caching DNS server
+After=network.target
+Documentation=man:dnsmasq(8)
+
+[Service]
+Type=dbus
+BusName=uk.org.thekelleys.dnsmasq
+ExecStartPre=/usr/bin/dnsmasq --test
+# ExecStart=/usr/bin/dnsmasq -k --enable-dbus --user=dnsmasq --pid-file --log-facility=/var/log/dnsmasq.log
+ExecStart=/usr/bin/dnsmasq -k --enable-dbus --user=dnsmasq --pid-file --log-facility=/var/log/dnsmasq.log --log-queries
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+
