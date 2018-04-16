@@ -1,0 +1,101 @@
+# Configuration file for dnsmasq.
+#
+# Format is one option per line, legal options are the same
+# as the long options legal on the command line. See
+# "/usr/sbin/dnsmasq --help" or "man 8 dnsmasq" for details.
+
+# Listen on this specific port instead of the standard DNS port
+# (53). Setting this to zero completely disables DNS function,
+# leaving only DHCP and/or TFTP.
+#port=5353
+
+# If you don't want dnsmasq to read /etc/resolv.conf or any other
+# file, getting its servers from this file instead (see below), then
+# uncomment this.
+no-resolv
+no-poll
+
+# Listen on specific interface
+interface=eno2
+
+# On systems which support it, dnsmasq binds the wildcard address,
+# even when it is listening on only some interfaces. It then discards
+# requests that it shouldn't reply to. This has the advantage of
+# working even when interfaces come and go and change address. If you
+# want dnsmasq to really bind only the interfaces it is listening on,
+# uncomment this option. About the only time you may need this is when
+# running another nameserver on the same machine.
+bind-interfaces
+
+# This is an example of a DHCP range where the netmask is given. This
+# is needed for networks we reach the dnsmasq DHCP server via a relay
+# agent. If you don't know what a DHCP relay agent is, you probably
+# don't need to worry about this.
+dhcp-range=192.168.0.50,192.168.0.79,12h
+#-- VLBI backend hardware
+#dhcp-host=00:c0:b7:e0:82:65,powerstrip1,192.168.0.90
+#dhcp-host=00:c0:b7:e0:00:91,powerstrip2,192.168.0.91
+
+#dhcp-host=0c:c4:7a:db:51:d2,recorder1,192.168.0.100,1h
+#dhcp-host=0c:c4:7a:dd:ea:75,recorder1-ipmi,192.168.0.101
+#dhcp-host=02:44:01:02:11:1a,r2dbe1,192.168.0.102
+#dhcp-host=00:11:22:33:01:04,bdc1,192.168.0.104
+
+#dhcp-host=00:11:22:33:01:10,recorder2,192.168.0.110
+#dhcp-host=00:11:22:33:01:11,recorder2-ipmi,192.168.0.111
+#dhcp-host=00:11:22:33:01:12,r2dbe2,192.168.0.112
+#dhcp-host=00:11:22:33:01:14,bdc3,192.168.0.114
+
+#### APEX
+# vlbi1 78:24:af:84:04:6d eth1
+# vlbi2 78:24:af:84:04:91 eth1
+# vlbi3 bc:5f:f4:97:0c:0b eth1
+# vlbi4 78:24:af:85:3e:55 eth1
+dhcp-host=78:24:af:84:04:6d,vlbi1,192.168.0.100,1h
+dhcp-host=78:24:af:84:04:91,vlbi2,192.168.0.110,1h
+dhcp-host=bc:5f:f4:97:0c:0b,vlbi3,192.168.0.120,1h
+dhcp-host=78:24:af:85:3e:55,vlbi4,192.168.0.130,1h
+# r2dbe-xxx 02:44:01:02:0a:31
+dhcp-host=02:44:01:02:0b:01,r2dbe1,192.168.0.102,120h
+dhcp-host=02:44:01:02:0b:17,r2dbe2,192.168.0.112,120h
+dhcp-host=02:44:01:02:0a:31,r2dbe3,192.168.0.122,120h
+dhcp-host=02:44:01:02:11:1b,r2dbe4,192.168.0.132,120h
+
+## DHCP Options
+
+# Set the location of the ROACH's root filesystem on the NFS server.
+dhcp-option=17,192.168.0.1:/srv/roach2_boot/current
+# Set the default route
+dhcp-option=3,192.168.0.1
+dhcp-option=option:router,192.168.0.1
+# Set the boot filename for BOOTP, which is what the ROACH boots over
+dhcp-boot=uImage
+
+## TFTP Server
+# Enable dnsmasq's built-in TFTP server
+enable-tftp
+# Set the root directory for files available via FTP.
+tftp-root=/srv/roach2_boot/boot
+
+# This option stops dnsmasq from negotiating a larger blocksize for TFTP
+# transfers. It will slow things down, but may rescue some broken TFTP
+# clients.
+#tftp-no-blocksize
+
+# Set the DHCP server to authoritative mode. In this mode it will barge in
+# and take over the lease for any client which broadcasts on the network,
+# whether it has a record of the lease or not. This avoids long timeouts
+# when a machine wakes up on a new network. DO NOT enable this if there's
+# the slightest chance that you might end up accidentally configuring a DHCP
+# server for your campus/company accidentally. The ISC server uses
+# the same option, and this URL provides more information:
+# http://www.isc.org/files/auth.html
+dhcp-authoritative
+
+# For debugging purposes, log each DNS query as it passes through
+# dnsmasq.
+log-queries
+
+# Log lots of extra information about DHCP transactions.
+log-dhcp
+

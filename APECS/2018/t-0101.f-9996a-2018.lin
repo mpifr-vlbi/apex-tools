@@ -1,0 +1,11 @@
+! Spectral line catalog for project t-0101.f-9996a-2018.lin
+!
+!!vlbifreq     214.052 GHz LSB      ! sky freq, net sideband USB (1st/SHeFI:LSB 2nd/VLBI:LSB)
+!!vlbifreq2    215.049 GHz LSB      ! for t15011-t15016: SHeFI first LO should read 12280.5 MHz
+!!vlbifreq3    215.103 GHz LSB      ! for t15017 with South Pole Telescope
+!!vlbifreq3    341.031 GHz LSB      ! Change to FLASH345
+!!vlbifreq4    227.100 GHz LSB      ! New Het230 freq. 2015-07-30
+!!vlbifreq5    229.143 GHz LSB      ! New Het230 freq. 2017-01-28
+!
+vlbifreq6    228.099 GHz LSB      ! New Het230 freq. 2017-04-03
+
