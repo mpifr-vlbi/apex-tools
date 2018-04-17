@@ -8,29 +8,15 @@
 
 127.0.0.1       eht-control1.science.ru.nl
 
-192.168.0.100   recorder1
-192.168.0.100   vlbi1
-192.168.0.101   recorder1-ipmi
-192.168.0.102   r2dbe1
-192.168.0.104   dbc1
+192.168.0.33    recorder1
+192.168.0.34    recorder2
+192.168.0.35    recorder3
+192.168.0.36    recorder4
 
-192.168.0.110   recorder2
-192.168.0.110   vlbi2
-192.168.0.111   recorder2-ipmi
-192.168.0.112   r2dbe2
-192.168.0.114   dbc2
-
-192.168.0.120   recorder3
-192.168.0.120   vlbi3
-192.168.0.121   recorder3-ipmi
-192.168.0.122   r2dbe3
-192.168.0.124   dbc3
-
-192.168.0.130   recorder4
-192.168.0.130   vlbi4
-192.168.0.131   recorder4-ipmi
-192.168.0.132   r2dbe4
-192.168.0.134   dbc4
+192.168.0.49    r2dbe1
+192.168.0.50    r2dbe2
+192.168.0.51    r2dbe3
+192.168.0.52    r2dbe4
 
 # End of file
 
