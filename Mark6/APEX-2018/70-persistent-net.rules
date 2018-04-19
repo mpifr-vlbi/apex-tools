@@ -2,46 +2,57 @@
 # EHT 2018 settings /etc/udev/rules.d/70-persistent-net.rules on APEX Mark6 recorders
 ######################################################################################
 
+# when updating the rules file, can reload it without rebooting via:
+# $ sudo udevadm control --reload-rules
+
 ### Mark6 Recorder 1
 
 # VLBI1: 1G (igb)
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:84:04:6c", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:84:04:6d", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth1"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:84:04:6c", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth0"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:84:04:6d", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth1"
 # VLBI1: 10G (myri10ge)
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:0b:74", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth2"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:0b:75", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth3"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:c0", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth4"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:c1", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth5"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:0b:74", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth2"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:0b:75", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth3"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:c0", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth4"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:c1", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth5"
 
 ### Mark6 Recorder 2
 
 # VLBI2: 1G (igb)
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:84:04:90", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:84:04:91", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth1"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:84:04:90", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth0"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:84:04:91", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth1"
 # VLBI2: 10G (myri10ge)
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:38", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth2"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:39", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth3"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:42", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth4"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:43", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth5"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:38", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth2"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:39", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth3"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:42", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth4"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:43", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth5"
 
 ### Mark6 Recorder 3
 
 # VLBI3: 1G (tg3)
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="bc:5f:f4:97:0c:0e", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="bc:5f:f4:97:0c:0b", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth1"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="bc:5f:f4:97:0c:0e", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth0"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="bc:5f:f4:97:0c:0b", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth1"
 # VLBI3: 10G (myri10ge)
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:a6:f4", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth2"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:a6:f5", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth3"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:a6:da", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth4"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:a6:db", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth5"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:a6:f4", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth2"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:a6:f5", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth3"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:a6:da", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth4"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:a6:db", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth5"
 
 ### Mark6 Recorder 4
 
 # VLBI4: 1G (igb)
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:85:3e:54", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:85:3e:55", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth1"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:85:3e:54", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth0"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="78:24:af:85:3e:55", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth1"
 # VLBI4: 10G (myri10ge)
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:1c", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth2"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:1d", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth3"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:18", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth4"
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:19", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth5"
+# This Mark6's motherboard is different from the other three Mark6,
+# and the bus-order of 10G cards appears to be swapped vs the other Mark6s.
+# The automatic detection resulted in
+#SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:1c", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth2"
+#SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:1d", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth3"
+#SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:18", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth4"
+#SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:19", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth5"
+# which after un-swapping to match other Mark6s becomes
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:1c", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth4"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:1d", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth5"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:18", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth2"
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:60:dd:44:46:19", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME:="eth3"
