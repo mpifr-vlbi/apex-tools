@@ -1,0 +1,57 @@
+######################################################################################
+# EHT 2018 settings /etc/network/interfaces on APEX Mark6 recorders
+######################################################################################
+# eth0: house network 10.0.2.x with static IP, generally disconnected for EHT 2018
+# eth1: EHT internal network 192.168.0.x with DHCP-assigned IPs
+# eth3: 10G R2DBE if0
+# eth4: unused
+# eth5: 10G R2DBE if1
+# eth6: unused
+######################################################################################
+
+auto lo
+iface lo inet loopback
+
+allow-hotplug eth0
+auto eth0
+#### for static configuration
+# APEX "vlbi1.apex-telescope.org"
+# iface eth0 inet static
+#        address 10.0.2.103
+#        netmask 255.255.255.0
+#        network 10.0.2.0
+#        broadcast 10.0.2.255
+#        gateway 10.0.2.1
+
+allow-hotplug eth1
+auto eth1
+iface eth1 inet dhcp
+
+# Myricom cards eth2 - eth5
+allow-hotplug eth2
+iface eth2 inet static
+        address 172.16.2.16
+        netmask 255.255.255.0
+        network 172.16.2.0
+        broadcast 172.16.2.255
+
+allow-hotplug eth3
+iface eth3 inet static
+        address 172.16.3.16
+        netmask 255.255.255.0
+        network 172.16.3.0
+        broadcast 172.16.3.255
+
+allow-hotplug eth4
+iface eth4 inet static
+        address 172.16.4.16
+        netmask 255.255.255.0
+        network 172.16.4.0
+        broadcast 172.16.4.255
+
+allow-hotplug eth5
+iface eth5 inet static
+        address 172.16.5.16
+        netmask 255.255.255.0
+        network 172.16.5.0
+        broadcast 172.16.5.255

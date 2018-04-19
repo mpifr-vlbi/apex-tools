@@ -1,0 +1,22 @@
+######################################################################################
+# EHT 2018 settings /etc/hosts on APEX Mark6 recorders
+######################################################################################
+
+127.0.0.1       localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+192.168.0.33    recorder1
+192.168.0.34    recorder2
+192.168.0.35    recorder3
+192.168.0.36    recorder4
+
+192.168.0.49    r2dbe1
+192.168.0.50    r2dbe2
+192.168.0.51    r2dbe3
+192.168.0.52    r2dbe4
