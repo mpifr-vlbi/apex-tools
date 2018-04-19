@@ -181,9 +181,9 @@ dhcp-boot=uImage
 # router is the same machine as the one running dnsmasq.
 dhcp-option=3,192.168.0.1
 
-# Set the NTP time server addresses
-# was: "to 192.168.0.4 and 10.10.0.5"
-dhcp-option=option:ntp-server,192.168.0.1
+# Set the NTP time and DNS server addresses
+dhcp-option=option:ntp-server,192.168.0.1,200.27.106.116,37.235.52.50,200.68.58.170
+# ntp.shoa.cl<200.27.106.116>, stratum2-01.scl01.publicntp.org<37.235.52.50>, 200-68-58-170.static.tie.cl<200.68.58.170>
 dhcp-option=option:dns-server,192.168.0.1
 
 # Send RFC-3442 classless static routes (note the netmask encoding)
