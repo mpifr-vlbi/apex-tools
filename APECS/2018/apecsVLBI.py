@@ -18,9 +18,17 @@ def usage():
 	print ('Note that APECS must be in remote_control(\'on\') mode.')
 	print ('')
 
-## Globals
+###########################################################################################################
+#### Globals
+###########################################################################################################
 
 logfile = None
+
+# APECS remote mode
+use_remote_mode = True
+APECS_host = "10.0.2.170"   # IP of observer3.apex-telescope.org
+APECS_port = 22122          # UDP port on which APECS accepts commands (APECS: remote_control('on'))
+REPLY_port = 22127          # local UDP port on which to wait for a reply
 
 # APECS system (observer3) runs from abm.apex-telesc .IRIG. that is running TAI
 # VLBI is using UTC; need to correct for http://www.leapsecond.com/java/gpsclock.htm
@@ -35,12 +43,9 @@ else:
 # Ctrl-C
 gotCtrlC = False
 
-# APECS remote mode
-use_remote_mode = True
-APECS_host = "10.0.2.170"   # IP of observer3.apex-telescope.org
-APECS_port = 22122          # UDP port on which APECS accepts commands (APECS: remote_control('on'))
-
-## Functions
+###########################################################################################################
+#### Functions
+###########################################################################################################
 
 def signal_handler(signal, frame):
 	global gotCtrlC
@@ -54,7 +59,7 @@ def waitUntil(T,Tsnp='',msg=''):
 	while True:
 		Tcurr_obs3 = datetime.datetime.utcnow()
 		Tcurr = Tcurr_obs3 + datetime.timedelta(seconds=-offsetUTC)
-		print ('INFO: System time on Observer3 of %s adjusted by %d leap seconds to actual UT of %s' % (datetime2SNP(Tcurr_obs3),offsetUTC,datetime2SNP(Tcurr)))
+		#print ('INFO: System time on Observer3 of %s adjusted by %d leap seconds to actual UT of %s' % (datetime2SNP(Tcurr_obs3),offsetUTC,datetime2SNP(Tcurr)))
 		dT = T - Tcurr
 		dT = dT.total_seconds()
 		if (dT <= 0) or gotCtrlC:
@@ -96,7 +101,7 @@ def splitLine(l):
 
 
 def execCommand(cmd):
-	global APECS_host, APECS_port, use_remote_mode
+	global APECS_host, APECS_port, REPLY_port, use_remote_mode
 
 	writeLog(cmd)
 
@@ -120,12 +125,21 @@ def execCommand(cmd):
 			return False
 	else:
 		# Remote mode, commands are sent to APECS over UDP (requires remote_control('on')) in APECS)
-		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+		sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+		sock.bind(('', REPLY_port))
 		if sys.version_info[0] >= 3:
 			# sock.sendto(bytes(cmd,'utf-8'), (APECS_host, APECS_port)) # Python 3.x
 			sock.sendto(bytes(cmd,'ascii'), (APECS_host, APECS_port)) # Python 3.x
 		else:
 			sock.sendto(cmd, (APECS_host, APECS_port)) # Python 2.x
+		sock.settimeout(1)
+		try:
+			sdata, saddr = sock.recvfrom(1024)
+		except:
+			sdata = '(timeout)'
+		info = "reply from APECS: %s" % (str(sdata))
+		writeLog(info)
 		sock.close()
 
 def writeLog(s):
@@ -156,7 +170,8 @@ def handleTask(t):
 	if gotCtrlC:
 		return False
 	if not(reached):
-		print ('Time %s for command %s already passed. Skipping.' % (t[0],cmd))
+		info = "missed time %s : %s" % (t[0],cmd)
+		writeLog(info)
 		return False
 
 	execCommand(cmd)
@@ -193,11 +208,14 @@ def apecsVLBI(obsfile):
 	fd.close()
 	logfile.close()
 
-signal.signal(signal.SIGINT, signal_handler)
+#########################################################################################
+#### ENTRY
+#########################################################################################
 
 if (len(sys.argv) != 2):
 	usage()
 	sys.exit(-1)
-else:
-	apecsVLBI(sys.argv[1])
+
+signal.signal(signal.SIGINT, signal_handler)
+apecsVLBI(sys.argv[1])
 
