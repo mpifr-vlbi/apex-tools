@@ -5,6 +5,7 @@ import datetime
 import time
 import signal
 import socket
+import platform
 
 def usage():
 	print ('')
@@ -22,11 +23,14 @@ def usage():
 logfile = None
 
 # APECS system (observer3) runs from abm.apex-telesc .IRIG. that is running TAI
-# The TAI time leads UTC by 37 seconds as of April 2018
-# http://www.leapsecond.com/java/gpsclock.htm
-#import utilsNTP
-#ntpserver = 'time.nist.gov' #'nist1-lnk.binary.net'
-offsetUTC = 37
+# VLBI is using UTC; need to correct for http://www.leapsecond.com/java/gpsclock.htm
+if ('observer3' not in platform.node()) and ('10.0.2.170' not in platform.node()):
+	offsetUTC = 0
+	print ('\nINFO: Apparently not running on Observer3. Not applying TAI/UTC leap seconds correction!\n')
+else:
+	# The TAI time leads UTC by 37 seconds as of April 2018
+	offsetUTC = 37
+	print ('\nINFO: Apparently running on Observer3. Correction computer time (TAI) by %d leap seconds to have UTC!\n' % (offsetUTC))
 
 # Ctrl-C
 gotCtrlC = False
@@ -48,7 +52,9 @@ def waitUntil(T,Tsnp='',msg=''):
 	global offsetUTC, gotCtrlC
 	iter = 0
 	while True:
-		Tcurr = datetime.datetime.utcnow() + datetime.timedelta(seconds=-offsetUTC)
+		Tcurr_obs3 = datetime.datetime.utcnow()
+		Tcurr = Tcurr_obs3 + datetime.timedelta(seconds=-offsetUTC)
+		print ('INFO: System time on Observer3 of %s adjusted by %d leap seconds to actual UT of %s' % (datetime2SNP(Tcurr_obs3),offsetUTC,datetime2SNP(Tcurr)))
 		dT = T - Tcurr
 		dT = dT.total_seconds()
 		if (dT <= 0) or gotCtrlC:
@@ -75,7 +81,6 @@ def datetime2SNP(t):
 def SNP2datetime(tsnp):
         # Example SNP timestamp: 2015.016.07:30:00
         return datetime.datetime.strptime(tsnp, '%Y.%j.%H:%M:%S')
-
 
 def splitLine(l):
 	'''Splits .obs file line with date/time, duration, and command into respective pieces'''
