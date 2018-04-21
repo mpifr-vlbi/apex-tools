@@ -21,10 +21,29 @@ def vlbi_tpoint():
     tp()
     point(150, time=20)
 
-def vlbi_tp_onsource():
-    '''Total power pointing for VLBI, taken while tracking source.'''
+def vlbi_tp_onsource(src='M87',t=4):
+    '''Total power monitoring for VLBI, taken while tracking source.
+    
+       t : integration time in MINUTES.
+    '''
+    execfile('pi230_setup.apecs')
+    source(src)
+    #track()   # probably should be changed to "point(<args>)"
+    #on(drift='no',time=30)
+    # Try this...JPE @ 2018-04-19   
+    tp()    
+    repeat(1)
+    use_ref('ON')       
+    reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='EQ', epoch=2000.0)
+    calibrate(time=5)
+    use_ref('OFF')  
+    pi230.configure(doppler='off') 
+    repeat(t)
+    on(drift='no',time=60)
+    repeat(1)
     track()
-    on(drift='no',time=30)
+    #use_ref('ON')    
+    
 
 def vlbi_wpoint(t=20,cal=1):
     '''Wobbler pointing for VLBI.'''
@@ -56,5 +75,3 @@ def vlbi_get_calibration():
         calResult = onlineCal.getCalResult('PI230-PBE_C',1,0)
     except:
         print 'No calibration result available.'
-
-
