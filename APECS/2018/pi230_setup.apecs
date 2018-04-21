@@ -31,7 +31,8 @@ PI230.monPoints.append(['GPS_COUNTERS_FMOUT_MASER', [('prop', 'APEX:COUNTERS:GPS
 ################################################################
 
 ## setup_pi230(linename='CO(2-1)',sideband='',mode='spec', sbwidth=8,cats='all')
-setup_pi230(linename='vlbifreq6',sideband='',mode='spec', sbwidth=8,cats='all',doppler='off')
+setup_pi230(linename='vlbifreq7',sideband='',mode='spec', sbwidth=8,cats='all',doppler='off')
+#setup_pi230(linename='vlbifreq91',sideband='',mode='spec', sbwidth=8,cats='all',doppler='off')
 
 # Doc: setup_pi230()
 #
