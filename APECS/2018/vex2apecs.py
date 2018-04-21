@@ -122,7 +122,7 @@ def obs_writeHeader(fd,site_ID,vexfn):
 	fd.write('#    3) APECS command and parameters to execute. If the command includes whitespace.\n')
 	fd.write('#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...\n')
 	fd.write('#\n')
-	fd.write('# %-20s %-10s %s\n' % ('Time', 'Duration', 'Command'))
+	fd.write('# %-20s %-10s %s\n' % ('At time', 'Duration', 'Command'))
 
 def obs_writeFooter(fd):
 	fd.write('%s\n' % (80*'#'))
@@ -130,19 +130,8 @@ def obs_writeFooter(fd):
 	fd.write('%s\n' % (80*'#'))
 
 def obs_writeStandardsetup(fd):
-	global src_file, lin_file
-	obs_writeLine(fd, '@always',  2, 'execfile(\'vlbi_commands_def.apecs\')')
-	obs_writeLine(fd, '@always',  2, 'sourcecats(\'%s\')' % (src_file))
-	obs_writeLine(fd, '@always',  2, 'linecats(\'%s\')' % (lin_file))
-	obs_writeLine(fd, '@always',  2, 'exec_apecs_script(\'shfi_commands\')')
-	obs_writeLine(fd, '@always',  2, 'setup_shfi(fename=\'het230\',linename=\'vlbifreq\',sideband=\'\',mode=\'cont\', cats=\'user\')')
-	obs_writeLine(fd, '@always',  2, 'het230.configure(doppler=\'off\')')
-	obs_writeLine(fd, '@always',  2, 'tp()')
-	obs_writeLine(fd, '@always',  2, 'offset(0,0)')
-	obs_writeLine(fd, '@always',  2, 'reference(0,0)')
-	obs_writeLine(fd, '@always',  2, 'use_ref(\'off\')')
-	#obs_writeLine(fd, '@always', 10, 'vlbi_clockoffsets()')
-	#obs_writeLine(fd, '@always', 10, 'vlbi_tuning()')
+	obs_writeLine(fd, '@always',  10, 'execfile(\'pi230_setup.apecs\')')
+	obs_writeLine(fd, '@always',  2, 'execfile(\'vlbi-pi230_commands.py\')')
 
 def obs_writeScans(fd,scans,sources):
 
@@ -160,7 +149,7 @@ def obs_writeScans(fd,scans,sources):
 		ii = scannames.index(scanname)
 		scan = scans[scanname]
 
-		sheading = '%s/%s to start at %s' % (scanname,scan['source'],datetime2SNP(scan['start']))
+		sheading = 'Target %s scanname %s to start at %s' % (scan['source'],scanname,datetime2SNP(scan['start']))
 		fd.write('#### %s %s\n' % (sheading, '#'*(80-6-len(sheading))))
 
 		T = scan['start']
@@ -177,18 +166,18 @@ def obs_writeScans(fd,scans,sources):
 		obs_writeLine(fd, datetime2SNP(T), 5, 'doppler(\'off\')')
 		T = T + datetime.timedelta(seconds=5)
 
-		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(\'%s\',cats=\'user\')' % (scan['source']))
+		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(\'%s\')' % (scan['source']))
 		T = T + datetime.timedelta(seconds=Lpre-5)
 
-		obs_writeLine(fd, datetime2SNP(T), scan['dur'], 'track()')
+		obs_writeLine(fd, datetime2SNP(T), scan['dur'], 'vlbi_tp_onsource(src=\'%s\',t=%d)'  % (scan['source'],scan['dur']/60))
 		T = T + datetime.timedelta(seconds=Ldur)
 
 		T = T + datetime.timedelta(seconds=Lpost)
-		obs_writeLine(fd, datetime2SNP(T), Ltsys, 'calibrate()')
+		obs_writeLine(fd, datetime2SNP(T), Ltsys, 'vlbi_initiate_tsys()')
 
-		T = T + datetime.timedelta(seconds=Ltsys+5)
-		obs_writeLine(fd, datetime2SNP(T), Lmeters, 'readMeters()')
-		T = T + datetime.timedelta(seconds=Lmeters)
+		#T = T + datetime.timedelta(seconds=Ltsys+5)
+		#obs_writeLine(fd, datetime2SNP(T), Lmeters, 'readMeters()')
+		#T = T + datetime.timedelta(seconds=Lmeters)
 
 		if (Tstart_next != None):
 			Lscangap = (Tstart_next - T)
@@ -196,7 +185,7 @@ def obs_writeScans(fd,scans,sources):
 			if (Lscangap >= L_minimum_for_interactive):
 				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
 				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
-			fd.write('#     %d seconds until next scan\n' % (int(Lscangap)) )
+			fd.write('#     %d seconds (%.1f minutes) until next scan\n\n' % (int(Lscangap),Lscangap/60.0) )
 
 	obs_writeLine(fd, datetime2SNP(T), 1, 'remote_control(\'off\')')
 

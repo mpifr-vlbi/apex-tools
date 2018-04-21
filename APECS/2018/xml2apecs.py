@@ -130,7 +130,7 @@ def obs_writeScans(fd,scans):
 			if (Lscangap >= L_minimum_for_interactive):
 				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
 				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
-			fd.write('#     %d seconds until next scan\n\n' % (int(Lscangap)) )
+			fd.write('#     %d seconds (%.1f minutes) until next scan\n\n' % (int(Lscangap),Lscangap/60.0) )
 
 	obs_writeLine(fd, datetime2SNP(T), 1, 'remote_control(\'off\')')
 
