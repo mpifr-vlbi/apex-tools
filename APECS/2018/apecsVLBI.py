@@ -11,9 +11,9 @@ def usage():
 	print ('Usage: apecsVLBI.py <experiment.obs>')
 	print ('')
 	print ('The .obs file can be generated from a VEX file using vex2apecs.py,')
-        print ('or from the vex2xml output XML file using xml2apecs.py.')
+	print ('or from the vex2xml output XML file using xml2apecs.py.')
 	print ('The .obs file has to contain three columns, the starting UT time,')
-        print ('duration and the APECS command to execute at the given time.')
+	print ('duration and the APECS command to execute at the given time.')
 	print ('Note that APECS must be in remote_control(\'on\') mode.')
 	print ('')
 
@@ -41,7 +41,7 @@ APECS_port = 22122          # UDP port on which APECS accepts commands (APECS: r
 def signal_handler(signal, frame):
 	global gotCtrlC
 	gotCtrlC = True
-        print('Ctrl-C pressed, stopping...')
+	print('Ctrl-C pressed, stopping...')
 
 def waitUntil(T,Tsnp='',msg=''):
 	'''Waits until UTC datetime T, corrected for local clock offset (e.g. TAI time)'''
@@ -53,7 +53,7 @@ def waitUntil(T,Tsnp='',msg=''):
 		dT = dT.total_seconds()
 		if (dT <= 0) or gotCtrlC:
 			break
-		# print dT
+		# print (dT)
 		iter = iter + 1
 		sys.stdout.write('\r')
 		sys.stdout.write('Still %ds from now (%s) to start (%s) of %s' % (int(dT),datetime2SNP(Tcurr),Tsnp,msg))
@@ -100,7 +100,7 @@ def execCommand(cmd):
 		print ('>>> user commands entered into APECS. Be careful not to exceed')
 		print ('>>> scan gap time. When done in APECS type \'cont\' to continue here.')
 		while True:
-                	l = raw_input('type \'cont\' to continue VLBI> ')
+			l = raw_input('type \'cont\' to continue VLBI> ')
 			if ('cont' in l.lower().strip()):
 				break	
 		return True
@@ -111,12 +111,16 @@ def execCommand(cmd):
 			eval(cmd, globals(), locals())
 			return True
 		except:
-			print 'Command %s failed with : %s' % (cmd,sys.exc_info()[0])
+			print ('Command %s failed with : %s' % (cmd,sys.exc_info()[0]))
 			return False
 	else:
 		# Remote mode, commands are sent to APECS over UDP (requires remote_control('on')) in APECS)
 		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		sock.sendto(cmd, (APECS_host, APECS_port))
+		if sys.version_info[0] >= 3:
+			# sock.sendto(bytes(cmd,'utf-8'), (APECS_host, APECS_port)) # Python 3.x
+			sock.sendto(bytes(cmd,'ascii'), (APECS_host, APECS_port)) # Python 3.x
+		else:
+			sock.sendto(cmd, (APECS_host, APECS_port)) # Python 2.x
 		sock.close()
 
 def writeLog(s):
@@ -125,14 +129,14 @@ def writeLog(s):
 	T = datetime2SNP(T)
 	info = '%s;\"%s' % (T,s)
 	logfile.write(info + '\n')
-	print info
+	print (info)
 
 def handleTask(t):
 	'''Task is a list of [tstart,tdur,cmd] as returned by splitLine() for one line on the .obs file'''
 	global gotCtrlC
 
 	if (len(t) != 3):
-		print 'Invalid task %s' % (str(t))
+		print ('Invalid task %s' % (str(t)))
 		return None
 
 	cmd = t[2]
@@ -147,7 +151,7 @@ def handleTask(t):
 	if gotCtrlC:
 		return False
 	if not(reached):
-		print 'Time %s for command %s already passed. Skipping.' % (t[0],cmd)
+		print ('Time %s for command %s already passed. Skipping.' % (t[0],cmd))
 		return False
 
 	execCommand(cmd)
