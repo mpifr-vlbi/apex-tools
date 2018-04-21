@@ -1,0 +1,29 @@
+FFLAGS= -m32
+CFLAGS= -m32
+FFLAGS= -m32
+# set environment variable NO_FTOK_FS non-empty if ftok() is not available
+# if you use csh/tcsh add this to your .login file:
+#   setenv NO_FTOK_FS TRUE
+# and log-out and back in
+#
+ifdef NO_FTOK_FS
+CFLAGS :=  -DNO_FTOK_FS
+endif
+LIBES = ../clib/clib.a ../rtelb/rtelb.a
+#
+class: class.o $(OBJECTS)
+	cc  -o class class.o $(CFLAGS) $(OBJECTS) $(LIBES)
+	strip class
+#
+class2: class2.o $(OBJECTS)
+	cc  -o class2 class2.o $(CFLAGS) $(OBJECTS) $(LIBES)
+	strip class2
+#
+class3: class3.o $(OBJECTS)
+	cc  -o class3 class3.o $(CFLAGS) $(OBJECTS) $(LIBES)
+	strip class4
+#
+class4: class4.o $(OBJECTS)
+	cc  -o class4 class4.o $(CFLAGS) $(OBJECTS) $(LIBES)
+	strip class4
+#

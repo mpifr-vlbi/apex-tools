@@ -1,0 +1,6 @@
+cp /usr2/st-0.0.0_dbbc_win/dbbc/dbbcclose.c  .
+cp /usr2/st-0.0.0_dbbc_win/dbbc/dbbc_direct.c  .
+cp /usr2/st-0.0.0_dbbc_win/dbbc/dbbc_dis.c  .
+cp /usr2/st-0.0.0_dbbc_win/dbbc/dbbcrelink.c  .
+cp /usr2/st-0.0.0_dbbc_win/dbbc/Makefile  .
+cp /usr2/st-0.0.0_dbbc_win/dbbc/dbbcinit.c  .

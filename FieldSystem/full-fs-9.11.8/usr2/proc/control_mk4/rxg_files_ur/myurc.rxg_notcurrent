@@ -1,0 +1,32 @@
+* 6cm.rxg - 6cm receiver parameter definition
+range 4500 5500
+2005 06 17
+frequency 0.95
+rcp lcp
+0.1 0.1
+ELEV POLY 0.96577426 0.0015571006 -1.7710082e-05
+rcp 4720.0 11.0
+rcp 4760.0 11.0
+rcp 4800.0 11.0
+rcp 4840.0 11.0
+rcp 4880.0 11.0
+rcp 4920.0 11.0
+rcp 4960.0 11.0
+rcp 5000.0 11.0
+rcp 5040.0 11.0
+rcp 5080.0 11.0
+rcp 5120.0 11.0
+lcp 4720.0 11.0
+lcp 4760.0 11.0
+lcp 4800.0 11.0
+lcp 4840.0 11.0
+lcp 4880.0 11.0
+lcp 4920.0 11.0
+lcp 4960.0 11.0
+lcp 5000.0 11.0
+lcp 5040.0 11.0
+lcp 5080.0 11.0
+lcp 5120.0 11.0
+end_tcal_table
+15.0
+end_spillover_table

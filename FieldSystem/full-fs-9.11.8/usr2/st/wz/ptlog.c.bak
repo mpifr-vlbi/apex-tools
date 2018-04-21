@@ -1,0 +1,84 @@
+
+/* usr2/st/stqkr/ptlog.c 
+ * -------------------- ptlog.c ------------------------
+ * ptlog.c is a test program fop pointing tests.
+ * It reads antenna status an compares AZ/EL nominal and true values.
+ * The nominal values are calculatet by FS-program cnvrt() routine.
+ * -under construction,   Zei.
+*/ 
+
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+
+#include "/usr2/fs/include/params.h"
+#include "/usr2/fs/include/fs_types.h"
+#include "/usr2/fs/include/fscom.h"
+#include "/usr2/fs/include/shm_addr.h"      /* shared memory pointer */
+#define MAX_OUT  256
+
+extern struct stcom *st;
+extern struct fscom *fs;
+
+
+
+int antst();
+/*-------------------------------*/
+void ptlog(command,itask,ip)
+/*-------------------------------*/
+struct cmd_ds *command;
+long ip[5];
+int itask;
+{
+setup_ids();
+fs=shm_addr;
+setup_st();
+st=stm_addr;
+
+
+    int ierr,i;
+    int it[6];
+    char output[MAX_OUT];
+    char outbuf[256];
+    double dazim;
+    double delev;
+    double daz;
+    double del;
+    
+    
+    
+    strcpy(output,command->name);
+    /* get fs-time */
+    rte_time(it,&it[5]);
+    
+    
+    /* covert FS-RA/Dec in AZ/EL values */
+    z_cnvrt(1,fs->radat, fs->decdat,&dazim,&delev,it,fs->alat,fs->wlong);
+    
+    /* get antenna status and write to shared memory */
+    ierr=antst(0);
+    if ierr<0 {
+       strcat(output,"/ can't read antenna status.");
+       return;
+       }
+   /* calculate delta AZ/EL */
+   daz=dazim - st->AN_azim;
+   del=delev - st->AN_elev;
+   
+   sprintf(outbuf,"FS-AZ:%.4f,AN-AZ:%.4f,Delta_AZ:%.4f\n
+   FS-EL:%.4f,AN-EL:%.4f,Delta_EL:%.4f\n",dazim,st->AN_azim,daz,\
+   delev,st->AN_elev,del);
+   
+   strcat(output,outbuf); 
+   
+    for (i=0;i<5;i++) ip[i]=0;
+    cls_snd(&ip[0],output,strlen(output),0,0);
+    ip[1]=1;
+    return;
+error:
+      ip[0]=0;
+      ip[1]=0;
+      ip[2]=ierr;
+      memcpy(ip+3,"st",2);
+      return;
+}

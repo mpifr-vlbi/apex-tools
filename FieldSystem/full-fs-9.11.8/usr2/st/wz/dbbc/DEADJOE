@@ -1,0 +1,526 @@
+
+*** Modified files in JOE when it aborted on Tue Jul  8 18:56:37 2008
+*** JOE was aborted by signal 1
+
+*** File 'dbbcnn.c'
+/*orig.  function handls mk5 SNAP commands 
+mod for dbbc test, Zei 06/07/08
+now: dbbc SNAP command called by  stqkr.c
+***********************
+DBBCnn=   'nn= base band converter 1-16'
+***********************
+*/
+
+#include <stdio.h> 
+#include <string.h> 
+#include <sys/types.h>
+
+#include "/usr2/fs//include/params.h"
+#include "/usr2/fs/include/fs_types.h"
+#include "/usr2/fs/include/fscom.h"         /* fs-shared memory definition */
+#include "/usr2/fs/include/shm_addr.h"      /* fs-shared memory pointer */
+#include "/usr2/st/include/stcom.h"         /* st-shared memory definition */
+#include "/usr2/st/include/stm_addr.h"      /* st-shared memory pointer */
+#define BUFSIZE 512
+#define DEBUG 1    		/* additional prinf for debug mode when 1 */
+#define FREQmin 10		/* DBBCnn min frequency */
+#define FREQmax 2048.000000	/* DBBCnn max frequency */
+
+
+/*****************************/
+void dbbcnn(command,itask,ip)     /*For Base Band Converter 1-16*/
+/****************************/
+struct cmd_ds *command;                /* parsed command structure */
+int itask;                  
+                                      /* sub-task, ifd number +1  */
+long ip[5];                           /* ipc parameters */
+{
+      int debug=1;
+      int ilast, ierr=0, ind, i, count;
+      int istrcmp=0;
+      double dtmp;
+      char *ptr;
+      char *arg_next();
+      int out_recs, out_class;
+      char outbuf[BUFSIZE];
+      
+      void skd_run(), skd_par();     	 /* program scheduling utilities */
+      void z_logit();			/*mod. logit in st/antlib*/
+      
+      if (DEBUG)  {
+       printf("dbbcnn: DEBUG= %d  itask= %d\n", DEBUG, itask );
+       printf("dbbcnn: command %s Next argv: %s\n"\
+       ,command->argv[0], command->argv[1]); /* agv[] contains inputs seperated by ','*/
+       }
+      if (command->argv[0] == NULL || command->equal != '=' )
+                                             /* command is only 'dbbc' or dbbc= */   
+         {
+         if (DEBUG)
+           printf ("command dbbcnn  only, reports setting of core nodule\n");
+           /*ask dbbc for settings of CoreModule nn, tbd. */
+       goto dbbccn;
+    
+      } 
+/* if we get this far it is a set-up command so parse it */
+parse:
+      ilast=0;                                      /* last argv examined */
+      out_recs=0;
+      out_class=0;
+      ptr=arg_next(command,&ilast);
+      /*strcpy(outbuf,"dbbc");*/ /* if it is necessary for the DBBC */
+      sprintf(outbuf,"dbbc%d",itask);
+      
+      if (command->equal == '=') 
+        strcat(outbuf,"=");       
+      while( ptr != NULL) {
+	strcat(outbuf,ptr);
+ 	out_recs++;
+	ptr=arg_next(command,&ilast);
+	if (ptr != NULL)
+	strcat(outbuf,",");
+      }
+       strcat(outbuf,"\n");
+      
+                                /* check multi channel Eqi Spaced = 'mch'command? */
+      i=memcmp(command->argv[0],"mch", 3); /*check first 3 char*/
+      if(i==0) { 
+        if (DEBUG) printf("mch command i=%d\n",i);
+      /* i = strcmp(command->argv[0],"mch"); alternative: check complete string, is "mch" ? */
+        /*  if (i==0) printf("dbbcnn: command= mch  istrcmp= %d\n", i);*/
+    goto dbbccn;
+      } 
+       if (DEBUG) {
+          printf("dbbcnn: command %s out_recs %d out_class %d  outbuf %s\n"\
+          ,command->argv[0], out_recs,out_class,outbuf);
+       }
+      /* check dbbc command limits, DBBCnn freq first */
+       i=sscanf (command->argv[0],"%f",&dtmp);
+       printf("i-sscanf=%d\n",i);
+       if (dtmp < 10.000000)
+      z_logit("DBBCnn frequency setting out of range",0,NULL);
+/*mk5cn:
+      ip[0]=1;
+      ip[1]=out_class;
+      ip[2]=out_recs;
+      skd_run("mk5cn",'w',ip);
+      skd_par(ip);
+
+      if(ip[2]<0) return;
+      mk5_dis(command,itask,ip);
+      return;
+*/
+dbbccn: printf("connect DBBC. outbuf=%s\n/", outbuf);  /* function dbbc connection, tbd */ 
+
+exit:
+
+
+      ip[0]=0;
+      ip[1]=0;
+      ip[2]=ierr;
+      memcpy(ip+3,"dbbcnn",6); 
+      if(DEBUG)
+         printf("dbbcnn: return, ierr=%d\n",ierr);
+      return;
+}
+
+*** Modified files in JOE when it aborted on Tue Sep 30 12:14:23 2008
+*** JOE was aborted because the terminal closed
+
+*** Modified files in JOE when it aborted on Tue Sep 30 12:14:23 2008
+*** JOE was aborted by signal 1
+
+*** Modified files in JOE when it aborted on Wed Oct  8 18:53:53 2008
+*** JOE was aborted because the terminal closed
+
+*** Modified files in JOE when it aborted on Wed Oct  8 18:53:53 2008
+*** JOE was aborted by signal 1
+
+*** File 'test_controlfile.c'
+/*--------------------- find_def.c ----------------------------------------*/
+/*  RTW, R. Zeitlhoefler
+ * The function  'find_control()' searches 'words' in file opend with 
+ *' fopen(" filename.dat", "r"); '
+ * at the beginning of lines.
+ * The word is defined in (char *s_search) and the next word following  in
+ *  the same line is read in  (char *s_token).
+ * 
+ * Im Argument der Funktion 'char *s_token' wird das gefundene Wort an den
+ * Aufrufer der Funktion zurueckgegeben, wo es z.B. mit 'sscanf()' in beliebige
+ * Formate umgewandelt werden kann.
+ *                  
+ * Anwendung: Erstellung von Control-Files in denen Parameter fuer Programme
+ * definiert sind.
+ *
+ * Anm: Der Rueckgabewert in char *s_token muss ev. nachfolgend in einen
+ * 'unsigned long' Wert Umgewandelt werden wie z. B mit:   
+ * err = sscanf (s_token, " %ld ", &ul_Wert);
+ *
+ * Argument 'debug' der Funktion: debug = 0  - keine 'printf'
+ *                                debug = 1  - 'printf' Fehlermeldungen
+ *                                debug = 2  - + Statusmeldungen
+ * return Werte: 0  = ok.
+ *              -1  = File open error.
+ *              -2  = Fuer diese Funktion ist kein Suchwort definiert.
+ *              -3  = Dem Suchwort im Textfile folgt keine Definition (2. token).
+*/
+
+# include <stdio.h>
+# include <string.h>
+# include <stdlib.h>
+
+# define COMMENDS "*" /*Commends in controlfile begins with '*'*/ 
+# define MAXLINE 512
+   /*................. 'main' for test or application  */
+ 
+   # define CONTROLFILE "/usr2/st/control/dbbc.ctl"
+
+   int main(void)  {
+
+   unsigned long ul_Wert;
+   int find_control();
+   int ierr, err;
+   int debug = 2;  
+                
+   char s_token1[15];
+   char s_token2[10];
+   char s_search[10];
+   
+    sprintf(s_search,"dbbc1"); 
+   printf("   *** Testaufruf von find_control()  *** \n");
+
+   ierr = find_control(CONTROLFILE, s_search, s_token1, s_token2, debug); 
+
+   printf(" main: ierr = %d, token1 = %s  token2= %s\n", ierr, s_token1, s_token2);
+
+    
+   return; 
+  } 
+
+ 
+ /*------------------------------------------------------------------*/
+ int find_control(char *filename,char *s_search,char *s_token1,char *s_token2,int debug) 
+ /*------------------------------------------------------------------*/
+{ 
+  
+  int ival, itmp, ilen, iret;
+  long itok2;
+  char  Line[255];               /* max Zeilenlaenge */
+  char s_tok1[255], s_tok2[255];
+ 
+  char s_null[1] ={'\0'};
+  unsigned long ulLinecount=0;            /* Loopcounter */
+  char *s_commend = COMMENDS;         /* Char for commend line */ 
+  FILE *Samplefile;
+  
+
+  ilen = strlen(s_search);
+ if ( ilen <= 0) {
+    if (debug)
+       printf("find_control: error, no control word defined\a\n");
+    return -2;
+ }
+    
+ Samplefile = fopen( filename ,"r");
+
+ if (Samplefile == NULL) {
+    /* if (debug) */
+       printf("find_control: File open error, filename: %s\a\n", filename);
+    return -1;
+ }
+ if (debug)
+    printf("find_control: File %s is open. \n", filename);
+     
+     /* read lines with  fgets() */
+  itmp=1; /* go in Loop */ 
+    
+ while ( (fgets( Line, MAXLINE, Samplefile) != NULL) && itmp != 0) {
+  
+     ulLinecount++;        
+     
+   /* a comment in a conrolfile begins with '*'(see top, COMMEND='*')  
+    */
+    ival = sscanf(Line,"Line_Nr:%d  %s %s %s",ulLinecount, s_tok1, s_token1, s_token2 );
+    printf("ival (int sscanf)=%d\n",ival);
+
+     
+    if ((s_tok1[0] != s_commend[0]) && ival >= 2) {
+     
+       /* No commend line */
+       itmp = strncmp (s_search, s_tok1, strlen(s_search));
+       if (itmp == 0)    {   /* string found */
+          if (debug)      
+             printf("find_control: Word %s found in line %ld\n",s_tok1, ulLinecount);
+       }     
+    }
+ }  /* end of while */
+ 
+  if ( itmp != 0 )
+    goto NEXT2; 
+      
+ NEXT1:   /* Definition found in control-file */
+         
+       if (debug == 2)
+          printf ("find_def: searched for: %s  Token 1: %s Token 2: %s\n", s_tok1, s_token1, s_token2 );
+ /*      strcat( s_token1, s_null);*/
+       iret = 0;               
+ goto END;
+               
+   if(itmp != 0) {
+       if( debug )
+              printf("find_def: Definition fuer '%s' nicht gefunden im File '%s'\a\n",\
+              s_search, filename);                
+      strcpy(s_token1,s_nu ll);
+      iret = -3;
+   }   
+       
+ END:      
+ fclose(Samplefile); 
+ return iret;
+} /* end of function */      
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** Modified files in JOE when it aborted on Wed Oct  8 18:53:53 2008
+*** JOE was aborted by signal 1
+
+*** Modified files in JOE when it aborted on Fri Oct 31 08:22:01 2008
+*** JOE was aborted because the terminal closed
+
+*** Modified files in JOE when it aborted on Fri Nov  7 15:54:41 2008
+*** JOE was aborted because the terminal closed
+
+*** Modified files in JOE when it aborted on Fri Nov  7 15:54:41 2008
+*** JOE was aborted by signal 1
+
+*** Modified files in JOE when it aborted on Mon Nov 10 15:09:31 2008
+*** JOE was aborted by signal 1
+
+*** Modified files in JOE when it aborted on Tue Nov 25 15:15:46 2008
+*** JOE was aborted by signal 1
+
+*** File 'dbbc_com.c'
+/* Function for DBBC Communication */
+#include <stdio.h> 
+#include <string.h>
+#include <sys/types.h>
+#include <math.h>
+#include <signal.h>
+#include <unistd.h>
+
+#include "/usr2/fs/include/dpi.h"
+#include "/usr2/fs/include/params.h"
+#include "/usr2/fs/include/fs_types.h"
+#include "/usr2/fs/include/fscom.h"         /* fs-shared memory definition */
+#include "/usr2/fs/include/shm_addr.h"      /* fs-shared memory pointer */
+#include "/usr2/st/include/stcom.h"         /* st-shared memory definition */
+#include "/usr2/st/include/stm_addr.h"      /* st-shared memory pointer */
+#include "simple_socket.h"
+#define SIMPLE_SOCKET_PROTOCOL SIMPLE_SOCKET_UDP    /* or TCP */
+/*#define SIMPLE_SOCKET_PROTOKOL SIMPLE_SOCKET_UDP*/
+#define SIMPLE_SOCKET_PORT     1500
+
+/*#define BUFSIZE 2048*/ /*Attn: BUFFSIZE client and server must be the same size */
+#define DEBUG 1  /* 1 for additional printf, 0 no printf */
+#define CONTROLFILE "/usr2/st/control/dbbc.ctl" /* DBBC controlfile */
+
+#define DBBC_NAME "dbbc0" /* Name of dbbc used in st/conrol/dbbc.ctl */
+
+/********************************************************/
+int dbbc_com(int bufsize, char *send_buf, char *rcv_buf)
+/********************************************************/
+
+{
+    pid_t iProcessID;
+    int iClientMessageCounter = 0, i, ierr;
+    char acClientBuffer[256];
+    char ip_buf[64], port_buf[64];
+    unsigned long ulClientReadBufferLength, ulPort;
+    SimpleSocketType SClientSocket;
+    SimpleSocketType SServerSocket;
+
+    /* get parameter from CONTROLFILE  */
+    ierr=find_control(CONTROLFILE, DBBC_NAME, ip_buf, port_buf,0);
+    if (ierr != 0)
+        {
+        logitf("ST fdbbc_com: [ERROR] find_control\a\n");
+        return -4;
+        }   
+    sscanf(port_buf,"%ld",&ulPort);
+    
+    
+    
+    if (DEBUG) printf ("dbbc_com: Client started\n");
+
+    /*! Open socket */
+    if (DEBUG) printf ("Client open socket\n");
+    /*if (uiClientOpenSocket ("127.0.0.1",
+                            SIMPLE_SOCKET_PORT,
+                            SIMPLE_SOCKET_PROTOCOL,
+                            &SClientSocket))*/
+     if (uiClientOpenSocket (ip_buf,
+                            ulPort,
+                            SIMPLE_SOCKET_PROTOCOL,
+                            &SClientSocket))   
+     {
+        logitf ("ST [ERROR] Client opens socket\n");
+        return 1;
+    }
+    strcpy(acClientBuffer, send_buf);
+    /*sprintf (acClientBuffer, "CLIENT: This is msg-no. %s", "dbbc");*/
+
+    /*! Send message */
+     if (DEBUG) printf ("Client sent msg: %s\n", acClientBuffer);
+    if (uiSend (&SClientSocket, acClientBuffer, strlen(acClientBuffer)+1))
+    {
+        if (DEBUG) printf ("ST Client [ERROR] Client send msg: %s\n", acClientBuffer);
+        return 1;
+    }
+
+    if (DEBUG) printf ("Client receive msg: ");
+    /*! Receive acknowledge message */
+    ulClientReadBufferLength = 256;
+   *(acClientBuffer) = '\0';
+    
+    if (uiReceive (&SClientSocket, acClientBuffer, &ulClientReadBufferLength))
+    {
+        if (DEBUG) printf ("\nClient [ERROR] Client receive msg\n");
+        return 1;
+    }
+     if (DEBUG) printf ("receive form server; %s\n", acClientBuffer);
+    strcpy(rcv_buf, acClientBuffer);
+    /*! Sleep until next send */
+    if (DEBUG) printf ("Client sleeps 1 sec\n");
+    sleep (1);
+/*
+    printf ("Client close socket\n");
+
+    if (uiCloseSocket (&SClientSocket))
+    {
+        printf ("[ERROR] Client closes socket\n");
+        return 1;
+    }
+*/
+    return 0;
+}
+ 
+
+*** Modified files in JOE when it aborted on Tue Nov 25 17:03:45 2008
+*** JOE was aborted because the terminal closed
+
+*** Modified files in JOE when it aborted on Tue Nov 25 17:03:45 2008
+*** JOE was aborted by signal 1
+
+*** Modified files in JOE when it aborted on Tue Jan 13 12:47:34 2009
+*** JOE was aborted by signal 1
+
+*** File 'resetall.c'
+/*orig.  function handls mk5 SNAP commands 
+mod for dbbc test, Zei 06/07/08
+now: dbbc SNAP command called by  stqkr.c
+***********************
+='direct string'
+***********************
+*/
+
+#include <stdio.h> 
+#include <string.h> 
+#include <sys/types.h>
+
+#include "/usr2/fs//include/params.h"
+#include "/usr2/fs/include/fs_types.h"
+#include "/usr2/fs/include/fscom.h"         /* fs-shared memory definition */
+#include "/usr2/fs/include/shm_addr.h"      /* fs-shared memory pointer */
+#include "/usr2/st/include/stcom.h"         /* st-shared memory definition */
+#include "/usr2/st/include/stm_addr.h"
+#define BUFSIZE 256
+#define DEBUG 0     /* additional prinf for debug mode when 1 */
+
+
+/*****************************/
+void resetall(command,itask,ip)
+/*****************************/
+struct cmd_ds *command;                /* parsed command structure */
+int itask;                  
+          /* sub-task, ifd number +1  */
+long ip[5];                           /* ipc parameters */
+{
+      int ilast, ierr, ind, i, count, ilen;
+      char *ptr;
+      char *arg_next();
+      int out_recs, out_class;
+      char outbuf[BUFSIZE];
+      char inbuf[BUFSIZE];
+
+      void skd_run(), skd_par();      /* program scheduling utilities */
+      
+      strcpy(outbuf,command->name);
+      if (command->argv[0] == NULL || command->equal != '=' )
+       /* Resetall the boards */   
+      {
+            ilen=strlen(outbuf);
+            /*dbbc_com() is client function*/
+            ierr = dbbc_com(ilen, outbuf, inbuf);
+            if (ierr == 0)
+              { /* msg from dbbc in inbuf */
+              logitf(inbuf);
+              goto exit;
+              }
+            else
+              {
+              logitf("DBBC resetall, Client communication ERROR");            
+              goto error;
+              }
+    
+      } 
+/* if we get this far it is a set-up command so parse it */
+parse:
+      ilast=0;                                      /* last argv examined */
+      out_recs=0;
+      out_class=0;
+      ptr=arg_next(command,&ilast);
+      
+       /* command has passed the stqkr */
+      if (command->equal == '=')
+         strcat(outbuf,"="); 
+     
+      while( ptr != NULL) {  
+	strcat(outbuf,ptr);
+ 	out_recs++;
+	ptr=arg_next(command,&ilast);
+	if (ptr != NULL)
+	strcat(outbuf,",");
+      } 
+      /* outbuf contains command */
+      
+      if (out_recs >= 1) {
+         logitf("resetall Input ERROR: Only restall, no arguments allowed");
+         goto exit;
+      }          
+      
+exit: for (i=0;i<5;i++) ip[i]=0;
+      cls_snd(&ip[0],outbuf, strlen(outbuf),0,0);
+      ip[1]=1;
+      return;
+
+error:
+      ip[0]=0;
+      ip[1]=1;
+      ip[2]=ierr;
+      memcpy(ip+3,"dbbcform",8);
+      return;      
+}
+

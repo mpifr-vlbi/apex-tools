@@ -1,0 +1,18 @@
+* 13cm.rx - 13cm receiver parameter definition
+fixed 2020
+2007 10 29
+frequency 1.0 
+rcp lcp
+0.2 0.2 
+ELEV POLY 1.0 0.0 0.0
+rcp 2100 6.0 
+rcp 2150 6.0 
+rcp 2200 6.0 
+rcp 2250 6.0 
+rcp 2300 6.0 
+rcp 2350 6.0 
+rcp 2400 6.0 
+rcp 2450 6.0 
+end_tcal_table
+10.0
+end_spillover_table

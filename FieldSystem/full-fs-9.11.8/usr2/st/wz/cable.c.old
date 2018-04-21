@@ -1,0 +1,126 @@
+ /* usr2/st/stqkr/cable  (station specific cable command)
+ *
+ * -------------------- counter2.c ------------------------
+ * Daten von HP Counter 5316 A
+ * R. Zeitlhoefler, mai 97.
+ * mod. 17.03.98,  Zei.
+ * Programm zum Auslesen des 1. Zaehlers (Cable Wert)
+ */
+
+/* counter address , other constants */
+ 
+# define IB_ADDR 3
+
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <ctype.h> 
+#include <math.h>
+
+#include "/usr2/fs/include/params.h"
+#include "/usr2/fs/include/fs_types.h"
+#include "/usr2/fs/include/fscom.h"
+#include "/usr2/fs/include/shm_addr.h"      /* shared memory pointer */
+
+extern struct stcom *st;
+extern struct fscom *fs;
+
+#define MAX_BUF   256
+
+int gpib_io();   /* Funktion fuer gpib_io via converter GPIB-232CT von
+                 Naional Instruments , in 'antlib.o' */ 
+
+/*--------------------------------------*/
+void cable(command,itask,ip)
+/*--------------------------------------*/
+struct cmd_ds *command;
+long ip[5];
+int itask;
+
+{
+
+    void setup_ids();
+    struct fscom *fs;
+
+    extern int ib_echo;   /* keine unmittelbaren Fehlermeldungen */
+    int ioerr, ierr, i, s, dev_addr;
+    int len = 255;
+    int outlen;
+    double fval;
+    double foldval=2000;
+    double fdiff;
+    float val;
+    char output[MAX_BUF];
+    char ibuff[MAX_BUF];
+    char stmp[50];
+    char stmp1[20];
+    char stmp2[20];
+    char stmp3[20];
+    
+    setup_ids();
+    fs = shm_addr;
+    
+    printf("Station command from stqkr: 'cable'\n");
+/*    strcpy(output,command->name); */
+    strcpy(output,"cable");
+    strcat(output,"/");
+    
+    ib_echo = 0;
+    dev_addr = IB_ADDR;
+    ioerr = gpib_io(1, dev_addr, ibuff, &len );
+    
+    if (ioerr < 0)  {
+      strcat(output," GPIB-ERROR! \a\n");
+      goto END;
+    }
+    
+    /* printf("string counter1 = %s \n",ibuff); */
+    
+    ierr = sscanf(ibuff, "%s %s %s",stmp1, stmp2, stmp3);
+    
+/*     printf("ierr= %d  stmp1= %s  stmp2=%s  stmp3=%s\n",
+                         ierr, stmp1,stmp2,stmp3);     
+ */   
+    sscanf(stmp2,"%f",&val); 
+    shm_addr->cablev = val;   
+    
+    sscanf(stmp2,"%lf",&fval);
+      
+    
+  /*  printf("cablev= %f  val=%f\n",shm_addr->cablev, val);  */
+  
+    
+    /* for HP5316 Counters, delete first 'T' */ 
+    memset(ibuff, 32, 1); /* replace first char ('T') by space */
+
+    for (i=0; isspace(ibuff[i]); i++);  /* i counts leading space */
+   /* printf("TEST i=%d\n",i); */
+   
+   outlen = strlen(output) - 1;  
+     for (s = i; s < len; s++)  
+         output[outlen += 1] =  ibuff[s];   
+     
+     output[outlen -1] = 0;
+     
+     /* check difference between old and new value , for test only */
+     fdiff = fval -foldval;
+     fdiff = fabs(fdiff);
+     foldval = fval;
+     
+     if ( (fdiff > 0.001) && (fdiff<1000) )  {
+        sprintf(stmp,"\nWARNING:   Difference  old/ new cable value > 0.001 ");
+        strcat(output,stmp);
+     }    
+     
+END:                    /*  return to stqkr  */
+    for (i=0;i<5;i++) ip[i]=0;
+    cls_snd(&ip[0],output,strlen(output),0,0);
+    ip[1]=1;
+    return;
+error:
+      ip[0]=0;
+      ip[1]=0;
+      ip[2]=ierr;
+       memcpy(ip+3,"st",2);
+      return;
+}

@@ -1,0 +1,16 @@
+       Text /usr2/st/stqkr/stqkr.readme
+
+       R. Zeitlhoefler   9. 04. 1997.
+
+
+                   Stationsspezifische Commands, Programm stqkr.c
+
+       Ueber das Programm stqkr ( in usr2/st/stqkr ) werden stationsspezifische 
+       snap commands ausgefuehrt.
+       Fortlaufend nummerierte 'case' Anweisungen rufen stationsspezifische
+       C-Funktionen auf( s. 'stqkr.c', mx(), tk() ).
+       Das Programm 'stqkr' startet das Field System ( s. /usr2/control/stpgm.ctl ).
+       Der Name der stationsspezifischen commands ist identisch mit den Namem
+       der ausfuehrenden Funktionen.
+       Stationsspezifische Snap Commands sind im File /usr2/control/stcmd.ctl
+       eingetragen.  

@@ -1,0 +1,88 @@
+! This is a comment : file with setups of Effelsberg receivers. Cols are
+!  V or M for VLBA or Mk3/4 setup, total LO freq wanted, receiver named
+! by wavelength in mm, LO frequency required,  phasecal p (pfk) or s (sfk)
+!  rxno. Extra lines for this setup, text to be sent out preceded by >.
+! When changing this file keep same columns.
+! 21cm/18cm change filters via switch.
+! High end of 13cm with 11cm system, need different filter however.
+! 7mm tricks with LO2 to get full MHz total LO, assume SIF1 3125.
+! big cal for 18cm m3 (s9=1), small cal for VLBA
+!
+!   Sum_LO  PHC RX    WL   F_OBSE  OTHER
+!
+V   204.00   i  2     300   752.00
+V   252.00   i  2     300   800.00
+V   289.40   i  2     300   837.40
+V   293.10   i  2     300   841.10
+V   298.80   i  2     300   846.80
+V   301.30   i  2     300   849.30
+V   333.60   i  2     300   881.60
+V   338.60   i  2     300   886.60
+V   352.00   i  2     300   900.00
+V   438.70   i  2     300   986.70
+V   443.30   i  2     300   991.30
+V   452.00   i  2     300  1000.00
+V   468.20   i  2     300  1016.20
+V   552.00   i  2     300  1100.00
+V   589.30   i  2     300  1137.30
+V   602.00   i  2     300  1150.00
+V   652.00   i  2     300  1200.00
+V   775.00   i  1     230  1325.00 > set switches_c 01000000 00000000 7
+V   850.00   i  1     230  1400.00 > set switches_c 01000010 00000000 7
+V   980.00   i  1     230  1530.00 > set switches_c 01001000 00000000 7
+V  1090.00   i  1     230  1640.00 > set switches_c 01000100 00000000 7
+V  1110.00   i  1     230  1660.00 > set switches_c 01000100 00000000 7
+V  1700.00   s  6      36  8550.00
+V  2150.00   i  6     110  2100.00
+V  4100.00   s  2      60  4850.00
+V  7800.00   s  6      36  8550.00
+V   780.00   s  6      36  8550.00
+V   170.00   s  6      36  8550.00
+V  8100.00   s  6      36  8850.00
+V 13200.00   s  4      20 13200.00
+V 13700.00   s  4      20 13700.00
+V 14200.00   s  4      20 14200.00
+V 14600.00   s  4      20 14600.00
+V 21200.00   s  4      13 21425.00
+V 21500.00   s  4      13 21725.00
+V 22000.00   s  4      13 22225.00
+V 22500.00   s  4      13 22725.00
+V 23000.00   s  4      13 23225.00
+V 23500.00   s  4      13 23725.00
+V 41400.00   s  4       7 41621.00 > OBSINP SFU1 751000
+V 41900.00   s  4       7 42125.00 > OBSINP SFU1 750000
+V 42400.00   s  4       7 42629.00 > OBSINP SFU1 749000
+V 42900.00   s  4       7 43121.00 > OBSINP SFU1 751000
+V 43400.00   s  4       7 43625.00 > OBSINP SFU1 750000
+V 85688.00   i  2       3 87840.00
+M   604.00   i  2     300   752.00
+M   652.00   i  2     300   800.00
+M   689.40   i  2     300   837.40
+M   693.10   i  2     300   841.10
+M   698.80   i  2     300   846.80
+M   701.3    i  2     300   849.30
+M   733.60   i  2     300   881.60
+M   738.60   i  2     300   886.60
+M   752.00   i  2     300   900.00
+M   838.70   i  2     300   986.70
+M   843.30   i  2     300   991.30
+M   852.00   i  2     300  1000.00
+M   868.20   i  2     300  1016.20
+M   952.00   i  2     300  1100.00
+M   989.30   i  2     300  1137.30
+M  1002.00   i  2     300  1150.00
+M  1052.00   i  2     300  1200.00
+M  1270.00   i  1     210  1420.00 > set switches_c 11000000 00000000 7
+M  1510.00   i  1     180  1660.00 > set switches_c 11000100 00000000 7
+M  4620.00   s  2      60  4770.00
+M  4840.00   s  2      60  4990.00
+M  5882.00   i  1      50  6032.00
+M  6500.00   i  1      50  6650.00
+M  8110.00   s  6      36  8260.00
+M  8260.00   s  6      36  8410.00
+M 22080.00   s  4      13 22230.00
+! M 86088.00   i  2       3 86087.99952 > OBSINP SFU1 997045.46
+
+
+
+! /usr2/prog/rxvt/rxfile       24.11.97 R.Schulze

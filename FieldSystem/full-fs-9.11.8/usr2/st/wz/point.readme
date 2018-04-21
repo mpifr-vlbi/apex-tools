@@ -1,0 +1,12 @@
+
+         Text /usr2/st/readme/point.readme
+
+         RTW/ R. Zeitlhoefler  06. 05 . 1997.
+
+         Stationsspezifische Commands, Programm 'point.c'
+
+         - Dieses Programm holt aus dem Shared Memory die Source Daten
+         und sendet sie zur Antenne.
+
+         Das Programm ist eine Unterfunktion von 'stqkr.c'und wird ueber
+         das Snap-Command 'point' aufgerufen.   

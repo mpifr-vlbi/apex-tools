@@ -1,0 +1,26 @@
+* 30cm.rx - UHF  receiver parameter definition
+range 600 1215 
+2004 05 27
+frequency 1.0 
+rcp lcp
+1.55 1.55 
+ELEV POLY 1.0 
+rcp 600 15.0 
+rcp 800 15.0 
+rcp 863 15.0 
+rcp 1022 13.1 
+rcp 1135 12.9 
+rcp 1222 12.9 
+rcp 1265 15
+*rcp 1300 16.1 
+lcp 600 13.7 
+lcp 800 13.7 
+lcp 863 13.7 
+lcp 1022 11.4 
+lcp 1135 11.3 
+lcp 1222 12.0 
+lcp 1265 15
+*lcp 1300 15.3 
+end_tcal_table
+60.0
+end_spillover_table

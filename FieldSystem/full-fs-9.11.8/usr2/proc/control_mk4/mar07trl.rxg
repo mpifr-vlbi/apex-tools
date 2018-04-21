@@ -1,0 +1,24 @@
+* trc.rxg - C band receiver parameter definition
+range 2400 1000
+2005 03 10
+frequency 1.0
+lcp rcp
+0.1400 0.1400
+ELEV POLY 1
+lcp 1200 10.0
+lcp 1300 10.0
+lcp 1400 10.0
+lcp 1500 10.0
+lcp 1600 10.0
+lcp 1700 10.0
+lcp 1800 10.0
+rcp 1200 10.0
+rcp 1300 10.0
+rcp 1400 10.0
+rcp 1500 10.0
+rcp 1600 10.0
+rcp 1700 10.0
+rcp 1800 10.0
+end_tcal_table
+13.0
+end_spillover_table

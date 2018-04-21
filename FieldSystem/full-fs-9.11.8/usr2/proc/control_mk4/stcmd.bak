@@ -1,0 +1,25 @@
+*********STATION SPECIFIC COMMANDS**************
+*COMMAND     SEG SBPA BO
+cal          str 0407 01 1F1F
+wx           str 0404 01 1F1F
+rx           str 1601 01 1F1F
+lo           str 1402 01 1F1F
+phasecal     str 3001 01 1F1F
+fmout-gps    qkr 0402 01 1F1F
+dbtest       str 9001 01 1717
+dbinfo       str 9002 01 1717
+dbinit       str 9003 01 1717
+dbfree       str 9004 01 1717
+dbnyi        str 9005 01 1717
+dbstatus     str 9006 01 1717
+dbcancel     str 9007 01 1717
+dbreset      str 9008 01 1717
+dbping       str 9009 01 1717
+dbarm        str 9010 01 1717
+dbdump       str 9011 01 1717
+dbsave       str 9012 01 1717
+dbstat       str 9013 01 1717
+dbgrab       str 9014 01 1717
+dbftp        str 9015 01 1717
+dbrtfc       str 9016 01 1717
+dbtime       str 9017 01 1717

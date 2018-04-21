@@ -1,0 +1,22 @@
+# /usr2/st/stqkr/Makefile
+#
+# Makefile for RTW FS stqkr (station quikr)
+#
+#
+FFLAGS= -c
+LIBES =  ../../fs/clib/clib.a ../../fs/rtelb/rtelb.a ../../st/stlib/stlib.a\
+         ../../fs/port/port.a ../../fs/poclb/poclb.a\
+         /usr/lib/libm.a
+#
+OBJECTS = \
+stqkr.o wx.o tk.o wxz.o point.o mpoint.o cable.o counter2.o onso.o relheight.o\
+	 ../antlib/antlib.o 
+#
+../../st/bin/stqkr: $(OBJECTS)
+	$(FC)  -o ../../st/bin/stqkr $(OBJECTS) $(LIBES)
+	strip ../../st/bin/stqkr
+#
+stqkr:
+	rm -f ../../st/bin/stqkr
+	make
+#

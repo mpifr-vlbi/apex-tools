@@ -1,0 +1,92 @@
+* 1.3cm.rxg - 1.3cm receiver parameter definition
+range 21000 25400
+2007 03 06
+frequency 0.95
+rcp lcp
+*formerly 0.80, now 0.94 (from 2007) new subrefl
+0.95 0.95
+ELEV POLY 0.75116095 0.010023736 -0.00010094404
+*Alternatively, can use:
+*1.25 1.25
+*ELEV POLY 0.97422047 0.0021675551 -4.5562258e-05 opacity_corrected
+rcp 22158.0 4.7880
+rcp 22166.0 4.7722
+rcp 22174.0 4.7157
+rcp 22182.0 4.6665
+rcp 22190.0 4.7410
+rcp 22198.0 4.6725
+rcp 22206.0 4.6640
+rcp 22214.0 4.6770
+rcp 22220.0 4.6733
+rcp 22228.0 4.6745
+rcp 22236.0 4.6449
+rcp 22244.0 4.5690
+rcp 22252.0 4.5440
+lcp 22158.0 4.9010
+lcp 22166.0 4.8580
+lcp 22174.0 4.8220
+lcp 22182.0 4.8290
+lcp 22198.0 5.0910
+lcp 22206.0 5.2185
+lcp 22214.0 5.2015
+lcp 22220.0 5.0995
+lcp 22228.0 5.1188
+lcp 22236.0 5.1038
+lcp 22244.0 5.0961
+lcp 22258.0 4.9940
+lcp 22266.0 5.1105
+lcp 22274.0 5.1880
+lcp 22282.0 5.2030
+end_tcal_table
+* Trec--(1 line) followed by lines
+* with spillover against elevation
+64.2
+90 0
+19 1
+16 2
+14 4
+12 10
+8  20
+end_spillover_table
+* 1.3cm.rxg - 1.3cm receiver parameter definition
+*range 21000 25400
+*2007 03 06
+*frequency 0.95
+*rcp lcp
+*formerly 0.80, now 0.94 (from 2007) new subrefl
+*0.94 0.94
+*ELEV POLY 0.95912609 0.0023538082 -3.3887221e-05 
+*Alternatively, can use:
+*1.25 1.25
+*ELEV POLY 0.97422047 0.0021675551 -4.5562258e-05 opacity_corrected
+*rcp 22180.0 4.70
+*rcp 22188.0 4.7040
+*rcp 22196.0 4.7785
+*rcp 22204.0 4.7775
+*rcp 22212.0 4.6830
+*rcp 22220.0 4.6760
+*rcp 22228.0 4.6680
+*rcp 22236.0 4.5845
+*rcp 22244.0 4.4535
+*rcp 22252.0 4.45
+*lcp 22180.0 4.86
+*lcp 22188.0 4.8595
+*lcp 22196.0 4.9920
+*lcp 22204.0 5.1375
+*lcp 22212.0 5.1890
+*lcp 22220.0 5.2995
+*lcp 22228.0 5.3145
+*lcp 22236.0 5.2220
+*lcp 22244.0 5.1475
+*lcp 22252.0 5.14
+*end_tcal_table
+* Trec--(1 line) followed by lines
+* with spillover against elevation
+*64.2
+*90 0
+*19 1
+*16 2
+*14 4
+*12 10
+*8  20
+*end_spillover_table

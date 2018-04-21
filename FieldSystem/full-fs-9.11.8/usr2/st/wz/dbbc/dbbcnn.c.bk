@@ -1,0 +1,234 @@
+ /*orig.  function handls mk5 SNAP commands 
+mod for dbbc test, Zei 06/07/08
+now: dbbc SNAP command called by  stqkr.c
+***********************
+DBBCnn=   'nn= base band converter 1-16'
+***********************
+*/
+
+#include <stdio.h> 
+#include <string.h> 
+#include <sys/types.h>
+#include <math.h>
+
+#include "/usr2/fs//include/params.h"
+#include "/usr2/fs/include/fs_types.h"
+#include "/usr2/fs/include/fscom.h"         /* fs-shared memory definition */
+#include "/usr2/fs/include/shm_addr.h"      /* fs-shared memory pointer */
+#include "/usr2/st/include/stcom.h"         /* st-shared memory definition */
+#include "/usr2/st/include/stm_addr.h"      /* st-shared memory pointer */
+#define BUFSIZE 512
+#define DEBUG 0    		/* additional prinf for debug mode when 1 */
+#define FREQmin 10.000000		/* DBBCnn min frequency */
+#define FREQmax 2048.000000	/* DBBCnn max frequency */
+
+
+/*****************************/
+void dbbcnn(command,itask,ip)     /*For Base Band Converter 1-16*/
+/****************************/
+struct cmd_ds *command;                /* parsed command structure */
+int itask;                  
+                                      /* sub-task, ifd number +1  */
+long ip[5];                           /* ipc parameters */
+{
+      int debug=1;
+      int ilast, ierr=0, ind,i,i0,i1,i2,i3,i4,itmp, count;
+      int istrcmp=0;
+      double ftmp=0;
+      char *ptr;
+            char *arg_next();
+      int out_recs, out_class;
+      char outbuf[BUFSIZE];
+      char buf[BUFSIZE];
+      char ifbuf[BUFSIZE];
+      void skd_run(), skd_par();     	 /* program scheduling utilities */
+      void z_logit();			/*mod. logit in st/antlib*/
+       
+      if (DEBUG)  {
+       printf("dbbcnn: DEBUG= %d  itask= %d\n", DEBUG, itask );
+       printf("dbbcnn: command %s Next argv: %s\n"\
+       ,command->argv[0], command->argv[1]); /* agv[] contains inputs seperated by ','*/
+       }
+      if (command->argv[0] == NULL || command->equal != '=' )
+                                             /* command is only 'dbbc' or dbbc= */   
+         {
+         if (DEBUG)
+           printf ("command dbbcnn  only, reports setting of core nodule\n");
+           /*ask dbbc for settings of CoreModule nn, tbd. */ 
+          if (itask < 10)
+             sprintf(outbuf,"dbbc0%d",itask); /*itask equal dbbc number */
+           else
+             sprintf(outbuf,"dbbc%d",itask);  
+           goto dbbc_cn;
+         } 
+/* if we get this far it is a dbbcnn set-up command so parse it */
+/*parse:*/
+      ilast=0;                       
+      out_recs=0;
+      out_class=0;
+      ptr=arg_next(command,&ilast);
+        if (itask < 10)
+          sprintf(outbuf,"dbbc0%d",itask); /*itask equal dbbc number, add leading 0*/ 
+        else
+          sprintf(outbuf,"dbbc%d",itask);
+      if (command->equal == '=') 
+        strcat(outbuf,"=");
+        
+      /* check number of dbbcnn= commands, separated by ',' */ 
+      while( ptr != NULL) {
+	/*strcat(outbuf,ptr);*/
+ 	out_recs++;
+ 	printf("out_recs: %d\n",out_recs);
+	ptr=arg_next(command,&ilast);
+	
+      }
+      /*---------------mch command ? ---------------------------------*/
+      /* multi channel Eqi Spaced = 'mch'command? DBBCnn=mch,[2eK] */
+       
+     /* i=memcmp(command->argv[0],"mch", 3);*/ /*check only first 3 char*/
+      i = strcmp(command->argv[0],"mch"); /* check complete string, is "mch" ? */
+      if(i==0) /* it is mch command */
+      {
+        if (DEBUG)  
+        printf("dbbc=mch command i=%d\n",i);
+        
+        strcat(outbuf,command->argv[0]);
+        
+        if (out_recs==1) {
+           z_logit("dbbcnn: No value for MultiChannelEquiSpace command",-11,"ST");
+           goto exit;
+        }   
+        if (out_recs!=2) { 
+           z_logit("dbbcnn: dbbc=mch more than one argument\n",-11,"ST");    
+           goto exit;
+        } 
+        
+        /* check mch command range, allowed values 2,4,8,16,32,64 */
+        
+        i=sscanf (command->argv[1],"%d",&i2);/* convert to integer*/
+        if (i != 1) {
+           z_logit ("dbbcnn: not allowed input for dbbcnn=mch",-11,"ST");
+           goto exit;
+        }            
+        /* check, is  input allowed? */
+        if (i2==2 || i2==4 || i2==8 || i2==16 || i2==32 || i2==64) {
+           strcat(outbuf,",");
+           strcat(outbuf,command->argv[1]);
+        }
+        else { 
+ 
+           z_logit("dbbcnn: allowed values for mch command  2,4,8,16,32,64",-11,"ST");
+           goto exit;
+        }      
+
+            
+        goto dbbc_cn;
+      }  /* end of parsing dbbc=mch,xx command */
+
+  
+        /*---------------- DBBCnn=freq,IF,bwdU,bwdL,gainU,gainL,tpint -------------------*/
+        /*---- check inputs, are they valid?---- */
+ 
+        /*---- first check frequency range ----*/
+        
+        if (DEBUG) {
+       printf("dbbcnn: dbbcnn, command [0]%s out_recs %d out_class %d  outbuf %s\n"\
+           ,command->argv[0], out_recs, out_class,outbuf);
+          }
+        i=sscanf (command->argv[0],"%lf",&ftmp);  /* arg[0] contains char freq */
+      
+           if (DEBUG)
+               printf("i-sscanf=%d ftmp=%f\n",i,ftmp);
+           if ((ftmp < FREQmin)||(ftmp > FREQmax)) {
+           
+              z_logit("DBBCnn frequency out of range",-11,"ST"); 
+              goto exit;
+           }   
+                 strcat(outbuf,command->argv[0]);
+          
+        /*--- check IF channel setting ---*/
+  
+        if (out_recs >= 2) {  /* value for dbbcnn IF definded or empty? */
+            i0=(command->argv[1])[0];
+  
+            if ((i0 == 0)  && (out_recs >=3)) {  /* no IF value  */
+               /* null command with ,, (comma,comma)*/
+                 strcat(outbuf,",");
+                 goto bwdU;
+               
+            }
+              i=strlen(command->argv[1]);
+              if (i !=2) {
+                 z_logit("DBBCnn: IF channal range incorrect\n",-11,"ST"); 
+                 goto bwdU;
+              }              
+               
+        }
+             /* Check now, has  IF setting allowed commands? */
+             /* allowed IF=i n (i=A or B or C or D, n=1 or 2 or 3 or 4), cmd in argv[1] */
+               
+                
+             i0=(command->argv[1])[0]; /* i0 contains input channel, e,g, a=97, d=100 */
+             i1=(command->argv[1])[1]; /* i1 contains 1 -4 (1=49 .. 4=52)*/
+             
+             if ((i0 >= 97)&&(i0 <=100)&&(i1 >= 49)&&(i1<=52)) {
+             /* then allowed input */
+             printf("i0=%d  i1=%d\n",i0,i1);
+             strcat(outbuf,",");
+             strcat(outbuf,command->argv[1]);
+             }   
+             else { 
+              z_logit("DBBCnn: IF channal setting out of range",-11,"ST"); 
+              goto exit;
+             }
+        }
+  bwdU:       /*Setting of  upper side bandwith in MHz*/
+        i0 = (command->argv[2])[0];     
+        if (out_recs >= 3)   /* is value for bwdU definded or empty? */
+        {   
+            if (i0 == 0){
+              if (DEBUG) printf("No value for bwdU, check next input\n");
+              if (out_recs >=4 ) {/* empty command - ,, */
+                 strcat (outbuf,",");
+              goto bwdL;  /*  bwdU is not defined, check next input */
+              }
+            } /* check command */  
+              i=sscanf(command->argv[2],"%d",&i2);
+              /* are values for bwdU allowed? */
+            if (i2==2 || i2==4 || i2==8 || i2==16 || i2==32 || i2==64)  {  
+               strcat(outbuf,",");
+               strcat(outbuf,command->argv[2]);
+            }  
+               z_logit("dbbcnn: bwdU incorrect value",-11,"ST");
+        }
+bwdL:
+
+   
+gainU:        
+dbbc_cn: 
+       printf("dbbc_cn() outbuf:   %s\n/", outbuf);
+   /* function dbbc connection, tbd */ 
+
+   exit:
+
+
+      ip[0]=0;
+      ip[1]=0;
+      ip[2]=ierr;
+      memcpy(ip+3,"dbbcnn",6); 
+      return;
+
+
+}
+/*mk5cn:
+      ip[0]=1;
+      ip[1]=out_class;
+      ip[2]=out_recs;
+      skd_run("mk5cn",'w',ip);
+      skd_par(ip);
+
+      if(ip[2]<0) return;
+      mk5_dis(command,itask,ip);
+      return;
+*/
+

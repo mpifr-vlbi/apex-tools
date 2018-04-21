@@ -1,0 +1,10 @@
+range 4500 5000
+2002 09 08
+frequency 1.0
+rcp lcp
+  1.5 1.5
+ELEV POLY 1.0
+rcp 4000  1.5
+rcp 5500  1.5
+lcp 4000  1.5
+lcp 5500  1.5

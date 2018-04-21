@@ -1,0 +1,107 @@
+CFLAGS= -m32
+FFLAGS= -m32
+/*
+ * Imakefile for rxvt
+ * Thu Oct 28 11:28:03 CDT 1993
+ */
+
+# uncomment for gcc
+CC=gcc 
+
+# add -DDEBUG to get rxvt to self-check for internal screen corruption
+# add -DDEBUG_MALLOC to self check on out of bound memory usage.
+#CCOPTIONS = -O2 
+CCOPTIONS= -O2 
+CDEBUGFLAGS = 
+
+
+# Add -DPRINT_PIPE if you want support for an emulation of an attached 
+# vt100 printer.
+
+# Add -DUSE_XCOPYAREA if you think that use of XCopyArea commands 
+# (in place of re-draws) will speed up rxvt. I have been told that this
+# helps with some graphics adapters like the PC's et4000. OK, its good
+# on mono-chrome Sun-3's that I've tried too.
+
+# -DMAX_REFRESH_PERIOD=10 means that rxvt will skip no more than
+# 10 screenfulls between screen refreshes during hard & fast scrolling
+
+# Use -DFAKE_RESOURCES to use my hack which provides a substitute for
+# using XGetDefaults. If all you want to do is put rxvt defaults in your
+# .Xdefaults file, use this, and save 60-160Kbytes memory!
+# Use -DREAL_RESOURCES to use XGetDefaults.
+# Leave off both options to blow off the Xdefaults altogether.
+
+# Use -DCOLOR to get ANSI color in rxvt
+# Use -DGRAPHICS to get my own little graphics mode.
+
+# Use -DMULTIPLE_CLICKS for double and triple click selection support
+# Integrated by A. Haritsis <ah@doc.ic.ac.uk>, based on code by:
+# Edward. Der-Hua Liu, Taiwan
+
+# Use -DMAPALERT to enable automatic de-iconify when a bell is displayed
+
+# Rxvt now include optional utmp support.
+# including utmp support allows rxvt to update /etc/utmp so
+# that the commands who and w show rxvt logins.
+# In order for this to work, /etc/utmp must be world writeable, or
+# rxvt must be setuid root.
+# to make rxvt setuid root, do this
+# su
+# chown root.root rxvt
+# chmod a+s rxvt
+# Do it at your own risk. 
+
+# Greek Elot-928 & IBM-437 keyboard support by A. Haritsis <ah@doc.ic.ac.uk>
+# Please read instructions in README.greek
+# uncomment the following to allow greek keyboard support
+# (toggle via keysym: Mode_switch;redefine via X resource greek_switch_keysym) 
+/*#define GREEK_SUPPORT   /**/
+
+#ifdef  GREEK_SUPPORT
+GREEK_EXTRA=-DGREEK_KBD
+GREEK_SRC=grkelot.c
+GREEK_OBJ=grkelot.o
+#else
+GREEK_EXTRA=    #-DGREEK_KBD
+GREEK_SRC=      #grkelot.c
+GREEK_OBJ=      #grkelot.o
+#endif
+
+# extra optims
+
+# This define makes SYSV type systems to include utmp support ("who");
+# This is ok for Linux or Solaris
+#EXTRA_DEFINES = -DUTMP_SUPPORT -DUTMP=\"/etc/utmp\" -DPRINT_PIPE $(GREEK_EXTRA) -DMULTIPLE_CLICKS -DMAX_REFRESH_PERIOD=10 -DMULTIPLE_CLICKS -DFAKE_RESOURCES -DCOLOR -DGRAPHICS
+
+# this should work for svr4
+#EXTRA_DEFINES = -DUTMP_SUPPORT -DUTMP=\"/etc/utmp\" -DSVR4 -DPRINT_PIPE $(GREEK_EXTRA) -DMAX_REFRESH_PERIOD=10 -DMULTIPLE_CLICKS -DFAKE_RESOURCES -DCOLOR -DGRAPHICS
+#EXTRA_LOAD_FLAGS= -lc -lucb
+
+# Using this defines adds in UTMP support for Sun OS 4.1.x
+EXTRA_DEFINES = -DBSD -DUTMP_SUPPORT -DUTMP=\"/etc/utmp\" -DBSD -DTTYTAB=\"/etc/ttytab\" -DPRINT_PIPE $(GREEK_EXTRA) -DMAX_REFRESH_PERIOD=10 -DMULTIPLE_CLICKS -DFAKE_RESOURCES -DUSE_XCOPYAREA -DCOLOR -DGRAPHICS
+
+# for FreeBSD 
+#EXTRA_DEFINES = -DUTMP_SUPPORT -DUTMP=\"/var/run/utmp\" -DBSD -DFREEBSD -DTTYTAB=\"/etc/ttys\" -DPRINT_PIPE $(GREEK_EXTRA) -DMAX_REFRESH_PERIOD=10 -DMULTIPLE_CLICKS -DFAKE_RESOURCES -DCOLOR -DGRAPHICS
+
+# for NetBSD 0.9
+#DEFS = -DUTMP_SUPPORT -DUTMP=\"/var/run/utmp\" -DBSD -DFREEBSD -DTTYTAB=\"/etc/ttys\" -DPRINT_PIPE $(GREEK_EXTRA) -DMAX_REFRESH_PERIOD=10 -DMULTIPLE_CLICKS -DFAKE_RESOURCES -DCOLOR -DGRAPHICS
+
+#For Iris Indigo - Irix 5.1.1.2/X11R5
+#EXTRA_DEFINES = -DUTMP_SUPPORT -DUTMP=\"/var/adm/utmp\" -DPRINT_PIPE -DMULTIPLE_CLICKS -DCOLOR -DGRAPHICS
+
+ 
+# for dec-alpha - osf/1 2.0
+#EXTRA_DEFINES = -DUTMP_SUPPORT -DUTMP=\"/var/adm/utmp\" -DALPHA -DPRINT_PIPE $(GREEK_EXTRA) -DMAX_REFRESH_PERIOD=10 -DMULTIPLE_CLICKS -DFAKE_RESOURCES -DCOLOR -DGRAPHICS
+
+
+DEPLIBS = $(DEPXLIB) 
+LOCAL_LIBRARIES = $(XPMLIB) $(XLIB) 
+
+SRCS = rxvt.c command.c sbar.c screen.c utmp.c xsetup.c debug.c resources.c graphics.c\
+       effsend.c	$(GREEK_SRC)
+ 
+OBJS = rxvt.o command.o sbar.o screen.o utmp.o xsetup.o debug.o resources.o graphics.o\
+       effsend.o	 $(GREEK_OBJ)
+
+ComplexProgramTarget(eff_rxvt)

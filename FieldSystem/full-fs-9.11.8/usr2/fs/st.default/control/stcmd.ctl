@@ -1,0 +1,2 @@
+*********STATION SPECIFIC COMMANDS**************
+*COMMAND     SEG SBPA BO
