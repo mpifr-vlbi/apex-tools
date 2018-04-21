@@ -151,6 +151,7 @@ def obs_writeScans(fd,scans,sources):
 	Ltsys   = 50  # seconds it takes for APECS to do a calibrate()
 	Lmeters = 15  # seconds it takes to read clock offsets, PWV, WX data
 	L_minimum_for_interactive = 480 # seconds required to allow interactive input from observer
+	Tstart_next = None
 
 	scannames = scans.keys()
 	scannames.sort() # assumes that the alphabetic order is also the time order...
@@ -159,37 +160,43 @@ def obs_writeScans(fd,scans,sources):
 		ii = scannames.index(scanname)
 		scan = scans[scanname]
 
-		sheading = '%s/%s' % (scanname,scan['source'])
+		sheading = '%s/%s to start at %s' % (scanname,scan['source'],datetime2SNP(scan['start']))
 		fd.write('#### %s %s\n' % (sheading, '#'*(80-6-len(sheading))))
 
 		T = scan['start']
 		Ldur = scan['dur']
+		
+		if ii < (len(scannames)-1):
+			nextscan = scans[scannames[ii+1]]
+			Tstart_next = nextscan['start']
+		else:
+			Tstart_next = None
 
-		#T = T + datetime.timedelta(seconds=-Lpre)
+		T = T + datetime.timedelta(seconds=-Lpre)
 
 		obs_writeLine(fd, datetime2SNP(T), 5, 'doppler(\'off\')')
-		#T = T + datetime.timedelta(seconds=5)
+		T = T + datetime.timedelta(seconds=5)
 
 		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(\'%s\',cats=\'user\')' % (scan['source']))
-		#T = T + datetime.timedelta(seconds=Lpre-5)
+		T = T + datetime.timedelta(seconds=Lpre-5)
 
 		obs_writeLine(fd, datetime2SNP(T), scan['dur'], 'track()')
-		#T = T + datetime.timedelta(seconds=Ldur)
+		T = T + datetime.timedelta(seconds=Ldur)
 
-		#T = T + datetime.timedelta(seconds=Lpost)
+		T = T + datetime.timedelta(seconds=Lpost)
 		obs_writeLine(fd, datetime2SNP(T), Ltsys, 'calibrate()')
 
-		#T = T + datetime.timedelta(seconds=Ltsys+5)
+		T = T + datetime.timedelta(seconds=Ltsys+5)
 		obs_writeLine(fd, datetime2SNP(T), Lmeters, 'readMeters()')
-		#T = T + datetime.timedelta(seconds=Lmeters)
+		T = T + datetime.timedelta(seconds=Lmeters)
 
-		#if (Tstart_next != None):
-		#	Lscangap = (Tstart_next - T)
-		#	Lscangap = Lscangap.total_seconds()
-		#	if (Lscangap >= L_minimum_for_interactive):
-		#		msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
-		#		obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
-		#	fd.write('#     %d seconds until next scan\n' % (int(Lscangap)) )
+		if (Tstart_next != None):
+			Lscangap = (Tstart_next - T)
+			Lscangap = Lscangap.total_seconds()
+			if (Lscangap >= L_minimum_for_interactive):
+				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
+				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
+			fd.write('#     %d seconds until next scan\n' % (int(Lscangap)) )
 
 	obs_writeLine(fd, datetime2SNP(T), 1, 'remote_control(\'off\')')
 
@@ -207,18 +214,9 @@ def run(args):
 	sources = getAllSources(vexfile)
 	scans = getAllScans(site, vexfile)
 
-	obsfile = vexfile + '.obs'
-	#src_file = 'vlbi-sources-' + v['GLOBAL']['EXPER'] + '.cat'
-	#lin_file = 'vlbi-freqs-' + v['GLOBAL']['EXPER'] + '.lin'
-	#(site_name,site_ID) = getSite(site, v)
-
-	#if (site_name == None):
-	#	print 'Could not find site %s in the VEX file.' % (site)
-	#	sys.exit(-1)
+	obsfile = vexfile.replace('.vex','') + '.apecs.obs'
 
 	print 'Creating .obs file for site %s' % (site)
-	print ''
-	print scans
 
 	fd = open(obsfile, 'w')
 	obs_writeHeader(fd,site,vexfile)
@@ -226,22 +224,7 @@ def run(args):
 	obs_writeScans(fd,scans,sources)
 	obs_writeFooter(fd)
 	fd.close()
-	#print 'Wrote obs file       : %s' % (obsfile)
+	print 'Wrote obs file       : %s' % (obsfile)
 
-	#fd = open(src_file, 'w')
-	#fd.write('#### VLBI targets for %s\n' % (v['GLOBAL']['EXPER']))
-	#for s in v['SOURCE']:
-	#	src = getSource(s,v)
-	#	fd.write('%-20s EQ %-4s  %s %s  LSR  0.0\n' % (src['name'],src['eq'],src['ra'],src['dec']))
-	#fd.close()
-	#print 'Wrote source catalog : %s' % (src_file)
-
-	#fd = open(lin_file, 'w')
-	#fd.write('#### VLBI frequency(ies) for %s\n' % (v['GLOBAL']['EXPER']))
-	#fd.write('vlbifreq 215.049 GHz LSB\n')
-	#fd.close()
-	#print 'Wrote freqs catalog  : %s  (PLEASE EDIT!)' % (lin_file)
-
-	print ''
 
 run(sys.argv)
