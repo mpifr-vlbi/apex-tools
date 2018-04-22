@@ -18,13 +18,13 @@ def usage():
 	print ('')
 
 def coordReformat(s):
-        s = s.strip()
-        repl = list('hmd\'')
-        for c in repl:
-                s = s.replace(c,':')
-        s = s.replace('s','')
-        s = s.replace('"','')
-        return s
+	s = s.strip()
+	repl = list('hmd\'')
+	for c in repl:
+		s = s.replace(c,':')
+	s = s.replace('s','')
+	s = s.replace('"','')
+	return s
 	# Note APECS wants reformatting
 	# RA:  VEX 13h25m27.6152000s  --> APECS 13:25:27.6152000
 	# DEC: VEX -43d01\'08.805000" --> APECS -43:01:08.80500
@@ -98,7 +98,7 @@ def obs_writeScans(fd,scans):
 
 		T = scan['start']
 		Ldur = scan['dur']
-		
+
 		if ii < (len(scans)-1):
 			nextscan = scans[ii+1]
 			Tstart_next = nextscan['start']
@@ -122,7 +122,7 @@ def obs_writeScans(fd,scans):
 			Lscangap = (Tstart_next - T)
 			Lscangap = Lscangap.total_seconds()
 			if (Lscangap >= L_minimum_for_interactive):
-				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
+				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap))
 				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
 			fd.write('#     %d seconds (%.1f minutes) until next scan\n\n' % (int(Lscangap),Lscangap/60.0) )
 
