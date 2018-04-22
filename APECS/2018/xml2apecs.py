@@ -43,7 +43,7 @@ def xml2datetime(txml):
 
 def getAllScans(xmlfile):
 	scans = []
-	tree = ET.parse('e18e22.xml')
+	tree = ET.parse(xmlfile)
 	root = tree.getroot()
 	for child in root:
 		scan = child.attrib
