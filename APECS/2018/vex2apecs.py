@@ -135,11 +135,10 @@ def obs_writeStandardsetup(fd):
 
 def obs_writeScans(fd,scans,sources):
 
+	Lslew   = 20  # slew time in seconds typical to a new source
 	Lpre    = 10  # preobs  x seconds before scan
-	Lpost   =  5  # postobs x seconds after scan
-	Ltsys   = 50  # seconds it takes for APECS to do a calibrate()
-	Lmeters = 15  # seconds it takes to read clock offsets, PWV, WX data
-	L_minimum_for_interactive = 480 # seconds required to allow interactive input from observer
+	Lcalib  = 50  # postobs x seconds after scan; calibrate takes ~40seconds max
+	L_minimum_for_interactive = 9999999 # seconds required to allow interactive input from observer
 	Tstart_next = None
 
 	scannames = scans.keys()
@@ -158,26 +157,21 @@ def obs_writeScans(fd,scans,sources):
 		if ii < (len(scannames)-1):
 			nextscan = scans[scannames[ii+1]]
 			Tstart_next = nextscan['start']
+			sourcename_next = nextscan['source']
 		else:
 			Tstart_next = None
+			sourcename_next = None
 
-		T = T + datetime.timedelta(seconds=-Lpre)
-
-		obs_writeLine(fd, datetime2SNP(T), 5, 'doppler(\'off\')')
-		T = T + datetime.timedelta(seconds=5)
-
-		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(\'%s\')' % (scan['source']))
-		T = T + datetime.timedelta(seconds=Lpre-5)
+		#obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(\'%s\')' % (scan['source']))  # moved to happen at end of scan
+		#T = T + datetime.timedelta(seconds=Lpre-5)
 
 		obs_writeLine(fd, datetime2SNP(T), scan['dur'], 'vlbi_tp_onsource(src=\'%s\',t=%d)'  % (scan['source'],scan['dur']/60))
 		T = T + datetime.timedelta(seconds=Ldur)
+		T = T + datetime.timedelta(seconds=Lcalib)
 
-		T = T + datetime.timedelta(seconds=Lpost)
-		obs_writeLine(fd, datetime2SNP(T), Ltsys, 'vlbi_initiate_tsys()')
-
-		#T = T + datetime.timedelta(seconds=Ltsys+5)
-		#obs_writeLine(fd, datetime2SNP(T), Lmeters, 'readMeters()')
-		#T = T + datetime.timedelta(seconds=Lmeters)
+		if sourcename_next != None:
+			obs_writeLine(fd, datetime2SNP(T), Lslew, 'source(\'%s\'); go()' % (sourcename_next))
+			T = T + datetime.timedelta(seconds=Lslew)
 
 		if (Tstart_next != None):
 			Lscangap = (Tstart_next - T)
@@ -213,6 +207,6 @@ def run(args):
 	obs_writeScans(fd,scans,sources)
 	obs_writeFooter(fd)
 	fd.close()
-	print ('Wrote obs file       : %s' % (obsfile))
+	print ('Wrote obs file %s' % (obsfile))
 
 run(sys.argv)
