@@ -29,6 +29,7 @@ use_remote_mode = True
 APECS_host = "10.0.2.170"   # IP of observer3.apex-telescope.org
 APECS_port = 22122          # UDP port on which APECS accepts commands (APECS: remote_control('on'))
 REPLY_port = 22127          # local UDP port on which to wait for a reply
+sock = None
 
 # APECS system (observer3) runs from abm.apex-telesc .IRIG. that is running TAI
 # VLBI is using UTC; need to correct for http://www.leapsecond.com/java/gpsclock.htm
@@ -101,7 +102,7 @@ def splitLine(l):
 
 
 def execCommand(cmd):
-	global APECS_host, APECS_port, REPLY_port, use_remote_mode
+	global APECS_host, APECS_port, REPLY_port, use_remote_mode, sock
 
 	writeLog(cmd)
 
@@ -125,9 +126,6 @@ def execCommand(cmd):
 			return False
 	else:
 		# Remote mode, commands are sent to APECS over UDP (requires remote_control('on')) in APECS)
-		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-		sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		sock.bind(('', REPLY_port))
 		if sys.version_info[0] >= 3:
 			# sock.sendto(bytes(cmd,'utf-8'), (APECS_host, APECS_port)) # Python 3.x
 			sock.sendto(bytes(cmd,'ascii'), (APECS_host, APECS_port)) # Python 3.x
@@ -135,12 +133,14 @@ def execCommand(cmd):
 			sock.sendto(cmd, (APECS_host, APECS_port)) # Python 2.x
 		sock.settimeout(1)
 		try:
-			sdata, saddr = sock.recvfrom(1024)
+			while True:
+				sdata, saddr = sock.recvfrom(1024)
+				info = "reply from APECS: %s" % (str(sdata))
+				writeLog(info)
 		except:
 			sdata = '(timeout)'
-		info = "reply from APECS: %s" % (str(sdata))
-		writeLog(info)
-		sock.close()
+			info = "reply from APECS: %s" % (str(sdata))
+			writeLog(info)
 
 def writeLog(s):
 	global logfile
@@ -180,11 +180,10 @@ def handleTask(t):
 
 def apecsVLBI(obsfile):
 	global offsetUTC, gotCtrlC, logfile
-	# global ntpserver
 
 	logfile = open(obsfile + '.log', 'a')
 
-	# offsetUTC = utilsNTP.get_UTC_offset(ntpserver)	
+	## offsetUTC = utilsNTP.get_UTC_offset(ntpserver)	
 	offsetUTC = int(offsetUTC)
 
 	writeLog('----------| START OF %s |----------' % (obsfile))
@@ -212,10 +211,20 @@ def apecsVLBI(obsfile):
 #### ENTRY
 #########################################################################################
 
+def run():
+	global sock
+	signal.signal(signal.SIGINT, signal_handler)
+
+	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+	sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	sock.bind(('', REPLY_port))
+
+	apecsVLBI(sys.argv[1])
+
+	sock.close()
+
 if (len(sys.argv) != 2):
 	usage()
 	sys.exit(-1)
-
-signal.signal(signal.SIGINT, signal_handler)
-apecsVLBI(sys.argv[1])
+run()
 
