@@ -2,6 +2,7 @@
 
 import sys
 import datetime
+import ntpath
 ## from VexLib import vex # had to give up on this, uses ply.lex, outdated...  now ugly parsing below...
 
 src_file = 'vlbi-sources.cat'
@@ -17,13 +18,13 @@ def usage():
 	print ('')
 
 def coordReformat(s):
-        s = s.strip()
-        repl = list('hmd\'')
-        for c in repl:
-                s = s.replace(c,':')
-        s = s.replace('s','')
-        s = s.replace('"','')
-        return s
+	s = s.strip()
+	repl = list('hmd\'')
+	for c in repl:
+		s = s.replace(c,':')
+	s = s.replace('s','')
+	s = s.replace('"','')
+	return s
 	# Note APECS wants reformatting
 	# RA:  VEX 13h25m27.6152000s  --> APECS 13:25:27.6152000
 	# DEC: VEX -43d01\'08.805000" --> APECS -43:01:08.80500
@@ -205,9 +206,8 @@ def run(args):
 		print ('\nError: no scans found for %s in %s!\n' % (site,vexfile))
 		return
 
-	obsfile = vexfile.replace('.vex','') + '.apecs.obs'
-
-	print ('Creating .obs file for site %s' % (site))
+	obsfile = ntpath.basename(vexfile)
+	obsfile = obsfile.replace('.vex', '.apecs.obs')
 
 	fd = open(obsfile, 'w')
 	obs_writeHeader(fd,site,vexfile)
@@ -215,6 +215,7 @@ def run(args):
 	obs_writeScans(fd,scans,sources)
 	obs_writeFooter(fd)
 	fd.close()
-	print ('Wrote obs file %s' % (obsfile))
+
+	print ('\nDone. Created APECS observing file %s with %d scans.\n' % (obsfile,len(scans)))
 
 run(sys.argv)

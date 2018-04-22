@@ -3,6 +3,7 @@
 import sys
 import datetime
 import xml.etree.ElementTree as ET
+import ntpath
 
 def usage():
 	print ('')
@@ -81,6 +82,7 @@ def obs_writeFooter(fd):
 def obs_writeStandardsetup(fd):
 	obs_writeLine(fd, '@always',  10, 'execfile(\'pi230_setup.apecs\')')
 	obs_writeLine(fd, '@always',  2, 'execfile(\'vlbi-pi230_commands.py\')')
+	fd.write('\n')
 
 def obs_writeScans(fd,scans):
 
@@ -109,7 +111,7 @@ def obs_writeScans(fd,scans):
 		T = T - datetime.timedelta(seconds=(Lpre+Lslew))
 
 		# Go to source (slew time)
-		obs_writeLine(fd, datetime2SNP(T), Lslew, 'source(\'%s\'); go()' % (scan['source']))
+		obs_writeLine(fd, datetime2SNP(T), Lslew-5, 'source(\'%s\'); go()' % (scan['source']))
 		T = T + datetime.timedelta(seconds=Lslew)
 
 		# Run some pre-calibrations that APECS operators wanted to do
@@ -129,6 +131,7 @@ def obs_writeScans(fd,scans):
 				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
 			fd.write('#     %d seconds (%.1f minutes) until next scan\n\n' % (int(Lscangap),Lscangap/60.0) )
 
+	fd.write('\n# Finished VLBI schedule\n')
 	obs_writeLine(fd, datetime2SNP(T), 1, 'remote_control(\'off\')')
 
 
@@ -141,9 +144,12 @@ def run(args):
 	xmlfile = args[1]
 
 	scans = getAllScans(xmlfile)
-	obsfile = xmlfile.replace('.xml','') + '.apecs.obs'
+	if len(scans) < 1:
+		print ('\nError: no scans found in %s!\n' % (xmlfile))
+		return
 
-	print ('Creating .obs file')
+	obsfile = ntpath.basename(xmlfile)
+	obsfile = obsfile.replace('.xml', '.apecs.obs')
 
 	fd = open(obsfile, 'w')
 	obs_writeHeader(fd,xmlfile)
@@ -151,7 +157,8 @@ def run(args):
 	obs_writeScans(fd,scans)
 	obs_writeFooter(fd)
 	fd.close()
-	print ('Wrote obs file %s' % (obsfile))
+
+	print ('\nDone. Created APECS observing file %s with %d scans.\n' % (obsfile,len(scans)))
 
 
 run(sys.argv)
