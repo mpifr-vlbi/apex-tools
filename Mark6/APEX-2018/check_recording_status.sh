@@ -1,7 +1,7 @@
 echo -e "\e[1;1H\e[2J"  # https://stackoverflow.com/questions/2347770/how-do-you-clear-the-console-screen-in-c
 
 while true; do
-        echo -e "\e[1;1f"
+        clear
         date -u
 
         echo "--------------------------------------"
