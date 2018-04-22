@@ -21,7 +21,31 @@ def vlbi_tpoint():
     tp()
     point(150, time=20)
 
+def vlbi_tp_onsource_prepare(src='M87'):
+    execfile('pi230_setup.apecs')
+    source(src)
+    # Try this...JPE @ 2018-04-19
+    tp()
+    repeat(1)
+    use_ref('ON')
+    reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='EQ', epoch=2000.0)
+    use_ref('OFF')  
+
 def vlbi_tp_onsource(src='M87',t=4):
+    '''Total power monitoring for VLBI, taken while tracking source.
+    
+       t : integration time in MINUTES.
+    '''
+    pi230.configure(doppler='off') 
+    repeat(t)
+    on(drift='no',time=60)
+    repeat(1)
+    track()
+    # Now get Tsys
+    calibrate(time=5)
+    #use_ref('ON')
+
+def vlbi_tp_onsource_Old(src='M87',t=4):
     '''Total power monitoring for VLBI, taken while tracking source.
     
        t : integration time in MINUTES.
@@ -35,13 +59,13 @@ def vlbi_tp_onsource(src='M87',t=4):
     repeat(1)
     use_ref('ON')       
     reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='EQ', epoch=2000.0)
-    calibrate(time=5)
     use_ref('OFF')  
     pi230.configure(doppler='off') 
     repeat(t)
     on(drift='no',time=60)
     repeat(1)
     track()
+    calibrate(time=5)
     #use_ref('ON')    
     
 
@@ -64,9 +88,10 @@ def vlbi_focus(axis='Z'):
 
 def vlbi_initiate_tsys():
     '''Start a calibration (Tsys measurement).'''
-    reference (-1000,0)
-    calibrate()
-    reference (0,0)
+    #reference (-1000,0)
+    #calibrate()
+    #reference (0,0)
+    pass
 
 def vlbi_get_calibration():
     '''Collect calibration results'''

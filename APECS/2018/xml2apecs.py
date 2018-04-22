@@ -84,8 +84,8 @@ def obs_writeStandardsetup(fd):
 
 def obs_writeScans(fd,scans):
 
-	Lslew   = 20  # slew time in seconds typical to a new source
-	Lpre    = 10  # preobs  x seconds before scan
+	Lslew   = 30  # slew time in seconds typical to a new source
+	Lpre    = 30  # preobs  x seconds before scan
 	Lcalib  = 50  # postobs x seconds after scan; calibrate takes ~40seconds max
 	L_minimum_for_interactive = 9999999 # seconds required to allow interactive input from observer
 	Tstart_next = None
@@ -98,31 +98,34 @@ def obs_writeScans(fd,scans):
 
 		T = scan['start']
 		Ldur = scan['dur']
-
+		
 		if ii < (len(scans)-1):
 			nextscan = scans[ii+1]
 			Tstart_next = nextscan['start']
-			sourcename_next = nextscan['source']
 		else:
 			Tstart_next = None
-			sourcename_next = None
 
-		#obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'source(\'%s\')' % (scan['source']))  # moved to happen at end of scan
-		#T = T + datetime.timedelta(seconds=Lpre-5)
+		# Start early
+		T = T - datetime.timedelta(seconds=(Lpre+Lslew))
 
+		# Go to source (slew time)
+		obs_writeLine(fd, datetime2SNP(T), Lslew, 'source(\'%s\'); go()' % (scan['source']))
+		T = T + datetime.timedelta(seconds=Lslew)
+
+		# Run some pre-calibrations that APECS operators wanted to do
+		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'vlbi_tp_onsource_prepare(\'%s\')' % (scan['source']))
+		T = T + datetime.timedelta(seconds=Lpre)
+
+		# Track on source for the duration of the scan (Ldur), and get Tsys at end of scan (Lcalib; part of vlbi_tp_onsource())
 		obs_writeLine(fd, datetime2SNP(T), scan['dur'], 'vlbi_tp_onsource(src=\'%s\',t=%d)'  % (scan['source'],scan['dur']/60))
 		T = T + datetime.timedelta(seconds=Ldur)
 		T = T + datetime.timedelta(seconds=Lcalib)
-
-		if sourcename_next != None:
-			obs_writeLine(fd, datetime2SNP(T), Lslew, 'source(\'%s\'); go()' % (sourcename_next))
-			T = T + datetime.timedelta(seconds=Lslew)
 
 		if (Tstart_next != None):
 			Lscangap = (Tstart_next - T)
 			Lscangap = Lscangap.total_seconds()
 			if (Lscangap >= L_minimum_for_interactive):
-				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap))
+				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
 				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
 			fd.write('#     %d seconds (%.1f minutes) until next scan\n\n' % (int(Lscangap),Lscangap/60.0) )
 
