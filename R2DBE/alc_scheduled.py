@@ -18,8 +18,8 @@ from math import log10, sqrt
 import mandc
 #from mandc.r2dbe import R2dbe, R2DBE_INPUTS
 
-#R2DBE_HOSTS = ['r2dbe1','r2dbe2','r2dbe3','r2dbe4']
-R2DBE_HOSTS = ['r2dbe1','r2dbe2','r2dbe3']
+R2DBE_HOSTS = ['r2dbe1','r2dbe2','r2dbe3','r2dbe4']
+#R2DBE_HOSTS = ['r2dbe1','r2dbe2','r2dbe3']
 
 IDEAL_THRESHOLD = 30        # ideal R2DBE threshold value
 AT_SECS_BEFORE_SCAN = 10    # run ALC roughly how many seconds before a scan
