@@ -5,62 +5,74 @@ import datetime
 import time
 import signal
 import socket
+import platform
 
-## Globals
+def usage():
+	print ('')
+	print ('Usage: apecsVLBI.py <experiment.obs>')
+	print ('')
+	print ('The .obs file can be generated from a VEX file using vex2apecs.py,')
+	print ('or from the vex2xml output XML file using xml2apecs.py.')
+	print ('The .obs file has to contain three columns, the starting UT time,')
+	print ('duration and the APECS command to execute at the given time.')
+	print ('Note that APECS must be in remote_control(\'on\') mode.')
+	print ('')
+
+###########################################################################################################
+#### Globals
+###########################################################################################################
 
 logfile = None
-
-# APECS system runs from abm.apex-telesc .IRIG. that is running TAI
-# The TAI time leads UTC by 35 seconds until June 2015 
-# http://www.leapsecond.com/java/gpsclock.htm
-import utilsNTP
-ntpserver = 'time.nist.gov' #'nist1-lnk.binary.net'
-offsetUTC = 35   
-
-# Ctrl-C
-gotCtrlC = False
 
 # APECS remote mode
 use_remote_mode = True
 APECS_host = "10.0.2.170"   # IP of observer3.apex-telescope.org
 APECS_port = 22122          # UDP port on which APECS accepts commands (APECS: remote_control('on'))
+REPLY_port = 22127          # local UDP port on which to wait for a reply
+sock = None
 
+# APECS system (observer3) runs from abm.apex-telesc .IRIG. that is running TAI
+# VLBI is using UTC; need to correct for http://www.leapsecond.com/java/gpsclock.htm
+if ('observer3' not in platform.node()) and ('10.0.2.170' not in platform.node()):
+	offsetUTC = 0
+	print ('\nINFO: Apparently not running on Observer3. Not applying TAI/UTC leap seconds correction!\n')
+else:
+	# The TAI time leads UTC by 37 seconds as of April 2018
+	offsetUTC = 37
+	print ('\nINFO: Apparently running on Observer3. Correction computer time (TAI) by %d leap seconds to have UTC!\n' % (offsetUTC))
 
-## Functions
+# Ctrl-C
+gotCtrlC = False
+
+###########################################################################################################
+#### Functions
+###########################################################################################################
 
 def signal_handler(signal, frame):
 	global gotCtrlC
 	gotCtrlC = True
-        print('Ctrl-C pressed, stopping...')
-
-def usage():
-	print ''
-	print 'Usage: apecsVLBI.py <experiment.obs>'
-	print ''
-	print 'The .obs file can be generated from a VEX file using vex2apecs.py.'
-	print 'It has to contain three columns, the starting UT time, duration and'
-	print 'APECS command to execute at the given time.'
-	print ''
-
+	print('Ctrl-C pressed, stopping...')
 
 def waitUntil(T,Tsnp='',msg=''):
 	'''Waits until UTC datetime T, corrected for local clock offset (e.g. TAI time)'''
 	global offsetUTC, gotCtrlC
 	iter = 0
 	while True:
-		Tcurr = datetime.datetime.utcnow() + datetime.timedelta(seconds=-offsetUTC)
+		Tcurr_obs3 = datetime.datetime.utcnow()
+		Tcurr = Tcurr_obs3 + datetime.timedelta(seconds=-offsetUTC)
+		#print ('INFO: System time on Observer3 of %s adjusted by %d leap seconds to actual UT of %s' % (datetime2SNP(Tcurr_obs3),offsetUTC,datetime2SNP(Tcurr)))
 		dT = T - Tcurr
 		dT = dT.total_seconds()
 		if (dT <= 0) or gotCtrlC:
 			break
-		# print dT
+		# print (dT)
 		iter = iter + 1
 		sys.stdout.write('\r')
 		sys.stdout.write('Still %ds from now (%s) to start (%s) of %s' % (int(dT),datetime2SNP(Tcurr),Tsnp,msg))
 		sys.stdout.flush()
 		time.sleep(0.25)
 
-	# print 'waitUntil %s / now=%s : dT=%s iter=%d' % (T,Tcurr,str(dT),iter)
+	# print ('waitUntil %s / now=%s : dT=%s iter=%d' % (T,Tcurr,str(dT),iter))
 	if gotCtrlC:
 		return False	# Cancelled
 	if (iter > 0):
@@ -76,7 +88,6 @@ def SNP2datetime(tsnp):
         # Example SNP timestamp: 2015.016.07:30:00
         return datetime.datetime.strptime(tsnp, '%Y.%j.%H:%M:%S')
 
-
 def splitLine(l):
 	'''Splits .obs file line with date/time, duration, and command into respective pieces'''
 	l = l.strip()
@@ -91,17 +102,17 @@ def splitLine(l):
 
 
 def execCommand(cmd):
-	global APECS_host, APECS_port, use_remote_mode
+	global APECS_host, APECS_port, REPLY_port, use_remote_mode, sock
 
 	writeLog(cmd)
 
 	if (cmd.find('interactive') > 0):
-		print '>>> VLBI execution paused, without timeout on pause, to allow'
-		print '>>> user commands entered into APECS. Be careful not to exceed'
-		print '>>> scan gap time. When done in APECS type \'cont\' to continue here.'
+		print ('>>> VLBI execution paused, without timeout on pause, to allow')
+		print ('>>> user commands entered into APECS. Be careful not to exceed')
+		print ('>>> scan gap time. When done in APECS type \'cont\' to continue here.')
 		while True:
-                	l = raw_input('type \'cont\' to continue VLBI> ')
-			if (l.lower().strip() == 'cont'):
+			l = raw_input('type \'cont\' to continue VLBI> ')
+			if ('cont' in l.lower().strip()):
 				break	
 		return True
 
@@ -111,13 +122,25 @@ def execCommand(cmd):
 			eval(cmd, globals(), locals())
 			return True
 		except:
-			print 'Command %s failed with : %s' % (cmd,sys.exc_info()[0])
+			print ('Command %s failed with : %s' % (cmd,sys.exc_info()[0]))
 			return False
 	else:
 		# Remote mode, commands are sent to APECS over UDP (requires remote_control('on')) in APECS)
-		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		sock.sendto(cmd, (APECS_host, APECS_port))
-		sock.close()
+		if sys.version_info[0] >= 3:
+			# sock.sendto(bytes(cmd,'utf-8'), (APECS_host, APECS_port)) # Python 3.x
+			sock.sendto(bytes(cmd,'ascii'), (APECS_host, APECS_port)) # Python 3.x
+		else:
+			sock.sendto(cmd, (APECS_host, APECS_port)) # Python 2.x
+		sock.settimeout(1)
+		try:
+			while True:
+				sdata, saddr = sock.recvfrom(1024)
+				info = "reply from APECS: %s" % (str(sdata))
+				writeLog(info)
+		except:
+			sdata = '(timeout)'
+			info = "reply from APECS: %s" % (str(sdata))
+			writeLog(info)
 
 def writeLog(s):
 	global logfile
@@ -125,14 +148,14 @@ def writeLog(s):
 	T = datetime2SNP(T)
 	info = '%s;\"%s' % (T,s)
 	logfile.write(info + '\n')
-	print info
+	print (info)
 
 def handleTask(t):
 	'''Task is a list of [tstart,tdur,cmd] as returned by splitLine() for one line on the .obs file'''
 	global gotCtrlC
 
 	if (len(t) != 3):
-		print 'Invalid task %s' % (str(t))
+		print ('Invalid task %s' % (str(t)))
 		return None
 
 	cmd = t[2]
@@ -147,7 +170,8 @@ def handleTask(t):
 	if gotCtrlC:
 		return False
 	if not(reached):
-		print 'Time %s for command %s already passed. Skipping.' % (t[0],cmd)
+		info = "missed time %s : %s" % (t[0],cmd)
+		writeLog(info)
 		return False
 
 	execCommand(cmd)
@@ -155,11 +179,11 @@ def handleTask(t):
 
 
 def apecsVLBI(obsfile):
-	global ntpserver, offsetUTC, gotCtrlC, logfile
+	global offsetUTC, gotCtrlC, logfile
 
 	logfile = open(obsfile + '.log', 'a')
 
-	offsetUTC = utilsNTP.get_UTC_offset(ntpserver)	
+	## offsetUTC = utilsNTP.get_UTC_offset(ntpserver)	
 	offsetUTC = int(offsetUTC)
 
 	writeLog('----------| START OF %s |----------' % (obsfile))
@@ -183,11 +207,24 @@ def apecsVLBI(obsfile):
 	fd.close()
 	logfile.close()
 
-signal.signal(signal.SIGINT, signal_handler)
+#########################################################################################
+#### ENTRY
+#########################################################################################
+
+def run():
+	global sock
+	signal.signal(signal.SIGINT, signal_handler)
+
+	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+	sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	sock.bind(('', REPLY_port))
+
+	apecsVLBI(sys.argv[1])
+
+	sock.close()
 
 if (len(sys.argv) != 2):
 	usage()
 	sys.exit(-1)
-else:
-	apecsVLBI(sys.argv[1])
+run()
 
