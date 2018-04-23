@@ -45,8 +45,11 @@ med = numpy.median(offsets)
 stddev = numpy.std(offsets)
 t0 = numpy.min(times)
 t1 = numpy.max(times)
-
 offsets = offsets - med
+
+m,c = numpy.linalg.lstsq(times, offsets)[0]
+print(m,c)
+
 plt.plot(times, offsets, 'kx:')
 plt.xlabel('Seconds since %s' % (T0))
 plt.ylabel('Time delta of 1PPS signals in seconds')
