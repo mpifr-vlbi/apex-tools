@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+'''
+Usage: vex2apecs.py <vexfile> <siteID>
+
+Produces an .obs file that contains timed APECS commands for the VLBI observation.
+The .obs file can later be run with apecsVLBI.py. Does not yet support frequency
+changes during an observation (different MODEs in VEX).
+'''
 
 import sys
 import datetime
@@ -7,15 +14,6 @@ import ntpath
 
 src_file = 'vlbi-sources.cat'
 lin_file = 'vlbi-freqs.lin'
-
-def usage():
-	print ('')
-	print ('Usage: vex2apecs.py <vexfile> <siteID>')
-	print ('')
-	print ('Produces an .obs file that contains timed APECS commands for the VLBI observation.')
-	print ('The .obs file can later be run with apecsVLBI.py. Does not yet support frequency')
-	print ('changes during an observation (different MODEs in VEX).')
-	print ('')
 
 def coordReformat(s):
 	s = s.strip()
@@ -53,7 +51,7 @@ def getAllSources(fn):
 			entry['dec'] = dec
 			sources[currSrc] = entry
 	return sources
-		
+
 
 def datetime2SNP(t):
 	# Example SNP timestamp: 2015.016.07:30:00
@@ -155,7 +153,7 @@ def obs_writeScans(fd,scans,sources):
 
 		T = scan['start']
 		Ldur = scan['dur']
-		
+
 		if ii < (len(scannames)-1):
 			nextscan = scans[scannames[ii+1]]
 			Tstart_next = nextscan['start']
@@ -182,7 +180,7 @@ def obs_writeScans(fd,scans,sources):
 			Lscangap = (Tstart_next - T)
 			Lscangap = Lscangap.total_seconds()
 			if (Lscangap >= L_minimum_for_interactive):
-				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
+				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap))
 				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
 			fd.write('#     %d seconds (%.1f minutes) until next scan\n\n' % (int(Lscangap),Lscangap/60.0) )
 
@@ -194,7 +192,7 @@ def run(args):
 	global src_file, lin_file
 
 	if (len(args) != 3):
-		usage()
+		print(__doc__)
 		sys.exit(-1)
 
 	vexfile = args[1]
