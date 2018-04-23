@@ -47,13 +47,15 @@ t0 = numpy.min(times)
 t1 = numpy.max(times)
 offsets = offsets - med
 
-m,c = numpy.linalg.lstsq(times, offsets)[0]
+m,c = numpy.linalg.lstsq(numpy.vstack([times, numpy.ones(len(times))]).T, offsets)[0]
 print(m,c)
 
 plt.plot(times, offsets, 'kx:')
+plt.plot(times, m*times + c, 'b-', label='best-fit rate = %e s/s' % (m))
 plt.xlabel('Seconds since %s' % (T0))
 plt.ylabel('Time delta of 1PPS signals in seconds')
 plt.axis([t0, t1, -3*stddev, 3*stddev])
+plt.legend()
 plt.draw()
 plt.show()
 while True:
