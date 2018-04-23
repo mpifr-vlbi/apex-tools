@@ -18,6 +18,9 @@ from math import log10, sqrt
 import mandc
 #from mandc.r2dbe import R2dbe, R2DBE_INPUTS
 
+#R2DBE_HOSTS = ['r2dbe1','r2dbe2','r2dbe3','r2dbe4']
+R2DBE_HOSTS = ['r2dbe1','r2dbe2','r2dbe3']
+
 IDEAL_THRESHOLD = 30        # ideal R2DBE threshold value
 AT_SECS_BEFORE_SCAN = 10    # run ALC roughly how many seconds before a scan
 SECS_MARGIN = 2             # allow ALC to be done during AT_SECS_BEFORE_SCAN +- SECS_MARGIN
@@ -37,7 +40,7 @@ def alc_r2dbe(hostname, logger):
 
 	# Set thresholds
 	r2dbe = mandc.r2dbe.R2dbe(hostname)
-	for inp in R2DBE_INPUTS:
+	for inp in mandc.r2dbe.R2DBE_INPUTS:
 		r2dbe.set_2bit_threshold(inp)		
 
 	# Get thresholds and log them
@@ -48,6 +51,11 @@ def alc_r2dbe(hostname, logger):
 	d_pwr = [(IDEAL_THRESHOLD / (1.0 * t))**2 for t in th]
 	d_pwr_dB = [10.0 * log10(d) for d in d_pwr]
 	logger.info("Recommended change in input power for {host!r} is if0 = {dp[0]:+.2f} dB, if1 = {dp[1]:+.2f} dB".format(host=r2dbe, dp=d_pwr_dB))
+
+'''Run ALC on all R2DBEs in series'''
+def alc_all(logger):
+	for host in R2DBE_HOSTS:
+		alc_r2dbe(host, logger)
 
 '''Create a logger, as in alc.py'''
 def configure_logging(logfilename=None, verbose=None):
@@ -96,7 +104,9 @@ if len(sys.argv) != 2:
 	print (__doc__)
 	sys.exit(1)
 
-logger = configure_logging()
+tnow = datetime.datetime.utcnow()
+logfile = tnow.strftime('alc_scheduled-%Y.%j.%H.%M.%S.log')
+logger = configure_logging(logfilename=logfile, verbose=False)
 xmlfile = sys.argv[1]
 
 tree = ET.parse(xmlfile)
@@ -112,12 +122,11 @@ for child in root:
 		dT = T_early - T_now
 		dT = dT.total_seconds()
 		if (dT > (AT_SECS_BEFORE_SCAN - SECS_MARGIN)) and (dT < (AT_SECS_BEFORE_SCAN + SECS_MARGIN)):
-			for host in ['r2dbe1','r2dbe2','r2dbe3','r2dbe4']:
-				alc_r2dbe(host, logger)
+			alc_all(logger)
 			break #  advance to next scan
 		elif (dT < (AT_SECS_BEFORE_SCAN - SECS_MARGIN)):
 			print('Skipping scan %s at %s' % (scaninfos['scan_name'],scaninfos['start_time']))
-			break
+			break #  advance to next scan
 		else:
 			time.sleep(0.25)
 			sys.stdout.write('\r')
