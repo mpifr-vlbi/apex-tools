@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 """
 Poll Mark6 machines and read their 'lmsensors'.
 """
