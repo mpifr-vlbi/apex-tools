@@ -51,7 +51,7 @@ def getAllSources(fn):
 			entry['dec'] = dec
 			sources[currSrc] = entry
 	return sources
-
+		
 
 def datetime2SNP(t):
 	# Example SNP timestamp: 2015.016.07:30:00
@@ -135,54 +135,92 @@ def obs_writeStandardsetup(fd):
 
 def obs_writeScans(fd,scans,sources):
 
-	Lslew   = 30  # slew time in seconds typical to a new source
-	Lpre    = 30  # preobs  x seconds before scan
-	Lcalib  = 50  # postobs x seconds after scan; calibrate takes ~40seconds max
+	Lslew    = 25  # max slew time in seconds to a new source
+	Ltsys    = 20  # max time for Tsys sky/hot/cold measurement in seconds
+	Lrefscan = 70  # max time for on() scan with Off-Source reference
+	Lcmdmargin = 5 # allow 5 seconds between issuing any new APECS command
 	L_minimum_for_interactive = 9999999 # seconds required to allow interactive input from observer
-	Tstart_next = None
 
+	Tstart_next = None  # keep track of starting time of scan after current one
+	prev_source = None  # keep track of source changes
+	Tprev_end = None
+
+	# Get scan names, start times, and sort by start time
 	scannames = scans.keys()
-	scannames = sorted(scannames) # assumes that the alphabetic order is also the time order...
+	starttimes = [scans[sn]['start'] for sn in scannames]
+	isorted = [starttimes.index(st) for st in sorted(starttimes)]
 
-	for scanname in scannames:
-		ii = scannames.index(scanname)
+	# Generate APECS command entries for all scans
+	for ii in isorted:
+		scanname = scannames[ii]
 		scan = scans[scanname]
-
-		sheading = 'Target %s scanname %s to start at %s' % (scan['source'],scanname,datetime2SNP(scan['start']))
-		fd.write('#### %s %s\n' % (sheading, '#'*(80-6-len(sheading))))
 
 		T = scan['start']
 		Ldur = scan['dur']
-
-		if ii < (len(scannames)-1):
-			nextscan = scans[scannames[ii+1]]
+		
+		# Determine scan after current one (time margin, source name)
+		if isorted.index(ii) < (len(isorted)-1):
+			iinext = isorted[isorted.index(ii)+1]
+			nextscan = scans[scannames[iinext]]
 			Tstart_next = nextscan['start']
+			# Time delta from end of current scan to start of next scan
+			dT_to_next = (Tstart_next - T).total_seconds()
+			dT_to_next = dT_to_next - Ldur
 		else:
+			nextscan = None
 			Tstart_next = None
+			dT_to_next = 9999999
 
-		# Start early
-		T = T - datetime.timedelta(seconds=(Lpre+Lslew))
+		# Determine what things to do during current scan
+		do_sourcechange = False
+		do_vlbi_reference_scan = False
+		do_vlbi_tsys = False
+		L_start_early = 0
 
-		# Go to source (slew time)
-		obs_writeLine(fd, datetime2SNP(T), Lslew-5, 'source(\'%s\'); go()' % (scan['source']))
-		T = T + datetime.timedelta(seconds=Lslew)
+		if (isorted.index(ii) == 0) or (scan['source'] != prev_source):
+			do_sourcechange = True
+			L_start_early = L_start_early + Lslew + Lcmdmargin
 
-		# Run some pre-calibrations that APECS operators wanted to do
-		obs_writeLine(fd, datetime2SNP(T), Lpre-5, 'vlbi_tp_onsource_prepare(\'%s\')' % (scan['source']))
-		T = T + datetime.timedelta(seconds=Lpre)
+		if (dT_to_next - L_start_early) > Ltsys:
+			do_vlbi_tsys = True
+			L_start_early = L_start_early + Ltsys + Lcmdmargin
 
-		# Track on source for the duration of the scan (Ldur), and get Tsys at end of scan (Lcalib; part of vlbi_tp_onsource())
-		obs_writeLine(fd, datetime2SNP(T), scan['dur'], 'vlbi_tp_onsource(src=\'%s\',t=%d)'  % (scan['source'],scan['dur']/60))
-		T = T + datetime.timedelta(seconds=Ldur)
-		T = T + datetime.timedelta(seconds=Lcalib)
+		if (dT_to_next - L_start_early) > Lrefscan:
+			do_vlbi_reference_scan = True
+			L_start_early = L_start_early + Lrefscan + Lcmdmargin
 
-		if (Tstart_next != None):
-			Lscangap = (Tstart_next - T)
+		# Determine the time between the end of the previous scan, and the first command for this scan
+		if (Tprev_end != None):
+			Tfirstcmd = T - datetime.timedelta(seconds=L_start_early)
+			Lscangap = (Tfirstcmd - Tprev_end)
 			Lscangap = Lscangap.total_seconds()
 			if (Lscangap >= L_minimum_for_interactive):
-				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap))
+				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
 				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
-			fd.write('#     %d seconds (%.1f minutes) until next scan\n\n' % (int(Lscangap),Lscangap/60.0) )
+			fd.write('#     scan end at %s\n' % datetime2SNP(Tprev_end))
+			fd.write('#     %d idle seconds (%.1f minutes) until next remote command\n\n' % (int(Lscangap),Lscangap/60.0) )
+
+		# Now queue up the APECS commands to do for this scan
+		sheading = 'Target %s scanname %s to start at %s' % (scan['source'],scanname,datetime2SNP(scan['start']))
+		fd.write('#### %s %s\n' % (sheading, '#'*(80-6-len(sheading))))
+		T = T - datetime.timedelta(seconds=L_start_early)
+		if do_sourcechange:
+			obs_writeLine(fd, datetime2SNP(T), Lslew, 'source(\'%s\'); go(); track()' % (scan['source']))
+			T = T + datetime.timedelta(seconds=(Lslew+Lcmdmargin))
+		if do_vlbi_tsys:
+			obs_writeLine(fd, datetime2SNP(T), Ltsys, 'vlbi_tsys()')
+			T = T + datetime.timedelta(seconds=(Ltsys+Lcmdmargin))
+		if do_vlbi_reference_scan:
+			obs_writeLine(fd, datetime2SNP(T), Lrefscan, 'vlbi_reference_scan()')
+			T = T + datetime.timedelta(seconds=(Lrefscan+Lcmdmargin))
+		obs_writeLine(fd, datetime2SNP(T), scan['dur'], 'vlbi_scan(t_mins=%d)' % (scan['dur']/60))  # track on source
+		T = T + datetime.timedelta(seconds=Ldur)
+		if not do_vlbi_tsys:
+			# Tsys after scan?
+			pass
+
+		prev_source = scan['source']
+		Tprev_end = T
 
 	fd.write('\n# Finished VLBI schedule\n')
 	obs_writeLine(fd, datetime2SNP(T), 1, 'remote_control(\'off\')')
