@@ -123,7 +123,7 @@ def vlbi_reference_scan():
     use_ref('ON')
     reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='HO', epoch=2000.0)
     repeat(1)
-    on(drift='no',time=60)
+    on(drift='no',time=30) # 2 x 30s = 1 minute
     use_ref('OFF')
 
 def vlbi_tsys():
@@ -177,3 +177,4 @@ def vlbi_get_calibration():
         calResult = onlineCal.getCalResult('PI230-PBE_C',1,0)
     except:
         print 'No calibration result available.'
+
