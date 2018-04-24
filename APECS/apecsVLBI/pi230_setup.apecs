@@ -1,0 +1,62 @@
+################################################################
+## Setup for PI230
+## To use with M0000_00-target.apecs
+################################################################
+
+sourcecats('t-0101.f-9996a-2018.cat')
+linecats('t-0101.f-9996a-2018.lin')
+
+exec_apecs_script('pi230_commands')
+execfile('/homes/software/apecs/start_pi230.apecs')
+
+################################################################
+## GPS FMOUT Logging
+################################################################
+
+# Added by J.P. Perez-Beaupuits & Dirk Muders (2017-04-08)
+#
+# Tell the apecs client to record the GPS counters in the
+# MONITOR.fits table under the name: GPS_COUNTERS_FMOUT_MASER.
+# The FitsWriter will read the counters every 5 seconds (last
+# parameter in the command).
+# Adjust the sampling rate according to the VLBI needs.
+#
+# Updated by J.P. Perez-Beaupuits (2017-05-15)
+# The following command is supposed to work.
+# Need to be tested first!
+PI230.monPoints.append(['GPS_COUNTERS_FMOUT_MASER', [('prop', 'APEX:COUNTERS:GPSMINUSFMOUT.GPSMinusFMOUT', 1.0, '-'), ('prop', 'APEX:COUNTERS:GPSMINUSMASER.GPSMinusMaser', 1.0, '-')], 5])
+
+################################################################
+## Frontend/Backend setup for PI230
+################################################################
+
+## setup_pi230(linename='CO(2-1)',sideband='',mode='spec', sbwidth=8,cats='all')
+setup_pi230(linename='vlbifreq7',sideband='',mode='spec', sbwidth=8,cats='all',doppler='off')
+#setup_pi230(linename='vlbifreq91',sideband='',mode='spec', sbwidth=8,cats='all',doppler='off')
+
+# Doc: setup_pi230()
+#
+# sidebands: 'LSB', 'USB', or ''. If left empty, the sideband
+#            specified in the line catalog will be used
+# mode: 'spec' for spectroscopy, 'cont' for continuum
+# sbwidth: is set to 8 and should not be changed, unless you
+#          know what you are doing. 8 means that the full
+#          4-11.8 GHz portion of the IF is configured. This
+#          bandwidth of 7.8 GHz is covered by two backends of
+#          4 GHz bandwidth each, with some overlap (one covers
+#          the IF portion 4-8 GHz and the other one
+#          7.8-11.8 GHz).
+#          CAUTION: the reference frequency (set by parameter
+#          linename) will be located at 6 GHz in the IF, i.e.
+#          NOT AT THE CENTER of the 4-11.8 GHz IF range! The
+#          reference frequency will be at the center of one of
+#          the backends.
+
+# Heterodyne setup
+use_ref('on')
+continuous_data('off')
+skip_hardware_setup('off')
+pi230.configure(doppler='off')
+
+################################################################
+
