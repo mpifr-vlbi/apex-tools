@@ -181,13 +181,13 @@ def obs_writeScans(fd,scans,sources):
 			do_sourcechange = True
 			L_start_early = L_start_early + Lslew + Lcmdmargin
 
-		if (dT_to_next - L_start_early) > Lrefscan:
-			do_vlbi_reference_scan = True
-			L_start_early = L_start_early + Lrefscan + Lcmdmargin
-
 		if (dT_to_next - L_start_early) > Ltsys:
 			do_vlbi_tsys = True
 			L_start_early = L_start_early + Ltsys + Lcmdmargin
+
+		if (dT_to_next - L_start_early) > Lrefscan:
+			do_vlbi_reference_scan = True
+			L_start_early = L_start_early + Lrefscan + Lcmdmargin
 
 		# Determine the time between the end of the previous scan, and the first command for this scan
 		if (Tprev_end != None):
@@ -207,12 +207,12 @@ def obs_writeScans(fd,scans,sources):
 		if do_sourcechange:
 			obs_writeLine(fd, datetime2SNP(T), Lslew, 'source(\'%s\'); go(); track()' % (scan['source']))
 			T = T + datetime.timedelta(seconds=(Lslew+Lcmdmargin))
-		if do_vlbi_reference_scan:
-			obs_writeLine(fd, datetime2SNP(T), Lrefscan, 'vlbi_reference_scan()')
-			T = T + datetime.timedelta(seconds=(Lrefscan+Lcmdmargin))
 		if do_vlbi_tsys:
 			obs_writeLine(fd, datetime2SNP(T), Ltsys, 'vlbi_tsys()')
 			T = T + datetime.timedelta(seconds=(Ltsys+Lcmdmargin))
+		if do_vlbi_reference_scan:
+			obs_writeLine(fd, datetime2SNP(T), Lrefscan, 'vlbi_reference_scan()')
+			T = T + datetime.timedelta(seconds=(Lrefscan+Lcmdmargin))
 		obs_writeLine(fd, datetime2SNP(T), scan['dur'], 'vlbi_scan(t_mins=%d)' % (scan['dur']/60))  # track on source
 		T = T + datetime.timedelta(seconds=Ldur)
 		if not do_vlbi_tsys:
