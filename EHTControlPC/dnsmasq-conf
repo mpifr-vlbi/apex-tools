@@ -27,8 +27,8 @@
 
 # Replies which are not DNSSEC signed may be legitimate, because the domain
 # is unsigned, or may be forgeries. Setting this option tells dnsmasq to
-# check that an unsigned reply is OK, by finding a secure proof that a DS
-# record somewhere between the root and the domain does not exist.
+# check that an unsigned reply is OK, by finding a secure proof that a DS 
+# record somewhere between the root and the domain does not exist. 
 # The cost of setting this is that even queries in unsigned domains will need
 # one or more extra DNS queries to verify.
 #dnssec-check-unsigned
@@ -40,10 +40,6 @@
 # This option only affects forwarding, SRV records originating for
 # dnsmasq (via srv-host= lines) are not suppressed by it.
 #filterwin2k
-
-# Change this line if you want dns to get its upstream servers from
-# somewhere other that /etc/resolv.conf
-#resolv-file=
 
 # By  default,  dnsmasq  will  send queries to any of the upstream
 # servers it knows about and tries to favour servers to are  known
@@ -61,70 +57,15 @@ no-resolv
 # files for changes and re-read them then uncomment this.
 #no-poll
 
-# Add other name servers here, with domain specs if they are for
-# non-public domains.
-#server=/localnet/192.168.0.1
-
-# Example of routing PTR queries to nameservers: this will send all
-# address->name queries for 192.168.3/24 to nameserver 10.1.2.3
-#server=/3.168.192.in-addr.arpa/10.1.2.3
-
-# Add local-only domains here, queries in these domains are answered
-# from /etc/hosts or DHCP only.
-#local=/localnet/
-
-# Add domains which you want to force to an IP address here.
-# The example below send any host in double-click.net to a local
-# web-server.
-#address=/double-click.net/127.0.0.1
-
-# --address (and --server) work with IPv6 addresses too.
-#address=/www.thekelleys.org.uk/fe80::20d:60ff:fe36:f83
-
-# Add the IPs of all queries to yahoo.com, google.com, and their
-# subdomains to the vpn and search ipsets:
-#ipset=/yahoo.com/google.com/vpn,search
-
-# You can control how dnsmasq talks to a server: this forces
-# queries to 10.1.2.3 to be routed via eth1
-# server=10.1.2.3@eth1
-
-# If you want dnsmasq to change uid and gid to something other
-# than the default, edit the following lines.
-#user=
-#group=
-
 # If you want dnsmasq to listen for DHCP and DNS requests only on
 # specified interfaces (and the loopback) give the name of the
 # interface (eg eth0) here.
 # Repeat the line for more than one interface.
 interface=eno2
 
-# Or you can specify which interface _not_ to listen on
-#except-interface=eno1
-# Or which to listen on by address (remember to include 127.0.0.1 if
-# you use this.)
-#listen-address=127.0.0.1,192.168.0.1
-# If you want dnsmasq to provide only DNS service on an interface,
-# configure it as shown above, and then use the following line to
-# disable DHCP and TFTP on it.
-#no-dhcp-interface=
-
-# On systems which support it, dnsmasq binds the wildcard address,
-# even when it is listening on only some interfaces. It then discards
-# requests that it shouldn't reply to. This has the advantage of
-# working even when interfaces come and go and change address. If you
-# want dnsmasq to really bind only the interfaces it is listening on,
-# uncomment this option. About the only time you may need this is when
-# running another nameserver on the same machine.
-#bind-interfaces
-
 # If you don't want dnsmasq to read /etc/hosts, uncomment the
 # following line.
 #no-hosts
-# or if you want it to read another file, as well as /etc/hosts, use
-# this.
-#addn-hosts=/etc/banner_add_hosts
 
 # This is an example of a DHCP range where the netmask is given. This
 # is needed for networks we reach the dnsmasq DHCP server via a relay
@@ -132,21 +73,11 @@ interface=eno2
 # don't need to worry about this.
 dhcp-range=192.168.0.161,192.168.0.240,1h
 
-#-- VLBI backend hardware; not present at APEX
-#dhcp-host=ff:c0:b7:e0:82:65,gps1,192.168.0.17
-#dhcp-host=ff:c0:b7:e0:00:91,gps2,192.168.0.18
-#dhcp-host=ff:11:22:33:01:04,bdc1,192.168.0.65
-#dhcp-host=ff:11:22:33:01:04,bdc2,192.168.0.66
-#dhcp-host=00:c0:b7:e0:82:65,powerstrip1,192.168.0.81
-#dhcp-host=ff:ff:ff:ff:ff:ff,powerstrip2,192.168.0.82
-#dhcp-host=ff:ff:ff:ff:ff:ff,netswitch1,192.168.0.97
-#dhcp-host=ff:ff:ff:ff:ff:ff,netswitch2,192.168.0.98
-#dhcp-host=ff:ff:ff:ff:ff:ff,noisesource1,192.168.0.113
-#dhcp-host=ff:ff:ff:ff:ff:ff,raspberrypi,192.168.0.114
-#dhcp-host=0c:c4:7a:dd:ea:75,recorder1-ipmi,192.168.0.129
-#dhcp-host=ff:c4:7a:db:51:d2,recorder2-ipmi,192.168.0.130
-#dhcp-host=ff:c4:7a:db:51:d2,recorder3-ipmi,192.168.0.131
-#dhcp-host=ff:c4:7a:db:51:d2,recorder4-ipmi,192.168.0.132
+### APEX PDU for recorder1 & 2; APC AP7920 running AOS v3.7.3 dated 02/02/2010
+dhcp-host=00:C0:B7:53:E5:71,pdu1,192.168.0.20   # entry for the future; currently PDU still 10.0.2.92
+
+### APEX PDU for recorder3 & 4; Schneider Electric RPDU2G
+dhcp-host=00:C0:B7:FD:3D:3A,pdu2,192.168.0.21   # entry for the future; currently PDU still 10.0.2.90
 
 ### APEX Mark6
 # vlbi1 78:24:af:84:04:6d eth1
@@ -183,11 +114,8 @@ dhcp-option=3,192.168.0.1
 
 # Set the NTP time and DNS server addresses
 dhcp-option=option:ntp-server,192.168.0.1,200.27.106.116,37.235.52.50,200.68.58.170
-# ntp.shoa.cl<200.27.106.116>, stratum2-01.scl01.publicntp.org<37.235.52.50>, 200-68-58-170.static.tie.cl<200.68.58.170>
+# ntp.shoa.cl<200.27.106.116>, stratum2-01.scl01.publicntp.org<37.235.52.50>, 200-68-58-170.static.tie.cl<200.68.58.170> 
 dhcp-option=option:dns-server,192.168.0.1
-
-# Send RFC-3442 classless static routes (note the netmask encoding)
-#dhcp-option=121,192.168.0.0/24,1.2.3.4,10.0.0.0/8,5.6.7.8
 
 # This option stops dnsmasq from negotiating a larger blocksize for TFTP
 # transfers. It will slow things down, but may rescue some broken TFTP
