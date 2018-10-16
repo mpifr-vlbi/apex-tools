@@ -1,0 +1,32 @@
+*4cm.rx - 3.6cm receiver parameter definition
+range 7100 9000
+2007 10 29
+frequency 0.95
+rcp lcp
+1.37 1.37
+ELEV POLY 0.93145303 0.0028819508 -3.0291784e-05
+rcp 8100.0 6
+rcp 8150.0 6
+rcp 8200.0 6
+rcp 8250.0 6
+rcp 8300.0 6
+rcp 8350.0 6
+rcp 8400.0 6
+rcp 8450.0 6
+rcp 8500.0 6
+rcp 8550.0 6
+rcp 8600.0 6
+rcp 8650.0 6
+rcp 8700.0 6
+rcp 8750.0 6
+rcp 8800.0 6
+rcp 8850.0 6
+rcp 8900.0 6
+rcp 8950.0 6
+rcp 9000.0 6
+end_tcal_table                                                 
+*Trec: receiver temperature
+10.0              
+* Spillover
+90 0
+end_spillover_table

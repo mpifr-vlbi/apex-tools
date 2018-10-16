@@ -7,5 +7,10 @@
 !!vlbifreq4    227.100 GHz LSB      ! New Het230 freq. 2015-07-30
 !!vlbifreq5    229.143 GHz LSB      ! New Het230 freq. 2017-01-28
 !
-vlbifreq6    228.099 GHz LSB      ! New Het230 freq. 2017-04-03
-
+!!vlbifreq6    228.099 GHz LSB      ! New Het230 freq. 2017-04-03
+!
+vlbifreq7    227.103 GHz USB        ! PI230 freq. 2018-04-16 ; a center freq at 6 GHz in the IF ; LO = 221.103 GHz = 18 x 12283.5 MHz
+vlbifreq81    227.121 GHz USB        ! PI230 freq. 2018-04-16 ; a center freq at
+vlbifreq82    227.139 GHz USB        ! PI230 freq. 2018-04-16 ; a center freq at
+vlbifreq91    227.085 GHz USB        ! PI230 freq. 2018-04-16 ; a center freq at
+vlbifreq92    227.067 GHz USB        ! PI230 freq. 2018-04-16 ; a center freq at

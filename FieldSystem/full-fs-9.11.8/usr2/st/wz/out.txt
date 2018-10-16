@@ -1,0 +1,1 @@
+cc    -c -o dbbc/fdbbc_com.o dbbc/fdbbc_com.c

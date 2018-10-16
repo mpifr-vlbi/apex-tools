@@ -1,0 +1,8 @@
+*********STATION SPECIFIC COMMANDS**************
+*COMMAND     SEG SBPA BO
+fmout-gps    qkr 0402 01 FFFFFF
+dbbcinit     str 0500 01 FFFFFFFFF
+dbbc         str 0529 01 FFFFFFFFF
+dbbcrelink   str 0530 01 FFFFFFFFF
+dbbcclose    str 0531 01 FFFFFFFFF
+* Attn: Line closes with 'Enter'. No spaces after FFFFFFFFF allowed.

@@ -1,0 +1,7 @@
+Compilation of this sample program should be straightforward.
+
+Edit the CFLAGS and CC fields of the Makefile and type make.
+
+to run the sample program, type
+./qplot -nl data
+

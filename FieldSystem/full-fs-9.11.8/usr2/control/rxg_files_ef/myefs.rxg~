@@ -1,0 +1,48 @@
+* 13cm.rx - 13cm receiver parameter definition
+fixed 2100
+2007 06 19
+frequency 1.0 
+rcp lcp
+0.5 0.5 
+ELEV POLY 1.0 0.0 0.0
+rcp 2100 7.0 
+rcp 2180 7.0 
+rcp 2200.0 10.0693
+rcp 2204.0 10.0693
+rcp 2224.0 14.0682
+rcp 2234.0 19.9937
+rcp 2244.0 20.9006
+rcp 2254.0 20.8501
+rcp 2264.0 22.5830
+rcp 2274.0 22.0723
+rcp 2284.0 22.6293
+rcp 2294.0 24.0066
+rcp 2304.0 23.6466
+rcp 2314.0 24.1861
+rcp 2324.0 25.1938
+rcp 2334.0 26.6186
+rcp 2350.0 26.6 
+end_tcal_table
+170.6960
+end_spillover_table
+* 13cm.rx - 13cm receiver parameter definition
+*fixed 2100
+*2003 11 03
+*frequency 1.0 
+*rcp lcp
+*0.5 0.5 
+*ELEV POLY 1.0 0.0 0.0
+*rcp 2100 7.0 
+*rcp 2200 7.0 
+*rcp 2213 6.5 
+*rcp 2216 6.5 
+*rcp 2217.0 8.2724
+*rcp 2232.0 13.6254
+*rcp 2242.0 16.1649
+*rcp 2272.0 17.5216
+*rcp 2292.0 18.5077
+*rcp 2297.0 20.0902
+*rcp 2350.0 13.6 
+*end_tcal_table
+*110.0
+*end_spillover_table

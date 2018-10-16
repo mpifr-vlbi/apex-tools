@@ -1,0 +1,79 @@
+* RXG file updated by GnPlt2 on 2009-4-6
+* 7mm.rx - 7mm receiver parameter definition
+*---------------------------------------------
+* Oct 22, 2002   by AK
+* Oct 15, 2008, gain curve update, by UB
+*---------------------------------------------
+range 41600 44400
+2009 03 19
+* for Effelsberg secondary focus, we use theta = 1.15 *lambda/d
+frequency 0.95
+rcp lcp
+0.488428651668 0.433423615127
+*ELEV POLY 0.89713  5.4623E-3  -7.2444E-5
+*Above is probably correct but in GB060B
+* following( UB 17.10.2008)
+ELEV POLY 0.795386 0.0107074 -0.000139207
+rcp 41600.0 13.0
+rcp 43046.0 12.9393
+rcp 43078.0 12.9344
+rcp 43110.0 13.4047
+rcp 43142.0 13.5001
+rcp 43174.0 12.7899
+rcp 43206.0 12.4119
+rcp 43234.0 12.3882
+rcp 43266.0 12.7250
+rcp 44400.0 12.5
+lcp 41600.0 12.2
+lcp 43046.0 12.0
+lcp 43078.0 11.9
+lcp 43110.0 12.05
+lcp 43142.0 11.9
+lcp 43174.0 11.2
+lcp 43206.0 10.8
+lcp 43234.0 10.9
+lcp 43266.0 11.1
+lcp 44400.0 11.1
+end_tcal_table                                                 
+* Trec: receiver temperature
+90.0 112.119847026
+end_spillover_table
+* 7mm.rx - 7mm receiver parameter definition
+*---------------------------------------------
+* Oct 22, 2002   by AK
+* Oct 15, 2008, gain curve update, by UB
+*---------------------------------------------
+*range 41600 44400
+*2009 03 19
+* for Effelsberg secondary focus, we use theta = 1.15 *lambda/d
+*frequency 0.95
+*rcp lcp
+*0.45 0.45
+*ELEV POLY 0.89713  5.4623E-3  -7.2444E-5
+*Above is probably correct but in GB060B
+* following( UB 17.10.2008)
+*ELEV POLY 0.795386 0.0107074 -0.000139207
+*rcp 41600.0 13.0
+*rcp 43046.0 12.9393
+*rcp 43078.0 12.9344
+*rcp 43110.0 13.4047
+*rcp 43142.0 13.5001
+*rcp 43174.0 12.7899
+*rcp 43206.0 12.4119
+*rcp 43234.0 12.3882
+*rcp 43266.0 12.7250
+*rcp 44400.0 12.5
+*lcp 41600.0 12.2
+*lcp 43046.0 12.0
+*lcp 43078.0 11.9
+*lcp 43110.0 12.05
+*lcp 43142.0 11.9
+*lcp 43174.0 11.2
+*lcp 43206.0 10.8
+*lcp 43234.0 10.9
+*lcp 43266.0 11.1
+*lcp 44400.0 11.1
+*end_tcal_table                                                 
+* Trec: receiver temperature
+*90.0              
+*end_spillover_table

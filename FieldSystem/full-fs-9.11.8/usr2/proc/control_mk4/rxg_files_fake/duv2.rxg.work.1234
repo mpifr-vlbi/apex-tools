@@ -1,0 +1,29 @@
+range 12000 14000
+ 2009 01 01
+frequency 0.95
+lcp rcp 
+0.02 0.02 
+ELEV POLY 1 opacity_corrected
+lcp 13000 8
+lcp 13100 8
+lcp 13200 8
+lcp 13300 8
+lcp 13400 8
+lcp 13500 8
+lcp 13600 8
+lcp 13700 8
+lcp 13800 8
+lcp 13900 8
+rcp 13000 8
+rcp 13100 8
+rcp 13200 8
+rcp 13300 8
+rcp 13400 8
+rcp 13500 8
+rcp 13600 8
+rcp 13700 8
+rcp 13800 8
+rcp 13900 8
+end_tcal_table 
+40 40
+end_spillover_table

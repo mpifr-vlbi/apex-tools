@@ -1,0 +1,22 @@
+
+         Text /usr2/st/readme/counter2.readme
+
+         RTW/ R. Zeitlhoefler  99_10_22.
+
+
+             Stationsspezifische Commands, Programm 'counter2'
+                                 
+
+         - Programm in usr2/st/stqkr
+         - Dieses Programm liest ueber den IEEE-488 Bus die Werte vom
+           zweiten HP-Zaehler ein.
+
+         Das Einlesen der Zaehlerdaten erfolgt ueber eine serielle
+         Schnittstelle mit nachgeschaltetem GPIB-232 CT Schnittstellen-
+         konverter(von National Instruments).
+         Die Geraeteadresse ist im Programm 'usr2/st/control/st_ibad.ctl
+         festgelegt;
+         Die Parameter der seriellen Schnittstelle fuer den Konverter
+         sind in usr2/st/antlib/ibini.c definiert.
+         Achtung: Die gpib-Funktionen werden auch von anderen Programmen
+         benuetzt.    

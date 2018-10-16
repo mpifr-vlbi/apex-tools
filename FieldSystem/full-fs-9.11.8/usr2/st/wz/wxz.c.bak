@@ -1,0 +1,190 @@
+
+/* usr2/st/stqkr/mxz.c
+ * -----------------------mxz.c--------------------------------
+ * last mod 12.10.98, zei.
+ *       Version fuer stqkr, wxz als Snap Command        
+ * RTW oct 03, 1996 R. Zeitlhoefler
+ * Daten vom st-shared memory, 23.07.2009, Zei.
+ *
+ * Es werden die Werte aller Sensoren auf dem Terminal angezeigt.
+ * Die Portparameter sind in usr2/st/control/serial.ctl
+*/ 
+
+# define CONTROLFILE "/usr2/st/control/serial.ctl"
+# define MAX_OUT 256
+
+/* Include files */
+#include <stdio.h>
+#include <stdlib.h>
+
+# include <ctype.h>
+# include <string.h>
+# include <sys/types.h>
+# include "/usr2/fs/include/params.h"
+# include "/usr2/fs/include/fs_types.h"
+# include "/usr2/fs/include/fscom.h"
+# include "/usr2/fs/include/shm_addr.h"
+# include "/usr2/st/include/stcom.h"
+# include "/usr2/st/include/stm_addr.h"
+
+ extern struct fscom *fs; 
+ extern struct stcom *st;
+
+/*--------------------------------------------------------------------*/
+void wxz(command, itask, ip)      /* Aufruf ueber stqkr, Snap Command */
+/*--------------------------------------------------------------------*/
+
+  struct cmd_ds *command;
+  long ip[5];
+  int itask;
+{ 
+
+  int i;
+  int ierr;
+  int ierro;
+  int always;
+  char buf[100], port_name[15], token[20];
+  char output [MAX_OUT];
+  long baud;
+  int parity,bits,stop,portopen(),portread(),portflush(),find_def();
+  int port = -1;
+  int count,len,termch,timeout;
+  int debug= 0;
+  float w1, w2, t1, h1, pr, t2, h2;
+  int it[6];
+
+  /*  rte Zeit  */
+   /*  setup_ids();*/
+     rte_time(it, &it[5]);
+     printf("\nwxz at: %d / %d / %d:%d:%d  \n",it[5],it[4],it[3],it[2],it[1]); 
+ 
+  always = 3;      /*  max. 3 Leseversuche  */
+
+  /* get port parameters from control file "usr2/st/control/serial.ctl" */
+  
+     ierr=find_def(CONTROLFILE,"wxz_BAUD",token,debug);
+     sscanf(token,"%ld",&baud);
+     
+  if (ierr==0)  {
+     ierr=find_def(CONTROLFILE,"wxz_PARITY",token,debug);   
+     sscanf(token,"%d",&parity);
+     }
+  if (ierr==0)  {
+     ierr=find_def(CONTROLFILE,"wxz_BITS",token,debug);
+     sscanf(token,"%d",&bits);
+     }
+  if (ierr==0)  {
+     ierr=find_def(CONTROLFILE,"wxz_STOP",token,debug);
+     sscanf(token,"%d",&stop);
+     }
+  if (ierr==0)  {
+     ierr=find_def(CONTROLFILE,"wxz_PORT_NAME",token,debug);
+     strcpy(port_name,token);
+     }   
+  if (ierr!=0)  {
+     printf("wxz: error, can't read port parameter in %s; ierr=%d\n",\
+      CONTROLFILE,ierr);
+     return;
+     }
+   /* End of get port parameters */           
+     
+  len=sizeof(port_name);
+
+  ierr=portopen_(&port,port_name,&len,&baud,&parity,&bits,&stop);
+  
+  if(ierr!=0) {
+    printf("wxz: Unable to initialize serial port %s. Error: %d \n",\
+           port_name,ierr);
+    goto EndLoop;
+  }
+  
+  printf("wxz: Initializing serial port %s \n",port_name); 
+  
+  ierr=portflush_(&port);
+  
+  if (ierr < 0)   {
+     printf("wxz: Portflush error %d\a\n", ierr);
+     goto EndLoop;
+  }   
+
+/* portread will read from a port until either *len count characters are read
+                                            or *termch character is encountered
+                                            or *timeout centisecs elapse
+  if any of *termch < 0 or *timeout <= 0, the corresponding condition is ignored
+  the return value is 0 for no error, other errors documented below
+  on return buf contains the count characters read so far regardless of error
+*/
+
+
+  termch=10;
+  timeout=400;
+  count = -1;  
+  
+     while( always-- != 0 )  {
+       /*len=sizeof(buf);*/
+       len=100;
+       *(buf)='\0';
+       
+       ierr=portread_(&port,buf,&count,&len,&termch,&timeout);
+       buf[count]='\0';
+      
+      /* printf("\nwxz:  Weather string: %s string lengh:  %d\n", buf, count );*/  
+      
+      
+      
+         if(ierr!=0)  {
+
+             if (ierr == -2){
+             printf("wxz: ierr = -2; !! TIME OUT WX-PORT !!\n"); 
+             goto EndLoop;
+         }       
+         printf("wxz: Read error %d \n",ierr); 
+         goto EndLoop;
+       }
+       
+         if (count==44 || count==45) {
+       
+             sscanf (buf, "%f %f %f %f %f %f %f",
+                 &w1, &w2, &t1, &h1, &pr, &t2, &h2);
+
+
+             printf(" \n     WETTERDATEN \n");         
+             printf("wind direction:  %5.1lf\n",w1);
+             printf("wind velocity :  %5.1lf\n",w2);
+             printf("temperature 1 :  %5.1lf\n", t1);      
+             printf("humidity 1    :  %5.1lf\n", h1);
+             printf("temperature 2 :  %5.1lf\n", t2);
+             printf("humidity 2    :  %5.1lf\n", h2);
+              
+             printf("pressure      :  %5.1lf\n", pr);
+             
+             printf(" \n");
+
+             always = 0;
+         }
+  EndLoop:
+  }
+  
+  /* return to stqkr */
+  strcpy (output, command->name);
+  strcat (output, "/ st_cmd. wxz exec.");
+  
+  for ( i = 0; i < 5; i++)
+    ip[i] = 0;
+    
+  cls_snd(&ip[0], output, strlen(output),0,0);   
+    
+  ip[i] = 1;
+  return;
+  
+  error:
+    ierro = 0;
+    ip[0] = 0;
+    ip[1] = 1;
+    ip[2] = ierro;
+    memcpy (ip+3,"st",2);
+ return;         
+}
+
+
+

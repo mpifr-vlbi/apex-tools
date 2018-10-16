@@ -1,0 +1,88 @@
+* 18cm.rx - 18/21cm receiver parameter definition
+*------------------------------------------------
+* Oct 22, 2002  by AK
+*
+*------------------------------------------------
+* first line: LO values and ranges, format:
+*  type   frequencies
+* if type is range, the two values: lower and upper frequencies
+* if type is fixed, then one or two fixed value
+* frequencies in MHz
+*
+range 1100 1720
+*
+* 2nd line: creation date
+* format:  yyyy ddd or yyyy mm dd (0 is valid for all for intial set-up)
+*
+2002 10 22
+*
+* 3rd line: FWHM beamwidthm format:
+*   model value
+*
+* if type is frequncy, then fwhm=value*1.22*c/(freq*diameter)
+*                      value is 1.0 if omitted
+* if type is constant, then fwhm=value (degrees)
+*
+frequency 1.0
+*
+* 4th line polarizations available
+*
+* one of both of lcp and rcp
+*
+rcp lcp
+*
+* 5th line: DPFU (degrees/Jansky) for polarizations in previous line in order
+*
+1.52 1.52 
+*
+* 6th line: gain curve (only one) for ALL polarizations in 4th line
+* TYPE FORM COEFFICENTS ...
+*
+* FORM = POLY only for now
+* TYPE - ELEV and ALTAZ only for now
+* COEFFICENTS - variable number of number values
+*
+* maximum coefficents 10
+*
+ELEV POLY 1.0
+*
+* 7th and following lines: tcal versus frequency
+*     Format: POL FREQ TCAL
+*     where:
+*            POL    polarization rcp or lcp
+*            FREQ   frequency (MHz)
+*            TCAL   degrees K
+*
+*     MAXIMUM ENTRIES 100, group by polarization
+*                          then sorted by increasing freq
+*
+lcp 1290 15.0 
+lcp 1360 13.7 
+lcp 1393 12.7 
+lcp 1419 11.3 
+lcp 1427 12.2 
+lcp 1449 12.5 
+lcp 1469 11.4 
+lcp 1580 13.0 
+lcp 1610 12.7 
+lcp 1634 12.7 
+lcp 1650 13.5 
+lcp 1666 16.2 
+lcp 1682 16.2 
+lcp 1700 16.2 
+lcp 1730 15.0 
+rcp 1290 15.0
+rcp 1360 14.8
+rcp 1393 13.7
+rcp 1419 12.5
+rcp 1427 14.3
+rcp 1449 14.4
+rcp 1469 12.4
+rcp 1580 15.0
+rcp 1610 14.9
+rcp 1634 14.9
+rcp 1650 16.2
+rcp 1666 17.2
+rcp 1682 14.2
+rcp 1700 14.2
+rcp 1730 15.0

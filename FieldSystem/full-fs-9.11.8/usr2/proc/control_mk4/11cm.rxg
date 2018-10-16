@@ -1,0 +1,14 @@
+* 11cm.rxg - 11cm receiver parameter definition
+range 2450 2750
+2007 03 29
+frequency 0.95
+rcp lcp
+1.55 1.55
+ELEV POLY 1.0 0.0 0.0 
+rcp 2450  2.5
+rcp 2850  2.5
+lcp 2450  2.5
+lcp 2850  2.5
+end_tcal_table
+20.2300
+end_spillover_table

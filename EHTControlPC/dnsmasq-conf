@@ -9,73 +9,113 @@
 # leaving only DHCP and/or TFTP.
 #port=5353
 
+# The following two options make you a better netizen, since they
+# tell dnsmasq to filter out queries which the public DNS cannot
+# answer, and which load the servers (especially the root servers)
+# unnecessarily. If you have a dial-on-demand link they also stop
+# these requests from bringing up the link unnecessarily.
+
+# Never forward plain names (without a dot or domain part)
+#domain-needed
+# Never forward addresses in the non-routed address spaces.
+#bogus-priv
+
+# Uncomment these to enable DNSSEC validation and caching:
+# (Requires dnsmasq to be built with DNSSEC option.)
+#conf-file=/usr/share/dnsmasq/trust-anchors.conf
+#dnssec
+
+# Replies which are not DNSSEC signed may be legitimate, because the domain
+# is unsigned, or may be forgeries. Setting this option tells dnsmasq to
+# check that an unsigned reply is OK, by finding a secure proof that a DS 
+# record somewhere between the root and the domain does not exist. 
+# The cost of setting this is that even queries in unsigned domains will need
+# one or more extra DNS queries to verify.
+#dnssec-check-unsigned
+
+# Uncomment this to filter useless windows-originated DNS requests
+# which can trigger dial-on-demand links needlessly.
+# Note that (amongst other things) this blocks all SRV requests,
+# so don't use it if you use eg Kerberos, SIP, XMMP or Google-talk.
+# This option only affects forwarding, SRV records originating for
+# dnsmasq (via srv-host= lines) are not suppressed by it.
+#filterwin2k
+
+# By  default,  dnsmasq  will  send queries to any of the upstream
+# servers it knows about and tries to favour servers to are  known
+# to  be  up.  Uncommenting this forces dnsmasq to try each query
+# with  each  server  strictly  in  the  order  they   appear   in
+# /etc/resolv.conf
+#strict-order
+
 # If you don't want dnsmasq to read /etc/resolv.conf or any other
 # file, getting its servers from this file instead (see below), then
 # uncomment this.
 no-resolv
-no-poll
 
-# Listen on specific interface
+# If you don't want dnsmasq to poll /etc/resolv.conf or other resolv
+# files for changes and re-read them then uncomment this.
+#no-poll
+
+# If you want dnsmasq to listen for DHCP and DNS requests only on
+# specified interfaces (and the loopback) give the name of the
+# interface (eg eth0) here.
+# Repeat the line for more than one interface.
 interface=eno2
 
-# On systems which support it, dnsmasq binds the wildcard address,
-# even when it is listening on only some interfaces. It then discards
-# requests that it shouldn't reply to. This has the advantage of
-# working even when interfaces come and go and change address. If you
-# want dnsmasq to really bind only the interfaces it is listening on,
-# uncomment this option. About the only time you may need this is when
-# running another nameserver on the same machine.
-bind-interfaces
+# If you don't want dnsmasq to read /etc/hosts, uncomment the
+# following line.
+#no-hosts
 
 # This is an example of a DHCP range where the netmask is given. This
 # is needed for networks we reach the dnsmasq DHCP server via a relay
 # agent. If you don't know what a DHCP relay agent is, you probably
 # don't need to worry about this.
-dhcp-range=192.168.0.50,192.168.0.79,12h
-#-- VLBI backend hardware
-#dhcp-host=00:c0:b7:e0:82:65,powerstrip1,192.168.0.90
-#dhcp-host=00:c0:b7:e0:00:91,powerstrip2,192.168.0.91
+dhcp-range=192.168.0.161,192.168.0.240,1h
 
-#dhcp-host=0c:c4:7a:db:51:d2,recorder1,192.168.0.100,1h
-#dhcp-host=0c:c4:7a:dd:ea:75,recorder1-ipmi,192.168.0.101
-#dhcp-host=02:44:01:02:11:1a,r2dbe1,192.168.0.102
-#dhcp-host=00:11:22:33:01:04,bdc1,192.168.0.104
+### APEX PDU for recorder1 & 2; APC AP7920 running AOS v3.7.3 dated 02/02/2010
+dhcp-host=00:C0:B7:53:E5:71,pdu1,192.168.0.20   # entry for the future; currently PDU still 10.0.2.92
 
-#dhcp-host=00:11:22:33:01:10,recorder2,192.168.0.110
-#dhcp-host=00:11:22:33:01:11,recorder2-ipmi,192.168.0.111
-#dhcp-host=00:11:22:33:01:12,r2dbe2,192.168.0.112
-#dhcp-host=00:11:22:33:01:14,bdc3,192.168.0.114
+### APEX PDU for recorder3 & 4; Schneider Electric RPDU2G
+dhcp-host=00:C0:B7:FD:3D:3A,pdu2,192.168.0.21   # entry for the future; currently PDU still 10.0.2.90
 
-#### APEX
+### APEX Mark6
 # vlbi1 78:24:af:84:04:6d eth1
 # vlbi2 78:24:af:84:04:91 eth1
 # vlbi3 bc:5f:f4:97:0c:0b eth1
 # vlbi4 78:24:af:85:3e:55 eth1
-dhcp-host=78:24:af:84:04:6d,vlbi1,192.168.0.100,1h
-dhcp-host=78:24:af:84:04:91,vlbi2,192.168.0.110,1h
-dhcp-host=bc:5f:f4:97:0c:0b,vlbi3,192.168.0.120,1h
-dhcp-host=78:24:af:85:3e:55,vlbi4,192.168.0.130,1h
-# r2dbe-xxx 02:44:01:02:0a:31
-dhcp-host=02:44:01:02:0b:01,r2dbe1,192.168.0.102,120h
-dhcp-host=02:44:01:02:0b:17,r2dbe2,192.168.0.112,120h
-dhcp-host=02:44:01:02:0a:31,r2dbe3,192.168.0.122,120h
-dhcp-host=02:44:01:02:11:1b,r2dbe4,192.168.0.132,120h
+dhcp-host=78:24:af:84:04:6d,recorder1,192.168.0.33
+dhcp-host=78:24:af:84:04:91,recorder2,192.168.0.34
+dhcp-host=bc:5f:f4:97:0c:0b,recorder3,192.168.0.35
+dhcp-host=78:24:af:85:3e:55,recorder4,192.168.0.36
 
-## DHCP Options
+### APEX R2DBE
+dhcp-host=02:44:01:02:0b:17,r2dbe1,192.168.0.49
+dhcp-host=02:44:01:02:0b:01,r2dbe2,192.168.0.50
+dhcp-host=02:44:01:02:0a:31,r2dbe3,192.168.0.51
+#dhcp-host=02:44:01:02:11:1b,r2dbe4,192.168.0.52 ## this one died
+dhcp-host=02:44:01:02:11:0f,r2dbe4,192.168.0.52
 
 # Set the location of the ROACH's root filesystem on the NFS server.
 dhcp-option=17,192.168.0.1:/srv/roach2_boot/current
-# Set the default route
-dhcp-option=3,192.168.0.1
-dhcp-option=option:router,192.168.0.1
+
+# Enable dnsmasq's built-in TFTP server
+enable-tftp
+
+# Set the root directory for files available via FTP.
+tftp-root=/srv/roach2_boot/boot
+
 # Set the boot filename for BOOTP, which is what the ROACH boots over
 dhcp-boot=uImage
 
-## TFTP Server
-# Enable dnsmasq's built-in TFTP server
-enable-tftp
-# Set the root directory for files available via FTP.
-tftp-root=/srv/roach2_boot/boot
+# Override the default route supplied by dnsmasq, which assumes the
+# router is the same machine as the one running dnsmasq.
+dhcp-option=3,192.168.0.1
+
+# Set the NTP time and DNS server addresses
+dhcp-option=option:ntp-server,192.168.0.1,200.27.106.116,37.235.52.50,200.68.58.170
+# ntp.shoa.cl<200.27.106.116>, stratum2-01.scl01.publicntp.org<37.235.52.50>, 200-68-58-170.static.tie.cl<200.68.58.170> 
+dhcp-option=option:dns-server,192.168.0.1
 
 # This option stops dnsmasq from negotiating a larger blocksize for TFTP
 # transfers. It will slow things down, but may rescue some broken TFTP
@@ -92,10 +132,18 @@ tftp-root=/srv/roach2_boot/boot
 # http://www.isc.org/files/auth.html
 dhcp-authoritative
 
-# For debugging purposes, log each DNS query as it passes through
 # dnsmasq.
-log-queries
+#log-queries
 
 # Log lots of extra information about DHCP transactions.
-log-dhcp
+#log-dhcp
 
+# Include another lot of configuration options.
+#conf-file=/etc/dnsmasq.more.conf
+#conf-dir=/etc/dnsmasq.d
+
+# Include all the files in a directory except those ending in .bak
+#conf-dir=/etc/dnsmasq.d,.bak
+
+# Include all files in a directory which end in .conf
+#conf-dir=/etc/dnsmasq.d/,*.conf

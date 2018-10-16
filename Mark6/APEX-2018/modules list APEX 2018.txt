@@ -1,0 +1,72 @@
+
+64 TB modules
+
+recorder1
+
+    BHC%0050
+    BHC%0051
+    BHC%0052
+    BHC%0053
+
+    mod_init=1:8:BHC%0050:sg:new;
+    mod_init=2:8:BHC%0051:sg:new;
+    mod_init=3:8:BHC%0052:sg:new;
+    mod_init=4:8:BHC%0053:sg:new;
+
+recorder2
+
+    MBHC%005
+    MBHC%006
+    MBHC%007
+    MBHC%011
+
+    first-time:
+
+    mod_init=1:8:MBHC%005:sg:new;
+    mod_init=2:8:MBHC%006:sg:new;
+    mod_init=3:8:MBHC%007:sg:new;
+    mod_init=4:8:MBHC%011:sg:new;
+
+    other:
+
+    mod_init=1:8:MBHC%005:sg;
+    mod_init=2:8:MBHC%006:sg;
+    mod_init=3:8:MBHC%007:sg;
+    mod_init=4:8:MBHC%011:sg;
+
+    group=new:1234;
+    input_stream=add:STREAM12:vdif:8224:50:42:eth3:172.16.3.16:0:12
+    input_stream=add:STREAM34:vdif:8224:50:42:eth5:172.16.5.16:0:34
+    input_stream=commit;
+    input_stream?
+    << !input_stream?0:0:STREAM34:vdif:8224:50:42:eth5:172.16.5.16:0:34:STREAM12:vdif:8224:50:42:eth3:172.16.3.16:0:12;
+    group=open:1234;
+
+recorder3
+
+    MPI%6410
+    MPI%6411
+    MPI%6412
+    MPI%6413
+
+    mod_init=1:8:MPI%6410:sg:new;
+    mod_init=2:8:MPI%6411:sg:new;
+    mod_init=3:8:MPI%6412:sg:new;
+    mod_init=4:8:MPI%6413:sg:new;
+
+recorder4
+
+    MPI%6414
+    MPI%6415
+    MPI%6416
+    MPI%6417
+
+    mod_init=1:8:MPI%6414:sg:new;
+    mod_init=2:8:MPI%6415:sg:new;
+    mod_init=3:8:MPI%6416:sg:new;
+    mod_init=4:8:MPI%6417:sg:new;
+
+spares:
+
+MPI%6418
+MPI%6443

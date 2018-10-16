@@ -1,0 +1,70 @@
+!  =====================================================================
+!  1mm VLBI with 2 Gbit/s RDBE/MK5C, based on freqs from Shep, April 2009
+!  =====================================================================
+
+! APEX at 1 mm
+Name = 1mm_apex_mk5c  Station = APEX  Priority = 0
+! rf1    = 228849, 228849
+  rf1    = 228817, 228817
+  rf2    = 229849, 229849   fe     = '1mm', '1mm'
+  pol    =   LCP,   LCP   lo1    = 228321,228321
+  ifname = A, C
+  altifn = B, D
+  note = 'for RDBE'
+/
+
+
+! PICO at 1 mm
+Name = 1mm_pico_mk5c  Station = PICOVEL  Priority = 0
+! rf1    = 228849, 228849
+  rf1    = 228817, 228817
+  rf2    = 229849, 229849   fe     = '1mm', '1mm'
+  pol    =   LCP,   LCP   lo1    = 228321,228321
+  ifname = A, C
+  altifn = B, D
+  note = 'for RDBE'
+/
+
+! SMTO at 1 mm
+Name = 1mm_hht_mk5c  Station = SMTO  Priority = 0
+! rf1    = 228849, 228849
+  rf1    = 228817, 228817
+  rf2    = 229849, 229849   fe     = '1mm', '1mm'
+  pol    =   LCP,   LCP   lo1    = 228321,228321
+  ifname = A, C
+  altifn = B, D
+  note = 'for RDBE'
+/
+
+! SMAP at 1 mm
+Name = 1mm_sma_mk5c  Station = SMAP  Priority = 0
+! rf1    = 228849, 228849
+  rf1    = 228817, 228817
+  rf2    = 229849, 229849   fe     = '1mm', '1mm'
+  pol    =   LCP,   LCP   lo1    = 228321,228321
+  ifname = A, C
+  altifn = B, D
+  note = 'for RDBE'
+/
+
+! JCMT at 1 mm
+Name = 1mm_smac_mk5c  Station = SMAC  Priority = 0
+! rf1    = 228849, 228849
+  rf1    = 228817, 228817
+  rf2    = 229849, 229849   fe     = '1mm', '1mm'
+  pol    =   LCP,   LCP   lo1    = 228321,228321
+  ifname = A, C
+  altifn = B, D
+  note = 'for RDBE'
+/
+
+! CARMA at 1 mm
+Name = 1mm_carma_mk5c  Station = CARMA  Priority = 0
+! rf1    = 228849, 228849
+  rf1    = 228817, 228817
+  rf2    = 229849, 229849   fe     = '1mm', '1mm'
+  pol    =   LCP,   LCP   lo1    = 228321,228321
+  ifname = A, C
+  altifn = B, D
+  note = 'for RDBE'
+/

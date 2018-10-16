@@ -1,0 +1,588 @@
+%!PS-Adobe-3.0
+%%Creator: A2ps version 4.3
+%%CreationDate: Tue Oct 13 07:09:23 1998
+%%Pages: (atend)
+%%DocumentFonts: Courier Courier-Bold Helvetica Helvetica-Bold
+%%EndComments
+% Copyright (c) 1993, 1994, Miguel Santana, M.Santana@frgu.bull.fr
+
+/$a2psdict 100 dict def
+$a2psdict begin
+
+% General macros.
+/xdef {exch def} bind def
+/getfont {exch findfont exch scalefont} bind def
+
+% Create Courier backspace font
+/backspacefont {
+    /Courier findfont dup length dict begin
+	{ % forall
+	    1 index /FID eq { pop pop } { def } ifelse
+	} forall
+	currentdict /UniqueID known { % if
+	    /UniqueID UniqueID 16#800000 xor def
+	} if
+	CharStrings length 1 add dict begin
+	    CharStrings { def } forall
+	    /backspace { -600 0 0 0 0 0 setcachedevice } bind def
+	    currentdict
+	end
+	/CharStrings exch def
+	/Encoding Encoding 256 array copy def
+	Encoding 8 /backspace put
+	currentdict
+    end
+    definefont pop
+} bind def
+
+% FUNCTIONS
+
+% Function filename: Initialize file printing.
+/fn
+{ /filenm xdef
+  /filenmwidth filenm stringwidth pop def
+  /filenmfont
+       filenmwidth fns gt
+       {
+	       filenmfontname
+	       fnfs fns mul filenmwidth div
+	     getfont
+       }
+       { sfnf }
+     ifelse
+  def
+} bind def
+
+% Function header: prints page header. no page
+% is passed as argument.
+/hp
+  { x sd get  y sd get hs sub 1 add  moveto
+    df setfont
+    gsave
+      x sd get y sd get moveto
+      0 hs 2 div neg rmoveto 
+      hs setlinewidth
+      0.95 setgray
+      pw 0 rlineto stroke
+    grestore
+    gsave
+      dfs hm rmoveto
+      d show				% date/hour
+    grestore
+    gsave
+      pnum cvs pop				% page pop up
+        pw (Page 999) stringwidth pop sub
+        hm
+	  rmoveto
+      (Page ) show pnum show		% page number
+    grestore
+    empty pnum copy pop
+    gsave
+      filenmfont setfont
+         fns filenm stringwidth pop sub 2 div dw add
+          bm 2 mul 
+        add 
+        hm
+      rmoveto
+        filenm show			% file name
+      grestore
+    } bind def
+
+% Function border: prints border page
+/border 
+{ x sd get y sd get moveto
+  gsave				% print four sides
+    0.7 setlinewidth		% of the square
+    pw 0 rlineto
+    0 ph neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+} bind def
+
+% Function hborder: completes border of the header.
+/hborder 
+{ gsave
+	0.7 setlinewidth
+	0 hs neg rmoveto
+	pw 0 rlineto
+	stroke
+  grestore
+} bind def
+
+% Function sheetnumber: prints the sheet number.
+/sn
+    { snx sny moveto
+      df setfont
+      pnum cvs
+	  dup stringwidth pop (0) stringwidth pop sub neg 0 rmoveto show
+      empty pnum copy pop
+    } bind def
+
+% Function loginprint: prints the login id of the requestor.
+/lgp
+    { lx ly moveto
+      df setfont
+      dup stringwidth pop neg 0 rmoveto show
+    } bind def
+
+% Function currentdate: prints the current date.
+/cd
+    { dx dy moveto
+      df setfont
+      (Printed: ) show
+      td show
+    } bind def
+
+% Function filename_footer: prints the file name at bottom of page.
+/fnf
+    { fnx fny moveto
+      df setfont
+      filenm center show
+    } bind def
+
+% Function center: centers text.
+/center
+    { dup stringwidth pop
+      2 div neg 0 rmoveto
+    } bind def
+
+% Function s: print a source line
+/s  { show
+      /y0 y0 bfs sub def
+      x0 y0 moveto
+    } bind def
+
+% Functions b and st: change to bold or standard font
+/b  { show
+      bdf setfont
+    } bind def
+/st { show
+      bf setfont
+    } bind def
+
+% Strings used to make easy printing numbers
+/pnum 12 string def
+/empty 12 string def
+
+% Global initializations
+
+/CourierBack backspacefont
+/filenmfontname /Helvetica-Bold def
+/inch {72 mul} bind def
+
+%
+% Meaning of some variables and functions (coded names)
+%
+%	twp:		twinpages?
+%	sd:		sheet side
+%	l:		line counter
+%	c:		column counter
+%	d:		date
+%	td:		current date (for today)
+%	lg:		login name
+%	fn:		filename printing function
+%	sn:		sheetnumber printing function
+%	cd:		current date printing function
+%	fnf:		filename footer printing function
+%	lgp:		login printing function
+%	hp:		header printing function
+%	y:		y coordinate for the logical page
+%	x:		x coordinate for the logical page
+%	sny:		y coordinate for the sheet number
+%	snx:		x coordinate for the sheet number
+%	dy:		y coordinate for the date
+%	dx:		x coordinate for the date
+%	ly:		y coordinate for the login
+%	lx:		x coordinate for the login
+%	scx:		x coordinate for the sheet center
+%	fny:		y coordinate for the filename (footer)
+%	fnx:		x coordinate for the filename (footer)
+%	fnfs:		filename font size
+%	bfs:		body font size
+%	dfs:		date font size
+%	bfs:		body font size
+%	df:		date font
+%	bf:		body font
+%	bdf:		bold font
+%	sfnf:		standard filename font
+%	dw:		date width
+%	pw:		page width
+%	sw:		sheet width
+%	ph:		page height
+%	sh:		sheet height
+%	hm:		header margin
+%	tm:		top margin
+%	bm:		body margin
+%	rm:		right margin
+%	lm:		left margin
+%	hs:		header size
+%	fns:		filename size
+
+% Initialize page description variables.
+/x0 0 def
+/y0 0 def
+/sh 11 inch def
+/sw 8.27 inch def
+/margin 1.4 inch def
+/rm margin 3 div def
+/lm margin 2 mul 3 div def
+/d () def
+/td (Oct 13 1998 07:09) def
+/lg (Printed by prog from mk3fs) def
+%%EndProlog
+
+/docsave save def
+%%Page: 1 1
+/pagesave save def
+/twp true def
+/fnfs 11 def
+/dfs fnfs 0.8 mul def
+/df /Helvetica dfs getfont def
+/dw df setfont td stringwidth pop def
+/sfnf filenmfontname fnfs getfont def
+/hm fnfs 0.25 mul def
+/hs 0.22 inch def
+/bfs 7.82 def
+/bdf /Courier-Bold bfs getfont def
+/bm bfs 0.7 mul def
+/bf /CourierBack bfs getfont def
+/l 60 def
+/c 72 def
+/pw
+   bf setfont (0) stringwidth pop c mul bm dup add add
+   def
+/ph
+   bfs l mul bm dup add add hs add
+   def
+/fns
+      pw
+      fnfs 4 mul dw add (Page 999) stringwidth pop add
+    sub
+  def
+/tm margin twp {3} {2} ifelse div def
+/sd 0 def
+/y [ rm ph add bm add
+          dup ] def
+/sny dfs dfs add def
+/snx sh tm dfs add sub def
+/dy sny def
+/dx tm dfs add def
+/x [ tm			% left page
+          dup 2 mul pw add	% right page
+        ] def
+/scx sh 2 div def
+/fny dy def
+/fnx scx def
+/ly fnfs 2 div y sd get add def
+/lx snx def
+/d (Oct 13 1998 06:59) def
+( effsend.c ) fn
+sw 0 translate
+90 rotate
+1 hp
+border
+hborder
+/x0 x 0 get bm add def
+/y0 y 0 get bm bfs add hs add sub def
+x0 y0 moveto
+bf setfont
+( /* eff eff effe eff this receives SOURCE commands on a socket) s
+(    from FS9 and VLBA system, passes them on to whatever program) s
+(    is being run by rxvt, e.g. a telnet to OBSE on eff200..,) s
+(    and also looks after the single=board computer in mk3 IFD*/) s
+( #include <stdio.h>) s
+( # define MAXBUF 100) s
+( static int rxbits=0x00;) s
+( static int pcalmask=0x40; /* keep in here if pcal is sf,pf or if */) s
+( void ifk\(\);) s
+( void sfk\(\);) s
+( void pfk\(\);) s
+( void s7cal \(\);) s
+( void rxno\(\);) s
+( void wrbits\(\);) s
+( int send_effberg\(unsigned char *buf,int count\)) s
+( {) s
+(   FILE *fp;) s
+(   char rxbuf[MAXBUF];) s
+(   char filename[MAXBUF];) s
+(   int nread,n1,n2,n,i,nn,n3,j;) s
+(   int irxno,irxlam;) s
+(   float flo,rxfq; /*replaces ilo*/) s
+(   static int devcua=-1;) s
+(   char expcode[20],srcname[20],ra[20],dec[20],band[20] ;) s
+(   char noise[20],pcal[20],effxtra[20];) s
+(   char vori[6];  /* gets VLBI for Mk3, VLBA for VLBA */) s
+(   char vork[6];  /* gets VVLBI for Mk3, VVLBA for VLBA */) s
+(   int inoise,ipcal;   /* store here whether on or off wanted*/) s
+(   float efflo,ftest;  /* translate band to this,  LO frequency \(was int) s
+( eger\) */) s
+(   static char ora[20],odec[20],oband[20] ;) s
+(   char rah[4],ram[4],ras[8],decd[4],decm[4],decs[8], whichsys[20];) s
+(   char obuf[1024];) s
+(   if \(devcua == -1\){devcua=open\("/dev/cua16",02\);}) s
+(   buf[count]='\\0';) s
+( /* unless this starts with >>, it's antenna= command to put straight ou) s
+( t*/) s
+(   if \(\(buf[0] !='>'\) || \(buf[1] != '>'\) \) { ) s
+(         cprintf\("%s\\r\\n",buf\);) s
+(         return;) s
+(      }) s
+(   /* first check if this is from VME or FS9, FS9 has >>SM in field 1 ) s
+(      for a source command, VLBA has >>SV*/) s
+(      n1=0; n2=strcut\(buf,whichsys,' ',n1\);) s
+(      if\( strncmp\(whichsys,">>SV",4\) == 0\){strcpy\(vori,"VLBA"\); /*was @V) s
+( LBA */) s
+(                                           strcpy\(vork,"VVLBA"\); }) s
+(      if\( strncmp\(whichsys,">>SM",4\) == 0\){strcpy\(vori,"VLBI"\); ) s
+(                                           strcpy\(vork,"VVLBI"\); }) s
+(   /* section :separate input line into command words , */) s
+(      n1=n2; n2=strcut\(buf,expcode,' ',n1\);) s
+(      n1=n2; n2=strcut\(buf,srcname,' ',n1\);) s
+(      n1=n2; n2=strcut\(buf,rah,'h',n1\);) s
+(      n1=n2+1; n2=strcut\(buf,ram,'m',n1\);) s
+(      n1=n2+1; n2=strcut\(buf,ras,'s',n1\);) s
+(      n1=n2+1; n2=strcut\(buf,decd,'d',n1\);) s
+(      n1=n2+1; n2=strcut\(buf,decm,'\\'',n1\);) s
+(      n1=n2+1; n2=strcut\(buf,decs,'"',n1\);) s
+(      n1=n2+1; n2=strcut\(buf,band,' ',n1\);) s
+(      n1=n2+1; n2=strcut\(buf,noise,' ',n1\);) s
+/sd 1 def
+2 hp
+border
+hborder
+/x0 x 1 get bm add def
+/y0 y 1 get bm bfs add hs add sub def
+x0 y0 moveto
+bf setfont
+(      n1=n2+1; n2=strcut\(buf,pcal,' ',n1\);) s
+(      n1=n2+1; n2=locaten\(' ',buf,n1\);) s
+(      strncpy\(effxtra,&buf[n2],7\);) s
+(      strcpy\(ra,rah\); strcat\(ra,ram\); strcat\(ra,ras\);) s
+(      strcpy\(dec,decd\); strcat\(dec,decm\); strcat\(dec,decs\);) s
+(      if \(\(strncmp\(ra,ora,10\) != 0 \) || \( strncmp\(dec,odec,10\) != 0 \)\) {) s
+(        strncpy\(ora,ra,10\); strncpy\(odec,dec,10\);) s
+(        if\(strncmp\(srcname,"NONE",4\) !=0\)  {) s
+(          cprintf\(" \\r\\n"\);  /* in case observer was typing something, a) s
+( bschliessen */) s
+(          cprintf\("OBSINP \\r\\n"\);) s
+(          cprintf\("SNAM=%s\\r\\n",srcname\);) s
+(          cprintf\("SLAM=%s %s %s S\\r\\n",rah,ram,ras\);) s
+(          cprintf\("SBET=%s %s %s \\r\\n",decd,decm,decs\);) s
+(          if\(strncmp\(effxtra,"2000",4\)== 0\)) s
+(                               cprintf\("SBAS=-1\\r\\n"\);) s
+(          if\(strncmp\(effxtra,"1950",4\)== 0\)) s
+(                               cprintf\("SBAS=1\\r\\n"\);) s
+(          cprintf\("QUIT\\r\\n"\);) s
+(          cprintf\("%s\\r\\n",vork\);) s
+(        }) s
+(      }) s
+(      for \(i=0; i< strlen\(band\); i++\)band[i]=toupper\(band[i]\); ) s
+(      if\(strcmp\(band,"NONE"\) != 0\){) s
+(        if \(\(strcmp\(band,oband\) != 0\) \) {) s
+(          if\(\(fp=fopen \("/usr2/prog/rxvt/rxfile","r"\)\) == \(FILE *\)NULL\)) s
+(                                          printf\(" cant open file \\n"\);) s
+(          sscanf\(band,"%f",&efflo\);      /* lo to float \(was integer\) */) s
+(          while \(fgets\(rxbuf,MAXBUF,fp\) != NULL\) {) s
+(           if\(rxbuf[0] == whichsys[3] \){       /* first check if VLBA or) s
+(  MK3 setup*/) s
+(            sscanf\(&rxbuf[1],"%f",&flo\);      /* lo from list */) s
+(            if\(flo == efflo\){) s
+(              sscanf\(&rxbuf[12],"%d %d %f ",&irxno,&irxlam,&rxfq\);) s
+(              if \(rxbuf[10] == 'p'\)pfk\(\);  /* select correct pcal via SB) s
+( C */) s
+(              if \(rxbuf[10] == 's'\)sfk\(\);) s
+(              if \(rxbuf[10] == 'i'\)ifk\(\);) s
+(              rxno\(irxno\);) s
+(              cprintf\("%s %d %5.2f \\r\\n",vori,irxlam,rxfq\); ) s
+(              cprintf\("OBSINP FSM1 1 \\r\\n"\); /*oscillator unlock so we c) s
+( an change it*/ ) s
+(              n1=locate\('>',rxbuf,10\)+1 ;) s
+(              if\(n1 > 0\){) s
+(                more:) s
+(                n2=strlen\(rxbuf\)-1;) s
+(                n3=locate\('>',rxbuf,n1+1\); ) s
+(                if\(n2 >= n3\)n2=n3 ;) s
+(                strcpy\(obuf,&rxbuf[n1]\);) s
+(                for \(j=n1,nn=0; j<n2 ; j++,nn++\)) s
+(                  obuf[nn]=rxbuf[j];obuf[n2-n1]='\\0';) s
+(                obuf[strlen\(obuf\)-1]='\\0';) s
+(                cprintf\("%s \\r\\n",obuf\);) s
+(                n1=n3+1;) s
+(                if\(n3 > 0 \)goto more;) s
+(              }) s
+(              cprintf\("%s \\r\\n",vork\);) s
+(            }) s
+(           }) s
+(          }) s
+/sd 0 def
+1 sn
+fnf
+lg lgp
+pagesave restore
+showpage
+%%Page: 2 2
+/pagesave save def
+/twp true def
+/fnfs 11 def
+/dfs fnfs 0.8 mul def
+/df /Helvetica dfs getfont def
+/dw df setfont td stringwidth pop def
+/sfnf filenmfontname fnfs getfont def
+/hm fnfs 0.25 mul def
+/hs 0.22 inch def
+/bfs 7.82 def
+/bdf /Courier-Bold bfs getfont def
+/bm bfs 0.7 mul def
+/bf /CourierBack bfs getfont def
+/l 60 def
+/c 72 def
+/pw
+   bf setfont (0) stringwidth pop c mul bm dup add add
+   def
+/ph
+   bfs l mul bm dup add add hs add
+   def
+/fns
+      pw
+      fnfs 4 mul dw add (Page 999) stringwidth pop add
+    sub
+  def
+/tm margin twp {3} {2} ifelse div def
+/sd 0 def
+/y [ rm ph add bm add
+          dup ] def
+/sny dfs dfs add def
+/snx sh tm dfs add sub def
+/dy sny def
+/dx tm dfs add def
+/x [ tm			% left page
+          dup 2 mul pw add	% right page
+        ] def
+/scx sh 2 div def
+/fny dy def
+/fnx scx def
+/ly fnfs 2 div y sd get add def
+/lx snx def
+/d (Oct 13 1998 06:59) def
+( effsend.c ) fn
+sw 0 translate
+90 rotate
+3 hp
+border
+hborder
+/x0 x 0 get bm add def
+/y0 y 0 get bm bfs add hs add sub def
+x0 y0 moveto
+bf setfont
+(          fclose\(fp\);) s
+(        /*-----special treatment 30cm rx with many los: use +150------ *) s
+( /) s
+(          ftest=efflo; ) s
+(          if\( strncmp\(whichsys,">>SV",4\) == 0\){ftest=efflo+400.0;} ) s
+(          if\(\(ftest >= 600.0\)&&\(ftest <= 1100.0\)\) {) s
+(              ifk\(\); rxno\(2\); irxlam=300;) s
+(              cprintf\("%s %d %5.2f \\r\\n",vori,irxlam,efflo+148.0\); ) s
+(              cprintf\("OBSINP FSM1 1 \\r\\n"\); /*oscillator unlock so we c) s
+( an change it*/ ) s
+(              cprintf\("%s \\r\\n",vork\);) s
+(          }) s
+(        /*---------end of 30cm section-------------------*/) s
+(          strcpy\(oband,band\); ) s
+(        }  ) s
+(      }) s
+(      inoise=strncmp\(noise,"0",1\);  /* set to 1 if noise is "1" */) s
+(      ipcal=strncmp\(pcal,"0",1\);  /* set to 1 if pcal is "1" */) s
+(      rxbits=rxbits & 0xFD;  /* clear existing tcal bit */) s
+(      if\(inoise == 1 \)rxbits=rxbits ^ 0x2; /* cal on */) s
+(      rxbits=rxbits & 0x2F;  /* clear existing pcal bits */) s
+(      if\(ipcal == 1 \)rxbits=rxbits ^ pcalmask;  /* phasecal on*/) s
+(      wrbits\(devcua\) ;  /* now write all those rx bits to SBC */) s
+( }) s
+( /* - - - - - - - - - - - - - - - - - - - -*/) s
+( int strcut\(sin,sout,t,n\)) s
+( char sin[],sout[],t; int n;) s
+( /* input is string sin, look for a string in this starting with) s
+(    \(not ' '\),terminated by t, copy to sout, null terminated and) s
+(     not including t . Start looking in sin at position n ,) s
+(     return finishing position*/) s
+( {) s
+(   int n1,n2,nn,i;) s
+(   n1=locaten\(' ',sin,n\); n2=locate\(t,sin,n1\);) s
+(   for \(i=n1,nn=0; i<n2 ; i++,nn++\) sout[nn]=sin[i]; sout[n2-n1]='\\0';) s
+(   return \(n2\);) s
+( }) s
+( /* - - - - - - - - - - - - - - - - - - - -*/) s
+( int locate\(t,s,n\) /*find posn of char t in s starting at posn n*/) s
+( char s[],t; int n;) s
+( {) s
+(   int i,j,k;) s
+(   for \(i=n;s[i] != '\\0';i++\) {) s
+(       if\(s[i]==t\)) s
+(          return\(i\);) s
+(       }) s
+(   return\(-1\);) s
+( }) s
+( /* - - - - - - - - - - - - - - - - - - - -*/) s
+( int locaten\(t,s,n\) /*find posn of not char t in s starting at posn n*/) s
+( char s[],t; int n;) s
+( {) s
+(   int i,j,k;) s
+(   for \(i=n;s[i] != '\\0';i++\) {) s
+(       if\(s[i]!=t\)) s
+(          return\(i\);) s
+(       }) s
+(   return\(-1\);) s
+( }) s
+( /* - - - - - - - - - - - - - - - - - - - -*/) s
+/sd 1 def
+4 hp
+border
+hborder
+/x0 x 1 get bm add def
+/y0 y 1 get bm bfs add hs add sub def
+x0 y0 moveto
+bf setfont
+( /* This is the bit stuff to send to the SBC in Mk3 IFD ) s
+(    This has, for bits 0->7, following effect:) s
+(    1=tcal,2=rx1,3=rx0,4=ifcal,5=rx2,6=pcal to sfk,7=sfk) s
+( */) s
+( void ifk\(\) { pcalmask=0x10;  } /* phase cal in IF */) s
+( void sfk\(\) { pcalmask=0x40;  } /* set pcal to secondary focus*/) s
+( void pfk\(\) { pcalmask=0x80;  } /* phase cal to prime focus*/) s
+( void rxno\(i\) /* in usual notation, rxnbits =0 for receiver 1 */) s
+( int i;) s
+( {) s
+(   rxbits=rxbits & 0xD3; /* clear existing  rxn bits */) s
+(   switch \(i\)) s
+(     {) s
+(     case 1: rxbits=rxbits ^ 0x00; break;) s
+(     case 2: rxbits=rxbits ^ 0x08; break;) s
+(     case 3: rxbits=rxbits ^ 0x04; break;) s
+(     case 4: rxbits=rxbits ^ 0x0C; break;) s
+(     case 5: rxbits=rxbits ^ 0x20; break;) s
+(     case 6: rxbits=rxbits ^ 0x28; break;) s
+(     case 7: rxbits=rxbits ^ 0x24; break;) s
+(     case 8: rxbits=rxbits ^ 0x2C; ) s
+(     }) s
+( }) s
+( void wrbits\(unit\)) s
+( /* this sends out 16 bits coded hex to boca port 1 for sbc in ifd */) s
+( int unit;) s
+( {) s
+(    int n1,b1,b2;) s
+(    char wbuf[100];) s
+(    b1=\(rxbits >> 4\) & 0xF; b2=rxbits & 0xF;) s
+(    sprintf\(wbuf,">>RX=00%X%X\\r\\n",b1,b2\);) s
+(    n1=write\(unit,wbuf,strlen\(wbuf\)\); ) s
+( }) s
+/sd 0 def
+2 sn
+fnf
+lg lgp
+pagesave restore
+showpage
+
+%%Trailer
+%%Pages: 2
+docsave restore end

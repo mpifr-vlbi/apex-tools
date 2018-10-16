@@ -1,0 +1,34 @@
+* Lband VLBA  receiver parameter definition
+range 600 1100 
+2005 10 26
+frequency 1.0 
+rcp lcp
+1.55 1.55 
+ELEV POLY 1.0 
+rcp 1354.0 1.1700
+rcp 1362.0 1.1970
+rcp 1370.0 1.2110
+rcp 1378.0 1.2010
+rcp 1386.0 1.1440
+rcp 1394.0 1.1590
+rcp 1402.0 1.2210
+rcp 1410.0 1.3220
+rcp 1579.0 1.3870
+rcp 1587.0 1.3040
+rcp 1595.0 1.3050
+rcp 1603.0 1.4370
+lcp 1354.0 1.1180
+lcp 1362.0 1.1250
+lcp 1370.0 1.1360
+lcp 1378.0 1.1270
+lcp 1386.0 1.0740
+lcp 1394.0 1.0870
+lcp 1402.0 1.1080
+lcp 1410.0 1.1390
+lcp 1579.0 1.1700
+lcp 1587.0 1.1700
+lcp 1595.0 1.1450
+lcp 1603.0 1.1870
+end_tcal_table
+60.0
+end_spillover_table

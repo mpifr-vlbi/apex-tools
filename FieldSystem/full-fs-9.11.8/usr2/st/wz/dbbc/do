@@ -1,0 +1,17 @@
+a2ps  -l 90 dbbc_cal_ch.c -o ../../d.ps
+a2ps  -l 90 dbbc_cal_if.c -o ../../e.ps
+a2ps  -l 90 dbbc_com.c -o ../../f.ps
+a2ps  -l 90 dbbcform.c -o ../../g.ps
+a2ps  -l 90 dbbcif.c -o ../../h.ps
+a2ps  -l 90 dbbcifn.c -o ../../i.ps
+a2ps  -l 90 dbbcmon.c -o ../../j.ps
+a2ps  -l 90 dbbcnn.c -o ../../k.ps
+a2ps  -l 90 dbbcstat.c -o ../../l.ps
+a2ps  -l 90 dbc_com.c -o ../../m.ps
+a2ps  -l 90 find_control.c -o ../../n.ps
+a2ps  -l 90 logfile.c -o ../../o.ps
+a2ps  -l 90 reg.c -o ../../p.ps
+a2ps  -l 90 resetall.c -o ../../q.ps
+a2ps  -l 90 simple_socket.c -o ../../r.ps
+a2ps  -l 90 server/server4.c -o ../../s.ps
+a2ps  -l 90 server/simple_socket.c -o ../../t.ps

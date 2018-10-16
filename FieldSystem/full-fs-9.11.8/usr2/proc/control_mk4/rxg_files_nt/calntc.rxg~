@@ -1,0 +1,112 @@
+* c.rxg - C band receiver parameter definition
+*
+* first line: LO values and ranges, format:
+*  type   frequencies
+* if type is range, the two values: lower and upper frequencies
+* if type is fixed, then the fixed value
+* frequencies in MHz
+*
+fixed 4120.1
+*
+*
+* 2nd line: creation date
+* format:  yyyy ddd or yyyy mm dd (0 is valid for all for intial set-up)
+*
+2006 07 11
+*
+* 3rd line: FWHM beamwidthm format:
+*   model value
+*
+* if type is frequncy, then fwhm=value*1.22*c/(freq*diameter)
+*                      value is 1.0 if omitted
+* if type is constant, then fwhm=value (degrees)
+*
+frequency 1.0
+*
+* 4th line polarizations available
+*
+* one of both of lcp and rcp
+*
+lcp rcp
+*
+* 5th line: DPFU (degrees/Jansky) for polarizations in previous line in order
+*
+0.146483 0.144194
+*
+* 6th line: gain curve (only one) for ALL polarizations in 4th line
+* TYPE FORM COEFFICENTS ...
+*
+* FORM = POLY only for now
+* TYPE - ELEV or ALTAZ only for now
+* COEFFICENTS - variable number of number values
+*
+* maximum coefficents 10
+*
+*nuova curva
+ELEV POLY 0.92530034 0.0042494749 -6.0435474e-05
+*
+*vecchia curva
+*ALTAZ POLY 0.98743, 0.00124731, -3.096108e-5
+*
+* 7th and following lines: tcal versus frequency
+*     Format: POL FREQ TCAL
+*     where:
+*            POL    polarization rcp or lcp
+*            FREQ   frequency (MHz)
+*            TCAL   degrees K
+*
+*     MAXIMUM ENTRIES 100, group by polarization
+*                          then sorted by increasing freq
+*
+lcp 4712.1 16.2268
+lcp 4728.1 16.2171
+lcp 4762.1 17.0950
+lcp 4778.1 16.4451
+lcp 4812.1 14.0086
+lcp 4828.1 14.9286
+lcp 4862.1 14.7017
+lcp 4870.1 14.7027
+lcp 4878.1 14.4604
+lcp 4912.1 15.3594
+lcp 4928.1 15.7186
+lcp 4962.1 13.1209
+lcp 4978.1 13.3688
+lcp 5012.1 15.5167
+lcp 5028.1 15.0188
+rcp 4712.1 15.3268
+rcp 4728.1 15.0985
+rcp 4762.1 16.2214
+rcp 4778.1 16.6183
+rcp 4812.1 14.3078
+rcp 4828.1 14.6100
+rcp 4862.1 15.2784
+rcp 4870.1 15.0072
+rcp 4878.1 15.1023
+rcp 4912.1 14.4640
+rcp 4928.1 15.7171
+rcp 4962.1 14.5474
+rcp 4978.1 12.7642
+rcp 5012.1 13.7105
+rcp 5028.1 12.5887
+*
+*tcal table ends with end_tcal_table record
+*
+end_tcal_table
+*
+* Trec - receiver temperature, degrees K
+*
+* if value is zero, no opacity corrections are used
+*
+ 0.0
+*
+* Spillover table
+*
+* format:
+* elevation temperature
+* where:
+*  elevation is angular degrees above horizon
+*  temperature is Kelvin degrees of spillover noise
+*
+*spillover table ends with end_spillover_table record
+*
+end_spillover_table

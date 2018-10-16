@@ -1,0 +1,45 @@
+PID: VLBI   OPER: VLBI  SOURCE: 0235+164    SNAM: 0108+388
+LAM/BET 01:11:37.30 (s)   39 06 28.0 (")    Basis System -1
+Catalogs: [OBSERVER.VLBIOBSE]VLBI.CAT  [EFFOBS]LINE.CAT
+
+      FRQ_Cont: 14.600*  USB
+      FRQ_Cont: 14.600*  USB
+CONT RX:  A                  T integ(s): 60          T cycle(ms):  16
+
+
+
+LANG: TOOL                              COMM: CTRACK
+
+         FIT RESULTS :      0.55           -0.61         0.76        None
+NULA:   0.00        COL*:17.85     NULE:-8.61     SFC2:-21.05    SFC1:0
+         HPBW AZ/EL:     53.867          53.533
+
+
+         Waiting for scan     2934
+        2934 discarded
+        Idling / No active program
+         Waiting for scan     2934
+
+
+              Current                        Default
+ OFFSETS      0                              0
+              0                              0
+              0                              0
+              LAM                            LAM
+              REF                            REF
+
+
+
+
+
+
+
+
+
+
+
+ That are the telescope-positions:
+ TEL_SOLL  HO   301:41:38  024:53:17
+ TEL_IST  HO    269:50:27   21:36:28
+ Telescope is now going to TRACK ON OLD SOURCE (in VLBA-mode)
+OBSE>                                                               

@@ -1,0 +1,19 @@
+       Text /usr2/st/stqkr/mx.readme
+
+       R. Zeitlhoefler,  09.04.1997.
+
+       Funktion 'mx()',  Aufruf ueber das Programm 'stqkr'
+
+       Der Funktionsname 'mx()' ist identisch mit dem Namen des stations-
+       spezifischen snap commands 'mx'.
+
+       Die Funktion 'mx' holt die Wetterdaten aus dem Shared Memory und legt
+       sie im log-file ab.
+
+       Damit 'mx' als stationsspezifischer Befehl erkannt wird, ist der Name
+       im File /usr2/control/stcmd.ctl ( mx   stq 0001 01 77) eingetragen.
+
+       Anmerkung:
+       Zur Unterscheidung vom Field System Command 'wx'ist das
+       stationsspezifische command fuer 'wx', 'mx' benannt.            
+       

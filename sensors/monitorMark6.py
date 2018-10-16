@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 """
 Poll Mark6 machines and read their 'lmsensors'.
 """
@@ -7,7 +7,7 @@ import subprocess, time
 from datetime import datetime
 from colorama import Fore, Back, Style
 
-hosts = ['vlbi1', 'vlbi2', 'vlbi3', 'vlbi4' ]
+hosts = ['oper@recorder1', 'oper@recorder2', 'oper@recorder3', 'oper@recorder4' ]
 temperatures = ['Physical', 'Core', 'temp', 'CPUTIN', 'SYSTIN', 'AUXTIN', 'fan2']
 
 def filter(lines,keys):
@@ -39,8 +39,8 @@ def readoutMark6s():
 		# Header
 		T = datetime.utcnow()
 		title = '%s refresh %d' % (str(T),iter)
-		next_out.append(clear)
-		next_out.append(Back.BLUE + Fore.WHITE + '  %-70s  ' % (title))
+		#next_out.append(clear)
+		#next_out.append(Back.BLUE + Fore.WHITE + '  %-70s  ' % (title))
 		n = 0
 
 		# Readings from hosts
@@ -50,33 +50,41 @@ def readoutMark6s():
 			cmd = '/usr/bin/ssh %s /usr/local/bin/sensors' % (h)
 			got_sensors = False
 			try:
-				s = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+				# Python 2.7+
+				#s = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+				# Python 2.6
+				proc = subprocess.Popen(cmd.split(' '), stdout=subprocess.PIPE)
+				s = proc.communicate()[0]
 				got_sensors = True
 			except Exception as e:
-				#print str(e)
+				#print (str(e))
 				next_out.append(Fore.RED + Back.BLACK + '%-10s : '%(h) + str(e))
 			if got_sensors:
 				l = s.split('\n')
 				fl = filter(l, temperatures)
 				for line in fl:
 					next_out.append(colcycle[n] + Back.BLACK + '%-10s : '%(h) + Fore.RESET + line)
-
 			# Disks
-			cmd = '/usr/bin/ssh %s /bin/ls -l /dev/disk/by-path/ | /bin/grep sas | /bin/grep -v part' % (h)
+			cmd = ['/usr/bin/ssh', h, '/bin/mount | /bin/grep disks | /bin/grep -v meta']
 			got_disks = False
 			try:
-				s = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+				# Python 2.7+
+				#s = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+				# Python 2.6
+				proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+				s = proc.communicate()[0]
 				got_disks = True
 			except Exception as e:
-				#print str(e)
+				#print (str(e))
 				pass
 			disks = []
 			if got_disks:
 				for l in s.split('\n'):
-					i = l.rfind('/')
-					if i < 0:
+					# l = '/dev/sdv1 on /mnt/disks/3/4 type xfs (rw)'
+					entries = l.split()
+					if len(entries) < 2:
 						continue
-					dev = l[(i+1):]
+					dev = entries[0][:-1]
 					disks.append(dev)
 				summary = '%d disks' % (len(disks))
 				next_out.append(colcycle[n] + Back.BLACK + '%-10s : '%(h) + Fore.RESET + summary)
@@ -84,16 +92,22 @@ def readoutMark6s():
 			# Disk temperatures
 			temps = []
 			for disk in disks:
-				cmd = '/usr/bin/ssh %s "sudo /usr/sbin/smartctl -A /dev/%s | /bin/grep Temperature_Celsius"' % (h,disk)
+				cmd = ['/usr/bin/ssh', h,  'sudo /usr/sbin/smartctl -A %s | /bin/grep Temperature_Celsius' % (disk)]
 				try:
-					s = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+					# Python 2.7+
+					#s = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+					# Python 2.6
+					proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+					s = proc.communicate()[0]
 				except Exception as e:
-					#print str(e)
+					#print (str(e))
 					continue
 				vals = s.split()
-				#print vals, vals[9]
+				if len(vals)<9:
+					#print (disk, s, vals)
+					continue
 				temps.append(int(vals[9]))
-			if len(disks)>0:
+			if len(disks)>0 and len(temps)>0:
 				# summary = 'disk temps ' + ' '.join([str(t) for t in temps])
 				M = sum(temps)/len(temps)
 				summary = 'disk temperatures %dC min %dC mean %dC max' % (min(temps),M,max(temps))
@@ -104,7 +118,7 @@ def readoutMark6s():
 
 		# Now print
 		for l in next_out:
-			print l
+			print (l)
 
 		time.sleep(5)
 		iter = iter + 1

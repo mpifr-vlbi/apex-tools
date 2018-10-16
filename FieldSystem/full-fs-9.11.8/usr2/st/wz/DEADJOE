@@ -1,0 +1,212 @@
+
+*** Modified files in JOE when it aborted on Thu Jun  5 12:37:37 2008
+*** JOE was aborted by signal 1
+
+*** File 'stqkr.c'
+ /* usr2/st/stqkr/stqkr.c
+ *  last mod. 06/07/08, zei. for DBBC tests.
+ * stqkr - C version of station command controller
+ * 
+*/
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+
+#include "/usr2/fs/include/params.h"
+#include "/usr2/fs/include/fs_types.h"
+#include "/usr2/fs/include/fscom.h"
+#include "/usr2/fs/include/shm_addr.h"      /* shared memory pointer */
+
+struct stcom *st;
+struct fscom *fs;
+
+#define MAX_BUF   257
+
+char old_Line[255]; int rh_to=5; /* ext var for relheiht.c */ 
+main()
+{
+    long ip[5];
+    int isub,itask,idum,ierr,nchars,i;
+    char buf[MAX_BUF];
+    struct cmd_ds command;
+    int cls_rcv(), cmd_parse();
+    void skd_wait();
+   
+    
+/* Set up IDs for shared memory, then assign the pointer to
+ * "fs", for readability.
+ */
+
+  setup_ids();
+  fs = shm_addr;
+  
+  setup_st(); 
+  
+  loop:
+      skd_wait("stqkr",ip,(unsigned) 0);
+      if(ip[0]==0) {
+        ierr=-1;
+        goto error;
+      }
+
+      nchars=cls_rcv(ip[0],buf,MAX_BUF,&idum,&idum,0,0);
+      if(nchars==MAX_BUF && buf[nchars-1] != '\0' ) { /*does it fit?*/
+        ierr=-2;
+        goto error;
+      }
+                                   /* null terminate to be sure */
+      if(nchars < MAX_BUF && buf[nchars-1] != '\0') buf[nchars]='\0';
+
+      if(0 != (ierr = cmd_parse(buf,&command))) { /* parse it */
+      
+        ierr=-3;
+        goto error;
+      } 
+  
+
+      isub = ip[1]/100;
+      itask = ip[1] - 100*isub;
+      
+      /* printf("in stqkr: ip[1]=%d, isub= %d, itask = %d\n",ip[1],isub, itask); 
+      */ 
+            switch (ip[1]) {     /*  mod 07.12.00, switch cond. original 'isub' */
+         case 101:
+               wx(&command,itask,ip);
+               break;
+         case 102:      
+               wxz(&command,itask,ip);
+               break;
+         case 201:
+               cable(&command,itask,ip);
+               break;
+         case 202:      
+               counter2(&command,itask,ip);
+               break;
+         case 203:      
+               relheight(&command,itask,ip);      	
+               break;
+         case 301: 
+               point (&command,itask,ip);
+               break;
+         case 302:
+               mpoint(&command,itask,ip);      
+               break;   
+         case 401:
+               tk(&command,itask,ip);
+               break;
+         case 402:
+               ptlog(&command,itask,ip);
+               break;
+         case 500:
+               printf("DBBC cmd received\n");
+            break;
+         case 6:
+            break;
+         case 7:
+            break;     
+         case 8:
+            break;
+         case 9:
+            break; 	                      
+         default:
+            ierr=-6;
+            goto error;
+      }
+      goto loop;
+
+error:
+      for (i=0;i<5;i++) ip[i]=0;
+      ip[2]=ierr;
+      memcpy(ip+3,"st",2);
+      goto loop;
+}
+
+*** Modified files in JOE when it aborted on Wed Jun 18 11:43:33 2008
+*** JOE was aborted because the terminal closed
+
+*** File 'dbbc.c'
+q/*orig.  mk5 SNAP command 
+mod for dbbc test, Zei 06/07/08
+now: dbbc SNAP command for stqkr
+*/
+
+#include <stdio.h> 
+#include <string.h> 
+#include <sys/types.h>
+
+#include "/usr2/fs//include/params.h"
+#include "/usr2/fs/include/fs_types.h"
+#include "/usr2/fs/include/fscom.h"         /* fs-shared memory definition */
+#include "/usr2/fs/include/shm_addr.h"      /* fs-shared memory pointer */
+#include "/usr2/st/include/stcom.h"         /* st-shared memory definition */
+#include "/usr2/st/include/stm_addr.h"
+#define BUFSIZE 512
+#define DEBUG 1     /* additional prinf for debug mode when 1 */
+
+void dbbc(command,itask,ip)
+struct cmd_ds *command;                /* parsed command structure */
+int itask;                            /* sub-task, ifd number +1  */
+long ip[5];                           /* ipc parameters */
+{
+      int debug=1;
+      int ilast, ierr, ind, i, count;
+      char *ptr;
+      char *arg_next();
+      int out_recs, out_class;
+      char outbuf[BUFSIZE];
+
+      void skd_run(), skd_par();      /* program scheduling utilities */
+      
+      if (DEBUG)  {
+       printf("DEBUG= %d\n", DEBUG);
+       printf("command %s Next argv: %s\n",command->argv[0], command->argv[1]);
+       }
+      if (command->equal != '=' ||
+          command->argv[0]==NULL )
+         {
+        /* printf("ret err 301\n");
+         ierr=-301;
+         goto error;*/
+         printf ("dbbc status request\n");
+      } 
+
+
+
+
+
+
+/* if we get this far it is a set-up command so parse it */
+
+parse:
+      ilast=0;                                      /* last argv examined */
+      out_recs=0;
+      out_class=0;
+      ptr=arg_next(command,&ilast);
+
+      while( ptr != NULL) {
+	strcpy(outbuf,ptr);
+	strcat(outbuf,"\n");
+	cls_snd(&out_class, outbuf, strlen(outbuf), 0, 0);
+	out_recs++;
+	ptr=arg_next(command,&ilast);
+      }
+      printf("out_recs %d out_class %d  outbuf %s\n", out_recs,out_class,outbuf);
+      printf("dbbc prog leaving, Zei.\n");
+/*mk5cn:
+      ip[0]=1;
+      ip[1]=out_class;
+      ip[2]=out_recs;
+      skd_run("mk5cn",'w',ip);
+      skd_par(ip);
+
+      if(ip[2]<0) return;
+      mk5_dis(command,itask,ip);
+      return;
+*/
+error:
+      ip[0]=0;
+      ip[1]=0;
+      ip[2]=ierr;
+      memcpy(ip+3,"dbbc",4);
+      return;
+}

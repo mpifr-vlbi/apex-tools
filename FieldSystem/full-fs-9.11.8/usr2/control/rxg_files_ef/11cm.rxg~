@@ -1,0 +1,52 @@
+* 11cm.rxg - 11cm receiver parameter definition
+range 2450 2750
+2007 03 29
+frequency 0.95
+rcp lcp
+1.55 1.55
+ELEV POLY 1.0 0.0 0.0 
+rcp 2450  2.5
+rcp 2604.0 2.8610
+rcp 2604.5 2.8215
+rcp 2614.0 2.7920
+rcp 2614.5 2.7735
+rcp 2624.0 2.7430
+rcp 2624.5 2.7040
+rcp 2634.0 2.6690
+rcp 2634.5 2.6360
+rcp 2644.5 2.5760
+rcp 2654.5 2.5420
+rcp 2664.5 2.5380
+rcp 2674.5 2.5300
+rcp 2850  2.5
+lcp 2450  2.5
+lcp 2604.0 2.8150
+lcp 2604.5 2.7815
+lcp 2614.0 2.7650
+lcp 2614.5 2.7355
+lcp 2624.0 2.6990
+lcp 2624.5 2.6675
+lcp 2634.0 2.6240
+lcp 2634.5 2.6035
+lcp 2644.5 2.5740
+lcp 2654.5 2.5315
+lcp 2664.5 2.5415
+lcp 2674.5 2.5050
+lcp 2850  2.5
+end_tcal_table
+20.2300
+end_spillover_table
+* 11cm.rxg - 11cm receiver parameter definition
+*range 2450 2750
+*2007 03 29
+*frequency 0.95
+*rcp lcp
+*1.55 1.55
+*ELEV POLY 1.0 0.0 0.0 
+*rcp 2450  2.5
+*rcp 2850  2.5
+*lcp 2450  2.5
+*lcp 2850  2.5
+*end_tcal_table
+*20.2300
+*end_spillover_table

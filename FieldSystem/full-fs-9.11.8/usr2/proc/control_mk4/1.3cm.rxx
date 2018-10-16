@@ -1,0 +1,64 @@
+* 1.3cm.rx - 1.3cm receiver parameter definition
+*---------------------------------------------
+* Oct 22, 2002   by AK
+*
+*---------------------------------------------
+* first line: LO values and ranges, format:
+*  type   frequencies
+* if type is range, the two values: lower and upper frequencies
+* if type is fixed, then one or two fixed value
+* frequencies in MHz
+*
+range 21700 24400
+*
+* 2nd line: creation date
+* format:  yyyy ddd or yyyy mm dd (0 is valid for all for intial set-up)
+*
+2002 10 22
+*
+* 3rd line: FWHM beamwidthm format:
+*   model value
+*
+* if type is frequncy, then fwhm=value*1.22*c/(freq*diameter)
+*                      value is 1.0 if omitted
+* if type is constant, then fwhm=value (degrees)
+*
+* for Effelsberg secondary focus, we use theta = 1.15 *lambda/d
+*
+frequency 0.95
+*
+* 4th line polarizations available
+*
+* one of both of lcp and rcp
+*
+rcp lcp
+*
+* 5th line: DPFU (degrees/Jansky) for polarizations in previous line in order
+*
+0.74 0.74
+*
+* 6th line: gain curve (only one) for ALL polarizations in 4th line
+* TYPE FORM COEFFICENTS ...
+*
+* FORM = POLY only for now
+* TYPE - ELEV and ALTAZ only for now
+* COEFFICENTS - variable number of number values
+*
+* maximum coefficents 10
+*
+ELEV POLY 0.94905  4.3690E-3  -9.1264E-5
+*
+* 7th and following lines: tcal versus frequency
+*     Format: POL FREQ TCAL
+*     where:
+*            POL    polarization rcp or lcp
+*            FREQ   frequency (MHz)
+*            TCAL   degrees K
+*
+*     MAXIMUM ENTRIES 100, group by polarization
+*                          then sorted by increasing freq
+*
+rcp 21700  4.7
+rcp 24400  4.7
+lcp 21700  4.7
+lcp 24400  4.7

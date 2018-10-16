@@ -1,0 +1,119 @@
+2018.111.03:07:04.85;Log Opened: Mark IV Field System Version 0.0.0
+2018.111.03:07:04.85;location,APEX    ,67.76,-50.53,5105.0
+2018.111.03:07:04.85;horizon1,0.,10.,360.
+2018.111.03:07:04.85;antenna,100.0,40.0,30.0,-0.1,365.0,10.0,90.0,azel
+2018.111.03:07:04.85;equip,none,none,none,none,500.10,3,a/d,101,60,20,none,40,1,in,8bit,cdp,3,return,v101,v12,4,15000,15000,15000,15000,32,vsi1 
+2018.111.03:07:04.85;time,0.000,1.000,rate
+2018.111.03:07:04.85;flagr,200
+2018.111.03:07:04.85:" e18c21    2018 APEX     A Ax
+2018.111.03:07:04.85:" A APEX     AZEL  .0000  60.0   10 -999.9  999.9  60.0   10 -999.9  999.9   .0 Ax
+2018.111.03:07:04.85:" Ax APEX      2225039.52970 -5441197.62920 -2479303.35970
+2018.111.03:07:04.85:"      APEX        0     8820
+2018.111.03:07:04.85:" drudg version 2015Aug31 compiled under FS  0.00.00
+2018.111.03:07:04.85:" Rack=none      Recorder 1=none      Recorder 2=none
+2018.111.03:07:04.85:exper_initi
+2018.111.03:07:04.85&exper_initi/proc_library
+2018.111.03:07:04.85&exper_initi/sched_initi
+2018.111.03:07:04.85:scan_name=no0029,e18c21,ax,240,240
+2018.111.03:07:04.85:source=m87,123049.42,122328.0,2000.0,
+2018.111.03:07:14.88#flagr#flagr/antenna,new-source
+2018.111.03:07:14.88:setup01
+2018.111.03:07:14.89#flagr#flagr/antenna,acquired
+2018.111.03:07:14.89&setup01/pcaloff
+2018.111.03:07:14.89&setup01/tpicd=stop
+2018.111.03:07:14.89&setup01/" channel assignments consistent with vsi4=astro3
+2018.111.03:07:14.89&setup01/" following command assumes vsi4/dbbc input
+2018.111.03:07:14.89&setup01/" please check and change if necessary
+2018.111.03:07:14.89&setup01/bit_streams=ext,0x000000ff,,4096.000
+2018.111.03:07:14.89&setup01/bit_streams
+2018.111.03:07:14.89&setup01/"channel  sky       lo       video   sample video net  bits/
+2018.111.03:07:14.89&setup01/"         freq     freq      freq     rate    sb  sb  sample
+2018.111.03:07:14.89&setup01/"  01   ******** ********    16.00 4096.00    u   u     2
+2018.111.03:07:14.89&setup01/tpicd=no,0
+2018.111.03:07:14.89&setup01/tpicd
+2018.111.03:07:14.89&pcaloff/xdisp=on
+2018.111.03:07:14.89&pcaloff/"phase cal not available at apex
+2018.111.03:07:14.89&pcaloff/xdisp=off
+2018.111.03:07:14.89?ERROR 5t -214 Clock rate (from equip.ctl) divided by sample rate must be integer 1, 2, 4, 8, or 16 within 0.1 percent.
+2018.111.03:07:14.89/bit_streams/,,,
+2018.111.03:07:14.89?ERROR tc -302 TPICD not set-up: no detectors selected.
+2018.111.03:07:14.89:!2018.111.03:19:50
+2018.111.03:07:14.89&proc_library/" e18c21     apex      ax
+2018.111.03:07:14.89&proc_library/" drudg version 2015aug31 compiled under fs  0.00.00
+2018.111.03:07:14.89&proc_library/"< none         rack >< none     recorder 1>
+2018.111.03:07:14.89&sched_initi/"- - - - starting schedule - - - -
+2018.111.03:19:50.00:preob
+2018.111.03:19:50.00&preob/"mk5=bank_set?;
+2018.111.03:19:50.00:!2018.111.03:20:00
+2018.111.03:20:00.00:data_valid=on
+2018.111.03:20:00.00?ERROR sp  -13 This command not supported for your equipment, check equip.ctl.
+2018.111.03:20:00.00:midob
+2018.111.03:20:00.00&midob/onsource
+2018.111.03:20:00.00/onsource/TRACKING
+2018.111.03:20:00.00:!2018.111.03:24:00
+2018.111.03:24:00.00:data_valid=off
+2018.111.03:24:00.00?ERROR sp  -13 This command not supported for your equipment, check equip.ctl.
+2018.111.03:24:00.00:postob
+2018.111.03:24:00.00&postob/!+2s
+2018.111.03:24:00.00&postob/sy=/usr2/proc/apecscmd.sh 'cancel()' &
+2018.111.03:24:00.00&postob/!+2s
+2018.111.03:24:00.00&postob/caltsys
+2018.111.03:24:04.02&caltsys/"invokes tsys measurement via apecs vlbi_calibrate.apecs and gets results via vlbi_calibrateget.apecs
+2018.111.03:24:04.02&caltsys/sy=/usr2/proc/tsysapex.sh &
+2018.111.03:24:04.02&caltsys/!+3s
+2018.111.03:24:07.03:scan_name=no0030,e18c21,ax,240,240
+2018.111.03:24:07.03:source=3c279,125611.17,-054721.5,2000.0,
+2018.111.03:24:17.06#flagr#flagr/antenna,new-source
+2018.111.03:24:17.06#flagr#flagr/antenna,acquired
+2018.111.03:24:17.06:setup01
+2018.111.03:24:17.06?ERROR 5t -214 Clock rate (from equip.ctl) divided by sample rate must be integer 1, 2, 4, 8, or 16 within 0.1 percent.
+2018.111.03:24:17.06/bit_streams/,,,
+2018.111.03:24:17.06?ERROR tc -302 TPICD not set-up: no detectors selected.
+2018.111.03:24:17.06:!2018.111.03:29:50
+2018.111.03:29:50.00:preob
+2018.111.03:29:50.00:!2018.111.03:30:00
+2018.111.03:30:00.00:data_valid=on
+2018.111.03:30:00.00?ERROR sp  -13 This command not supported for your equipment, check equip.ctl.
+2018.111.03:30:00.00:midob
+2018.111.03:30:00.00/onsource/TRACKING
+2018.111.03:30:00.00:!2018.111.03:34:00
+2018.111.03:34:00.00:data_valid=off
+2018.111.03:34:00.00?ERROR sp  -13 This command not supported for your equipment, check equip.ctl.
+2018.111.03:34:00.00:postob
+2018.111.03:34:07.03:scan_name=no0031,e18c21,ax,300,300
+2018.111.03:34:07.03:source=m87,123049.42,122328.0,2000.0,
+2018.111.03:34:17.06#flagr#flagr/antenna,new-source
+2018.111.03:34:17.06#flagr#flagr/antenna,acquired
+2018.111.03:34:17.06:setup01
+2018.111.03:34:17.06?ERROR 5t -214 Clock rate (from equip.ctl) divided by sample rate must be integer 1, 2, 4, 8, or 16 within 0.1 percent.
+2018.111.03:34:17.06/bit_streams/,,,
+2018.111.03:34:17.06?ERROR tc -302 TPICD not set-up: no detectors selected.
+2018.111.03:34:17.06:!2018.111.03:39:50
+2018.111.03:39:50.00:preob
+2018.111.03:39:50.00:!2018.111.03:40:00
+2018.111.03:40:00.00:data_valid=on
+2018.111.03:40:00.00?ERROR sp  -13 This command not supported for your equipment, check equip.ctl.
+2018.111.03:40:00.00:midob
+2018.111.03:40:00.01/onsource/TRACKING
+2018.111.03:40:00.01:!2018.111.03:45:00
+2018.111.03:45:00.00:data_valid=off
+2018.111.03:45:00.00?ERROR sp  -13 This command not supported for your equipment, check equip.ctl.
+2018.111.03:45:00.00:postob
+2018.111.03:45:07.03:scan_name=no0032,e18c21,ax,300,300
+2018.111.03:45:07.04:source=m87,123049.42,122328.0,2000.0,
+2018.111.03:45:17.07#flagr#flagr/antenna,new-source
+2018.111.03:45:17.07#flagr#flagr/antenna,acquired
+2018.111.03:45:17.07:setup01
+2018.111.03:45:17.07?ERROR 5t -214 Clock rate (from equip.ctl) divided by sample rate must be integer 1, 2, 4, 8, or 16 within 0.1 percent.
+2018.111.03:45:17.07/bit_streams/,,,
+2018.111.03:45:17.07?ERROR tc -302 TPICD not set-up: no detectors selected.
+2018.111.03:45:17.07:!2018.111.03:47:50
+2018.111.03:47:50.00:preob
+2018.111.03:47:50.00:!2018.111.03:48:00
+2018.111.03:48:00.00:data_valid=on
+2018.111.03:48:00.00?ERROR sp  -13 This command not supported for your equipment, check equip.ctl.
+2018.111.03:48:00.00:midob
+2018.111.03:48:00.00/onsource/TRACKING
+2018.111.03:48:00.00:!2018.111.03:53:00
+2018.111.03:49:41.45;terminate
+2018.111.03:49:41.45:*boss terminated

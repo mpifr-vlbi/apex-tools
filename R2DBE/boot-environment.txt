@@ -1,0 +1,42 @@
+
+Connect to "USB FTDI", 115200 baud, third of the four ttyUSB (or COM) ports
+
+Connecting USB will reset the R2DBE immediately
+
+Start hitting <enter> repeatedly to get a console
+
+The correct environment settings can then be copy-pasted as below
+
+setenv baudrate 115200
+setenv bootargs console=ttyS0,115200
+setenv bootcmd run netboot
+setenv bootdelay 2
+setenv bootfile uImage
+setenv clearenv protect off fff40000 fff7ffff;era fff40000 fff7ffff;protect on fff40000 fff7ffff
+setenv ethact ppc_4xx_eth0
+### setenv ethaddr 02:44:01:02:11:1b   # depends on your device
+### setenv hostname=roach2             # depends on your device
+setenv initboot echo; echo type  run netboot  to boot via dhcp+tftp+nfs; echo type  run soloboot  to run from flash independent of network; echo
+setenv mem 524264k
+setenv mmcboot setenv bootargs ${bootargs} rootdelay=2 root=b301;bootm 0xf8000000
+setenv netboot dhcp 0x4000000; setenv bootargs ${bootargs} root='/dev/nfs' rootpath=${rootpath} ip=dhcp; bootm 0x4000000
+setenv netdev eth0
+setenv newkernel run yget; run writekernel
+setenv newroot run yget; run writeroot
+setenv newuboot run yget; run writeuboot
+setenv preboot run initboot
+setenv rootpath /dev/mtdblock1
+setenv soloboot setenv bootargs ${bootargs} root=/dev/mtdblock1; bootm 0xf8000000
+setenv tftpkernel dhcp; tftp 0x4000000 uImage; run writekernel
+setenv tftproot dhcp; tftp 0x4000000 romfs; run writeroot
+setenv tftpuboot dhcp; tftp 0x4000000 u-boot.bin; run writeuboot
+setenv usbboot setenv bootargs ${bootargs} rootdelay=8 root='/dev/sda1 rw'; bootm 0xf8000000
+### setenv ver U-Boot 2011.06-rc2-00000-g2694c9d-dirty (Dec 04 2013 - 20:58:06)  # depends on your device
+setenv writekernel era 0xf8000000 0xf83fffff; cp.b 0x4000000 0xf8000000 ${filesize}
+setenv writeroot era 0xf8400000 0xfc3fffff; cp.b 0x4000000 0xf8400000 ${filesize}
+setenv writeuboot protect off 0xfff80000 0xffffffff; era 0xfff80000 0xffffffff; cp.b 0x4000000 0xfff80000 ${filesize}; protect on 0xfff80000 0xffffffff
+setenv yget loady 0x4000000
+
+saveenv
+
+reboot
