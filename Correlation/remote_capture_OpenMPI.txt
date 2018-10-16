@@ -1,0 +1,18 @@
+Example for parallel remote capture on 'recorder1' and 'recorder2':
+
+   UDP incoming on port 46221 @ recorder1
+   UDP incoming on port 46221 @ recorder2 as well
+
+   $ mpirun -np 2 -host recorder1,recorder2 \
+       /usr/local/bin/vdifsnapshotUDP_MPI --offset=8 1024 46221:46221 \
+       /mnt/disks/1/0/touch/dbbc3_ifCD_eth3.vdif
+
+   produces files named like '/mnt/disks/1/0/touch/dbbc3_ifCD_eth3.vdif' + '.<hostname>.<updPort>'
+
+   recorder1:/mnt/disks/1/0/touch/dbbc3_ifCD_eth5.vdif.recorder1.46222
+   recorder2:/mnt/disks/1/0/touch/dbbc3_ifCD_eth5.vdif.recorder2.46222
+
+The program vdifsnapshotUDP_MPI is part of the 'vdifstream' git repository
+found at https://bitbucket.org/jwagner313/vdifstream
+
+Near-simultaneous start of all recording processes is ensured by MPI_Barrier()
