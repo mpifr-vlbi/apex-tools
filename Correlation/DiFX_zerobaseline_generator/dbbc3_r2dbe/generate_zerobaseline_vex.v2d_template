@@ -1,0 +1,70 @@
+# bof
+
+vex = zerobaseline.vex
+startSeries = 1
+
+dataBufferFactor = 24
+visBufferLength = 40
+singleScan = 1
+
+antennas = Ac, Ad, Ar
+
+ZOOM narrow128 {
+# for n in range(16):
+#     print('   addZoomFreq = freq@%.3f/bw@128.0/noparent@true' % (n*df + fq))
+   addZoomFreq = freq@346555.000/bw@128.0/noparent@true
+   addZoomFreq = freq@346683.000/bw@128.0/noparent@true
+   addZoomFreq = freq@346811.000/bw@128.0/noparent@true
+   addZoomFreq = freq@346939.000/bw@128.0/noparent@true
+   addZoomFreq = freq@347067.000/bw@128.0/noparent@true
+   addZoomFreq = freq@347195.000/bw@128.0/noparent@true
+   addZoomFreq = freq@347323.000/bw@128.0/noparent@true
+   addZoomFreq = freq@347451.000/bw@128.0/noparent@true
+   addZoomFreq = freq@347579.000/bw@128.0/noparent@true
+   addZoomFreq = freq@347707.000/bw@128.0/noparent@true
+   addZoomFreq = freq@347835.000/bw@128.0/noparent@true
+   addZoomFreq = freq@347963.000/bw@128.0/noparent@true
+   addZoomFreq = freq@348091.000/bw@128.0/noparent@true
+   addZoomFreq = freq@348219.000/bw@128.0/noparent@true
+   addZoomFreq = freq@348347.000/bw@128.0/noparent@true
+   addZoomFreq = freq@348475.000/bw@128.0/noparent@true
+}
+
+# ###############
+# APEX zero baseline
+# ###############
+
+# DBBC3 IF-C 2-4GHz
+ANTENNA Ac {
+  filelist = zerobaseline_file1.lst
+  phaseCalInt = 0
+  zoom = narrow128
+}
+
+# DBBC3 IF-D 2-4GHz
+ANTENNA Ad {
+  filelist = zerobaseline_file2.lst
+  phaseCalInt = 0
+  zoom = narrow128
+}
+
+# R2DDBE if0
+ANTENNA Ar {
+  filelist = zerobaseline_file3.lst
+  phaseCalInt = 0
+  zoom = narrow128
+}
+
+SETUP setup1 {
+  tInt = 0.5
+  ##subintNS =  8000000
+  FFTSpecRes = 0.125
+  outputSpecRes = 1.0
+  xmacLength = 0
+  strideLength = 0
+  guardNS = 2000
+}
+
+RULE default {
+  setup = setup1
+}
