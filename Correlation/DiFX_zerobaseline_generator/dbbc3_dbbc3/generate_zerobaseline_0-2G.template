@@ -1,0 +1,211 @@
+VEX_rev = 1.5;
+*    SCHED vers: Development version 11.5. Started Apr. 2
+*    VEX/SCHED:  1.5.87
+*    Other versions: Sched:  11.5  Plot: 1.06  JPL-ephem: 1.01
+*------------------------------------------------------------------------------
+$GLOBAL;
+     ref $EXPER = e17a10;
+*                                                      +------------+
+*                         PI revision number:          |    8.0000  |
+*                                                      +------------+
+*    mode:       R2DBE
+*------------------------------------------------------------------------------
+$EXPER;
+*
+def e17a10;
+     exper_name = e17a10;
+     exper_num = 3600;
+     exper_description = "ALMA+EHT VLBI April 2017";
+     PI_name = EHTC/Multiple;
+     PI_email = not@an.address;
+     exper_nominal_start=2017y000d00h00m00s;
+     exper_nominal_stop=2018y354d23h36m16s;
+     target_correlator = HAYSTACK;
+enddef;
+*------------------------------------------------------------------------------
+$MODE;
+*
+* 1mm-lo
+def 1mmhilo;
+     ref $PROCEDURES = Mode_01;
+     ref $FREQ = FQ_DBBC3_OCT0G_2G:Ad:Ar;
+     ref $IF = APEX_IF:Ad:Ar;
+     ref $BBC = APEX_BBC:Ad:Ar;
+     ref $TRACKS = VDIF.8224:Ad:Ar;
+     ref $PHASE_CAL_DETECT = NoDetect:Ad:Ar;
+enddef;
+*------------------------------------------------------------------------------
+$STATION;
+*
+def Ad;
+     ref $SITE = DBBC3;
+     ref $ANTENNA = DBBC3;
+     ref $DAS = 2NONE<;
+enddef;
+def Ar;
+     ref $SITE = DBBC3C;
+     ref $ANTENNA = DBBC3C;
+     ref $DAS = 2NONE<;
+enddef;
+*
+*------------------------------------------------------------------------------
+$PROCEDURES;
+*
+def Mode_01;
+     procedure_name_prefix =  "01";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*------------------------------------------------------------------------------
+$SITE;
+*
+def DBBC3;
+     site_type = fixed;
+     site_name = DBBC3;
+     site_ID = Ad;
+     site_position = 2225039.52970 m:-5441197.62920 m:-2479303.35970 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+     site_position_epoch =   50449;
+enddef;
+def DBBC3C;
+     site_type = fixed;
+     site_name = DBBC3C;
+     site_ID = Ar;
+     site_position = 2225039.52970 m:-5441197.62920 m:-2479303.35970 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+     site_position_epoch =   50449;
+enddef;
+*------------------------------------------------------------------------------
+$ANTENNA;
+*
+def DBBC3;
+     axis_type = az : el;
+     antenna_motion = el :  60.0 deg/min : 10 sec;  * 1000.000 deg/sec/sec
+     antenna_motion = az :  60.0 deg/min : 10 sec;  * 1000.000 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+def DBBC3C;
+     axis_type = az : el;
+     antenna_motion = el :  60.0 deg/min : 10 sec;  * 1000.000 deg/sec/sec
+     antenna_motion = az :  60.0 deg/min : 10 sec;  * 1000.000 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*------------------------------------------------------------------------------
+$DAS;
+*
+def 2NONE<;
+     record_transport_type = Mark6;
+     electronics_rack_type = none;
+     number_drives = 2;
+     headstack = 1 :            : 0 ;
+     headstack = 2 :            : 1 ;
+     tape_motion = adaptive : 0 min: 0 min: 10 sec;
+enddef;
+*
+def 2NONE<#02;
+     record_transport_type = Mark5C;
+     electronics_rack_type = none;
+     number_drives = 2;
+     headstack = 1 :            : 0 ;
+     headstack = 2 :            : 1 ;
+     tape_motion = adaptive : 0 min: 0 min: 10 sec;
+enddef;
+*------------------------------------------------------------------------------
+$SOURCE;
+*
+def 1055+018;
+     source_name = 1055+018;
+     ra = 10h58m29.6052070s; dec =  01d33'58.823590"; ref_coord_frame = J2000;
+enddef;
+*------------------------------------------------------------------------------
+$FREQ;
+*
+def FQ_DBBC3_OCT0G_2G;
+     sample_rate =  4096.000 Ms/sec;
+     chan_def = &B:348603.000 MHz : U : 2048.00 MHz : &CH01 : &BBC01 : &NoCal; * LCP
+     chan_def = &B:348603.000 MHz : U : 2048.00 MHz : &CH02 : &BBC02 : &NoCal; * RCP
+enddef;
+*
+def FQ_DBBC3_OCT2G_4G;
+     sample_rate =  4096.000 Ms/sec;
+     chan_def = &B:346555.000 MHz : L : 2048.00 MHz : &CH01 : &BBC01 : &NoCal; * LCP
+     chan_def = &B:346555.000 MHz : L : 2048.00 MHz : &CH02 : &BBC02 : &NoCal; * RCP
+enddef;
+*
+def FQ_R2DBE;
+     sample_rate =  4096.000 Ms/sec;
+     chan_def = &B:348603.000 MHz : U : 2048.00 MHz : &CH01 : &BBC01 : &NoCal; * LCP
+     chan_def = &B:348603.000 MHz : U : 2048.00 MHz : &CH02 : &BBC02 : &NoCal; * RCP
+enddef;
+*
+*------------------------------------------------------------------------------
+$IF;
+*
+def APEX_IF;
+     if_def = &IF_HiL : A : L : 345555.000000 MHz : U : 0 MHz : 0 Hz; * 'L':LCP 'U':USB
+     if_def = &IF_HiR : B : R : 345555.000000 MHz : U : 0 MHz : 0 Hz; * 'R':RCP 'U':USB
+enddef;
+*------------------------------------------------------------------------------
+$BBC;
+*
+def APEX_BBC;
+     BBC_assign = &BBC01 : 1: &IF_HiL;
+     BBC_assign = &BBC02 : 2: &IF_HiR;
+enddef;
+*------------------------------------------------------------------------------
+$PHASE_CAL_DETECT;
+*
+def NoDetect;
+     phase_cal_detect = &NoCal;
+enddef;
+*------------------------------------------------------------------------------
+$TRACKS;
+*
+def VDIF.8224; track_frame_format = VDIF/8224/2; enddef;
+def VDIF.8032; track_frame_format = VDIF/8032/2; enddef;
+*------------------------------------------------------------------------------
+$HEAD_POS;
+def DiskVoid;
+* mode =  1    stations =Aa:Ap:Az:Lm:Pv:Jc:Sm:Sp
+*     Head positions irrelevant for Disk: empty def
+enddef;
+*------------------------------------------------------------------------------
+$PASS_ORDER;
+*
+def DiskVoid;
+* mode =  1    stations =Aa:Ap:Az:Lm:Pv:Jc:Sm:Sp
+*     Pass orders irrelevant for Disk: empty def
+enddef;
+*------------------------------------------------------------------------------
+$ROLL;
+*
+def NoRoll;
+* mode =  1    stations =Aa:Ap:Az:Lm:Pv:Jc:Sm:Sp
+*    barrel-roll set to 'roll_off', so reverse-roll by  0 (1 head)
+     roll = off;
+enddef;
+*------------------------------------------------------------------------------
+$SCHED;
+scan No0001;
+  start = 2017y000d00h00m00s; mode = 1mmhilo; source = 1055+018; 
+  station = Ad: 0 sec: 4 sec: 0.000 GB: : : 1; 
+  station = Ar: 0 sec: 4 sec: 0.000 GB: : : 1; 
+endscan;
+*----------------------- begin $CLOCK              ----------------------*
+$CLOCK;
+*
+def Ad;
+  clock_early=2016y001d00h00m00s : -0.3365 usec : 2016y001d00h00m00s: 0.0 ;
+enddef;
+def Ar;
+  clock_early=2016y001d00h00m00s : -0.3365 usec : 2016y001d00h00m00s: 0.0 ;
+enddef;
+*-----------------------   end $CLOCK              ----------------------*

@@ -1,0 +1,61 @@
+vex = zerobaseline.vex
+startSeries = 1
+
+dataBufferFactor = 24
+visBufferLength = 40
+singleScan = 1
+
+antennas = Ad, Ar
+exhaustiveAutocorrs = true
+
+ZOOM midZoom {
+   # USB 348603.000
+   addZoomFreq = freq@348635.000/bw@1984.0/noparent@true
+}
+
+# ####################################
+# DBBC3 x R2DBE
+# ####################################
+
+DATASTREAM Ad_ds1 {
+  filelist = zerobaseline_file1.lst
+}
+DATASTREAM Ad_ds2 {
+  filelist = zerobaseline_file2.lst
+}
+ANTENNA Ad {
+  datastreams = Ad_ds1,Ad_ds2
+  phaseCalInt = 0
+  #zoom = midZoom
+}
+
+DATASTREAM Ar_ds1 {
+  filelist = zerobaseline_file2.lst
+}
+DATASTREAM Ar_ds2 {
+  filelist = zerobaseline_file1.lst
+}
+ANTENNA Ar {
+  datastreams = Ar_ds1,Ar_ds2
+  phaseCalInt = 0
+  #zoom = midZoom
+  freqClockOffs = 0, -0.044  # --> 0 usec dly
+}
+
+SETUP setup1 {
+  tInt = 0.5
+
+  ##subintNS =  8000000
+
+  FFTSpecRes = 0.25
+  outputSpecRes = 2.0
+
+  xmacLength = 0
+  strideLength = 0
+  guardNS = 2000
+  doPolar = true
+}
+
+RULE default {
+  setup = setup1
+}
