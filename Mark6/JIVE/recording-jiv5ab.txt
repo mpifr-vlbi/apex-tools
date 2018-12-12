@@ -30,9 +30,6 @@ writers.
 
 ---------------------------------------------------------------------------------
 
-
----------------------------------------------------------------------------------
-
 If network tuning config file not yet installed:
 
 root$ cat ../sysctl/mixed.conf >> /etc/sysctl.conf
@@ -41,7 +38,7 @@ root$ /sbin/sysctl --system
 root$ cat ../sysctl/mixed.conf >> /etc/sysctl.conf
 root$ /sbin/sysctl -p
 
-If da-client bug not yet fixed:
+If da-client bug ("-p <portnr" parse bug) not yet fixed:
 
 $ sudo nano /usr/bin/da-client
    opts, pargs = getopt.getopt(sys.argv[1:], "h:p")
@@ -101,6 +98,10 @@ mode = VDIF_8192-4096-1-2;
       record = mk6 : 1                           :: 0=flexbuff format, 1=Mark6 scatter-gather format
       record = nthread : <nreaders> : <nwriters> :: around 3 or 4 writers for 16 Gbit/s, more becomes counterproductive
       evlbi?                                     :: returns the loss% statistics of an ongoing recording
+
+      net_protocol = udpsnor : 768M : 256M : 4   :: UDP+S(equence nr) capture with NoR(eordering), but with statistics from up to 8 sources
+                                                    768M for Linux socket buffer size
+                                                    256M for fragment or segment size to record (10000000 for Haystack Mark6 dplane, for FlexBuff >=128M)
 
 Test recording from DBBC3 (UDP port 46227)
 
