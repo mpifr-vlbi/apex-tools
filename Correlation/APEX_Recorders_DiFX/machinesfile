@@ -1,0 +1,8 @@
+version = 1.0
+
+## recorder1, 2, 6, file:///mark6-1_fuse  # currently not reachable
+recorder2, 2, 6, file:///mark6-2_fuse
+recorder3, 2, 6, file:///mark6-3_fuse
+recorder4, 2, 6, file:///mark6-4_fuse
+
+

@@ -1,0 +1,9 @@
+
+
+# Update /home/oper/.bashrc and perhaps /root/.bashrc to have
+
+if test "$PS1" != ""; then
+   . /usr/local/src/difx/setup/setup.bash
+   . /usr/local/difx/bin/hops.bash
+fi
+
