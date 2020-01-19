@@ -32,6 +32,16 @@ else
 	sed -i "s/filelist = zerobaseline_file1.lst/filelist = ${3}_file1.lst/g" ${3}.v2d
 	sed -i "s/filelist = zerobaseline_file2.lst/filelist = ${3}_file2.lst/g" ${3}.v2d
 
+        mjd0=${mjdstart%%.*}  # float to int
+        mjd0=$((mjd0 - 2))
+        echo "" >> ${3}.v2d
+        echo "## dummy EOPs" >> ${3}.v2d
+        echo "EOP $((mjd0+0)) { xPole=0.049570 yPole=0.423290 tai_utc=37 ut1_utc=0.116485 }" >> ${3}.v2d
+        echo "EOP $((mjd0+1)) { xPole=0.049570 yPole=0.423290 tai_utc=37 ut1_utc=0.116485 }" >> ${3}.v2d
+        echo "EOP $((mjd0+2)) { xPole=0.049570 yPole=0.423290 tai_utc=37 ut1_utc=0.116485 }" >> ${3}.v2d
+        echo "EOP $((mjd0+3)) { xPole=0.049570 yPole=0.423290 tai_utc=37 ut1_utc=0.116485 }" >> ${3}.v2d
+        echo "EOP $((mjd0+4)) { xPole=0.049570 yPole=0.423290 tai_utc=37 ut1_utc=0.116485 }" >> ${3}.v2d
+
 	echo "Generated ${3}.v2d "
 	vex2difx $3.v2d
 
