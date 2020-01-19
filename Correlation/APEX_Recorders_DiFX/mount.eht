@@ -1,0 +1,13 @@
+
+#!/bin/bash
+echo "Disks currently present : `mount|grep disks|wc -l`"
+
+echo "Unmounting previously mounted FUSE filesystems"
+fusermount -u /mark6-?_fuse/12
+fusermount -u /mark6-?_fuse/34
+
+echo "Mounting module group 12 to /mark6-X_fuse/12"
+fuseMk6 -r '/mnt/disks/[12]/*/data' /mark6-?_fuse/12
+echo "Mounting module group 34 to /mark6-X_fuse/34"
+fuseMk6 -r '/mnt/disks/[34]/*/data' /mark6-?_fuse/34
+
