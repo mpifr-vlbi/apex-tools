@@ -14,6 +14,8 @@ import ntpath
 
 src_file = 'vlbi-sources.cat'
 lin_file = 'vlbi-freqs.lin'
+rx_setup = 'NFLASH230_setup.apecs'
+rx_commands = 'vlbi-NFLASH230_commands.py'
 
 def coordReformat(s):
 	s = s.strip()
@@ -129,8 +131,8 @@ def obs_writeFooter(fd):
 	fd.write('%s\n' % (80*'#'))
 
 def obs_writeStandardsetup(fd):
-	obs_writeLine(fd, '@always',  10, 'execfile(\'pi230_setup.apecs\')')
-	obs_writeLine(fd, '@always',  2, 'execfile(\'vlbi-pi230_commands.py\')')
+	obs_writeLine(fd, '@always',  10, 'execfile(\'%s\')' % (rx_setup))
+	obs_writeLine(fd, '@always',  2, 'execfile(\'%s\')' % (rx_commands))
 	fd.write('\n')
 
 def obs_writeScans(fd,scans,sources):
