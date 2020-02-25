@@ -1,22 +1,47 @@
-#
-# /etc/hosts: static lookup table for host names
-#
+# Static table lookup for hostnames.
+# See hosts(5) for details.
 
-#<ip-address>   <hostname.domain.org>   <hostname>
-127.0.0.1       localhost.localdomain   localhost
-::1             localhost.localdomain   localhost
+#<ip-address>	<hostname.domain.org>	<hostname>
+127.0.0.1	localhost.localdomain	localhost
+::1		localhost.localdomain	localhost
 
-127.0.0.1       eht-control1.science.ru.nl
+10.0.2.102 	vlbi-control1.apex-telescope.org	cc-apex
+131.174.31.24 	vlbi-control1.science.ru.nl	cc-ru
 
-192.168.0.33    recorder1
-192.168.0.34    recorder2
-192.168.0.35    recorder3
-192.168.0.36    recorder4
+192.168.0.17	gps1
+192.168.0.18	gps2
 
-192.168.0.49    r2dbe1
-192.168.0.50    r2dbe2
-192.168.0.51    r2dbe3
-192.168.0.52    r2dbe4
+192.168.0.20	pdu1
+192.168.0.21	pdu2
 
-# End of file
+192.168.0.33	recorder1
+192.168.0.34	recorder2
+192.168.0.35	recorder3
+192.168.0.36	recorder4
 
+192.168.0.49	r2dbe1
+192.168.0.50	r2dbe2
+192.168.0.51	r2dbe3
+192.168.0.52	r2dbe4
+
+192.168.0.65	bdc1
+192.168.0.66	bdc2
+
+192.168.0.73	dbe1
+192.168.0.74	dbe2
+
+192.168.0.81	powerstrip1
+192.168.0.82	powerstrip2
+192.168.0.83	powerstrip3
+192.168.0.84	powerstrip4
+
+192.168.0.97	netswitch1
+192.168.0.98	netswitch2
+
+192.168.0.113	noisesource1
+192.168.0.114	raspberrypi
+
+192.168.0.129	recorder1-ipmi
+192.168.0.130	recorder2-ipmi
+192.168.0.131	recorder3-ipmi
+192.168.0.132	recorder4-ipmi
