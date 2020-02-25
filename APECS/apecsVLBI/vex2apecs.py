@@ -148,7 +148,7 @@ def obs_writeScans(fd,scans,sources):
 	Tprev_end = None
 
 	# Get scan names, start times, and sort by start time
-	scannames = scans.keys()
+	scannames = [key for key in scans.keys()]
 	starttimes = [scans[sn]['start'] for sn in scannames]
 	isorted = [starttimes.index(st) for st in sorted(starttimes)]
 
