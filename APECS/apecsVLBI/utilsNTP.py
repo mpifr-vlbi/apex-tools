@@ -2,13 +2,15 @@
 
 import struct
 import code
-from time import time
+import time
 from socket import socket, AF_INET, SOCK_DGRAM
 from datetime import datetime
 
 # Use NTP server for current time because APECS systems run 
 # in a quite strange time standard
-ntpserver = 'nist1-lnk.binary.net'
+#ntpserver = 'ntp.shoa.cl' 
+#ntpserver = 'nist1-lnk.binary.net'
+ntpserver = 'time.nist.gov'
 
 """ Gets NTP time and returns a datetime object """
 def send_ntp_request(ntpserver):
@@ -37,7 +39,7 @@ def get_UTC_offset(ntpserver):
 		if not(str(ntpUtcNow).startswith('ERROR')):
 			break
 		print 'NTP server did not reply, retrying in 5 seconds...'
-		sleep(5.0)
+		time.sleep(5)
 
 	pcUtcNow = datetime.utcnow()
 
@@ -62,3 +64,10 @@ def get_UTC_offset(ntpserver):
 
 	return dT
 
+
+def test():
+	offset = get_UTC_offset(ntpserver)
+	print('Received NTP offset of %s sec' % (str(offset)))
+
+if __name__ == "__main__":
+	test()

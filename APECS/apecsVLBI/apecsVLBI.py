@@ -37,7 +37,7 @@ if ('observer3' not in platform.node()) and ('10.0.2.170' not in platform.node()
 	offsetUTC = 0
 	print ('\nINFO: Apparently not running on Observer3. Not applying TAI/UTC leap seconds correction!\n')
 else:
-	# The TAI time leads UTC by 37 seconds as of April 2018
+	# The TAI time leads UTC by 37 seconds as of February 2020, likely to change June/July 2020
 	offsetUTC = 37
 	print ('\nINFO: Apparently running on Observer3. Correction computer time (TAI) by %d leap seconds to have UTC!\n' % (offsetUTC))
 
