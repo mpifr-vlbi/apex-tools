@@ -1,0 +1,237 @@
+#!/hint/yaml
+# This config file describes a VLBI backend as a graph consisting of nodes and
+# links that together make up chains.  The nodes are backend devices and the
+# links are cables.
+#
+# Nodes:
+# ======
+# Backend device configuration is split in two parts, "layout" and "device",
+# according to:
+#  1. hardware layout (I/O ports) and other unmutable properties
+#  2. device-specific and site-specific properties/settings
+# The layout describes the internal routing, i.e. which outputs are connected to
+# which inputs.  The purpose of this split is to separate variable properties
+# from device properties that are constant over time and for the whole EHT.
+#
+# Links:
+# ======
+# Each link connects one device's output to another device's input.  Each link
+# in this section will be part of a multi-node-link chain.  Each device's input
+# or output can only be used once.
+#
+# Chains:
+# =======
+# Links together with nodes and their internal routing define end-to-end data
+# chains.  Chains can only start/end at inputs/outputs that are labeled
+# accordingly.  Unused outputs that are internally connected to used inputs are
+# not allowed to be left dangling; they need to be terminated with terminator
+# dummy devices.
+
+
+# Execute schedule by instructing components.
+instruct:
+        vexstore: /srv/vexstore
+        stationname: APEX
+        stationcode: Ax
+
+
+# Report status to VLBImonitor server.
+report:
+
+
+deviceLayouts:
+#       Name    Input   Output
+        rx:
+                analog:
+                        lsb_L: {label: lcp_lsb, sideband: lsb, pol: lcp}
+                        usb_L: {label: lcp_usb, sideband: usb, pol: lcp}
+                        lsb_R: {label: rcp_lsb, sideband: lsb, pol: rcp}
+                        usb_R: {label: rcp_usb, sideband: usb, pol: rcp}
+                _role:  rx
+                _chainstart: [analog]
+
+        bdc_2band:
+                pol0:
+                        pol0_hi: {label: hi, band: high}
+                        pol0_lo: {label: lo, band: low}
+                pol1:
+                        pol1_hi: {label: hi, band: high}
+                        pol1_lo: {label: lo, band: low}
+                _role: bdc
+
+        bdc_1band:
+                sba_pol0:
+                        sba_pol0_hi: {label: hi, band: high}
+                        sba_pol0_lo: {label: lo, band: low}
+                sba_pol1:
+                        sba_pol1_hi: {label: hi, band: high}
+                        sba_pol1_lo: {label: lo, band: low}
+                sbb_pol0:
+                        sbb_pol0_hi: {label: hi, band: high}
+                        sbb_pol0_lo: {label: lo, band: low}
+                sbb_pol1:
+                        sbb_pol1_hi: {label: hi, band: high}
+                        sbb_pol1_lo: {label: lo, band: low}
+                _role: bdc
+
+        nifdc:
+                lsb_polh:
+                        lbb1: {label: lo, band: low}
+                        ubb1: {label: hi, band: high}
+                usb_polh:
+                        lbb2: {label: lo, band: low}
+                        ubb2: {label: hi, band: high}
+                lsb_polv:
+                        lbb3: {label: lo, band: low}
+                        ubb3: {label: hi, band: high}
+                usb_polv:
+                        lbb4: {label: lo, band: low}
+                        ubb4: {label: hi, band: high}
+                _role: bdc
+
+        dbbc3:
+                pol0:
+                        tengbe2: {label: hi, band: high}
+                        tengbe0: {label: lo, band: low}
+                pol1:
+                        tengbe3: {label: hi, band: high}
+                        tengbe1: {label: lo, band: low}
+                _role: dbbc
+
+        r2dbe:
+                if0:
+                        ch0: {}
+                if1:
+                        ch1: {}
+                _role: digitizer
+
+        mark6:
+                eth2:
+                        groupa: {}
+                eth3:
+                        groupb: {}
+                eth4:
+                        groupc: {}
+                eth5:
+                        groupd: {}
+                _role: recorder
+                _chainend: [groupa, groupb, groupc, groupd]
+
+        terminator:
+                in: {out: {}}
+                _role: terminator
+                _chainstart: [in]
+                _chainend: [out]
+
+
+delim_device: "."
+devices:
+        rx.230: {layout: rx}
+
+        bdc.lsb: {layout: bdc_2band, hostname: bdc1,
+          port: 23, hardware: "2.0", firmware: "3.2a", lo_freq_4to8: 6000, lo_freq_5to9: 7000}
+        bdc.usb: {layout: bdc_2band, hostname: bdc2,
+          port: 23, hardware: "2.0", firmware: "3.2a", lo_freq_4to8: 6000, lo_freq_5to9: 7000}
+
+        bdc.dsb: {layout: bdc_1band, hostname: bdc1,
+          port: 23, hardware: "2.0", firmware: "3.2a", lo_freq: 7000}
+
+        nifdc.dsb: {layout: nifdc}
+
+        r2dbe.lsb_lo: {layout: r2dbe, hostname: r2dbe3,
+          boffile: "r2dbe_rev2_v1.1.bof", version: "32aae4d",
+          ch0: {thread: 4, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          ch1: {thread: 5, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+        r2dbe.lsb_hi: {layout: r2dbe, hostname: r2dbe4,
+          boffile: "r2dbe_rev2_v1.1.bof", version: "32aae4d",
+          ch0: {thread: 6, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          ch1: {thread: 7, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+        r2dbe.usb_lo: {layout: r2dbe, hostname: r2dbe1,
+          boffile: "r2dbe_rev2_v1.1.bof", version: "32aae4d",
+          ch0: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          ch1: {thread: 1, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+        r2dbe.usb_hi: {layout: r2dbe, hostname: r2dbe2,
+          boffile: "r2dbe_rev2_v1.1.bof", version: "32aae4d",
+          ch0: {thread: 2, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          ch1: {thread: 3, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+
+        dbbc3.lsb: {layout: dbbc3, hostname: db1,
+          tengbe0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          tengbe1: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          tengbe2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          tengbe3: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+        dbbc3.usb: {layout: dbbc3, hostname: db2,
+          tengbe0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          tengbe1: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          tengbe2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          tengbe3: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+
+        mark6.lsb_hi:
+                layout: mark6
+                hostname: recorder1
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}
+        mark6.lsb_lo:
+                layout: mark6
+                hostname: recorder2
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}
+        mark6.usb_lo:
+                layout: mark6
+                hostname: recorder3
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}
+        mark6.usb_hi:
+                layout: mark6
+                hostname: recorder4
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}
+
+        terminator.1: {layout: terminator}
+        terminator.2: {layout: terminator}
+
+
+delim_port: ":"
+delim_link: "  "
+links:
+        # level 1-2
+        - rx.230:lsb_L  bdc.lsb:pol1
+        - rx.230:lsb_R  bdc.lsb:pol0
+        #- rx.230:usb_L  bdc.usb:pol0
+        #- rx.230:usb_R  bdc.usb:pol1
+
+        # level 2-3
+        - bdc.lsb:pol0_lo  r2dbe.lsb_lo:if0
+        - bdc.lsb:pol1_lo  r2dbe.lsb_lo:if1
+        - bdc.lsb:pol0_hi  r2dbe.lsb_hi:if0
+        - bdc.lsb:pol1_hi  r2dbe.lsb_hi:if1
+        #- bdc.usb:sba_pol0_lo  r2dbe.usb_lo:if0
+        #- bdc.usb:sba_pol1_lo  r2dbe.usb_lo:if1
+        #- bdc.usb:sba_pol0_hi  r2dbe.usb_hi:if0
+        #- bdc.usb:sba_pol1_hi  r2dbe.usb_hi:if1
+
+        # level 3-4
+        - r2dbe.lsb_lo:ch0  mark6.lsb_lo:eth3
+        - r2dbe.lsb_lo:ch1  mark6.lsb_lo:eth5
+        - r2dbe.lsb_hi:ch0  mark6.lsb_hi:eth3
+        - r2dbe.lsb_hi:ch1  mark6.lsb_hi:eth5
+        #- r2dbe.usb_lo:ch0  mark6.usb_lo:eth3
+        #- r2dbe.usb_lo:ch1  mark6.usb_lo:eth5
+        #- r2dbe.usb_hi:ch0  mark6.usb_hi:eth3
+        #- r2dbe.usb_hi:ch1  mark6.usb_hi:eth5
+
+
+        ##-- dbbc3 setup
+        ## level 1-2
+        #- rx.230:lsb_L  dbbc3.lsb:pol0
+        #- rx.230:lsb_R  dbbc3.lsb:pol1
+        - rx.230:usb_L  dbbc3.usb:pol1
+        - rx.230:usb_R  dbbc3.usb:pol0
+
+        ## level 2-4
+        #- dbbc3.lsb:tengbe0  mark6.usb_lo:eth3
+        #- dbbc3.lsb:tengbe1  mark6.usb_lo:eth5
+        #- dbbc3.lsb:tengbe2  mark6.usb_hi:eth3
+        #- dbbc3.lsb:tengbe3  mark6.usb_hi:eth5
+        - dbbc3.usb:tengbe0  mark6.usb_lo:eth3
+        - dbbc3.usb:tengbe1  mark6.usb_lo:eth5
+        - dbbc3.usb:tengbe2  mark6.usb_hi:eth3
+        - dbbc3.usb:tengbe3  mark6.usb_hi:eth5
+
+# vim: ft=yaml:ts=8:sts=8:sw=8:expandtab:tw=80 foldmethod=indent
