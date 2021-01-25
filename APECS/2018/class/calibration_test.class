@@ -1,0 +1,59 @@
+file in ../scidata/T-0101.F-9996A-2018-2020-01-25.apex
+! Scan 371 without harmonic mixer
+clear
+set unit f f
+set mode x 208603 233603
+! set mode x 229000 230000  ! Harmonic
+! set mode x 214000 215000  ! Harmonic
+set mode y 0 200
+
+pen 3
+find /scan 375 /source trec* /tel AP-N203-*
+find app /scan 375 /source trec* /tel AP-N201-*
+for i 1 to found
+  get n
+  extract 25 channels-25 c
+  spec
+  next
+draw text 15 11 "Harmonic PolX" 5
+pen /def
+
+pen 4
+find /scan 375 /source trec* /tel AP-N204-*
+find app /scan 375 /source trec* /tel AP-N202-*
+for i 1 to found
+  get n
+  extract 25 channels-25 c
+  spec
+  next
+draw text 15 10 "Harmonic PolY" 5
+pen /def
+
+
+pen 1
+find /scan 371 /source trec* /tel AP-N203-*
+find app /scan 371 /source trec* /tel AP-N201-*
+for i 1 to found
+  get n
+  extract 25 channels-25 c
+  spec
+  next
+draw text 15 13 "Nominal PolX" 5
+pen /def
+box 
+title
+
+pen 2
+find /scan 371 /source trec* /tel AP-N204-*
+find app /scan 371 /source trec* /tel AP-N202-*
+for i 1 to found
+  get n
+  extract 25 channels-25 c
+  spec
+  next
+draw text 15 12 "Nominal PolY" 5
+pen /def
+
+ha calibration_harmonic_mixer.png /dev png crop /fitpage /geo 1200 840 /over
+
+

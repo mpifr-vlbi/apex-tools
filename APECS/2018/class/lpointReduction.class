@@ -1,0 +1,13 @@
+file in ~/scidata/T-0101.F-9996A-2018-2018-04-22.apex
+set scan 12742 12742
+set telescope AP-P203-F403
+find /all
+get first
+say 'line'
+set line 'line'
+set telescope *
+find /all
+@/homes/software/apecs/pointingTools/redLinePointing_upgrade/lpoint90 12742 12742 1 -114 106 -28 20 AP-P203-F403 10
+hardcopy lpointReduction.eps /device eps color /overwrite
+say ""
+exit

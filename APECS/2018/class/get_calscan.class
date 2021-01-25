@@ -1,0 +1,48 @@
+! @ get_calscan 2020-01-25 383
+set var gen
+clear
+
+def real tsys_mean
+
+file in ../scidata/T-0101.F-9996A-2018-&1.apex
+find /scan &2 /source tsys* /freq 229200 229600
+
+if found.eq.0 return
+
+set mode x 214003 230251
+set mode y 800 1800
+set unit f f
+
+get f
+get z
+sic out tsys_vlbi_'scan'.csv
+say "number,scan,cdobs,ut,source,line,telescope,el,tsys"
+
+for i 1 to found
+  get n
+  extract 228103 230151 f  !
+  resample * * * 100 f 
+  ! 214103 216151
+  compute tsys_mean mean ry
+  spec /pen 'i'
+  say 'number','scan','cdobs','ut*12/pi','source','line','telescope','nint(10*elevation*180/pi)/10','nint(10*tsys_mean)/10'
+  next
+
+
+find /scan &2 /source tsys* /freq 214000 216000
+for i 1 to found
+  get n
+  extract 214103 216151
+  compute tsys_mean mean ry
+  spec /pen 'i'
+  say 'number','scan','cdobs','ut*12/pi','source','line','telescope','nint(10*elevation*180/pi)/10','nint(10*tsys_mean)/10'
+  next
+
+
+box
+title
+sic out
+say " "
+say "Calibration result written to file: tsys_vlbi_"'scan'".csv"
+
+
