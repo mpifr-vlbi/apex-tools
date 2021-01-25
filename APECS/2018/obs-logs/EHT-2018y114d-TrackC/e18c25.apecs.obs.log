@@ -1,0 +1,2678 @@
+2018.114.22:16:11;"----------| START OF e18c25.apecs.obs |----------
+2018.114.22:16:11;"Using TAI-UTC offset of +37 seconds
+2018.114.22:16:11;"#
+2018.114.22:16:11;"# APEX observing script for station Ax from file e18c25.vex
+2018.114.22:16:11;"# File created on 2018.114.22:12:26 UT
+2018.114.22:16:11;"#
+2018.114.22:16:11;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.114.22:16:11;"# Details on the columns:
+2018.114.22:16:11;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.114.22:16:11;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.114.22:16:11;"#    2) estimated duration of the command in seconds
+2018.114.22:16:11;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.114.22:16:11;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.114.22:16:11;"#
+2018.114.22:16:11;"# At time              Duration   Command
+2018.114.22:16:11;"execfile('pi230_setup.apecs')
+2018.114.22:16:12;"reply from APECS: OK
+2018.114.22:16:13;"reply from APECS: (timeout)
+2018.114.22:16:15;"execfile('vlbi-pi230_commands.py')
+2018.114.22:16:15;"reply from APECS: OK
+2018.114.22:16:16;"reply from APECS: (timeout)
+2018.114.22:16:18;"
+2018.114.22:16:18;"#### Target OJ287 scanname No0001 to start at 2018.114.22:22:00 ################
+2018.114.22:19:50;"source('OJ287'); go(); track()
+2018.114.22:19:51;"reply from APECS: (timeout)
+2018.114.22:20:20;"vlbi_tsys()
+2018.114.22:20:20;"reply from APECS: OK
+2018.114.22:20:20;"reply from APECS: OK
+2018.114.22:20:21;"reply from APECS: (timeout)
+2018.114.22:20:45;"vlbi_reference_scan()
+2018.114.22:20:46;"reply from APECS: (timeout)
+2018.114.22:22:00;"vlbi_scan(t_mins=5)
+2018.114.22:22:00;"reply from APECS: OK
+2018.114.22:22:01;"reply from APECS: (timeout)
+2018.114.22:22:01;"#     scan end at 2018.114.22:27:00
+2018.114.22:22:01;"#     200 idle seconds (3.3 minutes) until next remote command
+2018.114.22:22:01;"
+2018.114.22:22:01;"#### Target OJ287 scanname No0002 to start at 2018.114.22:32:00 ################
+2018.114.22:30:20;"vlbi_tsys()
+2018.114.22:30:20;"reply from APECS: OK
+2018.114.22:30:20;"reply from APECS: OK
+2018.114.22:30:21;"reply from APECS: (timeout)
+2018.114.22:30:45;"vlbi_reference_scan()
+2018.114.22:30:46;"reply from APECS: (timeout)
+2018.114.22:32:00;"vlbi_scan(t_mins=5)
+2018.114.22:32:00;"reply from APECS: OK
+2018.114.22:32:01;"reply from APECS: (timeout)
+2018.114.22:32:01;"#     scan end at 2018.114.22:37:00
+2018.114.22:32:01;"#     470 idle seconds (7.8 minutes) until next remote command
+2018.114.22:32:01;"
+2018.114.22:32:01;"#### Target M87 scanname No0003 to start at 2018.114.22:47:00 ##################
+2018.114.22:44:50;"source('M87'); go(); track()
+2018.114.22:44:50;"reply from APECS: OK
+2018.114.22:44:51;"reply from APECS: (timeout)
+2018.114.22:45:20;"vlbi_tsys()
+2018.114.22:45:20;"reply from APECS: OK
+2018.114.22:45:20;"reply from APECS: OK
+2018.114.22:45:21;"reply from APECS: (timeout)
+2018.114.22:45:45;"vlbi_reference_scan()
+2018.114.22:45:46;"reply from APECS: (timeout)
+2018.114.22:47:00;"vlbi_scan(t_mins=5)
+2018.114.22:47:00;"reply from APECS: OK
+2018.114.22:47:01;"reply from APECS: (timeout)
+2018.114.22:47:01;"#     scan end at 2018.114.22:52:00
+2018.114.22:47:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.114.22:47:01;"
+2018.114.22:47:01;"#### Target M87 scanname No0004 to start at 2018.114.22:55:00 ##################
+2018.114.22:53:20;"vlbi_tsys()
+2018.114.22:53:20;"reply from APECS: OK
+2018.114.22:53:20;"reply from APECS: OK
+2018.114.22:53:21;"reply from APECS: (timeout)
+2018.114.22:53:45;"vlbi_reference_scan()
+2018.114.22:53:46;"reply from APECS: (timeout)
+2018.114.22:55:00;"vlbi_scan(t_mins=5)
+2018.114.22:55:01;"reply from APECS: (timeout)
+2018.114.22:55:01;"#     scan end at 2018.114.23:00:00
+2018.114.22:55:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.114.22:55:01;"
+2018.114.22:55:01;"#### Target 3C279 scanname No0005 to start at 2018.114.23:06:00 ################
+2018.114.23:03:50;"source('3C279'); go(); track()
+2018.114.23:03:51;"reply from APECS: (timeout)
+2018.114.23:04:20;"vlbi_tsys()
+2018.114.23:04:21;"reply from APECS: (timeout)
+2018.114.23:04:45;"vlbi_reference_scan()
+2018.114.23:04:46;"reply from APECS: (timeout)
+2018.114.23:06:00;"vlbi_scan(t_mins=4)
+2018.114.23:06:01;"reply from APECS: (timeout)
+2018.114.23:06:01;"#     scan end at 2018.114.23:10:00
+2018.114.23:06:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.114.23:06:01;"
+2018.114.23:06:01;"#### Target M87 scanname No0006 to start at 2018.114.23:16:00 ##################
+2018.114.23:06:44;"----------| USER-REQUESTED STOP OF  e18c25.apecs.obs |----------
+2018.114.23:14:41;"----------| START OF e18c25.apecs.obs |----------
+2018.114.23:14:41;"Using TAI-UTC offset of +37 seconds
+2018.114.23:14:41;"#
+2018.114.23:14:41;"# APEX observing script for station Ax from file e18c25.vex
+2018.114.23:14:41;"# File created on 2018.114.22:12:26 UT
+2018.114.23:14:41;"#
+2018.114.23:14:41;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.114.23:14:41;"# Details on the columns:
+2018.114.23:14:41;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.114.23:14:41;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.114.23:14:41;"#    2) estimated duration of the command in seconds
+2018.114.23:14:41;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.114.23:14:41;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.114.23:14:41;"#
+2018.114.23:14:41;"# At time              Duration   Command
+2018.114.23:14:41;"execfile('pi230_setup.apecs')
+2018.114.23:14:42;"reply from APECS: OK
+2018.114.23:14:43;"reply from APECS: (timeout)
+2018.114.23:14:45;"execfile('vlbi-pi230_commands.py')
+2018.114.23:14:45;"reply from APECS: OK
+2018.114.23:14:46;"reply from APECS: (timeout)
+2018.114.23:14:48;"
+2018.114.23:14:48;"#### Target OJ287 scanname No0001 to start at 2018.114.22:22:00 ################
+2018.114.23:14:48;"missed time 2018.114.22:19:50 : source('OJ287'); go(); track()
+2018.114.23:14:48;"missed time 2018.114.22:20:20 : vlbi_tsys()
+2018.114.23:14:48;"missed time 2018.114.22:20:45 : vlbi_reference_scan()
+2018.114.23:14:48;"missed time 2018.114.22:22:00 : vlbi_scan(t_mins=5)
+2018.114.23:14:48;"#     scan end at 2018.114.22:27:00
+2018.114.23:14:48;"#     200 idle seconds (3.3 minutes) until next remote command
+2018.114.23:14:48;"
+2018.114.23:14:48;"#### Target OJ287 scanname No0002 to start at 2018.114.22:32:00 ################
+2018.114.23:14:48;"missed time 2018.114.22:30:20 : vlbi_tsys()
+2018.114.23:14:48;"missed time 2018.114.22:30:45 : vlbi_reference_scan()
+2018.114.23:14:48;"missed time 2018.114.22:32:00 : vlbi_scan(t_mins=5)
+2018.114.23:14:48;"#     scan end at 2018.114.22:37:00
+2018.114.23:14:48;"#     470 idle seconds (7.8 minutes) until next remote command
+2018.114.23:14:48;"
+2018.114.23:14:48;"#### Target M87 scanname No0003 to start at 2018.114.22:47:00 ##################
+2018.114.23:14:48;"missed time 2018.114.22:44:50 : source('M87'); go(); track()
+2018.114.23:14:48;"missed time 2018.114.22:45:20 : vlbi_tsys()
+2018.114.23:14:48;"missed time 2018.114.22:45:45 : vlbi_reference_scan()
+2018.114.23:14:48;"missed time 2018.114.22:47:00 : vlbi_scan(t_mins=5)
+2018.114.23:14:48;"#     scan end at 2018.114.22:52:00
+2018.114.23:14:48;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.114.23:14:48;"
+2018.114.23:14:48;"#### Target M87 scanname No0004 to start at 2018.114.22:55:00 ##################
+2018.114.23:14:48;"missed time 2018.114.22:53:20 : vlbi_tsys()
+2018.114.23:14:48;"missed time 2018.114.22:53:45 : vlbi_reference_scan()
+2018.114.23:14:48;"missed time 2018.114.22:55:00 : vlbi_scan(t_mins=5)
+2018.114.23:14:48;"#     scan end at 2018.114.23:00:00
+2018.114.23:14:48;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.114.23:14:48;"
+2018.114.23:14:48;"#### Target 3C279 scanname No0005 to start at 2018.114.23:06:00 ################
+2018.114.23:14:48;"missed time 2018.114.23:03:50 : source('3C279'); go(); track()
+2018.114.23:14:48;"missed time 2018.114.23:04:20 : vlbi_tsys()
+2018.114.23:14:48;"missed time 2018.114.23:04:45 : vlbi_reference_scan()
+2018.114.23:14:48;"missed time 2018.114.23:06:00 : vlbi_scan(t_mins=4)
+2018.114.23:14:48;"#     scan end at 2018.114.23:10:00
+2018.114.23:14:48;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.114.23:14:48;"
+2018.114.23:14:48;"#### Target M87 scanname No0006 to start at 2018.114.23:16:00 ##################
+2018.114.23:14:48;"missed time 2018.114.23:13:50 : source('M87'); go(); track()
+2018.114.23:14:48;"missed time 2018.114.23:14:20 : vlbi_tsys()
+2018.114.23:14:48;"missed time 2018.114.23:14:45 : vlbi_reference_scan()
+2018.114.23:16:00;"vlbi_scan(t_mins=5)
+2018.114.23:16:01;"reply from APECS: (timeout)
+2018.114.23:16:01;"#     scan end at 2018.114.23:21:00
+2018.114.23:16:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.114.23:16:01;"
+2018.114.23:16:01;"#### Target M87 scanname No0007 to start at 2018.114.23:24:00 ##################
+2018.114.23:22:20;"vlbi_tsys()
+2018.114.23:22:20;"reply from APECS: OK
+2018.114.23:22:20;"reply from APECS: OK
+2018.114.23:22:21;"reply from APECS: (timeout)
+2018.114.23:22:45;"vlbi_reference_scan()
+2018.114.23:22:46;"reply from APECS: (timeout)
+2018.114.23:24:00;"vlbi_scan(t_mins=5)
+2018.114.23:24:01;"reply from APECS: (timeout)
+2018.114.23:24:01;"#     scan end at 2018.114.23:29:00
+2018.114.23:24:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.114.23:24:01;"
+2018.114.23:24:01;"#### Target 3C279 scanname No0008 to start at 2018.114.23:35:00 ################
+2018.114.23:32:50;"source('3C279'); go(); track()
+2018.114.23:32:50;"reply from APECS: OK
+2018.114.23:32:50;"reply from APECS: OK
+2018.114.23:32:51;"reply from APECS: (timeout)
+2018.114.23:33:20;"vlbi_tsys()
+2018.114.23:33:20;"reply from APECS: OK
+2018.114.23:33:20;"reply from APECS: OK
+2018.114.23:33:21;"reply from APECS: (timeout)
+2018.114.23:33:45;"vlbi_reference_scan()
+2018.114.23:33:46;"reply from APECS: (timeout)
+2018.114.23:35:00;"vlbi_scan(t_mins=4)
+2018.114.23:35:00;"reply from APECS: OK
+2018.114.23:35:01;"reply from APECS: (timeout)
+2018.114.23:35:01;"#     scan end at 2018.114.23:39:00
+2018.114.23:35:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.114.23:35:01;"
+2018.114.23:35:01;"#### Target M87 scanname No0009 to start at 2018.114.23:48:00 ##################
+2018.114.23:45:50;"source('M87'); go(); track()
+2018.114.23:45:50;"reply from APECS: OK
+2018.114.23:45:51;"reply from APECS: (timeout)
+2018.114.23:46:20;"vlbi_tsys()
+2018.114.23:46:20;"reply from APECS: OK
+2018.114.23:46:20;"reply from APECS: OK
+2018.114.23:46:21;"reply from APECS: (timeout)
+2018.114.23:46:45;"vlbi_reference_scan()
+2018.114.23:46:46;"reply from APECS: (timeout)
+2018.114.23:48:00;"vlbi_scan(t_mins=5)
+2018.114.23:48:00;"reply from APECS: OK
+2018.114.23:48:01;"reply from APECS: (timeout)
+2018.114.23:48:01;"#     scan end at 2018.114.23:53:00
+2018.114.23:48:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.114.23:48:01;"
+2018.114.23:48:01;"#### Target M87 scanname No0010 to start at 2018.114.23:56:00 ##################
+2018.114.23:54:20;"vlbi_tsys()
+2018.114.23:54:20;"reply from APECS: OK
+2018.114.23:54:20;"reply from APECS: OK
+2018.114.23:54:21;"reply from APECS: (timeout)
+2018.114.23:54:45;"vlbi_reference_scan()
+2018.114.23:54:46;"reply from APECS: (timeout)
+2018.114.23:56:00;"vlbi_scan(t_mins=5)
+2018.114.23:56:00;"reply from APECS: OK
+2018.114.23:56:01;"reply from APECS: (timeout)
+2018.114.23:56:01;"#     scan end at 2018.115.00:01:00
+2018.114.23:56:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.114.23:56:01;"
+2018.114.23:56:01;"#### Target M87 scanname No0011 to start at 2018.115.00:04:00 ##################
+2018.115.00:02:20;"vlbi_tsys()
+2018.115.00:02:20;"reply from APECS: OK
+2018.115.00:02:20;"reply from APECS: OK
+2018.115.00:02:21;"reply from APECS: (timeout)
+2018.115.00:02:45;"vlbi_reference_scan()
+2018.115.00:02:46;"reply from APECS: (timeout)
+2018.115.00:04:00;"vlbi_scan(t_mins=4)
+2018.115.00:04:00;"reply from APECS: OK
+2018.115.00:04:01;"reply from APECS: (timeout)
+2018.115.00:04:01;"#     scan end at 2018.115.00:08:00
+2018.115.00:04:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:04:01;"
+2018.115.00:04:01;"#### Target 3C279 scanname No0012 to start at 2018.115.00:14:00 ################
+2018.115.00:11:50;"source('3C279'); go(); track()
+2018.115.00:11:50;"reply from APECS: OK
+2018.115.00:11:51;"reply from APECS: (timeout)
+2018.115.00:12:20;"vlbi_tsys()
+2018.115.00:12:20;"reply from APECS: OK
+2018.115.00:12:20;"reply from APECS: OK
+2018.115.00:12:21;"reply from APECS: (timeout)
+2018.115.00:12:45;"vlbi_reference_scan()
+2018.115.00:12:46;"reply from APECS: (timeout)
+2018.115.00:14:00;"vlbi_scan(t_mins=4)
+2018.115.00:14:00;"reply from APECS: OK
+2018.115.00:14:01;"reply from APECS: (timeout)
+2018.115.00:14:01;"#     scan end at 2018.115.00:18:00
+2018.115.00:14:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:14:01;"
+2018.115.00:14:01;"#### Target M87 scanname No0013 to start at 2018.115.00:24:00 ##################
+2018.115.00:21:50;"source('M87'); go(); track()
+2018.115.00:21:50;"reply from APECS: OK
+2018.115.00:21:51;"reply from APECS: (timeout)
+2018.115.00:22:20;"vlbi_tsys()
+2018.115.00:22:20;"reply from APECS: OK
+2018.115.00:22:20;"reply from APECS: OK
+2018.115.00:22:21;"reply from APECS: (timeout)
+2018.115.00:22:45;"vlbi_reference_scan()
+2018.115.00:22:46;"reply from APECS: (timeout)
+2018.115.00:23:05;"----------| USER-REQUESTED STOP OF  e18c25.apecs.obs |----------
+2018.115.00:24:35;"----------| START OF e18c25.apecs.obs |----------
+2018.115.00:24:35;"Using TAI-UTC offset of +37 seconds
+2018.115.00:24:35;"#
+2018.115.00:24:35;"# APEX observing script for station Ax from file e18c25.vex
+2018.115.00:24:35;"# File created on 2018.114.22:12:26 UT
+2018.115.00:24:35;"#
+2018.115.00:24:35;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.115.00:24:35;"# Details on the columns:
+2018.115.00:24:35;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.115.00:24:35;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.115.00:24:35;"#    2) estimated duration of the command in seconds
+2018.115.00:24:35;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.115.00:24:35;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.115.00:24:35;"#
+2018.115.00:24:35;"# At time              Duration   Command
+2018.115.00:24:35;"execfile('pi230_setup.apecs')
+2018.115.00:24:36;"reply from APECS: OK
+2018.115.00:24:37;"reply from APECS: (timeout)
+2018.115.00:24:39;"execfile('vlbi-pi230_commands.py')
+2018.115.00:24:39;"reply from APECS: OK
+2018.115.00:24:40;"reply from APECS: (timeout)
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target OJ287 scanname No0001 to start at 2018.114.22:22:00 ################
+2018.115.00:24:42;"missed time 2018.114.22:19:50 : source('OJ287'); go(); track()
+2018.115.00:24:42;"missed time 2018.114.22:20:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.22:20:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.22:22:00 : vlbi_scan(t_mins=5)
+2018.115.00:24:42;"#     scan end at 2018.114.22:27:00
+2018.115.00:24:42;"#     200 idle seconds (3.3 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target OJ287 scanname No0002 to start at 2018.114.22:32:00 ################
+2018.115.00:24:42;"missed time 2018.114.22:30:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.22:30:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.22:32:00 : vlbi_scan(t_mins=5)
+2018.115.00:24:42;"#     scan end at 2018.114.22:37:00
+2018.115.00:24:42;"#     470 idle seconds (7.8 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target M87 scanname No0003 to start at 2018.114.22:47:00 ##################
+2018.115.00:24:42;"missed time 2018.114.22:44:50 : source('M87'); go(); track()
+2018.115.00:24:42;"missed time 2018.114.22:45:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.22:45:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.22:47:00 : vlbi_scan(t_mins=5)
+2018.115.00:24:42;"#     scan end at 2018.114.22:52:00
+2018.115.00:24:42;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target M87 scanname No0004 to start at 2018.114.22:55:00 ##################
+2018.115.00:24:42;"missed time 2018.114.22:53:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.22:53:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.22:55:00 : vlbi_scan(t_mins=5)
+2018.115.00:24:42;"#     scan end at 2018.114.23:00:00
+2018.115.00:24:42;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target 3C279 scanname No0005 to start at 2018.114.23:06:00 ################
+2018.115.00:24:42;"missed time 2018.114.23:03:50 : source('3C279'); go(); track()
+2018.115.00:24:42;"missed time 2018.114.23:04:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.23:04:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.23:06:00 : vlbi_scan(t_mins=4)
+2018.115.00:24:42;"#     scan end at 2018.114.23:10:00
+2018.115.00:24:42;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target M87 scanname No0006 to start at 2018.114.23:16:00 ##################
+2018.115.00:24:42;"missed time 2018.114.23:13:50 : source('M87'); go(); track()
+2018.115.00:24:42;"missed time 2018.114.23:14:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.23:14:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.23:16:00 : vlbi_scan(t_mins=5)
+2018.115.00:24:42;"#     scan end at 2018.114.23:21:00
+2018.115.00:24:42;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target M87 scanname No0007 to start at 2018.114.23:24:00 ##################
+2018.115.00:24:42;"missed time 2018.114.23:22:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.23:22:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.23:24:00 : vlbi_scan(t_mins=5)
+2018.115.00:24:42;"#     scan end at 2018.114.23:29:00
+2018.115.00:24:42;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target 3C279 scanname No0008 to start at 2018.114.23:35:00 ################
+2018.115.00:24:42;"missed time 2018.114.23:32:50 : source('3C279'); go(); track()
+2018.115.00:24:42;"missed time 2018.114.23:33:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.23:33:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.23:35:00 : vlbi_scan(t_mins=4)
+2018.115.00:24:42;"#     scan end at 2018.114.23:39:00
+2018.115.00:24:42;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target M87 scanname No0009 to start at 2018.114.23:48:00 ##################
+2018.115.00:24:42;"missed time 2018.114.23:45:50 : source('M87'); go(); track()
+2018.115.00:24:42;"missed time 2018.114.23:46:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.23:46:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.23:48:00 : vlbi_scan(t_mins=5)
+2018.115.00:24:42;"#     scan end at 2018.114.23:53:00
+2018.115.00:24:42;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target M87 scanname No0010 to start at 2018.114.23:56:00 ##################
+2018.115.00:24:42;"missed time 2018.114.23:54:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.114.23:54:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.114.23:56:00 : vlbi_scan(t_mins=5)
+2018.115.00:24:42;"#     scan end at 2018.115.00:01:00
+2018.115.00:24:42;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target M87 scanname No0011 to start at 2018.115.00:04:00 ##################
+2018.115.00:24:42;"missed time 2018.115.00:02:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.115.00:02:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.115.00:04:00 : vlbi_scan(t_mins=4)
+2018.115.00:24:42;"#     scan end at 2018.115.00:08:00
+2018.115.00:24:42;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target 3C279 scanname No0012 to start at 2018.115.00:14:00 ################
+2018.115.00:24:42;"missed time 2018.115.00:11:50 : source('3C279'); go(); track()
+2018.115.00:24:42;"missed time 2018.115.00:12:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.115.00:12:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.115.00:14:00 : vlbi_scan(t_mins=4)
+2018.115.00:24:42;"#     scan end at 2018.115.00:18:00
+2018.115.00:24:42;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target M87 scanname No0013 to start at 2018.115.00:24:00 ##################
+2018.115.00:24:42;"missed time 2018.115.00:21:50 : source('M87'); go(); track()
+2018.115.00:24:42;"missed time 2018.115.00:22:20 : vlbi_tsys()
+2018.115.00:24:42;"missed time 2018.115.00:22:45 : vlbi_reference_scan()
+2018.115.00:24:42;"missed time 2018.115.00:24:00 : vlbi_scan(t_mins=5)
+2018.115.00:24:42;"#     scan end at 2018.115.00:29:00
+2018.115.00:24:42;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:24:42;"
+2018.115.00:24:42;"#### Target M87 scanname No0014 to start at 2018.115.00:32:00 ##################
+2018.115.00:30:20;"vlbi_tsys()
+2018.115.00:30:20;"reply from APECS: OK
+2018.115.00:30:21;"reply from APECS: (timeout)
+2018.115.00:30:45;"vlbi_reference_scan()
+2018.115.00:30:46;"reply from APECS: (timeout)
+2018.115.00:32:00;"vlbi_scan(t_mins=5)
+2018.115.00:32:01;"reply from APECS: (timeout)
+2018.115.00:32:01;"#     scan end at 2018.115.00:37:00
+2018.115.00:32:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:32:01;"
+2018.115.00:32:01;"#### Target 3C279 scanname No0015 to start at 2018.115.00:43:00 ################
+2018.115.00:33:16;"----------| USER-REQUESTED STOP OF  e18c25.apecs.obs |----------
+2018.115.00:34:22;"----------| START OF e18c25.apecs.obs |----------
+2018.115.00:34:22;"Using TAI-UTC offset of +37 seconds
+2018.115.00:34:22;"#
+2018.115.00:34:22;"# APEX observing script for station Ax from file e18c25.vex
+2018.115.00:34:22;"# File created on 2018.114.22:12:26 UT
+2018.115.00:34:22;"#
+2018.115.00:34:22;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.115.00:34:22;"# Details on the columns:
+2018.115.00:34:22;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.115.00:34:22;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.115.00:34:22;"#    2) estimated duration of the command in seconds
+2018.115.00:34:22;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.115.00:34:22;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.115.00:34:22;"#
+2018.115.00:34:22;"# At time              Duration   Command
+2018.115.00:34:22;"execfile('pi230_setup.apecs')
+2018.115.00:34:23;"reply from APECS: (timeout)
+2018.115.00:34:25;"execfile('vlbi-pi230_commands.py')
+2018.115.00:34:25;"reply from APECS: OK
+2018.115.00:34:25;"reply from APECS: OK
+2018.115.00:34:26;"reply from APECS: (timeout)
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target OJ287 scanname No0001 to start at 2018.114.22:22:00 ################
+2018.115.00:34:28;"missed time 2018.114.22:19:50 : source('OJ287'); go(); track()
+2018.115.00:34:28;"missed time 2018.114.22:20:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.22:20:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.22:22:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.114.22:27:00
+2018.115.00:34:28;"#     200 idle seconds (3.3 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target OJ287 scanname No0002 to start at 2018.114.22:32:00 ################
+2018.115.00:34:28;"missed time 2018.114.22:30:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.22:30:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.22:32:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.114.22:37:00
+2018.115.00:34:28;"#     470 idle seconds (7.8 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target M87 scanname No0003 to start at 2018.114.22:47:00 ##################
+2018.115.00:34:28;"missed time 2018.114.22:44:50 : source('M87'); go(); track()
+2018.115.00:34:28;"missed time 2018.114.22:45:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.22:45:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.22:47:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.114.22:52:00
+2018.115.00:34:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target M87 scanname No0004 to start at 2018.114.22:55:00 ##################
+2018.115.00:34:28;"missed time 2018.114.22:53:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.22:53:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.22:55:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.114.23:00:00
+2018.115.00:34:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target 3C279 scanname No0005 to start at 2018.114.23:06:00 ################
+2018.115.00:34:28;"missed time 2018.114.23:03:50 : source('3C279'); go(); track()
+2018.115.00:34:28;"missed time 2018.114.23:04:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.23:04:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.23:06:00 : vlbi_scan(t_mins=4)
+2018.115.00:34:28;"#     scan end at 2018.114.23:10:00
+2018.115.00:34:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target M87 scanname No0006 to start at 2018.114.23:16:00 ##################
+2018.115.00:34:28;"missed time 2018.114.23:13:50 : source('M87'); go(); track()
+2018.115.00:34:28;"missed time 2018.114.23:14:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.23:14:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.23:16:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.114.23:21:00
+2018.115.00:34:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target M87 scanname No0007 to start at 2018.114.23:24:00 ##################
+2018.115.00:34:28;"missed time 2018.114.23:22:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.23:22:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.23:24:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.114.23:29:00
+2018.115.00:34:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target 3C279 scanname No0008 to start at 2018.114.23:35:00 ################
+2018.115.00:34:28;"missed time 2018.114.23:32:50 : source('3C279'); go(); track()
+2018.115.00:34:28;"missed time 2018.114.23:33:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.23:33:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.23:35:00 : vlbi_scan(t_mins=4)
+2018.115.00:34:28;"#     scan end at 2018.114.23:39:00
+2018.115.00:34:28;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target M87 scanname No0009 to start at 2018.114.23:48:00 ##################
+2018.115.00:34:28;"missed time 2018.114.23:45:50 : source('M87'); go(); track()
+2018.115.00:34:28;"missed time 2018.114.23:46:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.23:46:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.23:48:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.114.23:53:00
+2018.115.00:34:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target M87 scanname No0010 to start at 2018.114.23:56:00 ##################
+2018.115.00:34:28;"missed time 2018.114.23:54:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.114.23:54:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.114.23:56:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.115.00:01:00
+2018.115.00:34:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target M87 scanname No0011 to start at 2018.115.00:04:00 ##################
+2018.115.00:34:28;"missed time 2018.115.00:02:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.115.00:02:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.115.00:04:00 : vlbi_scan(t_mins=4)
+2018.115.00:34:28;"#     scan end at 2018.115.00:08:00
+2018.115.00:34:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target 3C279 scanname No0012 to start at 2018.115.00:14:00 ################
+2018.115.00:34:28;"missed time 2018.115.00:11:50 : source('3C279'); go(); track()
+2018.115.00:34:28;"missed time 2018.115.00:12:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.115.00:12:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.115.00:14:00 : vlbi_scan(t_mins=4)
+2018.115.00:34:28;"#     scan end at 2018.115.00:18:00
+2018.115.00:34:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target M87 scanname No0013 to start at 2018.115.00:24:00 ##################
+2018.115.00:34:28;"missed time 2018.115.00:21:50 : source('M87'); go(); track()
+2018.115.00:34:28;"missed time 2018.115.00:22:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.115.00:22:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.115.00:24:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.115.00:29:00
+2018.115.00:34:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target M87 scanname No0014 to start at 2018.115.00:32:00 ##################
+2018.115.00:34:28;"missed time 2018.115.00:30:20 : vlbi_tsys()
+2018.115.00:34:28;"missed time 2018.115.00:30:45 : vlbi_reference_scan()
+2018.115.00:34:28;"missed time 2018.115.00:32:00 : vlbi_scan(t_mins=5)
+2018.115.00:34:28;"#     scan end at 2018.115.00:37:00
+2018.115.00:34:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.00:34:28;"
+2018.115.00:34:28;"#### Target 3C279 scanname No0015 to start at 2018.115.00:43:00 ################
+2018.115.00:40:50;"source('3C279'); go(); track()
+2018.115.00:40:51;"reply from APECS: (timeout)
+2018.115.00:41:20;"vlbi_tsys()
+2018.115.00:41:20;"reply from APECS: OK
+2018.115.00:41:20;"reply from APECS: OK
+2018.115.00:41:21;"reply from APECS: (timeout)
+2018.115.00:41:45;"vlbi_reference_scan()
+2018.115.00:41:46;"reply from APECS: (timeout)
+2018.115.00:43:00;"vlbi_scan(t_mins=4)
+2018.115.00:43:00;"reply from APECS: OK
+2018.115.00:43:01;"reply from APECS: (timeout)
+2018.115.00:43:01;"#     scan end at 2018.115.00:47:00
+2018.115.00:43:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.00:43:01;"
+2018.115.00:43:01;"#### Target M87 scanname No0016 to start at 2018.115.00:56:00 ##################
+2018.115.00:53:50;"source('M87'); go(); track()
+2018.115.00:53:50;"reply from APECS: OK
+2018.115.00:53:51;"reply from APECS: (timeout)
+2018.115.00:54:20;"vlbi_tsys()
+2018.115.00:54:20;"reply from APECS: OK
+2018.115.00:54:20;"reply from APECS: OK
+2018.115.00:54:21;"reply from APECS: (timeout)
+2018.115.00:54:45;"vlbi_reference_scan()
+2018.115.00:54:46;"reply from APECS: (timeout)
+2018.115.00:56:00;"vlbi_scan(t_mins=5)
+2018.115.00:56:00;"reply from APECS: OK
+2018.115.00:56:01;"reply from APECS: (timeout)
+2018.115.00:56:01;"#     scan end at 2018.115.01:01:00
+2018.115.00:56:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.00:56:01;"
+2018.115.00:56:01;"#### Target M87 scanname No0017 to start at 2018.115.01:04:00 ##################
+2018.115.01:02:20;"vlbi_tsys()
+2018.115.01:02:20;"reply from APECS: OK
+2018.115.01:02:20;"reply from APECS: OK
+2018.115.01:02:21;"reply from APECS: (timeout)
+2018.115.01:02:45;"vlbi_reference_scan()
+2018.115.01:02:46;"reply from APECS: (timeout)
+2018.115.01:04:00;"vlbi_scan(t_mins=4)
+2018.115.01:04:00;"reply from APECS: OK
+2018.115.01:04:01;"reply from APECS: (timeout)
+2018.115.01:04:01;"#     scan end at 2018.115.01:08:00
+2018.115.01:04:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.01:04:01;"
+2018.115.01:04:01;"#### Target 3C279 scanname No0018 to start at 2018.115.01:14:00 ################
+2018.115.01:11:50;"source('3C279'); go(); track()
+2018.115.01:11:50;"reply from APECS: OK
+2018.115.01:11:51;"reply from APECS: (timeout)
+2018.115.01:12:20;"vlbi_tsys()
+2018.115.01:12:20;"reply from APECS: OK
+2018.115.01:12:20;"reply from APECS: OK
+2018.115.01:12:21;"reply from APECS: (timeout)
+2018.115.01:12:45;"vlbi_reference_scan()
+2018.115.01:12:46;"reply from APECS: (timeout)
+2018.115.01:14:00;"vlbi_scan(t_mins=4)
+2018.115.01:14:00;"reply from APECS: OK
+2018.115.01:14:01;"reply from APECS: (timeout)
+2018.115.01:14:01;"#     scan end at 2018.115.01:18:00
+2018.115.01:14:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.01:14:01;"
+2018.115.01:14:01;"#### Target M87 scanname No0019 to start at 2018.115.01:24:00 ##################
+2018.115.01:21:50;"source('M87'); go(); track()
+2018.115.01:21:50;"reply from APECS: OK
+2018.115.01:21:51;"reply from APECS: (timeout)
+2018.115.01:22:20;"vlbi_tsys()
+2018.115.01:22:20;"reply from APECS: OK
+2018.115.01:22:20;"reply from APECS: OK
+2018.115.01:22:21;"reply from APECS: (timeout)
+2018.115.01:22:45;"vlbi_reference_scan()
+2018.115.01:22:46;"reply from APECS: (timeout)
+2018.115.01:24:00;"vlbi_scan(t_mins=5)
+2018.115.01:24:00;"reply from APECS: OK
+2018.115.01:24:01;"reply from APECS: (timeout)
+2018.115.01:24:01;"#     scan end at 2018.115.01:29:00
+2018.115.01:24:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.01:24:01;"
+2018.115.01:24:01;"#### Target M87 scanname No0020 to start at 2018.115.01:32:00 ##################
+2018.115.01:30:20;"vlbi_tsys()
+2018.115.01:30:20;"reply from APECS: OK
+2018.115.01:30:20;"reply from APECS: OK
+2018.115.01:30:21;"reply from APECS: (timeout)
+2018.115.01:30:45;"vlbi_reference_scan()
+2018.115.01:30:46;"reply from APECS: (timeout)
+2018.115.01:32:00;"vlbi_scan(t_mins=5)
+2018.115.01:32:00;"reply from APECS: OK
+2018.115.01:32:01;"reply from APECS: (timeout)
+2018.115.01:32:01;"#     scan end at 2018.115.01:37:00
+2018.115.01:32:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.01:32:01;"
+2018.115.01:32:01;"#### Target 3C279 scanname No0021 to start at 2018.115.01:43:00 ################
+2018.115.01:40:50;"source('3C279'); go(); track()
+2018.115.01:40:50;"reply from APECS: OK
+2018.115.01:40:51;"reply from APECS: (timeout)
+2018.115.01:41:20;"vlbi_tsys()
+2018.115.01:41:20;"reply from APECS: OK
+2018.115.01:41:20;"reply from APECS: OK
+2018.115.01:41:21;"reply from APECS: (timeout)
+2018.115.01:41:45;"vlbi_reference_scan()
+2018.115.01:41:46;"reply from APECS: (timeout)
+2018.115.01:43:00;"vlbi_scan(t_mins=4)
+2018.115.01:43:00;"reply from APECS: OK
+2018.115.01:43:01;"reply from APECS: (timeout)
+2018.115.01:43:01;"#     scan end at 2018.115.01:47:00
+2018.115.01:43:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.01:43:01;"
+2018.115.01:43:01;"#### Target M87 scanname No0022 to start at 2018.115.01:56:00 ##################
+2018.115.01:53:50;"source('M87'); go(); track()
+2018.115.01:53:50;"reply from APECS: OK
+2018.115.01:53:51;"reply from APECS: (timeout)
+2018.115.01:54:20;"vlbi_tsys()
+2018.115.01:54:20;"reply from APECS: OK
+2018.115.01:54:20;"reply from APECS: OK
+2018.115.01:54:21;"reply from APECS: (timeout)
+2018.115.01:54:45;"vlbi_reference_scan()
+2018.115.01:54:46;"reply from APECS: (timeout)
+2018.115.01:56:00;"vlbi_scan(t_mins=5)
+2018.115.01:56:00;"reply from APECS: OK
+2018.115.01:56:01;"reply from APECS: (timeout)
+2018.115.01:56:01;"#     scan end at 2018.115.02:01:00
+2018.115.01:56:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.01:56:01;"
+2018.115.01:56:01;"#### Target M87 scanname No0023 to start at 2018.115.02:04:00 ##################
+2018.115.02:02:20;"vlbi_tsys()
+2018.115.02:02:20;"reply from APECS: OK
+2018.115.02:02:20;"reply from APECS: OK
+2018.115.02:02:21;"reply from APECS: (timeout)
+2018.115.02:02:45;"vlbi_reference_scan()
+2018.115.02:02:46;"reply from APECS: (timeout)
+2018.115.02:04:00;"vlbi_scan(t_mins=4)
+2018.115.02:04:00;"reply from APECS: OK
+2018.115.02:04:01;"reply from APECS: (timeout)
+2018.115.02:04:01;"#     scan end at 2018.115.02:08:00
+2018.115.02:04:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.02:04:01;"
+2018.115.02:04:01;"#### Target 3C279 scanname No0024 to start at 2018.115.02:14:00 ################
+2018.115.02:11:50;"source('3C279'); go(); track()
+2018.115.02:11:50;"reply from APECS: OK
+2018.115.02:11:51;"reply from APECS: (timeout)
+2018.115.02:12:20;"vlbi_tsys()
+2018.115.02:12:20;"reply from APECS: OK
+2018.115.02:12:20;"reply from APECS: OK
+2018.115.02:12:21;"reply from APECS: (timeout)
+2018.115.02:12:45;"vlbi_reference_scan()
+2018.115.02:12:46;"reply from APECS: (timeout)
+2018.115.02:14:00;"vlbi_scan(t_mins=4)
+2018.115.02:14:00;"reply from APECS: OK
+2018.115.02:14:01;"reply from APECS: (timeout)
+2018.115.02:14:01;"#     scan end at 2018.115.02:18:00
+2018.115.02:14:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.02:14:01;"
+2018.115.02:14:01;"#### Target M87 scanname No0025 to start at 2018.115.02:24:00 ##################
+2018.115.02:21:50;"source('M87'); go(); track()
+2018.115.02:21:50;"reply from APECS: OK
+2018.115.02:21:51;"reply from APECS: (timeout)
+2018.115.02:22:20;"vlbi_tsys()
+2018.115.02:22:20;"reply from APECS: OK
+2018.115.02:22:20;"reply from APECS: OK
+2018.115.02:22:21;"reply from APECS: (timeout)
+2018.115.02:22:45;"vlbi_reference_scan()
+2018.115.02:22:46;"reply from APECS: (timeout)
+2018.115.02:24:00;"vlbi_scan(t_mins=5)
+2018.115.02:24:00;"reply from APECS: OK
+2018.115.02:24:01;"reply from APECS: (timeout)
+2018.115.02:24:01;"#     scan end at 2018.115.02:29:00
+2018.115.02:24:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.02:24:01;"
+2018.115.02:24:01;"#### Target M87 scanname No0026 to start at 2018.115.02:32:00 ##################
+2018.115.02:30:20;"vlbi_tsys()
+2018.115.02:30:20;"reply from APECS: OK
+2018.115.02:30:20;"reply from APECS: OK
+2018.115.02:30:21;"reply from APECS: (timeout)
+2018.115.02:30:45;"vlbi_reference_scan()
+2018.115.02:30:46;"reply from APECS: (timeout)
+2018.115.02:32:00;"vlbi_scan(t_mins=5)
+2018.115.02:32:00;"reply from APECS: OK
+2018.115.02:32:01;"reply from APECS: (timeout)
+2018.115.02:32:01;"#     scan end at 2018.115.02:37:00
+2018.115.02:32:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.02:32:01;"
+2018.115.02:32:01;"#### Target 3C279 scanname No0027 to start at 2018.115.02:43:00 ################
+2018.115.02:40:50;"source('3C279'); go(); track()
+2018.115.02:40:50;"reply from APECS: OK
+2018.115.02:40:51;"reply from APECS: (timeout)
+2018.115.02:41:20;"vlbi_tsys()
+2018.115.02:41:20;"reply from APECS: OK
+2018.115.02:41:20;"reply from APECS: OK
+2018.115.02:41:21;"reply from APECS: (timeout)
+2018.115.02:41:45;"vlbi_reference_scan()
+2018.115.02:41:46;"reply from APECS: (timeout)
+2018.115.02:43:00;"vlbi_scan(t_mins=4)
+2018.115.02:43:00;"reply from APECS: OK
+2018.115.02:43:01;"reply from APECS: (timeout)
+2018.115.02:43:01;"#     scan end at 2018.115.02:47:00
+2018.115.02:43:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.02:43:01;"
+2018.115.02:43:01;"#### Target M87 scanname No0028 to start at 2018.115.02:56:00 ##################
+2018.115.02:53:50;"source('M87'); go(); track()
+2018.115.02:53:50;"reply from APECS: OK
+2018.115.02:53:51;"reply from APECS: (timeout)
+2018.115.02:54:20;"vlbi_tsys()
+2018.115.02:54:20;"reply from APECS: OK
+2018.115.02:54:20;"reply from APECS: OK
+2018.115.02:54:21;"reply from APECS: (timeout)
+2018.115.02:54:45;"vlbi_reference_scan()
+2018.115.02:54:46;"reply from APECS: (timeout)
+2018.115.02:56:00;"vlbi_scan(t_mins=5)
+2018.115.02:56:00;"reply from APECS: OK
+2018.115.02:56:01;"reply from APECS: (timeout)
+2018.115.02:56:01;"#     scan end at 2018.115.03:01:00
+2018.115.02:56:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.02:56:01;"
+2018.115.02:56:01;"#### Target M87 scanname No0029 to start at 2018.115.03:04:00 ##################
+2018.115.03:02:20;"vlbi_tsys()
+2018.115.03:02:20;"reply from APECS: OK
+2018.115.03:02:20;"reply from APECS: OK
+2018.115.03:02:21;"reply from APECS: (timeout)
+2018.115.03:02:45;"vlbi_reference_scan()
+2018.115.03:02:46;"reply from APECS: (timeout)
+2018.115.03:04:00;"vlbi_scan(t_mins=4)
+2018.115.03:04:00;"reply from APECS: OK
+2018.115.03:04:01;"reply from APECS: (timeout)
+2018.115.03:04:01;"#     scan end at 2018.115.03:08:00
+2018.115.03:04:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.03:04:01;"
+2018.115.03:04:01;"#### Target 3C279 scanname No0030 to start at 2018.115.03:14:00 ################
+2018.115.03:11:50;"source('3C279'); go(); track()
+2018.115.03:11:50;"reply from APECS: OK
+2018.115.03:11:51;"reply from APECS: (timeout)
+2018.115.03:12:20;"vlbi_tsys()
+2018.115.03:12:20;"reply from APECS: OK
+2018.115.03:12:20;"reply from APECS: OK
+2018.115.03:12:21;"reply from APECS: (timeout)
+2018.115.03:12:45;"vlbi_reference_scan()
+2018.115.03:12:46;"reply from APECS: (timeout)
+2018.115.03:14:00;"vlbi_scan(t_mins=4)
+2018.115.03:14:00;"reply from APECS: OK
+2018.115.03:14:01;"reply from APECS: (timeout)
+2018.115.03:14:01;"#     scan end at 2018.115.03:18:00
+2018.115.03:14:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.03:14:01;"
+2018.115.03:14:01;"#### Target M87 scanname No0031 to start at 2018.115.03:24:00 ##################
+2018.115.03:21:50;"source('M87'); go(); track()
+2018.115.03:21:50;"reply from APECS: OK
+2018.115.03:21:51;"reply from APECS: (timeout)
+2018.115.03:22:20;"vlbi_tsys()
+2018.115.03:22:20;"reply from APECS: OK
+2018.115.03:22:20;"reply from APECS: OK
+2018.115.03:22:21;"reply from APECS: (timeout)
+2018.115.03:22:45;"vlbi_reference_scan()
+2018.115.03:22:46;"reply from APECS: (timeout)
+2018.115.03:24:00;"vlbi_scan(t_mins=5)
+2018.115.03:24:00;"reply from APECS: OK
+2018.115.03:24:01;"reply from APECS: (timeout)
+2018.115.03:24:01;"#     scan end at 2018.115.03:29:00
+2018.115.03:24:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.03:24:01;"
+2018.115.03:24:01;"#### Target M87 scanname No0032 to start at 2018.115.03:32:00 ##################
+2018.115.03:30:20;"vlbi_tsys()
+2018.115.03:30:20;"reply from APECS: OK
+2018.115.03:30:20;"reply from APECS: OK
+2018.115.03:30:21;"reply from APECS: (timeout)
+2018.115.03:30:45;"vlbi_reference_scan()
+2018.115.03:30:46;"reply from APECS: (timeout)
+2018.115.03:32:00;"vlbi_scan(t_mins=5)
+2018.115.03:32:00;"reply from APECS: OK
+2018.115.03:32:01;"reply from APECS: (timeout)
+2018.115.03:32:01;"#     scan end at 2018.115.03:37:00
+2018.115.03:32:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.03:32:01;"
+2018.115.03:32:01;"#### Target 3C279 scanname No0033 to start at 2018.115.03:43:00 ################
+2018.115.03:40:50;"source('3C279'); go(); track()
+2018.115.03:40:50;"reply from APECS: OK
+2018.115.03:40:51;"reply from APECS: (timeout)
+2018.115.03:41:20;"vlbi_tsys()
+2018.115.03:41:20;"reply from APECS: OK
+2018.115.03:41:20;"reply from APECS: OK
+2018.115.03:41:21;"reply from APECS: (timeout)
+2018.115.03:41:45;"vlbi_reference_scan()
+2018.115.03:41:46;"reply from APECS: (timeout)
+2018.115.03:43:00;"vlbi_scan(t_mins=4)
+2018.115.03:43:00;"reply from APECS: OK
+2018.115.03:43:01;"reply from APECS: (timeout)
+2018.115.03:43:01;"#     scan end at 2018.115.03:47:00
+2018.115.03:43:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.03:43:01;"
+2018.115.03:43:01;"#### Target M87 scanname No0034 to start at 2018.115.03:56:00 ##################
+2018.115.03:53:50;"source('M87'); go(); track()
+2018.115.03:53:50;"reply from APECS: OK
+2018.115.03:53:51;"reply from APECS: (timeout)
+2018.115.03:54:20;"vlbi_tsys()
+2018.115.03:54:20;"reply from APECS: OK
+2018.115.03:54:20;"reply from APECS: OK
+2018.115.03:54:21;"reply from APECS: (timeout)
+2018.115.03:54:45;"vlbi_reference_scan()
+2018.115.03:54:46;"reply from APECS: (timeout)
+2018.115.03:56:00;"vlbi_scan(t_mins=5)
+2018.115.03:56:00;"reply from APECS: OK
+2018.115.03:56:01;"reply from APECS: (timeout)
+2018.115.03:56:01;"#     scan end at 2018.115.04:01:00
+2018.115.03:56:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.03:56:01;"
+2018.115.03:56:01;"#### Target M87 scanname No0035 to start at 2018.115.04:04:00 ##################
+2018.115.04:02:20;"vlbi_tsys()
+2018.115.04:02:20;"reply from APECS: OK
+2018.115.04:02:20;"reply from APECS: OK
+2018.115.04:02:21;"reply from APECS: (timeout)
+2018.115.04:02:45;"vlbi_reference_scan()
+2018.115.04:02:46;"reply from APECS: (timeout)
+2018.115.04:04:00;"vlbi_scan(t_mins=4)
+2018.115.04:04:00;"reply from APECS: OK
+2018.115.04:04:01;"reply from APECS: (timeout)
+2018.115.04:04:01;"#     scan end at 2018.115.04:08:00
+2018.115.04:04:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.04:04:01;"
+2018.115.04:04:01;"#### Target 3C279 scanname No0036 to start at 2018.115.04:14:00 ################
+2018.115.04:11:50;"source('3C279'); go(); track()
+2018.115.04:11:50;"reply from APECS: OK
+2018.115.04:11:51;"reply from APECS: (timeout)
+2018.115.04:12:20;"vlbi_tsys()
+2018.115.04:12:20;"reply from APECS: OK
+2018.115.04:12:20;"reply from APECS: OK
+2018.115.04:12:21;"reply from APECS: (timeout)
+2018.115.04:12:45;"vlbi_reference_scan()
+2018.115.04:12:46;"reply from APECS: (timeout)
+2018.115.04:14:00;"vlbi_scan(t_mins=4)
+2018.115.04:14:00;"reply from APECS: OK
+2018.115.04:14:01;"reply from APECS: (timeout)
+2018.115.04:14:01;"#     scan end at 2018.115.04:18:00
+2018.115.04:14:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.04:14:01;"
+2018.115.04:14:01;"#### Target M87 scanname No0037 to start at 2018.115.04:24:00 ##################
+2018.115.04:21:50;"source('M87'); go(); track()
+2018.115.04:21:50;"reply from APECS: OK
+2018.115.04:21:51;"reply from APECS: (timeout)
+2018.115.04:22:20;"vlbi_tsys()
+2018.115.04:22:20;"reply from APECS: OK
+2018.115.04:22:20;"reply from APECS: OK
+2018.115.04:22:21;"reply from APECS: (timeout)
+2018.115.04:22:45;"vlbi_reference_scan()
+2018.115.04:22:46;"reply from APECS: (timeout)
+2018.115.04:24:00;"vlbi_scan(t_mins=5)
+2018.115.04:24:00;"reply from APECS: OK
+2018.115.04:24:01;"reply from APECS: (timeout)
+2018.115.04:24:01;"#     scan end at 2018.115.04:29:00
+2018.115.04:24:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.04:24:01;"
+2018.115.04:24:01;"#### Target M87 scanname No0038 to start at 2018.115.04:32:00 ##################
+2018.115.04:30:20;"vlbi_tsys()
+2018.115.04:30:20;"reply from APECS: OK
+2018.115.04:30:20;"reply from APECS: OK
+2018.115.04:30:21;"reply from APECS: (timeout)
+2018.115.04:30:45;"vlbi_reference_scan()
+2018.115.04:30:46;"reply from APECS: (timeout)
+2018.115.04:32:00;"vlbi_scan(t_mins=5)
+2018.115.04:32:00;"reply from APECS: OK
+2018.115.04:32:01;"reply from APECS: (timeout)
+2018.115.04:32:01;"#     scan end at 2018.115.04:37:00
+2018.115.04:32:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.04:32:01;"
+2018.115.04:32:01;"#### Target 3C279 scanname No0039 to start at 2018.115.04:43:00 ################
+2018.115.04:40:50;"source('3C279'); go(); track()
+2018.115.04:40:50;"reply from APECS: OK
+2018.115.04:40:51;"reply from APECS: (timeout)
+2018.115.04:41:20;"vlbi_tsys()
+2018.115.04:41:20;"reply from APECS: OK
+2018.115.04:41:20;"reply from APECS: OK
+2018.115.04:41:21;"reply from APECS: (timeout)
+2018.115.04:41:45;"vlbi_reference_scan()
+2018.115.04:41:46;"reply from APECS: (timeout)
+2018.115.04:43:00;"vlbi_scan(t_mins=4)
+2018.115.04:43:00;"reply from APECS: OK
+2018.115.04:43:01;"reply from APECS: (timeout)
+2018.115.04:43:01;"#     scan end at 2018.115.04:47:00
+2018.115.04:43:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.04:43:01;"
+2018.115.04:43:01;"#### Target M87 scanname No0040 to start at 2018.115.04:56:00 ##################
+2018.115.04:53:50;"source('M87'); go(); track()
+2018.115.04:53:50;"reply from APECS: OK
+2018.115.04:53:51;"reply from APECS: (timeout)
+2018.115.04:54:20;"vlbi_tsys()
+2018.115.04:54:20;"reply from APECS: OK
+2018.115.04:54:20;"reply from APECS: OK
+2018.115.04:54:21;"reply from APECS: (timeout)
+2018.115.04:54:45;"vlbi_reference_scan()
+2018.115.04:54:46;"reply from APECS: (timeout)
+2018.115.04:56:00;"vlbi_scan(t_mins=5)
+2018.115.04:56:00;"reply from APECS: OK
+2018.115.04:56:01;"reply from APECS: (timeout)
+2018.115.04:56:01;"#     scan end at 2018.115.05:01:00
+2018.115.04:56:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.04:56:01;"
+2018.115.04:56:01;"#### Target M87 scanname No0041 to start at 2018.115.05:04:00 ##################
+2018.115.05:02:20;"vlbi_tsys()
+2018.115.05:02:20;"reply from APECS: OK
+2018.115.05:02:20;"reply from APECS: OK
+2018.115.05:02:21;"reply from APECS: (timeout)
+2018.115.05:02:45;"vlbi_reference_scan()
+2018.115.05:02:46;"reply from APECS: (timeout)
+2018.115.05:04:00;"vlbi_scan(t_mins=4)
+2018.115.05:04:00;"reply from APECS: OK
+2018.115.05:04:01;"reply from APECS: (timeout)
+2018.115.05:04:01;"#     scan end at 2018.115.05:08:00
+2018.115.05:04:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.05:04:01;"
+2018.115.05:04:01;"#### Target 3C279 scanname No0042 to start at 2018.115.05:14:00 ################
+2018.115.05:11:50;"source('3C279'); go(); track()
+2018.115.05:11:50;"reply from APECS: OK
+2018.115.05:11:51;"reply from APECS: (timeout)
+2018.115.05:12:20;"vlbi_tsys()
+2018.115.05:12:20;"reply from APECS: OK
+2018.115.05:12:20;"reply from APECS: OK
+2018.115.05:12:21;"reply from APECS: (timeout)
+2018.115.05:12:45;"vlbi_reference_scan()
+2018.115.05:12:46;"reply from APECS: (timeout)
+2018.115.05:14:00;"vlbi_scan(t_mins=4)
+2018.115.05:14:00;"reply from APECS: OK
+2018.115.05:14:01;"reply from APECS: (timeout)
+2018.115.05:14:01;"#     scan end at 2018.115.05:18:00
+2018.115.05:14:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.05:14:01;"
+2018.115.05:14:01;"#### Target M87 scanname No0043 to start at 2018.115.05:24:00 ##################
+2018.115.05:21:50;"source('M87'); go(); track()
+2018.115.05:21:50;"reply from APECS: OK
+2018.115.05:21:51;"reply from APECS: (timeout)
+2018.115.05:22:20;"vlbi_tsys()
+2018.115.05:22:20;"reply from APECS: OK
+2018.115.05:22:21;"reply from APECS: (timeout)
+2018.115.05:22:45;"vlbi_reference_scan()
+2018.115.05:22:45;"reply from APECS: OK
+2018.115.05:22:46;"reply from APECS: (timeout)
+2018.115.05:24:00;"vlbi_scan(t_mins=5)
+2018.115.05:24:00;"reply from APECS: OK
+2018.115.05:24:01;"reply from APECS: (timeout)
+2018.115.05:24:01;"#     scan end at 2018.115.05:29:00
+2018.115.05:24:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.05:24:01;"
+2018.115.05:24:01;"#### Target M87 scanname No0044 to start at 2018.115.05:32:00 ##################
+2018.115.05:30:20;"vlbi_tsys()
+2018.115.05:30:20;"reply from APECS: OK
+2018.115.05:30:21;"reply from APECS: (timeout)
+2018.115.05:30:45;"vlbi_reference_scan()
+2018.115.05:30:45;"reply from APECS: OK
+2018.115.05:30:46;"reply from APECS: (timeout)
+2018.115.05:32:00;"vlbi_scan(t_mins=5)
+2018.115.05:32:00;"reply from APECS: OK
+2018.115.05:32:01;"reply from APECS: (timeout)
+2018.115.05:32:01;"#     scan end at 2018.115.05:37:00
+2018.115.05:32:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.05:32:01;"
+2018.115.05:32:01;"#### Target 3C279 scanname No0045 to start at 2018.115.05:43:00 ################
+2018.115.05:40:50;"source('3C279'); go(); track()
+2018.115.05:40:50;"reply from APECS: OK
+2018.115.05:40:51;"reply from APECS: (timeout)
+2018.115.05:41:20;"vlbi_tsys()
+2018.115.05:41:20;"reply from APECS: OK
+2018.115.05:41:20;"reply from APECS: OK
+2018.115.05:41:21;"reply from APECS: (timeout)
+2018.115.05:41:45;"vlbi_reference_scan()
+2018.115.05:41:46;"reply from APECS: (timeout)
+2018.115.05:43:00;"vlbi_scan(t_mins=4)
+2018.115.05:43:00;"reply from APECS: OK
+2018.115.05:43:01;"reply from APECS: (timeout)
+2018.115.05:43:01;"#     scan end at 2018.115.05:47:00
+2018.115.05:43:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.05:43:01;"
+2018.115.05:43:01;"#### Target M87 scanname No0046 to start at 2018.115.05:56:00 ##################
+2018.115.05:53:50;"source('M87'); go(); track()
+2018.115.05:53:50;"reply from APECS: OK
+2018.115.05:53:51;"reply from APECS: (timeout)
+2018.115.05:54:20;"vlbi_tsys()
+2018.115.05:54:20;"reply from APECS: OK
+2018.115.05:54:20;"reply from APECS: OK
+2018.115.05:54:21;"reply from APECS: (timeout)
+2018.115.05:54:45;"vlbi_reference_scan()
+2018.115.05:54:46;"reply from APECS: (timeout)
+2018.115.05:56:00;"vlbi_scan(t_mins=5)
+2018.115.05:56:00;"reply from APECS: OK
+2018.115.05:56:01;"reply from APECS: (timeout)
+2018.115.05:56:01;"#     scan end at 2018.115.06:01:00
+2018.115.05:56:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.05:56:01;"
+2018.115.05:56:01;"#### Target M87 scanname No0047 to start at 2018.115.06:04:00 ##################
+2018.115.06:02:20;"vlbi_tsys()
+2018.115.06:02:20;"reply from APECS: OK
+2018.115.06:02:20;"reply from APECS: OK
+2018.115.06:02:21;"reply from APECS: (timeout)
+2018.115.06:02:45;"vlbi_reference_scan()
+2018.115.06:02:46;"reply from APECS: (timeout)
+2018.115.06:04:00;"vlbi_scan(t_mins=4)
+2018.115.06:04:00;"reply from APECS: OK
+2018.115.06:04:01;"reply from APECS: (timeout)
+2018.115.06:04:01;"#     scan end at 2018.115.06:08:00
+2018.115.06:04:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:04:01;"
+2018.115.06:04:01;"#### Target 3C279 scanname No0048 to start at 2018.115.06:14:00 ################
+2018.115.06:11:50;"source('3C279'); go(); track()
+2018.115.06:11:50;"reply from APECS: OK
+2018.115.06:11:51;"reply from APECS: (timeout)
+2018.115.06:12:20;"vlbi_tsys()
+2018.115.06:12:20;"reply from APECS: OK
+2018.115.06:12:20;"reply from APECS: OK
+2018.115.06:12:21;"reply from APECS: (timeout)
+2018.115.06:12:45;"vlbi_reference_scan()
+2018.115.06:12:46;"reply from APECS: (timeout)
+2018.115.06:14:00;"vlbi_scan(t_mins=4)
+2018.115.06:14:00;"reply from APECS: OK
+2018.115.06:14:01;"reply from APECS: (timeout)
+2018.115.06:14:01;"#     scan end at 2018.115.06:18:00
+2018.115.06:14:01;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:14:01;"
+2018.115.06:14:01;"#### Target M87 scanname No0049 to start at 2018.115.06:24:00 ##################
+2018.115.06:21:50;"source('M87'); go(); track()
+2018.115.06:21:50;"reply from APECS: OK
+2018.115.06:21:51;"reply from APECS: (timeout)
+2018.115.06:22:20;"vlbi_tsys()
+2018.115.06:22:20;"reply from APECS: OK
+2018.115.06:22:20;"reply from APECS: OK
+2018.115.06:22:21;"reply from APECS: (timeout)
+2018.115.06:22:45;"vlbi_reference_scan()
+2018.115.06:22:46;"reply from APECS: (timeout)
+2018.115.06:24:00;"vlbi_scan(t_mins=5)
+2018.115.06:24:00;"reply from APECS: OK
+2018.115.06:24:01;"reply from APECS: (timeout)
+2018.115.06:24:01;"#     scan end at 2018.115.06:29:00
+2018.115.06:24:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:24:01;"
+2018.115.06:24:01;"#### Target M87 scanname No0050 to start at 2018.115.06:32:00 ##################
+2018.115.06:30:20;"vlbi_tsys()
+2018.115.06:30:20;"reply from APECS: OK
+2018.115.06:30:20;"reply from APECS: OK
+2018.115.06:30:21;"reply from APECS: (timeout)
+2018.115.06:30:45;"vlbi_reference_scan()
+2018.115.06:30:46;"reply from APECS: (timeout)
+2018.115.06:31:23;"----------| USER-REQUESTED STOP OF  e18c25.apecs.obs |----------
+2018.115.06:34:25;"----------| START OF e18c25.apecs.obs |----------
+2018.115.06:34:25;"Using TAI-UTC offset of +37 seconds
+2018.115.06:34:25;"#
+2018.115.06:34:25;"# APEX observing script for station Ax from file e18c25.vex
+2018.115.06:34:25;"# File created on 2018.114.22:12:26 UT
+2018.115.06:34:25;"#
+2018.115.06:34:25;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.115.06:34:25;"# Details on the columns:
+2018.115.06:34:25;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.115.06:34:25;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.115.06:34:25;"#    2) estimated duration of the command in seconds
+2018.115.06:34:25;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.115.06:34:25;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.115.06:34:25;"#
+2018.115.06:34:25;"# At time              Duration   Command
+2018.115.06:34:25;"execfile('pi230_setup.apecs')
+2018.115.06:34:26;"reply from APECS: OK
+2018.115.06:34:27;"reply from APECS: (timeout)
+2018.115.06:34:29;"execfile('vlbi-pi230_commands.py')
+2018.115.06:34:29;"reply from APECS: OK
+2018.115.06:34:30;"reply from APECS: (timeout)
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target OJ287 scanname No0001 to start at 2018.114.22:22:00 ################
+2018.115.06:34:32;"missed time 2018.114.22:19:50 : source('OJ287'); go(); track()
+2018.115.06:34:32;"missed time 2018.114.22:20:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.22:20:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.22:22:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.114.22:27:00
+2018.115.06:34:32;"#     200 idle seconds (3.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target OJ287 scanname No0002 to start at 2018.114.22:32:00 ################
+2018.115.06:34:32;"missed time 2018.114.22:30:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.22:30:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.22:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.114.22:37:00
+2018.115.06:34:32;"#     470 idle seconds (7.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0003 to start at 2018.114.22:47:00 ##################
+2018.115.06:34:32;"missed time 2018.114.22:44:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.114.22:45:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.22:45:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.22:47:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.114.22:52:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0004 to start at 2018.114.22:55:00 ##################
+2018.115.06:34:32;"missed time 2018.114.22:53:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.22:53:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.22:55:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.114.23:00:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0005 to start at 2018.114.23:06:00 ################
+2018.115.06:34:32;"missed time 2018.114.23:03:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.114.23:04:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.23:04:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.23:06:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.114.23:10:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0006 to start at 2018.114.23:16:00 ##################
+2018.115.06:34:32;"missed time 2018.114.23:13:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.114.23:14:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.23:14:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.23:16:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.114.23:21:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0007 to start at 2018.114.23:24:00 ##################
+2018.115.06:34:32;"missed time 2018.114.23:22:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.23:22:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.23:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.114.23:29:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0008 to start at 2018.114.23:35:00 ################
+2018.115.06:34:32;"missed time 2018.114.23:32:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.114.23:33:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.23:33:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.23:35:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.114.23:39:00
+2018.115.06:34:32;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0009 to start at 2018.114.23:48:00 ##################
+2018.115.06:34:32;"missed time 2018.114.23:45:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.114.23:46:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.23:46:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.23:48:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.114.23:53:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0010 to start at 2018.114.23:56:00 ##################
+2018.115.06:34:32;"missed time 2018.114.23:54:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.114.23:54:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.114.23:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.00:01:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0011 to start at 2018.115.00:04:00 ##################
+2018.115.06:34:32;"missed time 2018.115.00:02:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.00:02:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.00:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.00:08:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0012 to start at 2018.115.00:14:00 ################
+2018.115.06:34:32;"missed time 2018.115.00:11:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.00:12:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.00:12:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.00:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.00:18:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0013 to start at 2018.115.00:24:00 ##################
+2018.115.06:34:32;"missed time 2018.115.00:21:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.00:22:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.00:22:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.00:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.00:29:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0014 to start at 2018.115.00:32:00 ##################
+2018.115.06:34:32;"missed time 2018.115.00:30:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.00:30:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.00:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.00:37:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0015 to start at 2018.115.00:43:00 ################
+2018.115.06:34:32;"missed time 2018.115.00:40:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.00:41:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.00:41:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.00:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.00:47:00
+2018.115.06:34:32;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0016 to start at 2018.115.00:56:00 ##################
+2018.115.06:34:32;"missed time 2018.115.00:53:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.00:54:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.00:54:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.00:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.01:01:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0017 to start at 2018.115.01:04:00 ##################
+2018.115.06:34:32;"missed time 2018.115.01:02:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.01:02:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.01:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.01:08:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0018 to start at 2018.115.01:14:00 ################
+2018.115.06:34:32;"missed time 2018.115.01:11:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.01:12:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.01:12:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.01:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.01:18:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0019 to start at 2018.115.01:24:00 ##################
+2018.115.06:34:32;"missed time 2018.115.01:21:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.01:22:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.01:22:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.01:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.01:29:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0020 to start at 2018.115.01:32:00 ##################
+2018.115.06:34:32;"missed time 2018.115.01:30:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.01:30:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.01:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.01:37:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0021 to start at 2018.115.01:43:00 ################
+2018.115.06:34:32;"missed time 2018.115.01:40:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.01:41:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.01:41:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.01:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.01:47:00
+2018.115.06:34:32;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0022 to start at 2018.115.01:56:00 ##################
+2018.115.06:34:32;"missed time 2018.115.01:53:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.01:54:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.01:54:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.01:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.02:01:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0023 to start at 2018.115.02:04:00 ##################
+2018.115.06:34:32;"missed time 2018.115.02:02:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.02:02:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.02:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.02:08:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0024 to start at 2018.115.02:14:00 ################
+2018.115.06:34:32;"missed time 2018.115.02:11:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.02:12:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.02:12:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.02:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.02:18:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0025 to start at 2018.115.02:24:00 ##################
+2018.115.06:34:32;"missed time 2018.115.02:21:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.02:22:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.02:22:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.02:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.02:29:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0026 to start at 2018.115.02:32:00 ##################
+2018.115.06:34:32;"missed time 2018.115.02:30:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.02:30:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.02:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.02:37:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0027 to start at 2018.115.02:43:00 ################
+2018.115.06:34:32;"missed time 2018.115.02:40:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.02:41:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.02:41:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.02:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.02:47:00
+2018.115.06:34:32;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0028 to start at 2018.115.02:56:00 ##################
+2018.115.06:34:32;"missed time 2018.115.02:53:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.02:54:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.02:54:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.02:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.03:01:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0029 to start at 2018.115.03:04:00 ##################
+2018.115.06:34:32;"missed time 2018.115.03:02:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.03:02:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.03:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.03:08:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0030 to start at 2018.115.03:14:00 ################
+2018.115.06:34:32;"missed time 2018.115.03:11:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.03:12:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.03:12:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.03:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.03:18:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0031 to start at 2018.115.03:24:00 ##################
+2018.115.06:34:32;"missed time 2018.115.03:21:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.03:22:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.03:22:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.03:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.03:29:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0032 to start at 2018.115.03:32:00 ##################
+2018.115.06:34:32;"missed time 2018.115.03:30:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.03:30:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.03:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.03:37:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0033 to start at 2018.115.03:43:00 ################
+2018.115.06:34:32;"missed time 2018.115.03:40:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.03:41:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.03:41:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.03:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.03:47:00
+2018.115.06:34:32;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0034 to start at 2018.115.03:56:00 ##################
+2018.115.06:34:32;"missed time 2018.115.03:53:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.03:54:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.03:54:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.03:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.04:01:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0035 to start at 2018.115.04:04:00 ##################
+2018.115.06:34:32;"missed time 2018.115.04:02:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.04:02:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.04:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.04:08:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0036 to start at 2018.115.04:14:00 ################
+2018.115.06:34:32;"missed time 2018.115.04:11:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.04:12:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.04:12:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.04:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.04:18:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0037 to start at 2018.115.04:24:00 ##################
+2018.115.06:34:32;"missed time 2018.115.04:21:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.04:22:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.04:22:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.04:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.04:29:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0038 to start at 2018.115.04:32:00 ##################
+2018.115.06:34:32;"missed time 2018.115.04:30:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.04:30:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.04:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.04:37:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0039 to start at 2018.115.04:43:00 ################
+2018.115.06:34:32;"missed time 2018.115.04:40:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.04:41:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.04:41:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.04:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.04:47:00
+2018.115.06:34:32;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0040 to start at 2018.115.04:56:00 ##################
+2018.115.06:34:32;"missed time 2018.115.04:53:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.04:54:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.04:54:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.04:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.05:01:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0041 to start at 2018.115.05:04:00 ##################
+2018.115.06:34:32;"missed time 2018.115.05:02:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.05:02:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.05:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.05:08:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0042 to start at 2018.115.05:14:00 ################
+2018.115.06:34:32;"missed time 2018.115.05:11:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.05:12:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.05:12:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.05:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.05:18:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0043 to start at 2018.115.05:24:00 ##################
+2018.115.06:34:32;"missed time 2018.115.05:21:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.05:22:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.05:22:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.05:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.05:29:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0044 to start at 2018.115.05:32:00 ##################
+2018.115.06:34:32;"missed time 2018.115.05:30:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.05:30:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.05:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.05:37:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0045 to start at 2018.115.05:43:00 ################
+2018.115.06:34:32;"missed time 2018.115.05:40:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.05:41:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.05:41:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.05:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.05:47:00
+2018.115.06:34:32;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0046 to start at 2018.115.05:56:00 ##################
+2018.115.06:34:32;"missed time 2018.115.05:53:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.05:54:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.05:54:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.05:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.06:01:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0047 to start at 2018.115.06:04:00 ##################
+2018.115.06:34:32;"missed time 2018.115.06:02:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.06:02:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.06:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.06:08:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0048 to start at 2018.115.06:14:00 ################
+2018.115.06:34:32;"missed time 2018.115.06:11:50 : source('3C279'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.06:12:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.06:12:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.06:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:34:32;"#     scan end at 2018.115.06:18:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0049 to start at 2018.115.06:24:00 ##################
+2018.115.06:34:32;"missed time 2018.115.06:21:50 : source('M87'); go(); track()
+2018.115.06:34:32;"missed time 2018.115.06:22:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.06:22:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.06:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.06:29:00
+2018.115.06:34:32;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target M87 scanname No0050 to start at 2018.115.06:32:00 ##################
+2018.115.06:34:32;"missed time 2018.115.06:30:20 : vlbi_tsys()
+2018.115.06:34:32;"missed time 2018.115.06:30:45 : vlbi_reference_scan()
+2018.115.06:34:32;"missed time 2018.115.06:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:34:32;"#     scan end at 2018.115.06:37:00
+2018.115.06:34:32;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:34:32;"
+2018.115.06:34:32;"#### Target 3C279 scanname No0051 to start at 2018.115.06:43:00 ################
+2018.115.06:40:50;"source('3C279'); go(); track()
+2018.115.06:40:51;"reply from APECS: (timeout)
+2018.115.06:41:20;"vlbi_tsys()
+2018.115.06:41:20;"reply from APECS: OK
+2018.115.06:41:21;"reply from APECS: (timeout)
+2018.115.06:41:45;"vlbi_reference_scan()
+2018.115.06:41:46;"reply from APECS: (timeout)
+2018.115.06:42:56;"----------| USER-REQUESTED STOP OF  e18c25.apecs.obs |----------
+2018.115.06:44:22;"----------| START OF e18c25.apecs.obs |----------
+2018.115.06:44:22;"Using TAI-UTC offset of +37 seconds
+2018.115.06:44:22;"#
+2018.115.06:44:22;"# APEX observing script for station Ax from file e18c25.vex
+2018.115.06:44:22;"# File created on 2018.114.22:12:26 UT
+2018.115.06:44:22;"#
+2018.115.06:44:22;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.115.06:44:22;"# Details on the columns:
+2018.115.06:44:22;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.115.06:44:22;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.115.06:44:22;"#    2) estimated duration of the command in seconds
+2018.115.06:44:22;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.115.06:44:22;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.115.06:44:22;"#
+2018.115.06:44:22;"# At time              Duration   Command
+2018.115.06:44:22;"execfile('pi230_setup.apecs')
+2018.115.06:44:23;"reply from APECS: (timeout)
+2018.115.06:44:25;"execfile('vlbi-pi230_commands.py')
+2018.115.06:44:25;"reply from APECS: OK
+2018.115.06:44:25;"reply from APECS: OK
+2018.115.06:44:26;"reply from APECS: (timeout)
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target OJ287 scanname No0001 to start at 2018.114.22:22:00 ################
+2018.115.06:44:28;"missed time 2018.114.22:19:50 : source('OJ287'); go(); track()
+2018.115.06:44:28;"missed time 2018.114.22:20:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.22:20:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.22:22:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.114.22:27:00
+2018.115.06:44:28;"#     200 idle seconds (3.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target OJ287 scanname No0002 to start at 2018.114.22:32:00 ################
+2018.115.06:44:28;"missed time 2018.114.22:30:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.22:30:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.22:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.114.22:37:00
+2018.115.06:44:28;"#     470 idle seconds (7.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0003 to start at 2018.114.22:47:00 ##################
+2018.115.06:44:28;"missed time 2018.114.22:44:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.114.22:45:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.22:45:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.22:47:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.114.22:52:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0004 to start at 2018.114.22:55:00 ##################
+2018.115.06:44:28;"missed time 2018.114.22:53:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.22:53:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.22:55:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.114.23:00:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0005 to start at 2018.114.23:06:00 ################
+2018.115.06:44:28;"missed time 2018.114.23:03:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.114.23:04:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.23:04:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.23:06:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.114.23:10:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0006 to start at 2018.114.23:16:00 ##################
+2018.115.06:44:28;"missed time 2018.114.23:13:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.114.23:14:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.23:14:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.23:16:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.114.23:21:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0007 to start at 2018.114.23:24:00 ##################
+2018.115.06:44:28;"missed time 2018.114.23:22:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.23:22:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.23:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.114.23:29:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0008 to start at 2018.114.23:35:00 ################
+2018.115.06:44:28;"missed time 2018.114.23:32:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.114.23:33:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.23:33:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.23:35:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.114.23:39:00
+2018.115.06:44:28;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0009 to start at 2018.114.23:48:00 ##################
+2018.115.06:44:28;"missed time 2018.114.23:45:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.114.23:46:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.23:46:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.23:48:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.114.23:53:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0010 to start at 2018.114.23:56:00 ##################
+2018.115.06:44:28;"missed time 2018.114.23:54:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.114.23:54:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.114.23:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.00:01:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0011 to start at 2018.115.00:04:00 ##################
+2018.115.06:44:28;"missed time 2018.115.00:02:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.00:02:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.00:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.00:08:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0012 to start at 2018.115.00:14:00 ################
+2018.115.06:44:28;"missed time 2018.115.00:11:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.00:12:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.00:12:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.00:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.00:18:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0013 to start at 2018.115.00:24:00 ##################
+2018.115.06:44:28;"missed time 2018.115.00:21:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.00:22:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.00:22:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.00:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.00:29:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0014 to start at 2018.115.00:32:00 ##################
+2018.115.06:44:28;"missed time 2018.115.00:30:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.00:30:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.00:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.00:37:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0015 to start at 2018.115.00:43:00 ################
+2018.115.06:44:28;"missed time 2018.115.00:40:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.00:41:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.00:41:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.00:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.00:47:00
+2018.115.06:44:28;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0016 to start at 2018.115.00:56:00 ##################
+2018.115.06:44:28;"missed time 2018.115.00:53:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.00:54:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.00:54:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.00:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.01:01:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0017 to start at 2018.115.01:04:00 ##################
+2018.115.06:44:28;"missed time 2018.115.01:02:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.01:02:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.01:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.01:08:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0018 to start at 2018.115.01:14:00 ################
+2018.115.06:44:28;"missed time 2018.115.01:11:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.01:12:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.01:12:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.01:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.01:18:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0019 to start at 2018.115.01:24:00 ##################
+2018.115.06:44:28;"missed time 2018.115.01:21:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.01:22:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.01:22:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.01:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.01:29:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0020 to start at 2018.115.01:32:00 ##################
+2018.115.06:44:28;"missed time 2018.115.01:30:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.01:30:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.01:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.01:37:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0021 to start at 2018.115.01:43:00 ################
+2018.115.06:44:28;"missed time 2018.115.01:40:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.01:41:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.01:41:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.01:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.01:47:00
+2018.115.06:44:28;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0022 to start at 2018.115.01:56:00 ##################
+2018.115.06:44:28;"missed time 2018.115.01:53:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.01:54:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.01:54:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.01:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.02:01:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0023 to start at 2018.115.02:04:00 ##################
+2018.115.06:44:28;"missed time 2018.115.02:02:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.02:02:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.02:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.02:08:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0024 to start at 2018.115.02:14:00 ################
+2018.115.06:44:28;"missed time 2018.115.02:11:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.02:12:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.02:12:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.02:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.02:18:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0025 to start at 2018.115.02:24:00 ##################
+2018.115.06:44:28;"missed time 2018.115.02:21:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.02:22:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.02:22:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.02:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.02:29:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0026 to start at 2018.115.02:32:00 ##################
+2018.115.06:44:28;"missed time 2018.115.02:30:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.02:30:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.02:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.02:37:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0027 to start at 2018.115.02:43:00 ################
+2018.115.06:44:28;"missed time 2018.115.02:40:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.02:41:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.02:41:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.02:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.02:47:00
+2018.115.06:44:28;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0028 to start at 2018.115.02:56:00 ##################
+2018.115.06:44:28;"missed time 2018.115.02:53:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.02:54:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.02:54:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.02:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.03:01:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0029 to start at 2018.115.03:04:00 ##################
+2018.115.06:44:28;"missed time 2018.115.03:02:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.03:02:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.03:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.03:08:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0030 to start at 2018.115.03:14:00 ################
+2018.115.06:44:28;"missed time 2018.115.03:11:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.03:12:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.03:12:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.03:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.03:18:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0031 to start at 2018.115.03:24:00 ##################
+2018.115.06:44:28;"missed time 2018.115.03:21:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.03:22:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.03:22:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.03:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.03:29:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0032 to start at 2018.115.03:32:00 ##################
+2018.115.06:44:28;"missed time 2018.115.03:30:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.03:30:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.03:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.03:37:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0033 to start at 2018.115.03:43:00 ################
+2018.115.06:44:28;"missed time 2018.115.03:40:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.03:41:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.03:41:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.03:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.03:47:00
+2018.115.06:44:28;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0034 to start at 2018.115.03:56:00 ##################
+2018.115.06:44:28;"missed time 2018.115.03:53:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.03:54:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.03:54:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.03:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.04:01:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0035 to start at 2018.115.04:04:00 ##################
+2018.115.06:44:28;"missed time 2018.115.04:02:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.04:02:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.04:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.04:08:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0036 to start at 2018.115.04:14:00 ################
+2018.115.06:44:28;"missed time 2018.115.04:11:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.04:12:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.04:12:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.04:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.04:18:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0037 to start at 2018.115.04:24:00 ##################
+2018.115.06:44:28;"missed time 2018.115.04:21:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.04:22:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.04:22:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.04:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.04:29:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0038 to start at 2018.115.04:32:00 ##################
+2018.115.06:44:28;"missed time 2018.115.04:30:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.04:30:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.04:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.04:37:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0039 to start at 2018.115.04:43:00 ################
+2018.115.06:44:28;"missed time 2018.115.04:40:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.04:41:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.04:41:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.04:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.04:47:00
+2018.115.06:44:28;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0040 to start at 2018.115.04:56:00 ##################
+2018.115.06:44:28;"missed time 2018.115.04:53:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.04:54:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.04:54:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.04:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.05:01:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0041 to start at 2018.115.05:04:00 ##################
+2018.115.06:44:28;"missed time 2018.115.05:02:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.05:02:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.05:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.05:08:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0042 to start at 2018.115.05:14:00 ################
+2018.115.06:44:28;"missed time 2018.115.05:11:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.05:12:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.05:12:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.05:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.05:18:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0043 to start at 2018.115.05:24:00 ##################
+2018.115.06:44:28;"missed time 2018.115.05:21:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.05:22:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.05:22:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.05:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.05:29:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0044 to start at 2018.115.05:32:00 ##################
+2018.115.06:44:28;"missed time 2018.115.05:30:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.05:30:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.05:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.05:37:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0045 to start at 2018.115.05:43:00 ################
+2018.115.06:44:28;"missed time 2018.115.05:40:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.05:41:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.05:41:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.05:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.05:47:00
+2018.115.06:44:28;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0046 to start at 2018.115.05:56:00 ##################
+2018.115.06:44:28;"missed time 2018.115.05:53:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.05:54:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.05:54:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.05:56:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.06:01:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0047 to start at 2018.115.06:04:00 ##################
+2018.115.06:44:28;"missed time 2018.115.06:02:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.06:02:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.06:04:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.06:08:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0048 to start at 2018.115.06:14:00 ################
+2018.115.06:44:28;"missed time 2018.115.06:11:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.06:12:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.06:12:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.06:14:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.06:18:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0049 to start at 2018.115.06:24:00 ##################
+2018.115.06:44:28;"missed time 2018.115.06:21:50 : source('M87'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.06:22:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.06:22:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.06:24:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.06:29:00
+2018.115.06:44:28;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target M87 scanname No0050 to start at 2018.115.06:32:00 ##################
+2018.115.06:44:28;"missed time 2018.115.06:30:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.06:30:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.06:32:00 : vlbi_scan(t_mins=5)
+2018.115.06:44:28;"#     scan end at 2018.115.06:37:00
+2018.115.06:44:28;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target 3C279 scanname No0051 to start at 2018.115.06:43:00 ################
+2018.115.06:44:28;"missed time 2018.115.06:40:50 : source('3C279'); go(); track()
+2018.115.06:44:28;"missed time 2018.115.06:41:20 : vlbi_tsys()
+2018.115.06:44:28;"missed time 2018.115.06:41:45 : vlbi_reference_scan()
+2018.115.06:44:28;"missed time 2018.115.06:43:00 : vlbi_scan(t_mins=4)
+2018.115.06:44:28;"#     scan end at 2018.115.06:47:00
+2018.115.06:44:28;"#     1070 idle seconds (17.8 minutes) until next remote command
+2018.115.06:44:28;"
+2018.115.06:44:28;"#### Target SGRA scanname No0052 to start at 2018.115.07:07:00 #################
+2018.115.07:04:50;"source('SGRA'); go(); track()
+2018.115.07:04:51;"reply from APECS: (timeout)
+2018.115.07:05:20;"vlbi_tsys()
+2018.115.07:05:20;"reply from APECS: OK
+2018.115.07:05:20;"reply from APECS: OK
+2018.115.07:05:21;"reply from APECS: (timeout)
+2018.115.07:05:45;"vlbi_reference_scan()
+2018.115.07:05:46;"reply from APECS: (timeout)
+2018.115.07:07:00;"vlbi_scan(t_mins=10)
+2018.115.07:07:00;"reply from APECS: OK
+2018.115.07:07:01;"reply from APECS: (timeout)
+2018.115.07:07:01;"#     scan end at 2018.115.07:17:00
+2018.115.07:07:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:07:01;"
+2018.115.07:07:01;"#### Target SGRA scanname No0053 to start at 2018.115.07:20:00 #################
+2018.115.07:12:18;"----------| USER-REQUESTED STOP OF  e18c25.apecs.obs |----------
+2018.115.07:45:11;"----------| START OF e18c25.apecs.obs |----------
+2018.115.07:45:11;"Using TAI-UTC offset of +37 seconds
+2018.115.07:45:11;"#
+2018.115.07:45:11;"# APEX observing script for station Ax from file e18c25.vex
+2018.115.07:45:11;"# File created on 2018.114.22:12:26 UT
+2018.115.07:45:11;"#
+2018.115.07:45:11;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.115.07:45:11;"# Details on the columns:
+2018.115.07:45:11;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.115.07:45:11;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.115.07:45:11;"#    2) estimated duration of the command in seconds
+2018.115.07:45:11;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.115.07:45:11;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.115.07:45:11;"#
+2018.115.07:45:11;"# At time              Duration   Command
+2018.115.07:45:11;"execfile('pi230_setup.apecs')
+2018.115.07:45:12;"reply from APECS: OK
+2018.115.07:45:13;"reply from APECS: (timeout)
+2018.115.07:45:15;"execfile('vlbi-pi230_commands.py')
+2018.115.07:45:15;"reply from APECS: OK
+2018.115.07:45:16;"reply from APECS: (timeout)
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target OJ287 scanname No0001 to start at 2018.114.22:22:00 ################
+2018.115.07:45:18;"missed time 2018.114.22:19:50 : source('OJ287'); go(); track()
+2018.115.07:45:18;"missed time 2018.114.22:20:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.22:20:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.22:22:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.114.22:27:00
+2018.115.07:45:18;"#     200 idle seconds (3.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target OJ287 scanname No0002 to start at 2018.114.22:32:00 ################
+2018.115.07:45:18;"missed time 2018.114.22:30:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.22:30:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.22:32:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.114.22:37:00
+2018.115.07:45:18;"#     470 idle seconds (7.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0003 to start at 2018.114.22:47:00 ##################
+2018.115.07:45:18;"missed time 2018.114.22:44:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.114.22:45:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.22:45:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.22:47:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.114.22:52:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0004 to start at 2018.114.22:55:00 ##################
+2018.115.07:45:18;"missed time 2018.114.22:53:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.22:53:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.22:55:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.114.23:00:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0005 to start at 2018.114.23:06:00 ################
+2018.115.07:45:18;"missed time 2018.114.23:03:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.114.23:04:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.23:04:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.23:06:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.114.23:10:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0006 to start at 2018.114.23:16:00 ##################
+2018.115.07:45:18;"missed time 2018.114.23:13:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.114.23:14:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.23:14:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.23:16:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.114.23:21:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0007 to start at 2018.114.23:24:00 ##################
+2018.115.07:45:18;"missed time 2018.114.23:22:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.23:22:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.23:24:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.114.23:29:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0008 to start at 2018.114.23:35:00 ################
+2018.115.07:45:18;"missed time 2018.114.23:32:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.114.23:33:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.23:33:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.23:35:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.114.23:39:00
+2018.115.07:45:18;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0009 to start at 2018.114.23:48:00 ##################
+2018.115.07:45:18;"missed time 2018.114.23:45:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.114.23:46:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.23:46:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.23:48:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.114.23:53:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0010 to start at 2018.114.23:56:00 ##################
+2018.115.07:45:18;"missed time 2018.114.23:54:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.114.23:54:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.114.23:56:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.00:01:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0011 to start at 2018.115.00:04:00 ##################
+2018.115.07:45:18;"missed time 2018.115.00:02:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.00:02:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.00:04:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.00:08:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0012 to start at 2018.115.00:14:00 ################
+2018.115.07:45:18;"missed time 2018.115.00:11:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.00:12:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.00:12:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.00:14:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.00:18:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0013 to start at 2018.115.00:24:00 ##################
+2018.115.07:45:18;"missed time 2018.115.00:21:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.00:22:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.00:22:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.00:24:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.00:29:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0014 to start at 2018.115.00:32:00 ##################
+2018.115.07:45:18;"missed time 2018.115.00:30:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.00:30:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.00:32:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.00:37:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0015 to start at 2018.115.00:43:00 ################
+2018.115.07:45:18;"missed time 2018.115.00:40:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.00:41:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.00:41:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.00:43:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.00:47:00
+2018.115.07:45:18;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0016 to start at 2018.115.00:56:00 ##################
+2018.115.07:45:18;"missed time 2018.115.00:53:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.00:54:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.00:54:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.00:56:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.01:01:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0017 to start at 2018.115.01:04:00 ##################
+2018.115.07:45:18;"missed time 2018.115.01:02:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.01:02:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.01:04:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.01:08:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0018 to start at 2018.115.01:14:00 ################
+2018.115.07:45:18;"missed time 2018.115.01:11:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.01:12:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.01:12:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.01:14:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.01:18:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0019 to start at 2018.115.01:24:00 ##################
+2018.115.07:45:18;"missed time 2018.115.01:21:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.01:22:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.01:22:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.01:24:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.01:29:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0020 to start at 2018.115.01:32:00 ##################
+2018.115.07:45:18;"missed time 2018.115.01:30:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.01:30:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.01:32:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.01:37:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0021 to start at 2018.115.01:43:00 ################
+2018.115.07:45:18;"missed time 2018.115.01:40:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.01:41:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.01:41:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.01:43:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.01:47:00
+2018.115.07:45:18;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0022 to start at 2018.115.01:56:00 ##################
+2018.115.07:45:18;"missed time 2018.115.01:53:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.01:54:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.01:54:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.01:56:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.02:01:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0023 to start at 2018.115.02:04:00 ##################
+2018.115.07:45:18;"missed time 2018.115.02:02:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.02:02:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.02:04:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.02:08:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0024 to start at 2018.115.02:14:00 ################
+2018.115.07:45:18;"missed time 2018.115.02:11:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.02:12:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.02:12:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.02:14:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.02:18:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0025 to start at 2018.115.02:24:00 ##################
+2018.115.07:45:18;"missed time 2018.115.02:21:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.02:22:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.02:22:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.02:24:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.02:29:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0026 to start at 2018.115.02:32:00 ##################
+2018.115.07:45:18;"missed time 2018.115.02:30:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.02:30:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.02:32:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.02:37:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0027 to start at 2018.115.02:43:00 ################
+2018.115.07:45:18;"missed time 2018.115.02:40:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.02:41:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.02:41:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.02:43:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.02:47:00
+2018.115.07:45:18;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0028 to start at 2018.115.02:56:00 ##################
+2018.115.07:45:18;"missed time 2018.115.02:53:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.02:54:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.02:54:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.02:56:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.03:01:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0029 to start at 2018.115.03:04:00 ##################
+2018.115.07:45:18;"missed time 2018.115.03:02:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.03:02:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.03:04:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.03:08:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0030 to start at 2018.115.03:14:00 ################
+2018.115.07:45:18;"missed time 2018.115.03:11:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.03:12:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.03:12:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.03:14:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.03:18:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0031 to start at 2018.115.03:24:00 ##################
+2018.115.07:45:18;"missed time 2018.115.03:21:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.03:22:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.03:22:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.03:24:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.03:29:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0032 to start at 2018.115.03:32:00 ##################
+2018.115.07:45:18;"missed time 2018.115.03:30:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.03:30:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.03:32:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.03:37:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0033 to start at 2018.115.03:43:00 ################
+2018.115.07:45:18;"missed time 2018.115.03:40:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.03:41:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.03:41:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.03:43:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.03:47:00
+2018.115.07:45:18;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0034 to start at 2018.115.03:56:00 ##################
+2018.115.07:45:18;"missed time 2018.115.03:53:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.03:54:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.03:54:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.03:56:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.04:01:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0035 to start at 2018.115.04:04:00 ##################
+2018.115.07:45:18;"missed time 2018.115.04:02:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.04:02:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.04:04:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.04:08:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0036 to start at 2018.115.04:14:00 ################
+2018.115.07:45:18;"missed time 2018.115.04:11:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.04:12:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.04:12:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.04:14:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.04:18:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0037 to start at 2018.115.04:24:00 ##################
+2018.115.07:45:18;"missed time 2018.115.04:21:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.04:22:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.04:22:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.04:24:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.04:29:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0038 to start at 2018.115.04:32:00 ##################
+2018.115.07:45:18;"missed time 2018.115.04:30:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.04:30:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.04:32:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.04:37:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0039 to start at 2018.115.04:43:00 ################
+2018.115.07:45:18;"missed time 2018.115.04:40:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.04:41:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.04:41:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.04:43:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.04:47:00
+2018.115.07:45:18;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0040 to start at 2018.115.04:56:00 ##################
+2018.115.07:45:18;"missed time 2018.115.04:53:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.04:54:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.04:54:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.04:56:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.05:01:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0041 to start at 2018.115.05:04:00 ##################
+2018.115.07:45:18;"missed time 2018.115.05:02:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.05:02:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.05:04:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.05:08:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0042 to start at 2018.115.05:14:00 ################
+2018.115.07:45:18;"missed time 2018.115.05:11:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.05:12:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.05:12:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.05:14:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.05:18:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0043 to start at 2018.115.05:24:00 ##################
+2018.115.07:45:18;"missed time 2018.115.05:21:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.05:22:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.05:22:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.05:24:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.05:29:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0044 to start at 2018.115.05:32:00 ##################
+2018.115.07:45:18;"missed time 2018.115.05:30:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.05:30:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.05:32:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.05:37:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0045 to start at 2018.115.05:43:00 ################
+2018.115.07:45:18;"missed time 2018.115.05:40:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.05:41:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.05:41:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.05:43:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.05:47:00
+2018.115.07:45:18;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0046 to start at 2018.115.05:56:00 ##################
+2018.115.07:45:18;"missed time 2018.115.05:53:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.05:54:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.05:54:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.05:56:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.06:01:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0047 to start at 2018.115.06:04:00 ##################
+2018.115.07:45:18;"missed time 2018.115.06:02:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.06:02:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.06:04:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.06:08:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0048 to start at 2018.115.06:14:00 ################
+2018.115.07:45:18;"missed time 2018.115.06:11:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.06:12:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.06:12:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.06:14:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.06:18:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0049 to start at 2018.115.06:24:00 ##################
+2018.115.07:45:18;"missed time 2018.115.06:21:50 : source('M87'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.06:22:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.06:22:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.06:24:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.06:29:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target M87 scanname No0050 to start at 2018.115.06:32:00 ##################
+2018.115.07:45:18;"missed time 2018.115.06:30:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.06:30:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.06:32:00 : vlbi_scan(t_mins=5)
+2018.115.07:45:18;"#     scan end at 2018.115.06:37:00
+2018.115.07:45:18;"#     230 idle seconds (3.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target 3C279 scanname No0051 to start at 2018.115.06:43:00 ################
+2018.115.07:45:18;"missed time 2018.115.06:40:50 : source('3C279'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.06:41:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.06:41:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.06:43:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.06:47:00
+2018.115.07:45:18;"#     1070 idle seconds (17.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target SGRA scanname No0052 to start at 2018.115.07:07:00 #################
+2018.115.07:45:18;"missed time 2018.115.07:04:50 : source('SGRA'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.07:05:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.07:05:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.07:07:00 : vlbi_scan(t_mins=10)
+2018.115.07:45:18;"#     scan end at 2018.115.07:17:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target SGRA scanname No0053 to start at 2018.115.07:20:00 #################
+2018.115.07:45:18;"missed time 2018.115.07:18:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.07:18:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.07:20:00 : vlbi_scan(t_mins=10)
+2018.115.07:45:18;"#     scan end at 2018.115.07:30:00
+2018.115.07:45:18;"#     170 idle seconds (2.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target NRAO530 scanname No0054 to start at 2018.115.07:35:00 ##############
+2018.115.07:45:18;"missed time 2018.115.07:32:50 : source('NRAO530'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.07:33:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.07:33:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.07:35:00 : vlbi_scan(t_mins=4)
+2018.115.07:45:18;"#     scan end at 2018.115.07:39:00
+2018.115.07:45:18;"#     170 idle seconds (2.8 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target SGRA scanname No0055 to start at 2018.115.07:44:00 #################
+2018.115.07:45:18;"missed time 2018.115.07:41:50 : source('SGRA'); go(); track()
+2018.115.07:45:18;"missed time 2018.115.07:42:20 : vlbi_tsys()
+2018.115.07:45:18;"missed time 2018.115.07:42:45 : vlbi_reference_scan()
+2018.115.07:45:18;"missed time 2018.115.07:44:00 : vlbi_scan(t_mins=10)
+2018.115.07:45:18;"#     scan end at 2018.115.07:54:00
+2018.115.07:45:18;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.07:45:18;"
+2018.115.07:45:18;"#### Target SGRA scanname No0056 to start at 2018.115.07:57:00 #################
+2018.115.07:55:20;"vlbi_tsys()
+2018.115.07:55:20;"reply from APECS: OK
+2018.115.07:55:21;"reply from APECS: (timeout)
+2018.115.07:55:45;"vlbi_reference_scan()
+2018.115.07:55:46;"reply from APECS: (timeout)
+2018.115.07:57:00;"vlbi_scan(t_mins=9)
+2018.115.07:57:00;"reply from APECS: OK
+2018.115.07:57:01;"reply from APECS: (timeout)
+2018.115.07:57:01;"#     scan end at 2018.115.08:06:00
+2018.115.07:57:01;"#     110 idle seconds (1.8 minutes) until next remote command
+2018.115.07:57:01;"
+2018.115.07:57:01;"#### Target NRAO530 scanname No0057 to start at 2018.115.08:10:00 ##############
+2018.115.08:07:50;"source('NRAO530'); go(); track()
+2018.115.08:07:50;"reply from APECS: OK
+2018.115.08:07:51;"reply from APECS: (timeout)
+2018.115.08:08:20;"vlbi_tsys()
+2018.115.08:08:21;"reply from APECS: (timeout)
+2018.115.08:08:45;"vlbi_reference_scan()
+2018.115.08:08:45;"reply from APECS: OK
+2018.115.08:08:45;"reply from APECS: OK
+2018.115.08:08:46;"reply from APECS: (timeout)
+2018.115.08:10:00;"vlbi_scan(t_mins=4)
+2018.115.08:10:00;"reply from APECS: OK
+2018.115.08:10:01;"reply from APECS: (timeout)
+2018.115.08:10:01;"#     scan end at 2018.115.08:14:00
+2018.115.08:10:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.08:10:01;"
+2018.115.08:10:01;"#### Target SGRA scanname No0058 to start at 2018.115.08:23:00 #################
+2018.115.08:20:50;"source('SGRA'); go(); track()
+2018.115.08:20:50;"reply from APECS: OK
+2018.115.08:20:51;"reply from APECS: (timeout)
+2018.115.08:21:20;"vlbi_tsys()
+2018.115.08:21:20;"reply from APECS: OK
+2018.115.08:21:20;"reply from APECS: OK
+2018.115.08:21:21;"reply from APECS: (timeout)
+2018.115.08:21:45;"vlbi_reference_scan()
+2018.115.08:21:46;"reply from APECS: (timeout)
+2018.115.08:23:00;"vlbi_scan(t_mins=10)
+2018.115.08:23:00;"reply from APECS: OK
+2018.115.08:23:01;"reply from APECS: (timeout)
+2018.115.08:23:01;"#     scan end at 2018.115.08:33:00
+2018.115.08:23:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.08:23:01;"
+2018.115.08:23:01;"#### Target SGRA scanname No0059 to start at 2018.115.08:36:00 #################
+2018.115.08:34:20;"vlbi_tsys()
+2018.115.08:34:21;"reply from APECS: (timeout)
+2018.115.08:34:45;"vlbi_reference_scan()
+2018.115.08:34:45;"reply from APECS: OK
+2018.115.08:34:45;"reply from APECS: OK
+2018.115.08:34:46;"reply from APECS: (timeout)
+2018.115.08:36:00;"vlbi_scan(t_mins=7)
+2018.115.08:36:00;"reply from APECS: OK
+2018.115.08:36:01;"reply from APECS: (timeout)
+2018.115.08:36:01;"#     scan end at 2018.115.08:43:00
+2018.115.08:36:01;"#     170 idle seconds (2.8 minutes) until next remote command
+2018.115.08:36:01;"
+2018.115.08:36:01;"#### Target NRAO530 scanname No0060 to start at 2018.115.08:48:00 ##############
+2018.115.08:45:50;"source('NRAO530'); go(); track()
+2018.115.08:45:50;"reply from APECS: OK
+2018.115.08:45:51;"reply from APECS: (timeout)
+2018.115.08:46:20;"vlbi_tsys()
+2018.115.08:46:21;"reply from APECS: (timeout)
+2018.115.08:46:45;"vlbi_reference_scan()
+2018.115.08:46:46;"reply from APECS: (timeout)
+2018.115.08:48:00;"vlbi_scan(t_mins=4)
+2018.115.08:48:00;"reply from APECS: OK
+2018.115.08:48:00;"reply from APECS: OK
+2018.115.08:48:00;"reply from APECS: OK
+2018.115.08:48:01;"reply from APECS: (timeout)
+2018.115.08:48:01;"#     scan end at 2018.115.08:52:00
+2018.115.08:48:01;"#     170 idle seconds (2.8 minutes) until next remote command
+2018.115.08:48:01;"
+2018.115.08:48:01;"#### Target SGRA scanname No0061 to start at 2018.115.08:57:00 #################
+2018.115.08:54:50;"source('SGRA'); go(); track()
+2018.115.08:54:50;"reply from APECS: OK
+2018.115.08:54:51;"reply from APECS: (timeout)
+2018.115.08:55:20;"vlbi_tsys()
+2018.115.08:55:20;"reply from APECS: OK
+2018.115.08:55:20;"reply from APECS: OK
+2018.115.08:55:21;"reply from APECS: (timeout)
+2018.115.08:55:45;"vlbi_reference_scan()
+2018.115.08:55:46;"reply from APECS: (timeout)
+2018.115.08:57:00;"vlbi_scan(t_mins=9)
+2018.115.08:57:00;"reply from APECS: OK
+2018.115.08:57:01;"reply from APECS: (timeout)
+2018.115.08:57:01;"#     scan end at 2018.115.09:06:00
+2018.115.08:57:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.08:57:01;"
+2018.115.08:57:01;"#### Target SGRA scanname No0062 to start at 2018.115.09:09:00 #################
+2018.115.09:07:20;"vlbi_tsys()
+2018.115.09:07:20;"reply from APECS: OK
+2018.115.09:07:21;"reply from APECS: (timeout)
+2018.115.09:07:45;"vlbi_reference_scan()
+2018.115.09:07:45;"reply from APECS: OK
+2018.115.09:07:46;"reply from APECS: (timeout)
+2018.115.09:09:00;"vlbi_scan(t_mins=10)
+2018.115.09:09:00;"reply from APECS: OK
+2018.115.09:09:01;"reply from APECS: (timeout)
+2018.115.09:09:01;"#     scan end at 2018.115.09:19:00
+2018.115.09:09:01;"#     110 idle seconds (1.8 minutes) until next remote command
+2018.115.09:09:01;"
+2018.115.09:09:01;"#### Target NRAO530 scanname No0063 to start at 2018.115.09:23:00 ##############
+2018.115.09:20:50;"source('NRAO530'); go(); track()
+2018.115.09:20:50;"reply from APECS: OK
+2018.115.09:20:51;"reply from APECS: (timeout)
+2018.115.09:21:20;"vlbi_tsys()
+2018.115.09:21:21;"reply from APECS: (timeout)
+2018.115.09:21:45;"vlbi_reference_scan()
+2018.115.09:21:46;"reply from APECS: (timeout)
+2018.115.09:23:00;"vlbi_scan(t_mins=4)
+2018.115.09:23:01;"reply from APECS: (timeout)
+2018.115.09:23:01;"#     scan end at 2018.115.09:27:00
+2018.115.09:23:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.09:23:01;"
+2018.115.09:23:01;"#### Target SGRA scanname No0064 to start at 2018.115.09:36:00 #################
+2018.115.09:33:50;"source('SGRA'); go(); track()
+2018.115.09:33:51;"reply from APECS: (timeout)
+2018.115.09:34:20;"vlbi_tsys()
+2018.115.09:34:20;"reply from APECS: OK
+2018.115.09:34:20;"reply from APECS: OK
+2018.115.09:34:21;"reply from APECS: (timeout)
+2018.115.09:34:45;"vlbi_reference_scan()
+2018.115.09:34:46;"reply from APECS: (timeout)
+2018.115.09:36:00;"vlbi_scan(t_mins=7)
+2018.115.09:36:00;"reply from APECS: OK
+2018.115.09:36:01;"reply from APECS: (timeout)
+2018.115.09:36:01;"#     scan end at 2018.115.09:43:00
+2018.115.09:36:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.09:36:01;"
+2018.115.09:36:01;"#### Target SGRA scanname No0065 to start at 2018.115.09:46:00 #################
+2018.115.09:44:20;"vlbi_tsys()
+2018.115.09:44:20;"reply from APECS: OK
+2018.115.09:44:20;"reply from APECS: OK
+2018.115.09:44:21;"reply from APECS: (timeout)
+2018.115.09:44:45;"vlbi_reference_scan()
+2018.115.09:44:46;"reply from APECS: (timeout)
+2018.115.09:46:00;"vlbi_scan(t_mins=10)
+2018.115.09:46:00;"reply from APECS: OK
+2018.115.09:46:01;"reply from APECS: (timeout)
+2018.115.09:46:01;"#     scan end at 2018.115.09:56:00
+2018.115.09:46:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.09:46:01;"
+2018.115.09:46:01;"#### Target SGRA scanname No0066 to start at 2018.115.09:59:00 #################
+2018.115.09:57:20;"vlbi_tsys()
+2018.115.09:57:20;"reply from APECS: OK
+2018.115.09:57:21;"reply from APECS: (timeout)
+2018.115.09:57:45;"vlbi_reference_scan()
+2018.115.09:57:45;"reply from APECS: OK
+2018.115.09:57:46;"reply from APECS: (timeout)
+2018.115.09:59:00;"vlbi_scan(t_mins=7)
+2018.115.09:59:00;"reply from APECS: OK
+2018.115.09:59:01;"reply from APECS: (timeout)
+2018.115.09:59:01;"#     scan end at 2018.115.10:06:00
+2018.115.09:59:01;"#     170 idle seconds (2.8 minutes) until next remote command
+2018.115.09:59:01;"
+2018.115.09:59:01;"#### Target NRAO530 scanname No0067 to start at 2018.115.10:11:00 ##############
+2018.115.10:08:50;"source('NRAO530'); go(); track()
+2018.115.10:08:50;"reply from APECS: OK
+2018.115.10:08:51;"reply from APECS: (timeout)
+2018.115.10:09:20;"vlbi_tsys()
+2018.115.10:09:20;"reply from APECS: OK
+2018.115.10:09:20;"reply from APECS: OK
+2018.115.10:09:21;"reply from APECS: (timeout)
+2018.115.10:09:45;"vlbi_reference_scan()
+2018.115.10:09:46;"reply from APECS: (timeout)
+2018.115.10:11:00;"vlbi_scan(t_mins=4)
+2018.115.10:11:00;"reply from APECS: OK
+2018.115.10:11:01;"reply from APECS: (timeout)
+2018.115.10:11:01;"#     scan end at 2018.115.10:15:00
+2018.115.10:11:01;"#     170 idle seconds (2.8 minutes) until next remote command
+2018.115.10:11:01;"
+2018.115.10:11:01;"#### Target SGRA scanname No0068 to start at 2018.115.10:20:00 #################
+2018.115.10:17:50;"source('SGRA'); go(); track()
+2018.115.10:17:50;"reply from APECS: OK
+2018.115.10:17:51;"reply from APECS: (timeout)
+2018.115.10:18:20;"vlbi_tsys()
+2018.115.10:18:20;"reply from APECS: OK
+2018.115.10:18:20;"reply from APECS: OK
+2018.115.10:18:21;"reply from APECS: (timeout)
+2018.115.10:18:45;"vlbi_reference_scan()
+2018.115.10:18:46;"reply from APECS: (timeout)
+2018.115.10:20:00;"vlbi_scan(t_mins=9)
+2018.115.10:20:00;"reply from APECS: OK
+2018.115.10:20:01;"reply from APECS: (timeout)
+2018.115.10:20:01;"#     scan end at 2018.115.10:29:00
+2018.115.10:20:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.10:20:01;"
+2018.115.10:20:01;"#### Target SGRA scanname No0069 to start at 2018.115.10:32:00 #################
+2018.115.10:30:20;"vlbi_tsys()
+2018.115.10:30:20;"reply from APECS: OK
+2018.115.10:30:20;"reply from APECS: OK
+2018.115.10:30:21;"reply from APECS: (timeout)
+2018.115.10:30:45;"vlbi_reference_scan()
+2018.115.10:30:46;"reply from APECS: (timeout)
+2018.115.10:32:00;"vlbi_scan(t_mins=7)
+2018.115.10:32:00;"reply from APECS: OK
+2018.115.10:32:01;"reply from APECS: (timeout)
+2018.115.10:32:01;"#     scan end at 2018.115.10:39:00
+2018.115.10:32:01;"#     110 idle seconds (1.8 minutes) until next remote command
+2018.115.10:32:01;"
+2018.115.10:32:01;"#### Target NRAO530 scanname No0070 to start at 2018.115.10:43:00 ##############
+2018.115.10:40:50;"source('NRAO530'); go(); track()
+2018.115.10:40:50;"reply from APECS: OK
+2018.115.10:40:51;"reply from APECS: (timeout)
+2018.115.10:41:20;"vlbi_tsys()
+2018.115.10:41:20;"reply from APECS: OK
+2018.115.10:41:20;"reply from APECS: OK
+2018.115.10:41:21;"reply from APECS: (timeout)
+2018.115.10:41:45;"vlbi_reference_scan()
+2018.115.10:41:46;"reply from APECS: (timeout)
+2018.115.10:43:00;"vlbi_scan(t_mins=4)
+2018.115.10:43:00;"reply from APECS: OK
+2018.115.10:43:01;"reply from APECS: (timeout)
+2018.115.10:43:01;"#     scan end at 2018.115.10:47:00
+2018.115.10:43:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.10:43:01;"
+2018.115.10:43:01;"#### Target SGRA scanname No0071 to start at 2018.115.10:56:00 #################
+2018.115.10:53:50;"source('SGRA'); go(); track()
+2018.115.10:53:50;"reply from APECS: OK
+2018.115.10:53:51;"reply from APECS: (timeout)
+2018.115.10:54:20;"vlbi_tsys()
+2018.115.10:54:20;"reply from APECS: OK
+2018.115.10:54:20;"reply from APECS: OK
+2018.115.10:54:21;"reply from APECS: (timeout)
+2018.115.10:54:45;"vlbi_reference_scan()
+2018.115.10:54:46;"reply from APECS: (timeout)
+2018.115.10:56:00;"vlbi_scan(t_mins=8)
+2018.115.10:56:00;"reply from APECS: OK
+2018.115.10:56:01;"reply from APECS: (timeout)
+2018.115.10:56:01;"#     scan end at 2018.115.11:04:00
+2018.115.10:56:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.10:56:01;"
+2018.115.10:56:01;"#### Target SGRA scanname No0072 to start at 2018.115.11:07:00 #################
+2018.115.11:05:20;"vlbi_tsys()
+2018.115.11:05:20;"reply from APECS: OK
+2018.115.11:05:20;"reply from APECS: OK
+2018.115.11:05:21;"reply from APECS: (timeout)
+2018.115.11:05:45;"vlbi_reference_scan()
+2018.115.11:05:46;"reply from APECS: (timeout)
+2018.115.11:07:00;"vlbi_scan(t_mins=8)
+2018.115.11:07:00;"reply from APECS: OK
+2018.115.11:07:01;"reply from APECS: (timeout)
+2018.115.11:07:01;"#     scan end at 2018.115.11:15:00
+2018.115.11:07:01;"#     170 idle seconds (2.8 minutes) until next remote command
+2018.115.11:07:01;"
+2018.115.11:07:01;"#### Target NRAO530 scanname No0073 to start at 2018.115.11:20:00 ##############
+2018.115.11:17:50;"source('NRAO530'); go(); track()
+2018.115.11:17:50;"reply from APECS: OK
+2018.115.11:17:51;"reply from APECS: (timeout)
+2018.115.11:18:20;"vlbi_tsys()
+2018.115.11:18:20;"reply from APECS: OK
+2018.115.11:18:20;"reply from APECS: OK
+2018.115.11:18:21;"reply from APECS: (timeout)
+2018.115.11:18:45;"vlbi_reference_scan()
+2018.115.11:18:46;"reply from APECS: (timeout)
+2018.115.11:20:00;"vlbi_scan(t_mins=4)
+2018.115.11:20:00;"reply from APECS: OK
+2018.115.11:20:01;"reply from APECS: (timeout)
+2018.115.11:20:01;"#     scan end at 2018.115.11:24:00
+2018.115.11:20:01;"#     170 idle seconds (2.8 minutes) until next remote command
+2018.115.11:20:01;"
+2018.115.11:20:01;"#### Target SGRA scanname No0074 to start at 2018.115.11:29:00 #################
+2018.115.11:26:50;"source('SGRA'); go(); track()
+2018.115.11:26:50;"reply from APECS: OK
+2018.115.11:26:51;"reply from APECS: (timeout)
+2018.115.11:27:20;"vlbi_tsys()
+2018.115.11:27:20;"reply from APECS: OK
+2018.115.11:27:20;"reply from APECS: OK
+2018.115.11:27:21;"reply from APECS: (timeout)
+2018.115.11:27:45;"vlbi_reference_scan()
+2018.115.11:27:46;"reply from APECS: (timeout)
+2018.115.11:29:00;"vlbi_scan(t_mins=7)
+2018.115.11:29:00;"reply from APECS: OK
+2018.115.11:29:01;"reply from APECS: (timeout)
+2018.115.11:29:01;"#     scan end at 2018.115.11:36:00
+2018.115.11:29:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.11:29:01;"
+2018.115.11:29:01;"#### Target SGRA scanname No0075 to start at 2018.115.11:39:00 #################
+2018.115.11:37:20;"vlbi_tsys()
+2018.115.11:37:20;"reply from APECS: OK
+2018.115.11:37:20;"reply from APECS: OK
+2018.115.11:37:21;"reply from APECS: (timeout)
+2018.115.11:37:45;"vlbi_reference_scan()
+2018.115.11:37:46;"reply from APECS: (timeout)
+2018.115.11:39:00;"vlbi_scan(t_mins=10)
+2018.115.11:39:00;"reply from APECS: OK
+2018.115.11:39:01;"reply from APECS: (timeout)
+2018.115.11:39:01;"#     scan end at 2018.115.11:49:00
+2018.115.11:39:01;"#     80 idle seconds (1.3 minutes) until next remote command
+2018.115.11:39:01;"
+2018.115.11:39:01;"#### Target SGRA scanname No0076 to start at 2018.115.11:52:00 #################
+2018.115.11:50:20;"vlbi_tsys()
+2018.115.11:50:21;"reply from APECS: (timeout)
+2018.115.11:50:45;"vlbi_reference_scan()
+2018.115.11:50:45;"reply from APECS: OK
+2018.115.11:50:45;"reply from APECS: OK
+2018.115.11:50:46;"reply from APECS: (timeout)
+2018.115.11:52:00;"vlbi_scan(t_mins=10)
+2018.115.11:52:00;"reply from APECS: OK
+2018.115.11:52:01;"reply from APECS: (timeout)
+2018.115.11:52:01;"#     scan end at 2018.115.12:02:00
+2018.115.11:52:01;"#     110 idle seconds (1.8 minutes) until next remote command
+2018.115.11:52:01;"
+2018.115.11:52:01;"#### Target NRAO530 scanname No0077 to start at 2018.115.12:06:00 ##############
+2018.115.12:03:50;"source('NRAO530'); go(); track()
+2018.115.12:03:50;"reply from APECS: OK
+2018.115.12:03:51;"reply from APECS: (timeout)
+2018.115.12:04:20;"vlbi_tsys()
+2018.115.12:04:20;"reply from APECS: OK
+2018.115.12:04:20;"reply from APECS: OK
+2018.115.12:04:21;"reply from APECS: (timeout)
+2018.115.12:04:45;"vlbi_reference_scan()
+2018.115.12:04:46;"reply from APECS: (timeout)
+2018.115.12:06:00;"vlbi_scan(t_mins=4)
+2018.115.12:06:00;"reply from APECS: OK
+2018.115.12:06:01;"reply from APECS: (timeout)
+2018.115.12:06:01;"#     scan end at 2018.115.12:10:00
+2018.115.12:06:01;"#     410 idle seconds (6.8 minutes) until next remote command
+2018.115.12:06:01;"
+2018.115.12:06:01;"#### Target SGRA scanname No0078 to start at 2018.115.12:19:00 #################
+2018.115.12:16:50;"source('SGRA'); go(); track()
+2018.115.12:16:50;"reply from APECS: OK
+2018.115.12:16:51;"reply from APECS: (timeout)
+2018.115.12:17:20;"vlbi_tsys()
+2018.115.12:17:20;"reply from APECS: OK
+2018.115.12:17:20;"reply from APECS: OK
+2018.115.12:17:21;"reply from APECS: (timeout)
+2018.115.12:17:45;"vlbi_reference_scan()
+2018.115.12:17:46;"reply from APECS: (timeout)
+2018.115.12:19:00;"vlbi_scan(t_mins=10)
+2018.115.12:19:00;"reply from APECS: OK
+2018.115.12:19:01;"reply from APECS: (timeout)
+2018.115.12:19:01;"#     scan end at 2018.115.12:29:00
+2018.115.12:19:01;"#     170 idle seconds (2.8 minutes) until next remote command
+2018.115.12:19:01;"
+2018.115.12:19:01;"#### Target NRAO530 scanname No0079 to start at 2018.115.12:34:00 ##############
+2018.115.12:20:36;"----------| USER-REQUESTED STOP OF  e18c25.apecs.obs |----------

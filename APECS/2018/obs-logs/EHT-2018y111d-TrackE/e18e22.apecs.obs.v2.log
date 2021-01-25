@@ -1,0 +1,899 @@
+2018.112.00:46:17;"----------| START OF e18e22.apecs.obs.v2 |----------
+2018.112.00:46:17;"Using TAI-UTC offset of +37 seconds
+2018.112.00:46:17;"#
+2018.112.00:46:17;"# APEX observing script from file e18e22.xml
+2018.112.00:46:17;"# File created on 2018.112.00:38:00 UT
+2018.112.00:46:17;"#
+2018.112.00:46:17;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.112.00:46:17;"# Details on the columns:
+2018.112.00:46:17;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.112.00:46:17;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.112.00:46:17;"#    2) estimated duration of the command in seconds
+2018.112.00:46:17;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.112.00:46:17;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.112.00:46:17;"#
+2018.112.00:46:17;"# At time              Duration   Command
+2018.112.00:46:17;"## @always                10         execfile('pi230_setup.apecs')
+2018.112.00:46:17;"## @always                2          execfile('vlbi-pi230_commands.py')
+2018.112.00:46:17;"#### Target J0739+0137 scanname 111-2231 to start at 2018.111.22:31:00 #########
+2018.112.00:46:17;"missed time 2018.111.22:31:00 : vlbi_tp_onsource(src='J0739+0137',t=5)
+2018.112.00:46:17;"missed time 2018.111.22:36:05 : source('J0831+0429'); go()
+2018.112.00:46:17;"#     225 seconds (3.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target J0831+0429 scanname 111-2241 to start at 2018.111.22:41:00 #########
+2018.112.00:46:17;"missed time 2018.111.22:41:00 : vlbi_tp_onsource(src='J0831+0429',t=5)
+2018.112.00:46:17;"missed time 2018.111.22:46:05 : source('OJ287'); go()
+2018.112.00:46:17;"#     225 seconds (3.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target OJ287 scanname 111-2251 to start at 2018.111.22:51:00 ##############
+2018.112.00:46:17;"missed time 2018.111.22:51:00 : vlbi_tp_onsource(src='OJ287',t=5)
+2018.112.00:46:17;"missed time 2018.111.22:56:05 : source('M87'); go()
+2018.112.00:46:17;"missed time 2018.111.22:57:15 : interactive('About 525 seconds available for pointing/focusing/other')
+2018.112.00:46:17;"#     525 seconds (8.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target M87 scanname 111-2306 to start at 2018.111.23:06:00 ################
+2018.112.00:46:17;"missed time 2018.111.23:06:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.00:46:17;"missed time 2018.111.23:13:05 : source('M87'); go()
+2018.112.00:46:17;"#     105 seconds (1.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target M87 scanname 111-2316 to start at 2018.111.23:16:00 ################
+2018.112.00:46:17;"missed time 2018.111.23:16:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:46:17;"missed time 2018.111.23:22:05 : source('3C279'); go()
+2018.112.00:46:17;"#     285 seconds (4.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target 3C279 scanname 111-2328 to start at 2018.111.23:28:00 ##############
+2018.112.00:46:17;"missed time 2018.111.23:28:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.00:46:17;"missed time 2018.111.23:32:05 : source('M87'); go()
+2018.112.00:46:17;"#     105 seconds (1.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target M87 scanname 111-2335 to start at 2018.111.23:35:00 ################
+2018.112.00:46:17;"missed time 2018.111.23:35:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.00:46:17;"missed time 2018.111.23:42:05 : source('M87'); go()
+2018.112.00:46:17;"#     105 seconds (1.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target M87 scanname 111-2345 to start at 2018.111.23:45:00 ################
+2018.112.00:46:17;"missed time 2018.111.23:45:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:46:17;"missed time 2018.111.23:51:05 : source('M87'); go()
+2018.112.00:46:17;"#     465 seconds (7.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target M87 scanname 112-0000 to start at 2018.112.00:00:00 ################
+2018.112.00:46:17;"missed time 2018.112.00:00:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:46:17;"missed time 2018.112.00:06:05 : source('M87'); go()
+2018.112.00:46:17;"#     105 seconds (1.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target M87 scanname 112-0009 to start at 2018.112.00:09:00 ################
+2018.112.00:46:17;"missed time 2018.112.00:09:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:46:17;"missed time 2018.112.00:15:05 : source('3C279'); go()
+2018.112.00:46:17;"#     285 seconds (4.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target 3C279 scanname 112-0021 to start at 2018.112.00:21:00 ##############
+2018.112.00:46:17;"missed time 2018.112.00:21:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.00:46:17;"missed time 2018.112.00:25:05 : source('M87'); go()
+2018.112.00:46:17;"#     105 seconds (1.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target M87 scanname 112-0028 to start at 2018.112.00:28:00 ################
+2018.112.00:46:17;"missed time 2018.112.00:28:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.00:46:17;"missed time 2018.112.00:35:05 : source('M87'); go()
+2018.112.00:46:17;"#     105 seconds (1.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target M87 scanname 112-0038 to start at 2018.112.00:38:00 ################
+2018.112.00:46:17;"missed time 2018.112.00:38:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:46:17;"missed time 2018.112.00:44:05 : source('M87'); go()
+2018.112.00:46:17;"#     465 seconds (7.8 minutes) until next scan
+2018.112.00:46:17;"
+2018.112.00:46:17;"#### Target M87 scanname 112-0053 to start at 2018.112.00:53:00 ################
+2018.112.00:53:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:53:01;"reply from APECS: (timeout)
+2018.112.00:59:05;"source('M87'); go()
+2018.112.00:59:06;"reply from APECS: (timeout)
+2018.112.00:59:06;"#     105 seconds (1.8 minutes) until next scan
+2018.112.00:59:06;"
+2018.112.00:59:06;"#### Target M87 scanname 112-0102 to start at 2018.112.01:02:00 ################
+2018.112.01:00:38;"----------| USER-REQUESTED STOP OF  e18e22.apecs.obs.v2 |----------
+2018.112.01:00:40;"----------| START OF e18e22.apecs.obs.v2 |----------
+2018.112.01:00:40;"Using TAI-UTC offset of +37 seconds
+2018.112.01:00:40;"#
+2018.112.01:00:40;"# APEX observing script from file e18e22.xml
+2018.112.01:00:40;"# File created on 2018.112.01:00:43 UT
+2018.112.01:00:40;"#
+2018.112.01:00:40;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.112.01:00:40;"# Details on the columns:
+2018.112.01:00:40;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.112.01:00:40;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.112.01:00:40;"#    2) estimated duration of the command in seconds
+2018.112.01:00:40;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.112.01:00:40;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.112.01:00:40;"#
+2018.112.01:00:40;"# At time              Duration   Command
+2018.112.01:00:40;"execfile('pi230_setup.apecs')
+2018.112.01:00:40;"reply from APECS: OK
+2018.112.01:00:42;"execfile('vlbi-pi230_commands.py')
+2018.112.01:00:42;"reply from APECS: OK
+2018.112.01:00:44;"#### Target J0739+0137 scanname 111-2231 to start at 2018.111.22:31:00 #########
+2018.112.01:00:44;"missed time 2018.111.22:31:00 : vlbi_tp_onsource(src='J0739+0137',t=5)
+2018.112.01:00:44;"missed time 2018.111.22:36:05 : source('J0831+0429'); go()
+2018.112.01:00:44;"#     295 seconds (4.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target J0831+0429 scanname 111-2241 to start at 2018.111.22:41:00 #########
+2018.112.01:00:44;"missed time 2018.111.22:41:00 : vlbi_tp_onsource(src='J0831+0429',t=5)
+2018.112.01:00:44;"missed time 2018.111.22:46:05 : source('OJ287'); go()
+2018.112.01:00:44;"#     295 seconds (4.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target OJ287 scanname 111-2251 to start at 2018.111.22:51:00 ##############
+2018.112.01:00:44;"missed time 2018.111.22:51:00 : vlbi_tp_onsource(src='OJ287',t=5)
+2018.112.01:00:44;"missed time 2018.111.22:56:05 : source('M87'); go()
+2018.112.01:00:44;"#     595 seconds (9.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 111-2306 to start at 2018.111.23:06:00 ################
+2018.112.01:00:44;"missed time 2018.111.23:06:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.01:00:44;"missed time 2018.111.23:13:05 : source('M87'); go()
+2018.112.01:00:44;"#     175 seconds (2.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 111-2316 to start at 2018.111.23:16:00 ################
+2018.112.01:00:44;"missed time 2018.111.23:16:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:00:44;"missed time 2018.111.23:22:05 : source('3C279'); go()
+2018.112.01:00:44;"#     355 seconds (5.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target 3C279 scanname 111-2328 to start at 2018.111.23:28:00 ##############
+2018.112.01:00:44;"missed time 2018.111.23:28:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.01:00:44;"missed time 2018.111.23:32:05 : source('M87'); go()
+2018.112.01:00:44;"#     175 seconds (2.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 111-2335 to start at 2018.111.23:35:00 ################
+2018.112.01:00:44;"missed time 2018.111.23:35:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.01:00:44;"missed time 2018.111.23:42:05 : source('M87'); go()
+2018.112.01:00:44;"#     175 seconds (2.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 111-2345 to start at 2018.111.23:45:00 ################
+2018.112.01:00:44;"missed time 2018.111.23:45:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:00:44;"missed time 2018.111.23:51:05 : source('M87'); go()
+2018.112.01:00:44;"#     535 seconds (8.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 112-0000 to start at 2018.112.00:00:00 ################
+2018.112.01:00:44;"missed time 2018.112.00:00:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:00:44;"missed time 2018.112.00:06:05 : source('M87'); go()
+2018.112.01:00:44;"#     175 seconds (2.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 112-0009 to start at 2018.112.00:09:00 ################
+2018.112.01:00:44;"missed time 2018.112.00:09:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:00:44;"missed time 2018.112.00:15:05 : source('3C279'); go()
+2018.112.01:00:44;"#     355 seconds (5.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target 3C279 scanname 112-0021 to start at 2018.112.00:21:00 ##############
+2018.112.01:00:44;"missed time 2018.112.00:21:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.01:00:44;"missed time 2018.112.00:25:05 : source('M87'); go()
+2018.112.01:00:44;"#     175 seconds (2.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 112-0028 to start at 2018.112.00:28:00 ################
+2018.112.01:00:44;"missed time 2018.112.00:28:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.01:00:44;"missed time 2018.112.00:35:05 : source('M87'); go()
+2018.112.01:00:44;"#     175 seconds (2.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 112-0038 to start at 2018.112.00:38:00 ################
+2018.112.01:00:44;"missed time 2018.112.00:38:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:00:44;"missed time 2018.112.00:44:05 : source('M87'); go()
+2018.112.01:00:44;"#     535 seconds (8.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 112-0053 to start at 2018.112.00:53:00 ################
+2018.112.01:00:44;"missed time 2018.112.00:53:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:00:44;"missed time 2018.112.00:59:05 : source('M87'); go()
+2018.112.01:00:44;"#     175 seconds (2.9 minutes) until next scan
+2018.112.01:00:44;"
+2018.112.01:00:44;"#### Target M87 scanname 112-0102 to start at 2018.112.01:02:00 ################
+2018.112.01:02:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:02:01;"reply from APECS: (timeout)
+2018.112.01:08:05;"source('3C279'); go()
+2018.112.01:08:06;"reply from APECS: (timeout)
+2018.112.01:08:06;"#     355 seconds (5.9 minutes) until next scan
+2018.112.01:08:06;"
+2018.112.01:08:06;"#### Target 3C279 scanname 112-0114 to start at 2018.112.01:14:00 ##############
+2018.112.01:14:00;"vlbi_tp_onsource(src='3C279',t=4)
+2018.112.01:14:01;"reply from APECS: (timeout)
+2018.112.01:18:05;"source('M87'); go()
+2018.112.01:18:06;"reply from APECS: (timeout)
+2018.112.01:18:06;"#     175 seconds (2.9 minutes) until next scan
+2018.112.01:18:06;"
+2018.112.01:18:06;"#### Target M87 scanname 112-0121 to start at 2018.112.01:21:00 ################
+2018.112.01:21:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:21:01;"reply from APECS: (timeout)
+2018.112.01:27:05;"source('M87'); go()
+2018.112.01:27:06;"reply from APECS: (timeout)
+2018.112.01:27:06;"#     175 seconds (2.9 minutes) until next scan
+2018.112.01:27:06;"
+2018.112.01:27:06;"#### Target M87 scanname 112-0130 to start at 2018.112.01:30:00 ################
+2018.112.01:30:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:30:01;"reply from APECS: (timeout)
+2018.112.01:36:05;"source('3C279'); go()
+2018.112.01:36:06;"reply from APECS: (timeout)
+2018.112.01:36:06;"#     355 seconds (5.9 minutes) until next scan
+2018.112.01:36:06;"
+2018.112.01:36:06;"#### Target 3C279 scanname 112-0142 to start at 2018.112.01:42:00 ##############
+2018.112.01:42:00;"vlbi_tp_onsource(src='3C279',t=4)
+2018.112.01:42:01;"reply from APECS: (timeout)
+2018.112.01:46:05;"source('M87'); go()
+2018.112.01:46:06;"reply from APECS: (timeout)
+2018.112.01:46:06;"#     535 seconds (8.9 minutes) until next scan
+2018.112.01:46:06;"
+2018.112.01:46:06;"#### Target M87 scanname 112-0155 to start at 2018.112.01:55:00 ################
+2018.112.01:55:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.01:55:01;"reply from APECS: (timeout)
+2018.112.02:01:05;"source('M87'); go()
+2018.112.02:01:06;"reply from APECS: (timeout)
+2018.112.02:01:06;"#     175 seconds (2.9 minutes) until next scan
+2018.112.02:01:06;"
+2018.112.02:01:06;"#### Target M87 scanname 112-0204 to start at 2018.112.02:04:00 ################
+2018.112.02:04:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.02:04:01;"reply from APECS: (timeout)
+2018.112.02:10:05;"source('3C279'); go()
+2018.112.02:10:06;"reply from APECS: (timeout)
+2018.112.02:10:06;"#     355 seconds (5.9 minutes) until next scan
+2018.112.02:10:06;"
+2018.112.02:10:06;"#### Target 3C279 scanname 112-0216 to start at 2018.112.02:16:00 ##############
+2018.112.02:16:00;"vlbi_tp_onsource(src='3C279',t=4)
+2018.112.02:16:01;"reply from APECS: (timeout)
+2018.112.02:20:05;"source('M87'); go()
+2018.112.02:20:06;"reply from APECS: (timeout)
+2018.112.02:20:06;"#     355 seconds (5.9 minutes) until next scan
+2018.112.02:20:06;"
+2018.112.02:20:06;"#### Target M87 scanname 112-0226 to start at 2018.112.02:26:00 ################
+2018.112.02:26:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.02:26:01;"reply from APECS: (timeout)
+2018.112.02:32:05;"source('M87'); go()
+2018.112.02:32:06;"reply from APECS: (timeout)
+2018.112.02:32:06;"#     175 seconds (2.9 minutes) until next scan
+2018.112.02:32:06;"
+2018.112.02:32:06;"#### Target M87 scanname 112-0235 to start at 2018.112.02:35:00 ################
+2018.112.02:35:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.02:35:01;"reply from APECS: (timeout)
+2018.112.02:41:05;"source('3C279'); go()
+2018.112.02:41:06;"reply from APECS: (timeout)
+2018.112.02:41:06;"#     355 seconds (5.9 minutes) until next scan
+2018.112.02:41:06;"
+2018.112.02:41:06;"#### Target 3C279 scanname 112-0247 to start at 2018.112.02:47:00 ##############
+2018.112.02:47:00;"vlbi_tp_onsource(src='3C279',t=4)
+2018.112.02:47:01;"reply from APECS: (timeout)
+2018.112.02:51:05;"source('M87'); go()
+2018.112.02:51:06;"reply from APECS: (timeout)
+2018.112.02:51:06;"#     535 seconds (8.9 minutes) until next scan
+2018.112.02:51:06;"
+2018.112.02:51:06;"#### Target M87 scanname 112-0300 to start at 2018.112.03:00:00 ################
+2018.112.03:00:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.03:00:01;"reply from APECS: (timeout)
+2018.112.03:06:05;"source('M87'); go()
+2018.112.03:06:06;"reply from APECS: (timeout)
+2018.112.03:06:06;"#     175 seconds (2.9 minutes) until next scan
+2018.112.03:06:06;"
+2018.112.03:06:06;"#### Target M87 scanname 112-0309 to start at 2018.112.03:09:00 ################
+2018.112.03:09:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.03:09:01;"reply from APECS: (timeout)
+2018.112.03:15:05;"source('3C279'); go()
+2018.112.03:15:06;"reply from APECS: (timeout)
+2018.112.03:15:06;"#     355 seconds (5.9 minutes) until next scan
+2018.112.03:15:06;"
+2018.112.03:15:06;"#### Target 3C279 scanname 112-0321 to start at 2018.112.03:21:00 ##############
+2018.112.03:21:00;"vlbi_tp_onsource(src='3C279',t=4)
+2018.112.03:21:01;"reply from APECS: (timeout)
+2018.112.03:25:05;"source('M87'); go()
+2018.112.03:25:06;"reply from APECS: (timeout)
+2018.112.03:25:06;"#     175 seconds (2.9 minutes) until next scan
+2018.112.03:25:06;"
+2018.112.03:25:06;"#### Target M87 scanname 112-0328 to start at 2018.112.03:28:00 ################
+2018.112.03:28:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.03:28:01;"reply from APECS: (timeout)
+2018.112.03:34:05;"source('M87'); go()
+2018.112.03:34:06;"reply from APECS: (timeout)
+2018.112.03:34:06;"#     175 seconds (2.9 minutes) until next scan
+2018.112.03:34:06;"
+2018.112.03:34:06;"#### Target M87 scanname 112-0337 to start at 2018.112.03:37:00 ################
+2018.112.03:37:00;"vlbi_tp_onsource(src='M87',t=5)
+2018.112.03:37:01;"reply from APECS: (timeout)
+2018.112.03:42:50;"source('3C279'); go()
+2018.112.03:42:51;"reply from APECS: (timeout)
+2018.112.03:42:51;"#     290 seconds (4.8 minutes) until next scan
+2018.112.03:42:51;"
+2018.112.03:42:51;"#### Target 3C279 scanname 112-0348 to start at 2018.112.03:48:00 ##############
+2018.112.03:48:00;"vlbi_tp_onsource(src='3C279',t=4)
+2018.112.03:48:01;"reply from APECS: (timeout)
+2018.112.03:52:50;"source('SGRA'); go()
+2018.112.03:52:51;"reply from APECS: (timeout)
+2018.112.03:52:51;"#     1130 seconds (18.8 minutes) until next scan
+2018.112.03:52:51;"
+2018.112.03:52:51;"#### Target SGRA scanname 112-0412 to start at 2018.112.04:12:00 ###############
+2018.112.04:12:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.04:12:01;"reply from APECS: (timeout)
+2018.112.04:22:50;"source('SGRA'); go()
+2018.112.04:22:51;"reply from APECS: (timeout)
+2018.112.04:22:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.04:22:51;"
+2018.112.04:22:51;"#### Target SGRA scanname 112-0425 to start at 2018.112.04:25:00 ###############
+2018.112.04:25:00;"vlbi_tp_onsource(src='SGRA',t=8)
+2018.112.04:25:01;"reply from APECS: (timeout)
+2018.112.04:33:50;"source('NRAO530'); go()
+2018.112.04:33:51;"reply from APECS: (timeout)
+2018.112.04:33:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.04:33:51;"
+2018.112.04:33:51;"#### Target NRAO530 scanname 112-0437 to start at 2018.112.04:37:00 ############
+2018.112.04:37:00;"vlbi_tp_onsource(src='NRAO530',t=4)
+2018.112.04:37:01;"reply from APECS: (timeout)
+2018.112.04:41:50;"source('SGRA'); go()
+2018.112.04:41:51;"reply from APECS: (timeout)
+2018.112.04:41:51;"#     290 seconds (4.8 minutes) until next scan
+2018.112.04:41:51;"
+2018.112.04:41:51;"#### Target SGRA scanname 112-0447 to start at 2018.112.04:47:00 ###############
+2018.112.04:47:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.04:47:01;"reply from APECS: (timeout)
+2018.112.04:57:50;"source('SGRA'); go()
+2018.112.04:57:51;"reply from APECS: (timeout)
+2018.112.04:57:51;"#     -10 seconds (-0.2 minutes) until next scan
+2018.112.04:57:51;"
+2018.112.04:57:51;"#### Target SGRA scanname 112-0458 to start at 2018.112.04:58:00 ###############
+2018.112.04:58:00;"vlbi_tp_onsource(src='SGRA',t=9)
+2018.112.04:58:01;"reply from APECS: (timeout)
+2018.112.05:07:50;"source('SGRA'); go()
+2018.112.05:07:51;"reply from APECS: (timeout)
+2018.112.05:07:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.05:07:51;"
+2018.112.05:07:51;"#### Target SGRA scanname 112-0510 to start at 2018.112.05:10:00 ###############
+2018.112.05:10:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.05:10:01;"reply from APECS: (timeout)
+2018.112.05:20:50;"source('J1924-2914'); go()
+2018.112.05:20:51;"reply from APECS: (timeout)
+2018.112.05:20:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.05:20:51;"
+2018.112.05:20:51;"#### Target J1924-2914 scanname 112-0524 to start at 2018.112.05:24:00 #########
+2018.112.05:24:00;"vlbi_tp_onsource(src='J1924-2914',t=4)
+2018.112.05:24:01;"reply from APECS: (timeout)
+2018.112.05:28:50;"source('SGRA'); go()
+2018.112.05:28:51;"reply from APECS: (timeout)
+2018.112.05:28:51;"#     470 seconds (7.8 minutes) until next scan
+2018.112.05:28:51;"
+2018.112.05:28:51;"#### Target SGRA scanname 112-0537 to start at 2018.112.05:37:00 ###############
+2018.112.05:37:00;"vlbi_tp_onsource(src='SGRA',t=7)
+2018.112.05:37:01;"reply from APECS: (timeout)
+2018.112.05:44:50;"source('SGRA'); go()
+2018.112.05:44:51;"reply from APECS: (timeout)
+2018.112.05:44:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.05:44:51;"
+2018.112.05:44:51;"#### Target SGRA scanname 112-0547 to start at 2018.112.05:47:00 ###############
+2018.112.05:47:00;"vlbi_tp_onsource(src='SGRA',t=7)
+2018.112.05:47:01;"reply from APECS: (timeout)
+2018.112.05:54:50;"source('SGRA'); go()
+2018.112.05:54:51;"reply from APECS: (timeout)
+2018.112.05:54:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.05:54:51;"
+2018.112.05:54:51;"#### Target SGRA scanname 112-0557 to start at 2018.112.05:57:00 ###############
+2018.112.05:57:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.05:57:01;"reply from APECS: (timeout)
+2018.112.06:07:50;"source('NRAO530'); go()
+2018.112.06:07:51;"reply from APECS: (timeout)
+2018.112.06:07:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.06:07:51;"
+2018.112.06:07:51;"#### Target NRAO530 scanname 112-0611 to start at 2018.112.06:11:00 ############
+2018.112.06:11:00;"vlbi_tp_onsource(src='NRAO530',t=4)
+2018.112.06:11:01;"reply from APECS: (timeout)
+2018.112.06:15:50;"source('SGRA'); go()
+2018.112.06:15:51;"reply from APECS: (timeout)
+2018.112.06:15:51;"#     290 seconds (4.8 minutes) until next scan
+2018.112.06:15:51;"
+2018.112.06:15:51;"#### Target SGRA scanname 112-0621 to start at 2018.112.06:21:00 ###############
+2018.112.06:21:00;"vlbi_tp_onsource(src='SGRA',t=8)
+2018.112.06:21:01;"reply from APECS: (timeout)
+2018.112.06:29:50;"source('SGRA'); go()
+2018.112.06:29:51;"reply from APECS: (timeout)
+2018.112.06:29:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.06:29:51;"
+2018.112.06:29:51;"#### Target SGRA scanname 112-0632 to start at 2018.112.06:32:00 ###############
+2018.112.06:32:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.06:32:01;"reply from APECS: (timeout)
+2018.112.06:42:50;"source('J1924-2914'); go()
+2018.112.06:42:51;"reply from APECS: (timeout)
+2018.112.06:42:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.06:42:51;"
+2018.112.06:42:51;"#### Target J1924-2914 scanname 112-0646 to start at 2018.112.06:46:00 #########
+2018.112.06:46:00;"vlbi_tp_onsource(src='J1924-2914',t=4)
+2018.112.06:46:01;"reply from APECS: (timeout)
+2018.112.06:50:50;"source('SGRA'); go()
+2018.112.06:50:51;"reply from APECS: (timeout)
+2018.112.06:50:51;"#     470 seconds (7.8 minutes) until next scan
+2018.112.06:50:51;"
+2018.112.06:50:51;"#### Target SGRA scanname 112-0659 to start at 2018.112.06:59:00 ###############
+2018.112.06:59:00;"vlbi_tp_onsource(src='SGRA',t=8)
+2018.112.06:59:01;"reply from APECS: (timeout)
+2018.112.07:07:50;"source('SGRA'); go()
+2018.112.07:07:51;"reply from APECS: (timeout)
+2018.112.07:07:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.07:07:51;"
+2018.112.07:07:51;"#### Target SGRA scanname 112-0710 to start at 2018.112.07:10:00 ###############
+2018.112.07:10:00;"vlbi_tp_onsource(src='SGRA',t=6)
+2018.112.07:10:01;"reply from APECS: (timeout)
+2018.112.07:16:50;"source('NRAO530'); go()
+2018.112.07:16:51;"reply from APECS: (timeout)
+2018.112.07:16:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.07:16:51;"
+2018.112.07:16:51;"#### Target NRAO530 scanname 112-0720 to start at 2018.112.07:20:00 ############
+2018.112.07:20:00;"vlbi_tp_onsource(src='NRAO530',t=4)
+2018.112.07:20:01;"reply from APECS: (timeout)
+2018.112.07:24:50;"source('J1924-2914'); go()
+2018.112.07:24:51;"reply from APECS: (timeout)
+2018.112.07:24:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.07:24:51;"
+2018.112.07:24:51;"#### Target J1924-2914 scanname 112-0728 to start at 2018.112.07:28:00 #########
+2018.112.07:28:00;"vlbi_tp_onsource(src='J1924-2914',t=4)
+2018.112.07:28:01;"reply from APECS: (timeout)
+2018.112.07:32:50;"source('SGRA'); go()
+2018.112.07:32:51;"reply from APECS: (timeout)
+2018.112.07:32:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.07:32:51;"
+2018.112.07:32:51;"#### Target SGRA scanname 112-0736 to start at 2018.112.07:36:00 ###############
+2018.112.07:36:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.07:36:01;"reply from APECS: (timeout)
+2018.112.07:46:50;"source('SGRA'); go()
+2018.112.07:46:51;"reply from APECS: (timeout)
+2018.112.07:46:51;"#     -10 seconds (-0.2 minutes) until next scan
+2018.112.07:46:51;"
+2018.112.07:46:51;"#### Target SGRA scanname 112-0747 to start at 2018.112.07:47:00 ###############
+2018.112.07:47:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.07:47:01;"reply from APECS: (timeout)
+2018.112.07:57:50;"source('SGRA'); go()
+2018.112.07:57:51;"reply from APECS: (timeout)
+2018.112.07:57:51;"#     470 seconds (7.8 minutes) until next scan
+2018.112.07:57:51;"
+2018.112.07:57:51;"#### Target SGRA scanname 112-0806 to start at 2018.112.08:06:00 ###############
+2018.112.08:06:00;"vlbi_tp_onsource(src='SGRA',t=9)
+2018.112.08:06:01;"reply from APECS: (timeout)
+2018.112.08:15:50;"source('NRAO530'); go()
+2018.112.08:15:50;"reply from APECS: OK
+2018.112.08:15:50;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:15:50;"
+2018.112.08:15:50;"#### Target NRAO530 scanname 112-0819 to start at 2018.112.08:19:00 ############
+2018.112.08:19:00;"vlbi_tp_onsource(src='NRAO530',t=4)
+2018.112.08:19:01;"reply from APECS: (timeout)
+2018.112.08:23:50;"source('SGRA'); go()
+2018.112.08:23:51;"reply from APECS: (timeout)
+2018.112.08:23:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:23:51;"
+2018.112.08:23:51;"#### Target SGRA scanname 112-0827 to start at 2018.112.08:27:00 ###############
+2018.112.08:27:00;"vlbi_tp_onsource(src='SGRA',t=9)
+2018.112.08:27:01;"reply from APECS: (timeout)
+2018.112.08:33:32;"----------| USER-REQUESTED STOP OF  e18e22.apecs.obs.v2 |----------
+2018.112.08:33:52;"----------| START OF e18e22.apecs.obs.v2 |----------
+2018.112.08:33:52;"Using TAI-UTC offset of +37 seconds
+2018.112.08:33:52;"#
+2018.112.08:33:52;"# APEX observing script from file e18e22.xml
+2018.112.08:33:52;"# File created on 2018.112.01:07:19 UT
+2018.112.08:33:52;"#
+2018.112.08:33:52;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.112.08:33:52;"# Details on the columns:
+2018.112.08:33:52;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.112.08:33:52;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.112.08:33:52;"#    2) estimated duration of the command in seconds
+2018.112.08:33:52;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.112.08:33:52;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.112.08:33:52;"#
+2018.112.08:33:52;"# At time              Duration   Command
+2018.112.08:33:52;"execfile('pi230_setup.apecs')
+2018.112.08:33:53;"reply from APECS: (timeout)
+2018.112.08:33:55;"execfile('vlbi-pi230_commands.py')
+2018.112.08:33:56;"reply from APECS: (timeout)
+2018.112.08:33:58;"#### Target J0739+0137 scanname 111-2231 to start at 2018.111.22:31:00 #########
+2018.112.08:33:58;"missed time 2018.111.22:31:00 : vlbi_tp_onsource(src='J0739+0137',t=5)
+2018.112.08:33:58;"missed time 2018.111.22:36:50 : source('J0831+0429'); go()
+2018.112.08:33:58;"#     230 seconds (3.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target J0831+0429 scanname 111-2241 to start at 2018.111.22:41:00 #########
+2018.112.08:33:58;"missed time 2018.111.22:41:00 : vlbi_tp_onsource(src='J0831+0429',t=5)
+2018.112.08:33:58;"missed time 2018.111.22:46:50 : source('OJ287'); go()
+2018.112.08:33:58;"#     230 seconds (3.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target OJ287 scanname 111-2251 to start at 2018.111.22:51:00 ##############
+2018.112.08:33:58;"missed time 2018.111.22:51:00 : vlbi_tp_onsource(src='OJ287',t=5)
+2018.112.08:33:58;"missed time 2018.111.22:56:50 : source('M87'); go()
+2018.112.08:33:58;"#     530 seconds (8.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 111-2306 to start at 2018.111.23:06:00 ################
+2018.112.08:33:58;"missed time 2018.111.23:06:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.08:33:58;"missed time 2018.111.23:13:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 111-2316 to start at 2018.111.23:16:00 ################
+2018.112.08:33:58;"missed time 2018.111.23:16:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.111.23:22:50 : source('3C279'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target 3C279 scanname 111-2328 to start at 2018.111.23:28:00 ##############
+2018.112.08:33:58;"missed time 2018.111.23:28:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.08:33:58;"missed time 2018.111.23:32:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 111-2335 to start at 2018.111.23:35:00 ################
+2018.112.08:33:58;"missed time 2018.111.23:35:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.08:33:58;"missed time 2018.111.23:42:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 111-2345 to start at 2018.111.23:45:00 ################
+2018.112.08:33:58;"missed time 2018.111.23:45:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.111.23:51:50 : source('M87'); go()
+2018.112.08:33:58;"#     470 seconds (7.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0000 to start at 2018.112.00:00:00 ################
+2018.112.08:33:58;"missed time 2018.112.00:00:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.00:06:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0009 to start at 2018.112.00:09:00 ################
+2018.112.08:33:58;"missed time 2018.112.00:09:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.00:15:50 : source('3C279'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target 3C279 scanname 112-0021 to start at 2018.112.00:21:00 ##############
+2018.112.08:33:58;"missed time 2018.112.00:21:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.08:33:58;"missed time 2018.112.00:25:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0028 to start at 2018.112.00:28:00 ################
+2018.112.08:33:58;"missed time 2018.112.00:28:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.08:33:58;"missed time 2018.112.00:35:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0038 to start at 2018.112.00:38:00 ################
+2018.112.08:33:58;"missed time 2018.112.00:38:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.00:44:50 : source('M87'); go()
+2018.112.08:33:58;"#     470 seconds (7.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0053 to start at 2018.112.00:53:00 ################
+2018.112.08:33:58;"missed time 2018.112.00:53:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.00:59:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0102 to start at 2018.112.01:02:00 ################
+2018.112.08:33:58;"missed time 2018.112.01:02:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.01:08:50 : source('3C279'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target 3C279 scanname 112-0114 to start at 2018.112.01:14:00 ##############
+2018.112.08:33:58;"missed time 2018.112.01:14:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.08:33:58;"missed time 2018.112.01:18:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0121 to start at 2018.112.01:21:00 ################
+2018.112.08:33:58;"missed time 2018.112.01:21:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.01:27:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0130 to start at 2018.112.01:30:00 ################
+2018.112.08:33:58;"missed time 2018.112.01:30:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.01:36:50 : source('3C279'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target 3C279 scanname 112-0142 to start at 2018.112.01:42:00 ##############
+2018.112.08:33:58;"missed time 2018.112.01:42:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.08:33:58;"missed time 2018.112.01:46:50 : source('M87'); go()
+2018.112.08:33:58;"#     470 seconds (7.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0155 to start at 2018.112.01:55:00 ################
+2018.112.08:33:58;"missed time 2018.112.01:55:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.02:01:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0204 to start at 2018.112.02:04:00 ################
+2018.112.08:33:58;"missed time 2018.112.02:04:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.02:10:50 : source('3C279'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target 3C279 scanname 112-0216 to start at 2018.112.02:16:00 ##############
+2018.112.08:33:58;"missed time 2018.112.02:16:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.08:33:58;"missed time 2018.112.02:20:50 : source('M87'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0226 to start at 2018.112.02:26:00 ################
+2018.112.08:33:58;"missed time 2018.112.02:26:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.02:32:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0235 to start at 2018.112.02:35:00 ################
+2018.112.08:33:58;"missed time 2018.112.02:35:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.02:41:50 : source('3C279'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target 3C279 scanname 112-0247 to start at 2018.112.02:47:00 ##############
+2018.112.08:33:58;"missed time 2018.112.02:47:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.08:33:58;"missed time 2018.112.02:51:50 : source('M87'); go()
+2018.112.08:33:58;"#     470 seconds (7.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0300 to start at 2018.112.03:00:00 ################
+2018.112.08:33:58;"missed time 2018.112.03:00:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.03:06:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0309 to start at 2018.112.03:09:00 ################
+2018.112.08:33:58;"missed time 2018.112.03:09:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.03:15:50 : source('3C279'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target 3C279 scanname 112-0321 to start at 2018.112.03:21:00 ##############
+2018.112.08:33:58;"missed time 2018.112.03:21:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.08:33:58;"missed time 2018.112.03:25:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0328 to start at 2018.112.03:28:00 ################
+2018.112.08:33:58;"missed time 2018.112.03:28:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.08:33:58;"missed time 2018.112.03:34:50 : source('M87'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target M87 scanname 112-0337 to start at 2018.112.03:37:00 ################
+2018.112.08:33:58;"missed time 2018.112.03:37:00 : vlbi_tp_onsource(src='M87',t=5)
+2018.112.08:33:58;"missed time 2018.112.03:42:50 : source('3C279'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target 3C279 scanname 112-0348 to start at 2018.112.03:48:00 ##############
+2018.112.08:33:58;"missed time 2018.112.03:48:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.08:33:58;"missed time 2018.112.03:52:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     1130 seconds (18.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0412 to start at 2018.112.04:12:00 ###############
+2018.112.08:33:58;"missed time 2018.112.04:12:00 : vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.08:33:58;"missed time 2018.112.04:22:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0425 to start at 2018.112.04:25:00 ###############
+2018.112.08:33:58;"missed time 2018.112.04:25:00 : vlbi_tp_onsource(src='SGRA',t=8)
+2018.112.08:33:58;"missed time 2018.112.04:33:50 : source('NRAO530'); go()
+2018.112.08:33:58;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target NRAO530 scanname 112-0437 to start at 2018.112.04:37:00 ############
+2018.112.08:33:58;"missed time 2018.112.04:37:00 : vlbi_tp_onsource(src='NRAO530',t=4)
+2018.112.08:33:58;"missed time 2018.112.04:41:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0447 to start at 2018.112.04:47:00 ###############
+2018.112.08:33:58;"missed time 2018.112.04:47:00 : vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.08:33:58;"missed time 2018.112.04:57:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     -10 seconds (-0.2 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0458 to start at 2018.112.04:58:00 ###############
+2018.112.08:33:58;"missed time 2018.112.04:58:00 : vlbi_tp_onsource(src='SGRA',t=9)
+2018.112.08:33:58;"missed time 2018.112.05:07:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0510 to start at 2018.112.05:10:00 ###############
+2018.112.08:33:58;"missed time 2018.112.05:10:00 : vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.08:33:58;"missed time 2018.112.05:20:50 : source('J1924-2914'); go()
+2018.112.08:33:58;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target J1924-2914 scanname 112-0524 to start at 2018.112.05:24:00 #########
+2018.112.08:33:58;"missed time 2018.112.05:24:00 : vlbi_tp_onsource(src='J1924-2914',t=4)
+2018.112.08:33:58;"missed time 2018.112.05:28:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     470 seconds (7.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0537 to start at 2018.112.05:37:00 ###############
+2018.112.08:33:58;"missed time 2018.112.05:37:00 : vlbi_tp_onsource(src='SGRA',t=7)
+2018.112.08:33:58;"missed time 2018.112.05:44:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0547 to start at 2018.112.05:47:00 ###############
+2018.112.08:33:58;"missed time 2018.112.05:47:00 : vlbi_tp_onsource(src='SGRA',t=7)
+2018.112.08:33:58;"missed time 2018.112.05:54:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0557 to start at 2018.112.05:57:00 ###############
+2018.112.08:33:58;"missed time 2018.112.05:57:00 : vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.08:33:58;"missed time 2018.112.06:07:50 : source('NRAO530'); go()
+2018.112.08:33:58;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target NRAO530 scanname 112-0611 to start at 2018.112.06:11:00 ############
+2018.112.08:33:58;"missed time 2018.112.06:11:00 : vlbi_tp_onsource(src='NRAO530',t=4)
+2018.112.08:33:58;"missed time 2018.112.06:15:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     290 seconds (4.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0621 to start at 2018.112.06:21:00 ###############
+2018.112.08:33:58;"missed time 2018.112.06:21:00 : vlbi_tp_onsource(src='SGRA',t=8)
+2018.112.08:33:58;"missed time 2018.112.06:29:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0632 to start at 2018.112.06:32:00 ###############
+2018.112.08:33:58;"missed time 2018.112.06:32:00 : vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.08:33:58;"missed time 2018.112.06:42:50 : source('J1924-2914'); go()
+2018.112.08:33:58;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target J1924-2914 scanname 112-0646 to start at 2018.112.06:46:00 #########
+2018.112.08:33:58;"missed time 2018.112.06:46:00 : vlbi_tp_onsource(src='J1924-2914',t=4)
+2018.112.08:33:58;"missed time 2018.112.06:50:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     470 seconds (7.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0659 to start at 2018.112.06:59:00 ###############
+2018.112.08:33:58;"missed time 2018.112.06:59:00 : vlbi_tp_onsource(src='SGRA',t=8)
+2018.112.08:33:58;"missed time 2018.112.07:07:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0710 to start at 2018.112.07:10:00 ###############
+2018.112.08:33:58;"missed time 2018.112.07:10:00 : vlbi_tp_onsource(src='SGRA',t=6)
+2018.112.08:33:58;"missed time 2018.112.07:16:50 : source('NRAO530'); go()
+2018.112.08:33:58;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target NRAO530 scanname 112-0720 to start at 2018.112.07:20:00 ############
+2018.112.08:33:58;"missed time 2018.112.07:20:00 : vlbi_tp_onsource(src='NRAO530',t=4)
+2018.112.08:33:58;"missed time 2018.112.07:24:50 : source('J1924-2914'); go()
+2018.112.08:33:58;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target J1924-2914 scanname 112-0728 to start at 2018.112.07:28:00 #########
+2018.112.08:33:58;"missed time 2018.112.07:28:00 : vlbi_tp_onsource(src='J1924-2914',t=4)
+2018.112.08:33:58;"missed time 2018.112.07:32:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0736 to start at 2018.112.07:36:00 ###############
+2018.112.08:33:58;"missed time 2018.112.07:36:00 : vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.08:33:58;"missed time 2018.112.07:46:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     -10 seconds (-0.2 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0747 to start at 2018.112.07:47:00 ###############
+2018.112.08:33:58;"missed time 2018.112.07:47:00 : vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.08:33:58;"missed time 2018.112.07:57:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     470 seconds (7.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0806 to start at 2018.112.08:06:00 ###############
+2018.112.08:33:58;"missed time 2018.112.08:06:00 : vlbi_tp_onsource(src='SGRA',t=9)
+2018.112.08:33:58;"missed time 2018.112.08:15:50 : source('NRAO530'); go()
+2018.112.08:33:58;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target NRAO530 scanname 112-0819 to start at 2018.112.08:19:00 ############
+2018.112.08:33:58;"missed time 2018.112.08:19:00 : vlbi_tp_onsource(src='NRAO530',t=4)
+2018.112.08:33:58;"missed time 2018.112.08:23:50 : source('SGRA'); go()
+2018.112.08:33:58;"#     170 seconds (2.8 minutes) until next scan
+2018.112.08:33:58;"
+2018.112.08:33:58;"#### Target SGRA scanname 112-0827 to start at 2018.112.08:27:00 ###############
+2018.112.08:33:58;"missed time 2018.112.08:27:00 : vlbi_tp_onsource(src='SGRA',t=9)
+2018.112.08:36:50;"source('SGRA'); go()
+2018.112.08:36:51;"reply from APECS: (timeout)
+2018.112.08:36:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:36:51;"
+2018.112.08:36:51;"#### Target SGRA scanname 112-0839 to start at 2018.112.08:39:00 ###############
+2018.112.08:39:00;"vlbi_tp_onsource(src='SGRA',t=8)
+2018.112.08:39:01;"reply from APECS: (timeout)
+2018.112.08:47:50;"source('SGRA'); go()
+2018.112.08:47:51;"reply from APECS: (timeout)
+2018.112.08:47:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.08:47:51;"
+2018.112.08:47:51;"#### Target SGRA scanname 112-0850 to start at 2018.112.08:50:00 ###############
+2018.112.08:50:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.08:50:01;"reply from APECS: (timeout)
+2018.112.09:00:50;"source('J1924-2914'); go()
+2018.112.09:00:51;"reply from APECS: (timeout)
+2018.112.09:00:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.09:00:51;"
+2018.112.09:00:51;"#### Target J1924-2914 scanname 112-0904 to start at 2018.112.09:04:00 #########
+2018.112.09:04:00;"vlbi_tp_onsource(src='J1924-2914',t=4)
+2018.112.09:04:01;"reply from APECS: (timeout)
+2018.112.09:08:50;"source('SGRA'); go()
+2018.112.09:08:51;"reply from APECS: (timeout)
+2018.112.09:08:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.09:08:51;"
+2018.112.09:08:51;"#### Target SGRA scanname 112-0912 to start at 2018.112.09:12:00 ###############
+2018.112.09:12:00;"vlbi_tp_onsource(src='SGRA',t=9)
+2018.112.09:12:01;"reply from APECS: (timeout)
+2018.112.09:21:50;"source('SGRA'); go()
+2018.112.09:21:51;"reply from APECS: (timeout)
+2018.112.09:21:51;"#     470 seconds (7.8 minutes) until next scan
+2018.112.09:21:51;"
+2018.112.09:21:51;"#### Target SGRA scanname 112-0930 to start at 2018.112.09:30:00 ###############
+2018.112.09:30:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.09:30:01;"reply from APECS: (timeout)
+2018.112.09:40:50;"source('SGRA'); go()
+2018.112.09:40:51;"reply from APECS: (timeout)
+2018.112.09:40:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.09:40:51;"
+2018.112.09:40:51;"#### Target SGRA scanname 112-0943 to start at 2018.112.09:43:00 ###############
+2018.112.09:43:00;"vlbi_tp_onsource(src='SGRA',t=7)
+2018.112.09:43:01;"reply from APECS: (timeout)
+2018.112.09:50:50;"source('NRAO530'); go()
+2018.112.09:50:51;"reply from APECS: (timeout)
+2018.112.09:50:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.09:50:51;"
+2018.112.09:50:51;"#### Target NRAO530 scanname 112-0954 to start at 2018.112.09:54:00 ############
+2018.112.09:54:00;"vlbi_tp_onsource(src='NRAO530',t=4)
+2018.112.09:54:01;"reply from APECS: (timeout)
+2018.112.09:58:50;"source('SGRA'); go()
+2018.112.09:58:51;"reply from APECS: (timeout)
+2018.112.09:58:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.09:58:51;"
+2018.112.09:58:51;"#### Target SGRA scanname 112-1002 to start at 2018.112.10:02:00 ###############
+2018.112.10:02:00;"vlbi_tp_onsource(src='SGRA',t=14)
+2018.112.10:02:01;"reply from APECS: (timeout)
+2018.112.10:16:50;"source('SGRA'); go()
+2018.112.10:16:51;"reply from APECS: (timeout)
+2018.112.10:16:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.10:16:51;"
+2018.112.10:16:51;"#### Target SGRA scanname 112-1019 to start at 2018.112.10:19:00 ###############
+2018.112.10:19:00;"vlbi_tp_onsource(src='SGRA',t=11)
+2018.112.10:19:01;"reply from APECS: (timeout)
+2018.112.10:30:50;"source('J1924-2914'); go()
+2018.112.10:30:51;"reply from APECS: (timeout)
+2018.112.10:30:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.10:30:51;"
+2018.112.10:30:51;"#### Target J1924-2914 scanname 112-1034 to start at 2018.112.10:34:00 #########
+2018.112.10:34:00;"vlbi_tp_onsource(src='J1924-2914',t=4)
+2018.112.10:34:01;"reply from APECS: (timeout)
+2018.112.10:38:50;"source('SGRA'); go()
+2018.112.10:38:51;"reply from APECS: (timeout)
+2018.112.10:38:51;"#     470 seconds (7.8 minutes) until next scan
+2018.112.10:38:51;"
+2018.112.10:38:51;"#### Target SGRA scanname 112-1047 to start at 2018.112.10:47:00 ###############
+2018.112.10:47:00;"vlbi_tp_onsource(src='SGRA',t=15)
+2018.112.10:47:01;"reply from APECS: (timeout)
+2018.112.11:02:50;"source('SGRA'); go()
+2018.112.11:02:50;"reply from APECS: OK
+2018.112.11:02:50;"#     110 seconds (1.8 minutes) until next scan
+2018.112.11:02:50;"
+2018.112.11:02:50;"#### Target SGRA scanname 112-1105 to start at 2018.112.11:05:00 ###############
+2018.112.11:05:00;"vlbi_tp_onsource(src='SGRA',t=13)
+2018.112.11:05:01;"reply from APECS: (timeout)
+2018.112.11:18:50;"source('NRAO530'); go()
+2018.112.11:18:51;"reply from APECS: (timeout)
+2018.112.11:18:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.11:18:51;"
+2018.112.11:18:51;"#### Target NRAO530 scanname 112-1122 to start at 2018.112.11:22:00 ############
+2018.112.11:22:00;"vlbi_tp_onsource(src='NRAO530',t=3)
+2018.112.11:22:01;"reply from APECS: (timeout)
+2018.112.11:25:50;"source('SGRA'); go()
+2018.112.11:25:51;"reply from APECS: (timeout)
+2018.112.11:25:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.11:25:51;"
+2018.112.11:25:51;"#### Target SGRA scanname 112-1129 to start at 2018.112.11:29:00 ###############
+2018.112.11:29:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.11:29:01;"reply from APECS: (timeout)
+2018.112.11:39:50;"source('SGRA'); go()
+2018.112.11:39:51;"reply from APECS: (timeout)
+2018.112.11:39:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.11:39:51;"
+2018.112.11:39:51;"#### Target SGRA scanname 112-1142 to start at 2018.112.11:42:00 ###############
+2018.112.11:42:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.11:42:01;"reply from APECS: (timeout)
+2018.112.11:52:50;"source('J1924-2914'); go()
+2018.112.11:52:51;"reply from APECS: (timeout)
+2018.112.11:52:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.11:52:51;"
+2018.112.11:52:51;"#### Target J1924-2914 scanname 112-1156 to start at 2018.112.11:56:00 #########
+2018.112.11:56:00;"vlbi_tp_onsource(src='J1924-2914',t=2)
+2018.112.11:56:01;"reply from APECS: (timeout)
+2018.112.11:58:50;"source('SGRA'); go()
+2018.112.11:58:51;"reply from APECS: (timeout)
+2018.112.11:58:51;"#     470 seconds (7.8 minutes) until next scan
+2018.112.11:58:51;"
+2018.112.11:58:51;"#### Target SGRA scanname 112-1207 to start at 2018.112.12:07:00 ###############
+2018.112.12:07:00;"vlbi_tp_onsource(src='SGRA',t=9)
+2018.112.12:07:01;"reply from APECS: (timeout)
+2018.112.12:16:50;"source('SGRA'); go()
+2018.112.12:16:51;"reply from APECS: (timeout)
+2018.112.12:16:51;"#     110 seconds (1.8 minutes) until next scan
+2018.112.12:16:51;"
+2018.112.12:16:51;"#### Target SGRA scanname 112-1219 to start at 2018.112.12:19:00 ###############
+2018.112.12:19:00;"vlbi_tp_onsource(src='SGRA',t=9)
+2018.112.12:19:01;"reply from APECS: (timeout)
+2018.112.12:28:50;"source('SGRA'); go()
+2018.112.12:28:51;"reply from APECS: (timeout)
+2018.112.12:28:51;"#     -10 seconds (-0.2 minutes) until next scan
+2018.112.12:28:51;"
+2018.112.12:28:51;"#### Target SGRA scanname 112-1229 to start at 2018.112.12:29:00 ###############
+2018.112.12:29:00;"vlbi_tp_onsource(src='SGRA',t=12)
+2018.112.12:29:01;"reply from APECS: (timeout)
+2018.112.12:41:50;"source('NRAO530'); go()
+2018.112.12:41:51;"reply from APECS: (timeout)
+2018.112.12:41:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.12:41:51;"
+2018.112.12:41:51;"#### Target NRAO530 scanname 112-1245 to start at 2018.112.12:45:00 ############
+2018.112.12:45:00;"vlbi_tp_onsource(src='NRAO530',t=3)
+2018.112.12:45:01;"reply from APECS: (timeout)
+2018.112.12:48:50;"source('SGRA'); go()
+2018.112.12:48:51;"reply from APECS: (timeout)
+2018.112.12:48:51;"#     170 seconds (2.8 minutes) until next scan
+2018.112.12:48:51;"
+2018.112.12:48:51;"#### Target SGRA scanname 112-1252 to start at 2018.112.12:52:00 ###############
+2018.112.12:52:00;"vlbi_tp_onsource(src='SGRA',t=10)
+2018.112.12:52:01;"reply from APECS: (timeout)
+2018.112.13:02:50;"source('SGRA'); go()
+2018.112.13:02:51;"reply from APECS: (timeout)
+2018.112.13:02:51;"#     -10 seconds (-0.2 minutes) until next scan
+2018.112.13:02:51;"
+2018.112.13:02:51;"#### Target SGRA scanname 112-1303 to start at 2018.112.13:03:00 ###############
+2018.112.13:03:00;"vlbi_tp_onsource(src='SGRA',t=12)
+2018.112.13:03:01;"reply from APECS: (timeout)
+2018.112.13:14:03;"----------| USER-REQUESTED STOP OF  e18e22.apecs.obs.v2 |----------

@@ -1,0 +1,8 @@
+<experiment name="e18p18" station="Ax" start="2018290234800"  end="2018291012730"> 
+	<scan experiment="e18p18" source="CTA102" station_code="Ax" start_time="2018290234800" duration="300" scan_name="290-2348"/>
+	<scan experiment="e18p18" source="CTA102" station_code="Ax" start_time="2018290235600" duration="300" scan_name="290-2356"/>
+	<scan experiment="e18p18" source="3C454.3" station_code="Ax" start_time="2018291001100" duration="300" scan_name="291-0011"/>
+	<scan experiment="e18p18" source="3C454.3" station_code="Ax" start_time="2018291001900" duration="300" scan_name="291-0019"/>
+	<scan experiment="e18p18" source="BLLAC" station_code="Ax" start_time="2018291003400" duration="300" scan_name="291-0034"/>
+	<scan experiment="e18p18" source="BLLAC" station_code="Ax" start_time="2018291004200" duration="300" scan_name="291-0042"/>
+</experiment>

@@ -1,0 +1,380 @@
+#
+# APEX observing script for station Ax from file e18a24.vex
+# File created on 2018.113.23:48:26 UT
+#
+# Columns: 1) Start time 2) Duration in seconds 3) APECS command 
+# Details on the columns:
+#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+#    2) estimated duration of the command in seconds
+#    3) APECS command and parameters to execute. If the command includes whitespace.
+#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+#
+# At time              Duration   Command
+@always                10         execfile('pi230_setup.apecs')
+@always                2          execfile('vlbi-pi230_commands.py')
+
+#### Target SGRA scanname No0001 to start at 2018.114.03:02:00 #################
+2018.114.03:01:00      25         source('SGRA'); go()
+2018.114.03:01:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.03:02:00      480        vlbi_tp_onsource(src='SGRA',t=8)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0002 to start at 2018.114.03:13:00 #################
+2018.114.03:12:00      25         source('SGRA'); go()
+2018.114.03:12:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.03:13:00      540        vlbi_tp_onsource(src='SGRA',t=9)
+#     310 seconds (5.2 minutes) until next scan
+
+#### Target 3C279 scanname No0003 to start at 2018.114.03:28:00 ################
+2018.114.03:27:00      25         source('3C279'); go()
+2018.114.03:27:30      25         vlbi_tp_onsource_prepare('3C279')
+2018.114.03:28:00      120        vlbi_tp_onsource(src='3C279',t=2)
+#     490 seconds (8.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0004 to start at 2018.114.03:39:00 ##############
+2018.114.03:38:00      25         source('NRAO530'); go()
+2018.114.03:38:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.03:39:00      120        vlbi_tp_onsource(src='NRAO530',t=2)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target SGRA scanname No0005 to start at 2018.114.03:45:00 #################
+2018.114.03:44:00      25         source('SGRA'); go()
+2018.114.03:44:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.03:45:00      300        vlbi_tp_onsource(src='SGRA',t=5)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0006 to start at 2018.114.03:53:00 #################
+2018.114.03:52:00      25         source('SGRA'); go()
+2018.114.03:52:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.03:53:00      540        vlbi_tp_onsource(src='SGRA',t=9)
+#     490 seconds (8.2 minutes) until next scan
+
+#### Target SGRA scanname No0007 to start at 2018.114.04:11:00 #################
+2018.114.04:10:00      25         source('SGRA'); go()
+2018.114.04:10:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.04:11:00      420        vlbi_tp_onsource(src='SGRA',t=7)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0008 to start at 2018.114.04:21:00 #################
+2018.114.04:20:00      25         source('SGRA'); go()
+2018.114.04:20:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.04:21:00      480        vlbi_tp_onsource(src='SGRA',t=8)
+#     10 seconds (0.2 minutes) until next scan
+
+#### Target SGRA scanname No0009 to start at 2018.114.04:30:00 #################
+2018.114.04:29:00      25         source('SGRA'); go()
+2018.114.04:29:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.04:30:00      540        vlbi_tp_onsource(src='SGRA',t=9)
+#     310 seconds (5.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0010 to start at 2018.114.04:45:00 ##############
+2018.114.04:44:00      25         source('NRAO530'); go()
+2018.114.04:44:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.04:45:00      180        vlbi_tp_onsource(src='NRAO530',t=3)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target SGRA scanname No0011 to start at 2018.114.04:52:00 #################
+2018.114.04:51:00      25         source('SGRA'); go()
+2018.114.04:51:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.04:52:00      480        vlbi_tp_onsource(src='SGRA',t=8)
+#     310 seconds (5.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0012 to start at 2018.114.05:06:00 ##############
+2018.114.05:05:00      25         source('NRAO530'); go()
+2018.114.05:05:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.05:06:00      180        vlbi_tp_onsource(src='NRAO530',t=3)
+#     490 seconds (8.2 minutes) until next scan
+
+#### Target SGRA scanname No0013 to start at 2018.114.05:18:00 #################
+2018.114.05:17:00      25         source('SGRA'); go()
+2018.114.05:17:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.05:18:00      480        vlbi_tp_onsource(src='SGRA',t=8)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0014 to start at 2018.114.05:29:00 #################
+2018.114.05:28:00      25         source('SGRA'); go()
+2018.114.05:28:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.05:29:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     370 seconds (6.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0015 to start at 2018.114.05:46:00 ###########
+2018.114.05:45:00      25         source('J1924-2914'); go()
+2018.114.05:45:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.05:46:00      180        vlbi_tp_onsource(src='J1924-2914',t=3)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target SGRA scanname No0016 to start at 2018.114.05:53:00 #################
+2018.114.05:52:00      25         source('SGRA'); go()
+2018.114.05:52:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.05:53:00      900        vlbi_tp_onsource(src='SGRA',t=15)
+#     310 seconds (5.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0017 to start at 2018.114.06:14:00 ##############
+2018.114.06:13:00      25         source('NRAO530'); go()
+2018.114.06:13:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.06:14:00      180        vlbi_tp_onsource(src='NRAO530',t=3)
+#     490 seconds (8.2 minutes) until next scan
+
+#### Target SGRA scanname No0018 to start at 2018.114.06:26:00 #################
+2018.114.06:25:00      25         source('SGRA'); go()
+2018.114.06:25:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.06:26:00      540        vlbi_tp_onsource(src='SGRA',t=9)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0019 to start at 2018.114.06:38:00 #################
+2018.114.06:37:00      25         source('SGRA'); go()
+2018.114.06:37:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.06:38:00      360        vlbi_tp_onsource(src='SGRA',t=6)
+#     10 seconds (0.2 minutes) until next scan
+
+#### Target SGRA scanname No0020 to start at 2018.114.06:45:00 #################
+2018.114.06:44:00      25         source('SGRA'); go()
+2018.114.06:44:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.06:45:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     370 seconds (6.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0021 to start at 2018.114.07:02:00 ###########
+2018.114.07:01:00      25         source('J1924-2914'); go()
+2018.114.07:01:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.07:02:00      180        vlbi_tp_onsource(src='J1924-2914',t=3)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target SGRA scanname No0022 to start at 2018.114.07:09:00 #################
+2018.114.07:08:00      25         source('SGRA'); go()
+2018.114.07:08:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.07:09:00      540        vlbi_tp_onsource(src='SGRA',t=9)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0023 to start at 2018.114.07:22:00 ##############
+2018.114.07:21:00      25         source('NRAO530'); go()
+2018.114.07:21:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.07:22:00      180        vlbi_tp_onsource(src='NRAO530',t=3)
+#     490 seconds (8.2 minutes) until next scan
+
+#### Target SGRA scanname No0024 to start at 2018.114.07:34:00 #################
+2018.114.07:33:00      25         source('SGRA'); go()
+2018.114.07:33:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.07:34:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0025 to start at 2018.114.07:47:00 #################
+2018.114.07:46:00      25         source('SGRA'); go()
+2018.114.07:46:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.07:47:00      540        vlbi_tp_onsource(src='SGRA',t=9)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0026 to start at 2018.114.07:59:00 #################
+2018.114.07:58:00      25         source('SGRA'); go()
+2018.114.07:58:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.07:59:00      360        vlbi_tp_onsource(src='SGRA',t=6)
+#     250 seconds (4.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0027 to start at 2018.114.08:10:00 ###########
+2018.114.08:09:00      25         source('J1924-2914'); go()
+2018.114.08:09:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.08:10:00      180        vlbi_tp_onsource(src='J1924-2914',t=3)
+#     250 seconds (4.2 minutes) until next scan
+
+#### Target SGRA scanname No0028 to start at 2018.114.08:18:00 #################
+2018.114.08:17:00      25         source('SGRA'); go()
+2018.114.08:17:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.08:18:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0029 to start at 2018.114.08:32:00 ##############
+2018.114.08:31:00      25         source('NRAO530'); go()
+2018.114.08:31:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.08:32:00      180        vlbi_tp_onsource(src='NRAO530',t=3)
+#     490 seconds (8.2 minutes) until next scan
+
+#### Target SGRA scanname No0030 to start at 2018.114.08:44:00 #################
+2018.114.08:43:00      25         source('SGRA'); go()
+2018.114.08:43:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.08:44:00      420        vlbi_tp_onsource(src='SGRA',t=7)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0031 to start at 2018.114.08:54:00 #################
+2018.114.08:53:00      25         source('SGRA'); go()
+2018.114.08:53:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.08:54:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0032 to start at 2018.114.09:08:00 ###########
+2018.114.09:07:00      25         source('J1924-2914'); go()
+2018.114.09:07:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.09:08:00      180        vlbi_tp_onsource(src='J1924-2914',t=3)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target SGRA scanname No0033 to start at 2018.114.09:15:00 #################
+2018.114.09:14:00      25         source('SGRA'); go()
+2018.114.09:14:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.09:15:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     10 seconds (0.2 minutes) until next scan
+
+#### Target SGRA scanname No0034 to start at 2018.114.09:26:00 #################
+2018.114.09:25:00      25         source('SGRA'); go()
+2018.114.09:25:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.09:26:00      720        vlbi_tp_onsource(src='SGRA',t=12)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0035 to start at 2018.114.09:42:00 ##############
+2018.114.09:41:00      25         source('NRAO530'); go()
+2018.114.09:41:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.09:42:00      180        vlbi_tp_onsource(src='NRAO530',t=3)
+#     490 seconds (8.2 minutes) until next scan
+
+#### Target SGRA scanname No0036 to start at 2018.114.09:54:00 #################
+2018.114.09:53:00      25         source('SGRA'); go()
+2018.114.09:53:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.09:54:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0037 to start at 2018.114.10:08:00 ###########
+2018.114.10:07:00      25         source('J1924-2914'); go()
+2018.114.10:07:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.10:08:00      180        vlbi_tp_onsource(src='J1924-2914',t=3)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0038 to start at 2018.114.10:15:00 ##############
+2018.114.10:14:00      25         source('NRAO530'); go()
+2018.114.10:14:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.10:15:00      180        vlbi_tp_onsource(src='NRAO530',t=3)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target SGRA scanname No0039 to start at 2018.114.10:22:00 #################
+2018.114.10:21:00      25         source('SGRA'); go()
+2018.114.10:21:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.10:22:00      900        vlbi_tp_onsource(src='SGRA',t=15)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0040 to start at 2018.114.10:40:00 #################
+2018.114.10:39:00      25         source('SGRA'); go()
+2018.114.10:39:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.10:40:00      900        vlbi_tp_onsource(src='SGRA',t=15)
+#     490 seconds (8.2 minutes) until next scan
+
+#### Target SGRA scanname No0041 to start at 2018.114.11:04:00 #################
+2018.114.11:03:00      25         source('SGRA'); go()
+2018.114.11:03:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.11:04:00      480        vlbi_tp_onsource(src='SGRA',t=8)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0042 to start at 2018.114.11:15:00 #################
+2018.114.11:14:00      25         source('SGRA'); go()
+2018.114.11:14:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.11:15:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0043 to start at 2018.114.11:29:00 ###########
+2018.114.11:28:00      25         source('J1924-2914'); go()
+2018.114.11:28:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.11:29:00      180        vlbi_tp_onsource(src='J1924-2914',t=3)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target SGRA scanname No0044 to start at 2018.114.11:36:00 #################
+2018.114.11:35:00      25         source('SGRA'); go()
+2018.114.11:35:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.11:36:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     10 seconds (0.2 minutes) until next scan
+
+#### Target SGRA scanname No0045 to start at 2018.114.11:47:00 #################
+2018.114.11:46:00      25         source('SGRA'); go()
+2018.114.11:46:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.11:47:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0046 to start at 2018.114.12:01:00 ##############
+2018.114.12:00:00      25         source('NRAO530'); go()
+2018.114.12:00:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.12:01:00      180        vlbi_tp_onsource(src='NRAO530',t=3)
+#     490 seconds (8.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0047 to start at 2018.114.12:13:00 ###########
+2018.114.12:12:00      25         source('J1924-2914'); go()
+2018.114.12:12:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.12:13:00      180        vlbi_tp_onsource(src='J1924-2914',t=3)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target SGRA scanname No0048 to start at 2018.114.12:20:00 #################
+2018.114.12:19:00      25         source('SGRA'); go()
+2018.114.12:19:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.12:20:00      600        vlbi_tp_onsource(src='SGRA',t=10)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target NRAO530 scanname No0049 to start at 2018.114.12:34:00 ##############
+2018.114.12:33:00      25         source('NRAO530'); go()
+2018.114.12:33:30      25         vlbi_tp_onsource_prepare('NRAO530')
+2018.114.12:34:00      180        vlbi_tp_onsource(src='NRAO530',t=3)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target SGRA scanname No0050 to start at 2018.114.12:41:00 #################
+2018.114.12:40:00      25         source('SGRA'); go()
+2018.114.12:40:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.12:41:00      720        vlbi_tp_onsource(src='SGRA',t=12)
+#     10 seconds (0.2 minutes) until next scan
+
+#### Target SGRA scanname No0051 to start at 2018.114.12:54:00 #################
+2018.114.12:53:00      25         source('SGRA'); go()
+2018.114.12:53:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.12:54:00      900        vlbi_tp_onsource(src='SGRA',t=15)
+#     130 seconds (2.2 minutes) until next scan
+
+#### Target SGRA scanname No0052 to start at 2018.114.13:12:00 #################
+2018.114.13:11:00      25         source('SGRA'); go()
+2018.114.13:11:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.13:12:00      780        vlbi_tp_onsource(src='SGRA',t=13)
+#     10 seconds (0.2 minutes) until next scan
+
+#### Target SGRA scanname No0053 to start at 2018.114.13:26:00 #################
+2018.114.13:25:00      25         source('SGRA'); go()
+2018.114.13:25:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.13:26:00      420        vlbi_tp_onsource(src='SGRA',t=7)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0054 to start at 2018.114.13:37:00 ###########
+2018.114.13:36:00      25         source('J1924-2914'); go()
+2018.114.13:36:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.13:37:00      240        vlbi_tp_onsource(src='J1924-2914',t=4)
+#     430 seconds (7.2 minutes) until next scan
+
+#### Target SGRA scanname No0055 to start at 2018.114.13:49:00 #################
+2018.114.13:48:00      25         source('SGRA'); go()
+2018.114.13:48:30      25         vlbi_tp_onsource_prepare('SGRA')
+2018.114.13:49:00      420        vlbi_tp_onsource(src='SGRA',t=7)
+#     190 seconds (3.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0056 to start at 2018.114.14:00:00 ###########
+2018.114.13:59:00      25         source('J1924-2914'); go()
+2018.114.13:59:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.14:00:00      240        vlbi_tp_onsource(src='J1924-2914',t=4)
+#     1570 seconds (26.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0059 to start at 2018.114.14:31:00 ###########
+2018.114.14:30:00      25         source('J1924-2914'); go()
+2018.114.14:30:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.14:31:00      240        vlbi_tp_onsource(src='J1924-2914',t=4)
+#     550 seconds (9.2 minutes) until next scan
+
+#### Target J2257-3627 scanname No0060 to start at 2018.114.14:45:00 ###########
+2018.114.14:44:00      25         source('J2257-3627'); go()
+2018.114.14:44:30      25         vlbi_tp_onsource_prepare('J2257-3627')
+2018.114.14:45:00      300        vlbi_tp_onsource(src='J2257-3627',t=5)
+#     250 seconds (4.2 minutes) until next scan
+
+#### Target J1924-2914 scanname No0061 to start at 2018.114.14:55:00 ###########
+2018.114.14:54:00      25         source('J1924-2914'); go()
+2018.114.14:54:30      25         vlbi_tp_onsource_prepare('J1924-2914')
+2018.114.14:55:00      300        vlbi_tp_onsource(src='J1924-2914',t=5)
+#     310 seconds (5.2 minutes) until next scan
+
+#### Target BLLAC scanname No0062 to start at 2018.114.15:06:00 ################
+2018.114.15:05:00      25         source('BLLAC'); go()
+2018.114.15:05:30      25         vlbi_tp_onsource_prepare('BLLAC')
+2018.114.15:06:00      300        vlbi_tp_onsource(src='BLLAC',t=5)
+
+# Finished VLBI schedule
+2018.114.15:11:50      1          remote_control('off')
+################################################################################
+### end of schedule
+################################################################################

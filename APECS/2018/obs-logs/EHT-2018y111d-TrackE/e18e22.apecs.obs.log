@@ -1,0 +1,127 @@
+2018.112.00:15:27;"----------| START OF e18e22.apecs.obs |----------
+2018.112.00:15:27;"Using TAI-UTC offset of +37 seconds
+2018.112.00:15:27;"#
+2018.112.00:15:27;"# APEX observing script from file e18e22.xml
+2018.112.00:15:27;"# File created on 2018.111.21:14:24 UT
+2018.112.00:15:27;"#
+2018.112.00:15:27;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2018.112.00:15:27;"# Details on the columns:
+2018.112.00:15:27;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2018.112.00:15:27;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2018.112.00:15:27;"#    2) estimated duration of the command in seconds
+2018.112.00:15:27;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2018.112.00:15:27;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2018.112.00:15:27;"#
+2018.112.00:15:27;"# At time              Duration   Command
+2018.112.00:15:27;"execfile('pi230_setup.apecs')
+2018.112.00:15:28;"reply from APECS: OK
+2018.112.00:15:30;"execfile('vlbi-pi230_commands.py')
+2018.112.00:15:30;"reply from APECS: OK
+2018.112.00:15:32;"#### Target J0739+0137 scanname 111-2231 to start at 2018.111.22:31:00 #########
+2018.112.00:15:32;"missed time 2018.111.22:30:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.111.22:30:55 : source('J0739+0137')
+2018.112.00:15:32;"missed time 2018.111.22:31:00 : vlbi_tp_onsource(src='J0739+0137',t=5)
+2018.112.00:15:32;"missed time 2018.111.22:36:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"#     295 seconds (4.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target J0831+0429 scanname 111-2241 to start at 2018.111.22:41:00 #########
+2018.112.00:15:32;"missed time 2018.111.22:40:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.111.22:40:55 : source('J0831+0429')
+2018.112.00:15:32;"missed time 2018.111.22:41:00 : vlbi_tp_onsource(src='J0831+0429',t=5)
+2018.112.00:15:32;"missed time 2018.111.22:46:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"#     295 seconds (4.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target OJ287 scanname 111-2251 to start at 2018.111.22:51:00 ##############
+2018.112.00:15:32;"missed time 2018.111.22:50:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.111.22:50:55 : source('OJ287')
+2018.112.00:15:32;"missed time 2018.111.22:51:00 : vlbi_tp_onsource(src='OJ287',t=5)
+2018.112.00:15:32;"missed time 2018.111.22:56:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"missed time 2018.111.22:56:05 : interactive('About 595 seconds available for pointing/focusing/other')
+2018.112.00:15:32;"#     595 seconds (9.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target M87 scanname 111-2306 to start at 2018.111.23:06:00 ################
+2018.112.00:15:32;"missed time 2018.111.23:05:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.111.23:05:55 : source('M87')
+2018.112.00:15:32;"missed time 2018.111.23:06:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.00:15:32;"missed time 2018.111.23:13:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"#     175 seconds (2.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target M87 scanname 111-2316 to start at 2018.111.23:16:00 ################
+2018.112.00:15:32;"missed time 2018.111.23:15:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.111.23:15:55 : source('M87')
+2018.112.00:15:32;"missed time 2018.111.23:16:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:15:32;"missed time 2018.111.23:22:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"#     355 seconds (5.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target 3C279 scanname 111-2328 to start at 2018.111.23:28:00 ##############
+2018.112.00:15:32;"missed time 2018.111.23:27:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.111.23:27:55 : source('3C279')
+2018.112.00:15:32;"missed time 2018.111.23:28:00 : vlbi_tp_onsource(src='3C279',t=4)
+2018.112.00:15:32;"missed time 2018.111.23:32:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"#     175 seconds (2.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target M87 scanname 111-2335 to start at 2018.111.23:35:00 ################
+2018.112.00:15:32;"missed time 2018.111.23:34:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.111.23:34:55 : source('M87')
+2018.112.00:15:32;"missed time 2018.111.23:35:00 : vlbi_tp_onsource(src='M87',t=7)
+2018.112.00:15:32;"missed time 2018.111.23:42:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"#     175 seconds (2.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target M87 scanname 111-2345 to start at 2018.111.23:45:00 ################
+2018.112.00:15:32;"missed time 2018.111.23:44:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.111.23:44:55 : source('M87')
+2018.112.00:15:32;"missed time 2018.111.23:45:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:15:32;"missed time 2018.111.23:51:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"missed time 2018.111.23:51:05 : interactive('About 535 seconds available for pointing/focusing/other')
+2018.112.00:15:32;"#     535 seconds (8.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target M87 scanname 112-0000 to start at 2018.112.00:00:00 ################
+2018.112.00:15:32;"missed time 2018.111.23:59:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.111.23:59:55 : source('M87')
+2018.112.00:15:32;"missed time 2018.112.00:00:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:15:32;"missed time 2018.112.00:06:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"#     175 seconds (2.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target M87 scanname 112-0009 to start at 2018.112.00:09:00 ################
+2018.112.00:15:32;"missed time 2018.112.00:08:50 : doppler('off')
+2018.112.00:15:32;"missed time 2018.112.00:08:55 : source('M87')
+2018.112.00:15:32;"missed time 2018.112.00:09:00 : vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:15:32;"missed time 2018.112.00:15:05 : vlbi_initiate_tsys()
+2018.112.00:15:32;"#     355 seconds (5.9 minutes) until next scan
+2018.112.00:15:32;"
+2018.112.00:15:32;"#### Target 3C279 scanname 112-0021 to start at 2018.112.00:21:00 ##############
+2018.112.00:20:50;"doppler('off')
+2018.112.00:20:50;"reply from APECS: FAILED: name 'doppler' is not defined
+2018.112.00:20:55;"source('3C279')
+2018.112.00:20:55;"reply from APECS: OK
+2018.112.00:21:00;"vlbi_tp_onsource(src='3C279',t=4)
+2018.112.00:21:01;"reply from APECS: (timeout)
+2018.112.00:25:05;"vlbi_initiate_tsys()
+2018.112.00:25:06;"reply from APECS: (timeout)
+2018.112.00:25:06;"#     175 seconds (2.9 minutes) until next scan
+2018.112.00:25:06;"
+2018.112.00:25:06;"#### Target M87 scanname 112-0028 to start at 2018.112.00:28:00 ################
+2018.112.00:27:50;"doppler('off')
+2018.112.00:27:50;"reply from APECS: FAILED: name 'doppler' is not defined
+2018.112.00:27:55;"source('M87')
+2018.112.00:27:55;"reply from APECS: OK
+2018.112.00:28:00;"vlbi_tp_onsource(src='M87',t=7)
+2018.112.00:28:01;"reply from APECS: (timeout)
+2018.112.00:35:05;"vlbi_initiate_tsys()
+2018.112.00:35:06;"reply from APECS: (timeout)
+2018.112.00:35:06;"#     175 seconds (2.9 minutes) until next scan
+2018.112.00:35:06;"
+2018.112.00:35:06;"#### Target M87 scanname 112-0038 to start at 2018.112.00:38:00 ################
+2018.112.00:37:50;"doppler('off')
+2018.112.00:37:50;"reply from APECS: FAILED: name 'doppler' is not defined
+2018.112.00:37:55;"source('M87')
+2018.112.00:37:55;"reply from APECS: OK
+2018.112.00:38:00;"vlbi_tp_onsource(src='M87',t=6)
+2018.112.00:38:01;"reply from APECS: (timeout)
+2018.112.00:44:05;"vlbi_initiate_tsys()
+2018.112.00:44:06;"reply from APECS: (timeout)
+2018.112.00:44:06;"missed time 2018.112.00:44:05 : interactive('About 535 seconds available for pointing/focusing/other')
+2018.112.00:44:06;"#     535 seconds (8.9 minutes) until next scan
+2018.112.00:44:06;"
+2018.112.00:44:06;"#### Target M87 scanname 112-0053 to start at 2018.112.00:53:00 ################
+2018.112.00:45:58;"----------| USER-REQUESTED STOP OF  e18e22.apecs.obs |----------

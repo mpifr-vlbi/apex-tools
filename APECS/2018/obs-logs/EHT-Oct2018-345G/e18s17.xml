@@ -1,0 +1,10 @@
+<experiment name="e18s17" station="Ax" start="2018290093800"  end="2018290105300"> 
+	<scan experiment="e18s17" source="J0423-0120" station_code="Ax" start_time="2018290093800" duration="300" scan_name="290-0938"/>
+	<scan experiment="e18s17" source="J0423-0120" station_code="Ax" start_time="2018290094600" duration="300" scan_name="290-0946"/>
+	<scan experiment="e18s17" source="J0423-0120" station_code="Ax" start_time="2018290095400" duration="300" scan_name="290-0954"/>
+	<scan experiment="e18s17" source="J0510+1800" station_code="Ax" start_time="2018290100900" duration="300" scan_name="290-1009"/>
+	<scan experiment="e18s17" source="J0510+1800" station_code="Ax" start_time="2018290101700" duration="300" scan_name="290-1017"/>
+	<scan experiment="e18s17" source="J0510+1800" station_code="Ax" start_time="2018290102500" duration="300" scan_name="290-1025"/>
+	<scan experiment="e18s17" source="J0522-3627" station_code="Ax" start_time="2018290104000" duration="300" scan_name="290-1040"/>
+	<scan experiment="e18s17" source="J0522-3627" station_code="Ax" start_time="2018290104800" duration="300" scan_name="290-1048"/>
+</experiment>

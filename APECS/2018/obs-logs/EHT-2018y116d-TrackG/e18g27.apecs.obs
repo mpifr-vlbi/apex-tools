@@ -1,0 +1,541 @@
+#
+# APEX observing script for station Ax from file e18g27.vex
+# File created on 2018.116.17:58:42 UT
+#
+# Columns: 1) Start time 2) Duration in seconds 3) APECS command 
+# Details on the columns:
+#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+#    2) estimated duration of the command in seconds
+#    3) APECS command and parameters to execute. If the command includes whitespace.
+#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+#
+# At time              Duration   Command
+@always                10         execfile('pi230_setup.apecs')
+@always                2          execfile('vlbi-pi230_commands.py')
+
+#### Target OJ287 scanname No0001 to start at 2018.116.19:30:00 ################
+2018.116.19:27:50      25         source('OJ287'); go(); track()
+2018.116.19:28:20      20         vlbi_tsys()
+2018.116.19:28:45      70         vlbi_reference_scan()
+2018.116.19:30:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.19:35:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0002 to start at 2018.116.19:38:00 ################
+2018.116.19:36:20      20         vlbi_tsys()
+2018.116.19:36:45      70         vlbi_reference_scan()
+2018.116.19:38:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.19:43:00
+#     290 idle seconds (4.8 minutes) until next remote command
+
+#### Target J0725-0054 scanname No0003 to start at 2018.116.19:50:00 ###########
+2018.116.19:47:50      25         source('J0725-0054'); go(); track()
+2018.116.19:48:20      20         vlbi_tsys()
+2018.116.19:48:45      70         vlbi_reference_scan()
+2018.116.19:50:00      180        vlbi_scan(t_mins=3)
+#     scan end at 2018.116.19:53:00
+#     290 idle seconds (4.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0004 to start at 2018.116.20:00:00 ################
+2018.116.19:57:50      25         source('OJ287'); go(); track()
+2018.116.19:58:20      20         vlbi_tsys()
+2018.116.19:58:45      70         vlbi_reference_scan()
+2018.116.20:00:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.116.20:06:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0005 to start at 2018.116.20:09:00 ################
+2018.116.20:07:20      20         vlbi_tsys()
+2018.116.20:07:45      70         vlbi_reference_scan()
+2018.116.20:09:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.116.20:15:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0006 to start at 2018.116.20:18:00 ################
+2018.116.20:16:20      20         vlbi_tsys()
+2018.116.20:16:45      70         vlbi_reference_scan()
+2018.116.20:18:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.116.20:24:00
+#     290 idle seconds (4.8 minutes) until next remote command
+
+#### Target J0725-0054 scanname No0007 to start at 2018.116.20:31:00 ###########
+2018.116.20:28:50      25         source('J0725-0054'); go(); track()
+2018.116.20:29:20      20         vlbi_tsys()
+2018.116.20:29:45      70         vlbi_reference_scan()
+2018.116.20:31:00      180        vlbi_scan(t_mins=3)
+#     scan end at 2018.116.20:34:00
+#     410 idle seconds (6.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0008 to start at 2018.116.20:43:00 ################
+2018.116.20:40:50      25         source('OJ287'); go(); track()
+2018.116.20:41:20      20         vlbi_tsys()
+2018.116.20:41:45      70         vlbi_reference_scan()
+2018.116.20:43:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.20:48:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0009 to start at 2018.116.20:51:00 ################
+2018.116.20:49:20      20         vlbi_tsys()
+2018.116.20:49:45      70         vlbi_reference_scan()
+2018.116.20:51:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.20:56:00
+#     350 idle seconds (5.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0010 to start at 2018.116.21:04:00 #############
+2018.116.21:01:50      25         source('1055+018'); go(); track()
+2018.116.21:02:20      20         vlbi_tsys()
+2018.116.21:02:45      70         vlbi_reference_scan()
+2018.116.21:04:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.116.21:08:00
+#     350 idle seconds (5.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0011 to start at 2018.116.21:16:00 ################
+2018.116.21:13:50      25         source('OJ287'); go(); track()
+2018.116.21:14:20      20         vlbi_tsys()
+2018.116.21:14:45      70         vlbi_reference_scan()
+2018.116.21:16:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.21:21:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0012 to start at 2018.116.21:24:00 ################
+2018.116.21:22:20      20         vlbi_tsys()
+2018.116.21:22:45      70         vlbi_reference_scan()
+2018.116.21:24:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.21:29:00
+#     350 idle seconds (5.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0013 to start at 2018.116.21:37:00 #############
+2018.116.21:34:50      25         source('1055+018'); go(); track()
+2018.116.21:35:20      20         vlbi_tsys()
+2018.116.21:35:45      70         vlbi_reference_scan()
+2018.116.21:37:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.21:42:00
+#     410 idle seconds (6.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0014 to start at 2018.116.21:51:00 ################
+2018.116.21:48:50      25         source('OJ287'); go(); track()
+2018.116.21:49:20      20         vlbi_tsys()
+2018.116.21:49:45      70         vlbi_reference_scan()
+2018.116.21:51:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.21:56:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0015 to start at 2018.116.21:59:00 ################
+2018.116.21:57:20      20         vlbi_tsys()
+2018.116.21:57:45      70         vlbi_reference_scan()
+2018.116.21:59:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.22:04:00
+#     350 idle seconds (5.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0016 to start at 2018.116.22:12:00 #############
+2018.116.22:09:50      25         source('1055+018'); go(); track()
+2018.116.22:10:20      20         vlbi_tsys()
+2018.116.22:10:45      70         vlbi_reference_scan()
+2018.116.22:12:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.22:17:00
+#     350 idle seconds (5.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0017 to start at 2018.116.22:25:00 ################
+2018.116.22:22:50      25         source('OJ287'); go(); track()
+2018.116.22:23:20      20         vlbi_tsys()
+2018.116.22:23:45      70         vlbi_reference_scan()
+2018.116.22:25:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.22:30:00
+#     290 idle seconds (4.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0018 to start at 2018.116.22:37:00 #############
+2018.116.22:34:50      25         source('1055+018'); go(); track()
+2018.116.22:35:20      20         vlbi_tsys()
+2018.116.22:35:45      70         vlbi_reference_scan()
+2018.116.22:37:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.22:42:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0019 to start at 2018.116.22:45:00 #############
+2018.116.22:43:20      20         vlbi_tsys()
+2018.116.22:43:45      70         vlbi_reference_scan()
+2018.116.22:45:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.116.22:49:00
+#     410 idle seconds (6.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0020 to start at 2018.116.22:58:00 ################
+2018.116.22:55:50      25         source('OJ287'); go(); track()
+2018.116.22:56:20      20         vlbi_tsys()
+2018.116.22:56:45      70         vlbi_reference_scan()
+2018.116.22:58:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.23:03:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0021 to start at 2018.116.23:06:00 ################
+2018.116.23:04:20      20         vlbi_tsys()
+2018.116.23:04:45      70         vlbi_reference_scan()
+2018.116.23:06:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.23:11:00
+#     290 idle seconds (4.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0022 to start at 2018.116.23:18:00 #############
+2018.116.23:15:50      25         source('1055+018'); go(); track()
+2018.116.23:16:20      20         vlbi_tsys()
+2018.116.23:16:45      70         vlbi_reference_scan()
+2018.116.23:18:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.116.23:22:00
+#     290 idle seconds (4.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0023 to start at 2018.116.23:29:00 ################
+2018.116.23:26:50      25         source('OJ287'); go(); track()
+2018.116.23:27:20      20         vlbi_tsys()
+2018.116.23:27:45      70         vlbi_reference_scan()
+2018.116.23:29:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.116.23:35:00
+#     290 idle seconds (4.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0024 to start at 2018.116.23:42:00 #############
+2018.116.23:39:50      25         source('1055+018'); go(); track()
+2018.116.23:40:20      20         vlbi_tsys()
+2018.116.23:40:45      70         vlbi_reference_scan()
+2018.116.23:42:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.116.23:47:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0025 to start at 2018.116.23:50:00 #############
+2018.116.23:48:20      20         vlbi_tsys()
+2018.116.23:48:45      70         vlbi_reference_scan()
+2018.116.23:50:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.116.23:54:00
+#     410 idle seconds (6.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0026 to start at 2018.117.00:03:00 ################
+2018.117.00:00:50      25         source('OJ287'); go(); track()
+2018.117.00:01:20      20         vlbi_tsys()
+2018.117.00:01:45      70         vlbi_reference_scan()
+2018.117.00:03:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.00:08:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0027 to start at 2018.117.00:11:00 ################
+2018.117.00:09:20      20         vlbi_tsys()
+2018.117.00:09:45      70         vlbi_reference_scan()
+2018.117.00:11:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.117.00:17:00
+#     290 idle seconds (4.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0028 to start at 2018.117.00:24:00 #############
+2018.117.00:21:50      25         source('1055+018'); go(); track()
+2018.117.00:22:20      20         vlbi_tsys()
+2018.117.00:22:45      70         vlbi_reference_scan()
+2018.117.00:24:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.00:29:00
+#     290 idle seconds (4.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0029 to start at 2018.117.00:36:00 ################
+2018.117.00:33:50      25         source('OJ287'); go(); track()
+2018.117.00:34:20      20         vlbi_tsys()
+2018.117.00:34:45      70         vlbi_reference_scan()
+2018.117.00:36:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.117.00:42:00
+#     230 idle seconds (3.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0030 to start at 2018.117.00:48:00 #############
+2018.117.00:45:50      25         source('1055+018'); go(); track()
+2018.117.00:46:20      20         vlbi_tsys()
+2018.117.00:46:45      70         vlbi_reference_scan()
+2018.117.00:48:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.117.00:52:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0031 to start at 2018.117.00:55:00 #############
+2018.117.00:53:20      20         vlbi_tsys()
+2018.117.00:53:45      70         vlbi_reference_scan()
+2018.117.00:55:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.117.00:59:00
+#     410 idle seconds (6.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0032 to start at 2018.117.01:08:00 ################
+2018.117.01:05:50      25         source('OJ287'); go(); track()
+2018.117.01:06:20      20         vlbi_tsys()
+2018.117.01:06:45      70         vlbi_reference_scan()
+2018.117.01:08:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.01:13:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0033 to start at 2018.117.01:16:00 ################
+2018.117.01:14:20      20         vlbi_tsys()
+2018.117.01:14:45      70         vlbi_reference_scan()
+2018.117.01:16:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.01:21:00
+#     230 idle seconds (3.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0034 to start at 2018.117.01:27:00 #############
+2018.117.01:24:50      25         source('1055+018'); go(); track()
+2018.117.01:25:20      20         vlbi_tsys()
+2018.117.01:25:45      70         vlbi_reference_scan()
+2018.117.01:27:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.117.01:31:00
+#     230 idle seconds (3.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0035 to start at 2018.117.01:37:00 ################
+2018.117.01:34:50      25         source('OJ287'); go(); track()
+2018.117.01:35:20      20         vlbi_tsys()
+2018.117.01:35:45      70         vlbi_reference_scan()
+2018.117.01:37:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.01:42:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0036 to start at 2018.117.01:45:00 ################
+2018.117.01:43:20      20         vlbi_tsys()
+2018.117.01:43:45      70         vlbi_reference_scan()
+2018.117.01:45:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.01:50:00
+#     230 idle seconds (3.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0037 to start at 2018.117.01:56:00 #############
+2018.117.01:53:50      25         source('1055+018'); go(); track()
+2018.117.01:54:20      20         vlbi_tsys()
+2018.117.01:54:45      70         vlbi_reference_scan()
+2018.117.01:56:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.117.02:00:00
+#     410 idle seconds (6.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0038 to start at 2018.117.02:09:00 ################
+2018.117.02:06:50      25         source('OJ287'); go(); track()
+2018.117.02:07:20      20         vlbi_tsys()
+2018.117.02:07:45      70         vlbi_reference_scan()
+2018.117.02:09:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.02:14:00
+#     230 idle seconds (3.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0039 to start at 2018.117.02:20:00 #############
+2018.117.02:17:50      25         source('1055+018'); go(); track()
+2018.117.02:18:20      20         vlbi_tsys()
+2018.117.02:18:45      70         vlbi_reference_scan()
+2018.117.02:20:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.117.02:24:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0040 to start at 2018.117.02:27:00 #############
+2018.117.02:25:20      20         vlbi_tsys()
+2018.117.02:25:45      70         vlbi_reference_scan()
+2018.117.02:27:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.117.02:31:00
+#     230 idle seconds (3.8 minutes) until next remote command
+
+#### Target OJ287 scanname No0041 to start at 2018.117.02:37:00 ################
+2018.117.02:34:50      25         source('OJ287'); go(); track()
+2018.117.02:35:20      20         vlbi_tsys()
+2018.117.02:35:45      70         vlbi_reference_scan()
+2018.117.02:37:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.02:42:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target OJ287 scanname No0042 to start at 2018.117.02:45:00 ################
+2018.117.02:43:20      20         vlbi_tsys()
+2018.117.02:43:45      70         vlbi_reference_scan()
+2018.117.02:45:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.02:50:00
+#     170 idle seconds (2.8 minutes) until next remote command
+
+#### Target 3C279 scanname No0043 to start at 2018.117.02:55:00 ################
+2018.117.02:52:50      25         source('3C279'); go(); track()
+2018.117.02:53:20      20         vlbi_tsys()
+2018.117.02:53:45      70         vlbi_reference_scan()
+2018.117.02:55:00      180        vlbi_scan(t_mins=3)
+#     scan end at 2018.117.02:58:00
+#     230 idle seconds (3.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0044 to start at 2018.117.03:04:00 #############
+2018.117.03:01:50      25         source('1055+018'); go(); track()
+2018.117.03:02:20      20         vlbi_tsys()
+2018.117.03:02:45      70         vlbi_reference_scan()
+2018.117.03:04:00      240        vlbi_scan(t_mins=4)
+#     scan end at 2018.117.03:08:00
+#     1220 idle seconds (20.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0045 to start at 2018.117.03:30:00 #############
+2018.117.03:28:20      20         vlbi_tsys()
+2018.117.03:28:45      70         vlbi_reference_scan()
+2018.117.03:30:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.03:35:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0046 to start at 2018.117.03:38:00 #############
+2018.117.03:36:20      20         vlbi_tsys()
+2018.117.03:36:45      70         vlbi_reference_scan()
+2018.117.03:38:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.03:43:00
+#     170 idle seconds (2.8 minutes) until next remote command
+
+#### Target 3C279 scanname No0047 to start at 2018.117.03:48:00 ################
+2018.117.03:45:50      25         source('3C279'); go(); track()
+2018.117.03:46:20      20         vlbi_tsys()
+2018.117.03:46:45      70         vlbi_reference_scan()
+2018.117.03:48:00      180        vlbi_scan(t_mins=3)
+#     scan end at 2018.117.03:51:00
+#     170 idle seconds (2.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0048 to start at 2018.117.03:56:00 #############
+2018.117.03:53:50      25         source('1055+018'); go(); track()
+2018.117.03:54:20      20         vlbi_tsys()
+2018.117.03:54:45      70         vlbi_reference_scan()
+2018.117.03:56:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.117.04:02:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0049 to start at 2018.117.04:05:00 #############
+2018.117.04:03:20      20         vlbi_tsys()
+2018.117.04:03:45      70         vlbi_reference_scan()
+2018.117.04:05:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.117.04:11:00
+#     440 idle seconds (7.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0050 to start at 2018.117.04:20:00 #############
+2018.117.04:18:20      20         vlbi_tsys()
+2018.117.04:18:45      70         vlbi_reference_scan()
+2018.117.04:20:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.04:25:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0051 to start at 2018.117.04:28:00 #############
+2018.117.04:26:20      20         vlbi_tsys()
+2018.117.04:26:45      70         vlbi_reference_scan()
+2018.117.04:28:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.04:33:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0052 to start at 2018.117.04:36:00 #############
+2018.117.04:34:20      20         vlbi_tsys()
+2018.117.04:34:45      70         vlbi_reference_scan()
+2018.117.04:36:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.04:41:00
+#     170 idle seconds (2.8 minutes) until next remote command
+
+#### Target 3C279 scanname No0053 to start at 2018.117.04:46:00 ################
+2018.117.04:43:50      25         source('3C279'); go(); track()
+2018.117.04:44:20      20         vlbi_tsys()
+2018.117.04:44:45      70         vlbi_reference_scan()
+2018.117.04:46:00      180        vlbi_scan(t_mins=3)
+#     scan end at 2018.117.04:49:00
+#     170 idle seconds (2.8 minutes) until next remote command
+
+#### Target 1055+018 scanname No0054 to start at 2018.117.04:54:00 #############
+2018.117.04:51:50      25         source('1055+018'); go(); track()
+2018.117.04:52:20      20         vlbi_tsys()
+2018.117.04:52:45      70         vlbi_reference_scan()
+2018.117.04:54:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.117.05:00:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0055 to start at 2018.117.05:03:00 #############
+2018.117.05:01:20      20         vlbi_tsys()
+2018.117.05:01:45      70         vlbi_reference_scan()
+2018.117.05:03:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.05:08:00
+#     440 idle seconds (7.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0056 to start at 2018.117.05:17:00 #############
+2018.117.05:15:20      20         vlbi_tsys()
+2018.117.05:15:45      70         vlbi_reference_scan()
+2018.117.05:17:00      360        vlbi_scan(t_mins=6)
+#     scan end at 2018.117.05:23:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0057 to start at 2018.117.05:26:00 #############
+2018.117.05:24:20      20         vlbi_tsys()
+2018.117.05:24:45      70         vlbi_reference_scan()
+2018.117.05:26:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.05:31:00
+#     80 idle seconds (1.3 minutes) until next remote command
+
+#### Target 1055+018 scanname No0058 to start at 2018.117.05:34:00 #############
+2018.117.05:32:20      20         vlbi_tsys()
+2018.117.05:32:45      70         vlbi_reference_scan()
+2018.117.05:34:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.05:39:00
+#     170 idle seconds (2.8 minutes) until next remote command
+
+#### Target 3C279 scanname No0059 to start at 2018.117.05:44:00 ################
+2018.117.05:41:50      25         source('3C279'); go(); track()
+2018.117.05:42:20      20         vlbi_tsys()
+2018.117.05:42:45      70         vlbi_reference_scan()
+2018.117.05:44:00      180        vlbi_scan(t_mins=3)
+#     scan end at 2018.117.05:47:00
+#     770 idle seconds (12.8 minutes) until next remote command
+
+#### Target MRK501 scanname No0060 to start at 2018.117.06:02:00 ###############
+2018.117.05:59:50      25         source('MRK501'); go(); track()
+2018.117.06:00:20      20         vlbi_tsys()
+2018.117.06:00:45      70         vlbi_reference_scan()
+2018.117.06:02:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.06:07:00
+#     200 idle seconds (3.3 minutes) until next remote command
+
+#### Target MRK501 scanname No0061 to start at 2018.117.06:12:00 ###############
+2018.117.06:10:20      20         vlbi_tsys()
+2018.117.06:10:45      70         vlbi_reference_scan()
+2018.117.06:12:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.06:17:00
+#     200 idle seconds (3.3 minutes) until next remote command
+
+#### Target MRK501 scanname No0062 to start at 2018.117.06:22:00 ###############
+2018.117.06:20:20      20         vlbi_tsys()
+2018.117.06:20:45      70         vlbi_reference_scan()
+2018.117.06:22:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.06:27:00
+#     2900 idle seconds (48.3 minutes) until next remote command
+
+#### Target MRK501 scanname No0067 to start at 2018.117.07:17:00 ###############
+2018.117.07:15:20      20         vlbi_tsys()
+2018.117.07:15:45      70         vlbi_reference_scan()
+2018.117.07:17:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.07:22:00
+#     200 idle seconds (3.3 minutes) until next remote command
+
+#### Target MRK501 scanname No0068 to start at 2018.117.07:27:00 ###############
+2018.117.07:25:20      20         vlbi_tsys()
+2018.117.07:25:45      70         vlbi_reference_scan()
+2018.117.07:27:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.07:32:00
+#     200 idle seconds (3.3 minutes) until next remote command
+
+#### Target MRK501 scanname No0069 to start at 2018.117.07:37:00 ###############
+2018.117.07:35:20      20         vlbi_tsys()
+2018.117.07:35:45      70         vlbi_reference_scan()
+2018.117.07:37:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.07:42:00
+#     1130 idle seconds (18.8 minutes) until next remote command
+
+#### Target J1504+1029 scanname No0071 to start at 2018.117.08:03:00 ###########
+2018.117.08:00:50      25         source('J1504+1029'); go(); track()
+2018.117.08:01:20      20         vlbi_tsys()
+2018.117.08:01:45      70         vlbi_reference_scan()
+2018.117.08:03:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.08:08:00
+#     170 idle seconds (2.8 minutes) until next remote command
+
+#### Target J1549+0237 scanname No0072 to start at 2018.117.08:13:00 ###########
+2018.117.08:10:50      25         source('J1549+0237'); go(); track()
+2018.117.08:11:20      20         vlbi_tsys()
+2018.117.08:11:45      70         vlbi_reference_scan()
+2018.117.08:13:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.08:18:00
+#     170 idle seconds (2.8 minutes) until next remote command
+
+#### Target J1751+0939 scanname No0073 to start at 2018.117.08:23:00 ###########
+2018.117.08:20:50      25         source('J1751+0939'); go(); track()
+2018.117.08:21:20      20         vlbi_tsys()
+2018.117.08:21:45      70         vlbi_reference_scan()
+2018.117.08:23:00      300        vlbi_scan(t_mins=5)
+#     scan end at 2018.117.08:28:00
+#     170 idle seconds (2.8 minutes) until next remote command
+
+#### Target J1820+0711 scanname No0074 to start at 2018.117.08:33:00 ###########
+2018.117.08:30:50      25         source('J1820+0711'); go(); track()
+2018.117.08:31:20      20         vlbi_tsys()
+2018.117.08:31:45      70         vlbi_reference_scan()
+2018.117.08:33:00      300        vlbi_scan(t_mins=5)
+
+# Finished VLBI schedule
+2018.117.08:38:00      1          remote_control('off')
+################################################################################
+### end of schedule
+################################################################################

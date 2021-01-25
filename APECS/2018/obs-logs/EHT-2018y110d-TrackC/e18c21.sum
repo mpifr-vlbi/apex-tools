@@ -1,0 +1,683 @@
+                    SUMMARY FILE FOR PROJECT: e18c21  
+
+COVER INFORMATION: 
+
+  Experiment: ALMA+EHT VLBI April 2018
+  Exp. Code:  e18c21  
+  Start Day 110 is Fri  20 Apr 2018   MJD  58228          
+
+  Schedule Version:      11.00
+  Processed by SCHED version:  11.50  Development version 11.5. Started Apr. 2
+
+  PI:       EHTC
+
+  Address:  The Event Horizon Telescope Collaboration
+            Global
+   
+   
+
+  Phone:    TBD
+  EMAIL:    not@an.address
+  Fax:
+  Phone during observation: TBD
+
+  Observing mode: R2DBE
+
+  Notes:
+   
+   
+   
+
+
+No cover letter provided.
+
+CORRELATION REQUESTS (Defaults in parentheses):
+
+  Correlator (Required if recording):          HAYSTACK
+  Correlator average time (2 sec):               1.000 sec.
+    Alternate average time (for spacecraft).     0.000 sec.
+  Output spectral channels per baseband (16):          64
+     Correlator FFT size (128):                       128
+  Number of antennas to be correlated:                  8
+  Polarization (ON):                           ON
+  Correlator weighting function (UNIFORM):     UNIFORM
+  Distribution tape (DAT):                     FTP
+
+  Distribution format (FITS):                  FITS
+  Source positions from:             STANDARD
+
+  Shipping address for correlator output:
+      TBD
+
+
+
+
+  Correlator Notes:
+
+
+
+
+
+
+
+DERIVED INFORMATION FOR CORRELATION: 
+                                                All scans
+  Elapsed time for project (hours):                15.97
+  Total time in scheduled scans (hours):            8.38
+  Total time in recording scans (hours):            8.38
+  Total baseline hours (recording scans):         178.55
+  Projected max correlator output rate (kB/s):      36.9
+  Projected correlator output data size (MB):      658.2
+ NOTES:  Above numbers assume the same correlator parameters are used for all data.
+         The 'baseline hours' include the autocorrelations (for data size calculations).
+         The correlator output data rate is for real-time processing.
+         Above numbers assume the same correlator parameters are used for all data.
+         The recordings for a scan are assumed to start at the scan START minus PRESTART.
+         Some stations (VLA, VLBA/MARK5C) wait for good data so the estimates may be high.
+
+
+
+STATIONS USED IN SCHEDULE:
+
+   Station  Code   Latitude Longitude  Elevation       X            Y            Z       Axis
+                                                                                       Offset
+
+   APEX      Ax  -23.00578   67.75914    5104.    2225039.530 -5441197.629 -2479303.360  0.000
+   PICOVEL   Pv   37.06614    3.39260    2919.    5088967.745  -301681.186  3825012.206  0.000
+   THULE     Gl   76.53516   68.68578      89.     541547.000 -1387978.600  6180982.000  0.000
+   ALMA      Aa  -23.02922   67.75474    5070.    2225061.164 -5440057.370 -2481681.151  0.000
+   SPT       Sz  -90.00000  -45.00000    2857.          0.010        0.010 -6359609.700  0.000
+   LMT       Lm   18.98577   97.31478    4593.    -768715.632 -5988507.072  2063354.852  0.000
+   SMTO      Mg   32.70161  109.89124    3159.   -1828796.200 -5054406.800  3427865.200  0.000
+   JCMT      Mm   19.82284  155.47703    4120.   -5464584.676 -2493001.170  2150653.982  0.000
+   SMAP      Sw   19.82423  155.47755    4115.   -5464555.493 -2492927.989  2150797.176  0.000
+
+
+   Plate tectonic motion adjustments for MJD  58228
+   Station  Code      Station motions (m/yr)             Adjusted positions 
+                     X       Y       Z     MJD0        X            Y            Z 
+   APEX      Ax   0.0000  0.0000  0.0000  50449   2225039.530 -5441197.629 -2479303.360
+   PICOVEL   Pv   0.0000  0.0000  0.0000  50449   5088967.745  -301681.186  3825012.206
+   THULE     Gl   0.0000  0.0000  0.0000  54466    541547.000 -1387978.600  6180982.000
+   ALMA      Aa   0.0000  0.0000  0.0000  55646   2225061.164 -5440057.370 -2481681.151
+   SPT       Sz   0.0000  0.0000  0.0000  54466         0.010        0.010 -6359609.700
+   LMT       Lm   0.0000  0.0000  0.0000  54466   -768715.632 -5988507.072  2063354.852
+   SMTO      Mg   0.0000  0.0000  0.0000  50449  -1828796.200 -5054406.800  3427865.200
+   JCMT      Mm   0.0000  0.0000  0.0000  50449  -5464584.676 -2493001.170  2150653.982
+   SMAP      Sw   0.0000  0.0000  0.0000  50449  -5464555.493 -2492927.989  2150797.176
+
+
+
+BASELINE LENGTHS (km)
+
+          Ax    Pv    Gl    Aa    Sz    Lm    Mg    Mm    Sw
+
+   Ax      0  8623  9708     2  7043  5467  7174  9447  9447
+   Pv   8623     0  5235  8624 11389  8351  8402 10907 10907
+   Gl   9708  5235     0  9710 12628  6311  5161  7316  7316
+   Aa      2  8624  9710     0  7041  5469  7176  9448  9448
+   Sz   7043 11389 12628  7041     0 10363 11166 10416 10416
+   Lm   5467  8351  6311  5469 10363     0  1964  5854  5854
+   Mg   7174  8402  5161  7176 11166  1964     0  4627  4627
+   Mm   9447 10907  7316  9448 10416  5854  4627     0     0
+   Sw   9447 10907  7316  9448 10416  5854  4627     0     0
+
+
+RECORDING SYSTEM AND CALIBRATION INFORMATION:
+
+  List of scan-dependent controls seen for recording timing.
+   MINPAUSE:   10.
+   PRESTART:    0.
+
+  DISKS - Stations potentially recording on disks.
+   Station    Drive type   DAR     NBBC    Tsys
+   APEX         MARK6      NONE     32     GAP 
+   PICOVEL      MARK5C     NONE     32     GAP 
+   THULE        MARK5C     NONE     32     GAP 
+   ALMA         MARK6      NONE     32     GAP 
+   SPT          MARK5C     NONE     32     GAP 
+   LMT          MARK5C     NONE     32     GAP 
+   SMTO         MARK5C     NONE     32     GAP 
+   JCMT         MARK5C     NONE     32     GAP 
+   SMAP         MARK5C     NONE     32     GAP 
+
+
+
+
+EXPERIMENT SUMMARY:
+  Number of input scans:         87
+  Number of scans scheduled:     87
+  Number of stations:             9
+  Number of sources input:        5
+  Number of setup files used:     1
+
+
+STATION SCAN SUMMARIES:
+  Station  Control   Scans   Scan   Record  Record   Gbytes
+                            Hours   Hours   Scans
+  APEX       VEX       85    8.10    8.10      85    29908.
+  PICOVEL    VEX       35    2.67    2.67      35     9846.
+  THULE      VEX       44    3.40    3.40      44    12554.
+  ALMA       VEX       80    7.52    7.52      80    27754.
+  SPT        VEX       52    5.58    5.58      52    20615.
+  LMT        VEX       80    7.85    7.85      80    28985.
+  SMTO       VEX       66    6.60    6.60      66    24369.
+  JCMT       VEX       40    4.03    4.03      40    14892.
+  SMAP       VEX       40    4.03    4.03      40    14892.
+
+  Notes on the station scan summaries: 
+
+    "Record Scans" are periods of recording with no gap.  The Mark5A disk systems 
+    have a limit of 1024 such scans.  There are often multiple projects on a disk pack.
+    If using MARK5A, try to keep above about 6 GB per record scan by using MINPAUSE 
+    and PRESTART to prevent short gaps.  However, also try to prevent record scans 
+    of more than an hour to minimize risk to data from playback problems.
+    MARK5C will have one observe scan per record scan and there is no limit to the number.
+
+
+
+
+
+
+ SETUP FILES:
+
+
+The following setup groups are the same as group   1 below.
+   2:PICOVEL   3:THULE   4:ALMA   5:SPT   6:LMT   7:SMTO   8:JCMT
+   9:SMAP
+
+
+ ======== Setup file: 1mmlcp.set
+ --- WARNING ---  This group does not match an entry in the frequency catalog.
+                  This might be ok because the catalog is not complete.
+                  But be very careful to be sure that the setup is correct.
+
+   Setup group:    1         Station: APEX              Total bit rate:  8192
+   Format: MARK5B            Bits per sample: 2         Sample rate:*******
+   Number of channels:  1    DBE type:                  Speedup factor:   1.00
+
+   Disk used to record data.
+
+   1st LO= 226084.00
+   Net SB=         U
+   IF SB =         U
+   Pol.  =      LCP 
+   BBC   =         1
+   BBC SB=         U
+   IF    =        A1
+
+  The following frequency sets based on these setups were used.
+
+   Frequency Set:   1  Setup file default.  Used with PCAL = off
+   LO sum=   226100.00
+   BBC fr=       16.00
+   Bandwd=     2048.00
+    Matching frequency sets:   1   2   3   4   5   6   7   8   9
+
+   Track assignments are: 
+    track1=   2
+    barrel=roll_off 
+
+
+ SCAN SUMMARY for experiment e18c21  ALMA+EHT VLBI April 2018
+     Flags: D=>Down, H=>Below Horizon, R=>Rises, S=>Sets, W=>Slew too long, t=>Tape Chg.
+     Top item is:    Start elevation.
+     Bottom item is: Seconds antenna is on source before scan start.
+     TYPE top: -=> normal scan, P=>Pointing or Ta;  bottom: -=>recording, N=>not recording.
+     Day 110 is Fri  20 Apr 2018   MJD  58228          
+
+SCAN  DAY START UT  SOURCE     TYPE  STATIONS    t => tape change
+           STOP UT                    Ax    Pv    Gl    Aa    Sz    Lm    Mg    Mm    Sw
+
+   1  110 22:38:00 OJ287         -    45    43    33   ---   ---   ---   ---   ---   ---
+      110 22:43:00 1mmlcp.set    -     0     0     0   ---   ---   ---   ---   ---   ---
+
+   2  110 22:48:00 OJ287         -    46    41    33   ---   ---   ---   ---   ---   ---
+      110 22:53:00 -             -   290   290   290   ---   ---   ---   ---   ---   ---
+
+   3  110 23:03:00 M87           -    21    65    18    21   ---   ---   ---   ---   ---
+      110 23:08:00 -             -   536   425   562     0   ---   ---   ---   ---   ---
+
+   4  110 23:11:00 M87           -    22    65    19    22   ---   ---   ---   ---   ---
+      110 23:16:00 -             -   170   170   170   170   ---   ---   ---   ---   ---
+
+   5  110 23:22:00 3C279         -    28    47   ---    28     6   ---   ---   ---   ---
+      110 23:26:00 -             -   329   315   ---   346     0   ---   ---   ---   ---
+
+   6  110 23:32:00 M87           -    27    63    20    27   ---    10   ---   ---   ---
+      110 23:37:00 -             -   329   316   950   346   ---     0   ---   ---   ---
+
+   7  110 23:40:00 M87           -    28    63    20    28   ---    12   ---   ---   ---
+      110 23:45:00 -             -   170   170   170   170   ---   175   ---   ---   ---
+
+   8  110 23:51:00 3C279         -    34    46   ---    34     6   ---   ---   ---   ---
+gap1  110 23:55:00 -             -   328   312   ---   346  1490   ---   ---   ---   ---
+
+   9  111 00:04:00 M87           -    33    60    21    33   ---    18   ---   ---   ---
+      111 00:09:00 -             -   507   488  1130   526   ---  1135   ---   ---   ---
+
+  10  111 00:12:00 M87           -    35    59    22    35   ---    20   ---   ---   ---
+      111 00:17:00 -             -   170   170   170   170   ---   175   ---   ---   ---
+
+  11  111 00:20:00 M87           -    36    58    22    36   ---    22   ---   ---   ---
+      111 00:24:00 -             -   170   170   170   170   ---   175   ---   ---   ---
+
+  12  111 00:30:00 3C279         -    43    44   ---    43     6   ---   ---   ---   ---
+      111 00:34:00 -             -   326   306   ---   346  2090   ---   ---   ---   ---
+
+  13  111 00:40:00 M87           -    40    55    23    40   ---    26   ---   ---   ---
+      111 00:45:00 -             -   325   304   950   346   ---   955   ---   ---   ---
+
+  14  111 00:48:00 M87           -    41    54    23    41   ---    28   ---   ---   ---
+      111 00:53:00 -             -   170   170   170   170   ---   175   ---   ---   ---
+
+  15  111 00:59:00 3C279         -    49    41   ---    49     6    19   ---   ---   ---
+gap2  111 01:03:00 -             -   324   305   ---   345  1490   330   ---   ---   ---
+
+  16  111 01:12:00 M87           -    45    50    24    45   ---    34   ---   ---   ---
+      111 01:17:00 -             -   503   484  1130   525   ---   510   ---   ---   ---
+
+
+
+ SCAN SUMMARY for experiment e18c21  ALMA+EHT VLBI April 2018
+     Flags: D=>Down, H=>Below Horizon, R=>Rises, S=>Sets, W=>Slew too long, t=>Tape Chg.
+     Top item is:    Start elevation.
+     Bottom item is: Seconds antenna is on source before scan start.
+     TYPE top: -=> normal scan, P=>Pointing or Ta;  bottom: -=>recording, N=>not recording.
+     Day 110 is Fri  20 Apr 2018   MJD  58228          
+
+SCAN  DAY START UT  SOURCE     TYPE  STATIONS    t => tape change
+           STOP UT                    Ax    Pv    Gl    Aa    Sz    Lm    Mg    Mm    Sw
+
+  17  111 01:20:00 M87           -    46    48    24    46   ---    36    24   ---   ---
+      111 01:24:00 1mmlcp.set    -   170   170   170   170   ---   175     0   ---   ---
+
+  18  111 01:30:00 3C279         -    56    37     6    56     6    26   ---   ---   ---
+      111 01:34:00 -             -   322   305   341   345  1610   329   ---   ---   ---
+
+  19  111 01:40:00 M87           -    49    44    25    49   ---    40    29   ---   ---
+      111 01:45:00 -             -   321   305   341   345   ---   328   950   ---   ---
+
+  20  111 01:48:00 M87           -    50    43    25    50   ---    42    30   ---   ---
+      111 01:53:00 -             -   170   170   170   170   ---   175   170   ---   ---
+
+  21  111 01:59:00 3C279         -    62    32     6    62     6    32   ---   ---   ---
+gap3  111 02:03:00 -             -   321   307   341   345  1490   327   ---   ---   ---
+
+  22  111 02:12:00 M87           -    52    38    25    52   ---    48    35   ---   ---
+      111 02:17:00 -             -   500   487   521   525   ---   506  1130   ---   ---
+
+  23  111 02:20:00 M87           -    53    37    25    53   ---    50    37   ---   ---
+      111 02:24:00 -             -   170   170   170   170   ---   175   170   ---   ---
+
+  24  111 02:30:00 3C279         -    67    27     7    67     6    39    23   ---   ---
+      111 02:34:00 -             -   321   308   341   345  1610   325   334   ---   ---
+
+  25  111 02:40:00 M87           -    54    33    26    54   ---    55    41   ---   ---
+      111 02:45:00 -             -   322   308   341   345   ---   324   334   ---   ---
+
+  26  111 02:48:00 M87           -    54    31    26    54   ---    57    43   ---   ---
+      111 02:53:00 -             -   170   170   170   170   ---   175   170   ---   ---
+
+  27  111 02:59:00 3C279         -    71    22     7    71     6    45    29   ---   ---
+gap4  111 03:03:00 -             -   326   310   341   344  1490   322   334   ---   ---
+
+  28  111 03:12:00 M87           -    55    27    26    55   ---    62    48   ---   ---
+      111 03:17:00 -             -   508   490   521   473   ---   502   514   ---   ---
+
+  29  111 03:20:00 M87           -    55    25    26    55   ---    64    49   ---   ---
+      111 03:24:00 -             -   170   170   170   170   ---   175   170   ---   ---
+
+  30  111 03:30:00 3C279         -    73    17     8    73     6    51    34   ---   ---
+      111 03:34:00 -             -   332   311   341   344  1610   319   333   ---   ---
+
+  31  111 03:40:00 M87           -    54    21    26    54   ---    69    53   ---   ---
+      111 03:45:00 -             -   331   311   341   343   ---   319   333   ---   ---
+
+  32  111 03:48:00 M87           -    53    19    26    53   ---    70    55    16    16
+      111 03:53:00 -             -   170   170   170   170   ---   175   170     0     0
+
+
+
+ SCAN SUMMARY for experiment e18c21  ALMA+EHT VLBI April 2018
+     Flags: D=>Down, H=>Below Horizon, R=>Rises, S=>Sets, W=>Slew too long, t=>Tape Chg.
+     Top item is:    Start elevation.
+     Bottom item is: Seconds antenna is on source before scan start.
+     TYPE top: -=> normal scan, P=>Pointing or Ta;  bottom: -=>recording, N=>not recording.
+     Day 110 is Fri  20 Apr 2018   MJD  58228          
+
+SCAN  DAY START UT  SOURCE     TYPE  STATIONS    t => tape change
+           STOP UT                    Ax    Pv    Gl    Aa    Sz    Lm    Mg    Mm    Sw
+
+  33  111 03:59:00 3C279         -    72    11     8    72     6    57    39   ---   ---
+gap5  111 04:03:00 1mmlcp.set    -   331   312   341   343  1490   317   333   ---   ---
+
+  34  111 04:12:00 M87           -    51    15    25    51   ---    76    59    22    22
+      111 04:17:00 -             -   511   492   521   523   ---   498   512  1130  1130
+
+  35  111 04:20:00 M87           -    50    13    25    50   ---    77    60    23    23
+      111 04:24:00 -             -   170   170   170   170   ---   174   170   170   170
+
+  36  111 04:30:00 3C279         -    68   ---     7    68     6    61    43   ---   ---
+      111 04:34:00 -             -   331   ---   341   343  1610   322   332   ---   ---
+
+  37  111 04:40:00 M87           -    48   ---    25    48   ---    81    63    28    28
+      111 04:45:00 -             -   331   ---   341   343   ---   328   331   950   950
+
+  38  111 04:48:00 M87           -    47   ---    24    47   ---    82    65    30    30
+      111 04:53:00 -             -   170   ---   170   170   ---   174   170   170   170
+
+  39  111 04:59:00 3C279         -    63   ---     7    63     6    64    47    20    20
+gap6  111 05:03:00 -             -   332   ---   341   344  1490   335   331   333   344
+
+  40  111 05:12:00 M87           -    43   ---    24    43   ---    83    67    36    36
+      111 05:17:00 -             -   512   ---   521   524   ---   513   511   512   524
+
+  41  111 05:20:00 M87           -    42   ---    23    42   ---    82    68    38    38
+      111 05:24:00 -             -   170   ---   170   170   ---   174   170   170   170
+
+  42  111 05:30:00 3C279         -    57   ---     6    57     6    65    50    27    27
+      111 05:34:00 -             -   333   ---   341   344  1610   298   331   332   344
+
+  43  111 05:40:00 M87           -    38   ---    23    38   ---    79    69    42    42
+      111 05:45:00 -             -   334   ---   341   344   ---   287   331   332   344
+
+  44  111 05:48:00 M87           -    37   ---    22    37   ---    77    70    44    44
+      111 05:53:00 -             -   170   ---   170   170   ---   174   170   170   170
+
+  45  111 05:59:00 3C279         -    50   ---   ---    50     6    64    51    34    34
+gap7  111 06:03:00 -             -   334   ---   ---   344  1490   285   331   332   344
+
+  46  111 06:12:00 M87           -    32   ---    21    32   ---    72    69    50    50
+      111 06:17:00 -             -   514   ---  1130   524   ---   465   512   511   523
+
+  47  111 06:20:00 M87           -    31   ---    21    31   ---    71    69    52    52
+      111 06:24:00 -             -   170   ---   170   170   ---   175   170   170   170
+
+  48  111 06:30:00 3C279         -    44   ---   ---    44     6    61    51    41    41
+      111 06:34:00 -             -   335   ---   ---   345  1610   291   332   331   343
+
+
+
+ SCAN SUMMARY for experiment e18c21  ALMA+EHT VLBI April 2018
+     Flags: D=>Down, H=>Below Horizon, R=>Rises, S=>Sets, W=>Slew too long, t=>Tape Chg.
+     Top item is:    Start elevation.
+     Bottom item is: Seconds antenna is on source before scan start.
+     TYPE top: -=> normal scan, P=>Pointing or Ta;  bottom: -=>recording, N=>not recording.
+     Day 110 is Fri  20 Apr 2018   MJD  58228          
+
+SCAN  DAY START UT  SOURCE     TYPE  STATIONS    t => tape change
+           STOP UT                    Ax    Pv    Gl    Aa    Sz    Lm    Mg    Mm    Sw
+
+  49  111 06:40:00 M87           -    27   ---    20    27   ---    66    67    56    56
+      111 06:45:00 1mmlcp.set    -   335   ---   950   345   ---   293   329   330   343
+
+  50  111 06:48:00 M87           -    25   ---    20    25   ---    64    66    58    58
+      111 06:53:00 -             -   170   ---   170   170   ---   175   170   170   170
+
+  51  111 06:59:00 3C279         -    37   ---   ---    37     6    57    50    46    46
+prj1  111 07:03:00 -             -   335   ---   ---   345  1490   300   326   330   343
+
+  52  111 07:23:00 SGRA          -    76   ---   ---    76    29    26   ---   ---   ---
+      111 07:33:00 -             -  1024   ---   ---  1162  1154  1064   ---   ---   ---
+
+  53  111 07:36:00 SGRA          -    78   ---   ---    78    29    28   ---   ---   ---
+      111 07:46:00 -             -   170   ---   ---   170   170   175   ---   ---   ---
+
+  54  111 07:51:00 NRAO530       -    79   ---   ---    79    13    44   ---   ---   ---
+      111 07:55:00 -             -    36   ---   ---   273   282   278   ---   ---   ---
+
+  55  111 08:00:00 SGRA          -    82   ---   ---    82    29    31    14   ---   ---
+      111 08:10:00 -             -   167   ---   ---   270   282   278  3343   ---   ---
+
+  56  111 08:13:00 SGRA          -    84   ---   ---    84    29    33    16   ---   ---
+      111 08:22:00 -             -   170   ---   ---   170   170   175   170   ---   ---
+
+  57  111 08:26:00 NRAO530       -    79   ---   ---    79    13    50    32   ---   ---
+gap9  111 08:30:00 -             -    23   ---   ---   204   222   219   215   ---   ---
+
+  58  111 08:39:00 SGRA          -    83   ---   ---    83    29    36    19   ---   ---
+      111 08:49:00 -             -   402   ---   ---   508   522   519   515   ---   ---
+
+  59  111 08:52:00 SGRA          -    81   ---   ---    81    29    38    20   ---   ---
+      111 08:59:00 -             -   170   ---   ---   170   170   175   170   ---   ---
+
+  60  111 09:04:00 NRAO530       -    73   ---   ---    73    13    54    37   ---   ---
+      111 09:08:00 -             -   217   ---   ---   277   282   278   275   ---   ---
+
+  61  111 09:13:00 SGRA          -    77   ---   ---    77    29    39    22   ---   ---
+      111 09:22:00 -             -   227   ---   ---   279   282   278   275   ---   ---
+
+  62  111 09:25:00 SGRA          -    74   ---   ---    74    29    40    24   ---   ---
+      111 09:35:00 -             -   170   ---   ---   170   170   175   170   ---   ---
+
+  63  111 09:39:00 NRAO530       -    66   ---   ---    66    13    57    41    18    18
+gp10  111 09:43:00 -             -   185   ---   ---   222   222   218   214  9290  9334
+
+  64  111 09:52:00 SGRA          -    69   ---   ---    69    29    42    26   ---   ---
+      111 09:59:00 -             -   488   ---   ---   523   522   518   514   ---   ---
+
+
+
+ SCAN SUMMARY for experiment e18c21  ALMA+EHT VLBI April 2018
+     Flags: D=>Down, H=>Below Horizon, R=>Rises, S=>Sets, W=>Slew too long, t=>Tape Chg.
+     Top item is:    Start elevation.
+     Bottom item is: Seconds antenna is on source before scan start.
+     TYPE top: -=> normal scan, P=>Pointing or Ta;  bottom: -=>recording, N=>not recording.
+     Day 110 is Fri  20 Apr 2018   MJD  58228          
+
+SCAN  DAY START UT  SOURCE     TYPE  STATIONS    t => tape change
+           STOP UT                    Ax    Pv    Gl    Aa    Sz    Lm    Mg    Mm    Sw
+
+  65  111 10:02:00 SGRA          -    66   ---   ---    66    29    42    26   ---   ---
+      111 10:12:00 1mmlcp.set    -   170   ---   ---   170   170   175   170   ---   ---
+
+  66  111 10:15:00 SGRA          -    64   ---   ---    64    29    42    27   ---   ---
+      111 10:22:00 -             -   170   ---   ---   170   170   175   170   ---   ---
+
+  67  111 10:27:00 NRAO530       -    55   ---   ---    55    13    57    44    29    29
+      111 10:31:00 -             -   260   ---   ---   285   282   278   274  2630  2630
+
+  68  111 10:36:00 SGRA          -    59   ---   ---    59    29    42    28    19    19
+      111 10:45:00 -             -   262   ---   ---   285   282   279   274   274   284
+
+  69  111 10:48:00 SGRA          -    56   ---   ---    56    29    41    28    21    21
+      111 10:55:00 -             -   170   ---   ---   170   170   175   170   170   170
+
+  70  111 10:59:00 NRAO530       -    48   ---   ---    48    13    55    44    35    35
+gp11  111 11:03:00 -             -   205   ---   ---   226   222   218   214   213   224
+
+  71  111 11:12:00 SGRA          -    51   ---   ---    51    29    40    28    25    25
+      111 11:20:00 -             -   506   ---   ---   526   522   517   514   512   524
+
+  72  111 11:23:00 SGRA          -    49   ---   ---    49    29    40    28    27    27
+      111 11:31:00 -             -   170   ---   ---   170   170   175   170   170   170
+
+  73  111 11:36:00 NRAO530       -    40   ---   ---    40    13    51    43    42    42
+      111 11:40:00 -             -   269   ---   ---   286   282   273   275   271   283
+
+  74  111 11:45:00 SGRA          -    44   ---   ---    44    29    38    28    30    30
+      111 11:52:00 -             -   270   ---   ---   286   282   272   275   271   283
+
+  75  111 11:55:00 SGRA          -    42   ---   ---    42    29    37    27    31    31
+      111 12:05:00 -             -   170   ---   ---   170   170   175   170   170   170
+
+  76  111 12:08:00 SGRA          -    39   ---   ---    39    29    35    27    33    33
+      111 12:18:00 -             -   170   ---   ---   170   170   175   170   170   170
+
+  77  111 12:22:00 NRAO530       -    29   ---   ---    29    13    43    40    50    50
+gp12  111 12:26:00 -             -   212   ---   ---   227   222   210   216   209   223
+
+  78  111 12:35:00 SGRA          -    33   ---   ---    33    29    32    25    36    36
+      111 12:45:00 -             -   513   ---   ---   527   522   510   516   509   522
+
+  79  111 12:50:00 NRAO530       -    23   ---   ---    23    13    38    37    53    53
+      111 12:54:00 -             -   274   ---   ---   287   282   270   277   268   282
+
+  80  111 12:59:00 SGRA          -    28   ---   ---    28    29    28    23    38    38
+      111 13:09:00 -             -   274   ---   ---   287   282   270   277   268   282
+
+
+
+ SCAN SUMMARY for experiment e18c21  ALMA+EHT VLBI April 2018
+     Flags: D=>Down, H=>Below Horizon, R=>Rises, S=>Sets, W=>Slew too long, t=>Tape Chg.
+     Top item is:    Start elevation.
+     Bottom item is: Seconds antenna is on source before scan start.
+     TYPE top: -=> normal scan, P=>Pointing or Ta;  bottom: -=>recording, N=>not recording.
+     Day 110 is Fri  20 Apr 2018   MJD  58228          
+
+SCAN  DAY START UT  SOURCE     TYPE  STATIONS    t => tape change
+           STOP UT                    Ax    Pv    Gl    Aa    Sz    Lm    Mg    Mm    Sw
+
+  81  111 13:12:00 SGRA          -    25   ---   ---    25    29    26    22    39    39
+      111 13:18:00 1mmlcp.set    -   170   ---   ---   170   170   175   170   170   170
+
+  82  111 13:21:00 SGRA          -    23   ---   ---    23    29    25    21    40    40
+noal  111 13:30:00 -             -   170   ---   ---   170   170   175   170   170   170
+
+  83  111 13:38:00 SGRA          -    20   ---   ---   ---    29    22    19    41    41
+      111 13:48:00 -             -   470   ---   ---   ---   470   475   470   470   470
+
+  84  111 13:51:00 SGRA          -    17   ---   ---   ---    29    20    17    41    41
+      111 14:01:00 -             -   170   ---   ---   ---   170   175   170   170   170
+
+  85  111 14:04:00 SGRA          -    14   ---   ---   ---    29    17    16    41    41
+      111 14:09:00 -             -   170   ---   ---   ---   170   175   170   170   170
+
+  86  111 14:14:00 SGRA          -   ---   ---   ---   ---    29    15    14    41    41
+      111 14:27:00 -             -   ---   ---   ---   ---   290   295   290   290   290
+
+  87  111 14:32:00 NRAO530       -   ---   ---   ---   ---    13    17    21    56    56
+      111 14:36:00 -             -   ---   ---   ---   ---   282   271   276   268   282
+
+
+
+ TIME RANGE OF RECORDINGS and TOTAL BYTES:
+
+                Obs. start time.     Obs. end time.      Total 
+ Station          Day    Time         Day    Time        GBytes
+                     (UT)                 (UT)
+  APEX           110  22:38:00       111  14:09:00      29907.6
+  PICOVEL        110  22:38:00       111  04:24:00       9846.1
+  THULE          110  22:38:00       111  06:53:00      12553.8
+  ALMA           110  23:03:00       111  13:30:00      27753.8
+  SPT            110  23:22:00       111  14:36:00      20615.3
+  LMT            110  23:32:00       111  14:36:00      28984.5
+  SMTO           111  01:20:00       111  14:36:00      24369.2
+  JCMT           111  03:48:00       111  14:36:00      14892.3
+  SMAP           111  03:48:00       111  14:36:00      14892.3
+
+ POSITIONS OF SOURCES USED IN RECORDING SCANS
+     Catalog positions marked with *. 
+     Precession of date coordinates is based on stop time of first scan.
+     Names used in schedule marked with *. 
+     Observation date used in B1950/J2000 coordinate conversion (PRECDATE):  1979.900
+     No adjustments are made for rates (DRA, DDEC).
+
+   Source                         Source position (RA/Dec)                        Error
+                        (B1950)             (J2000)             (Date)            (mas)
+
+ * SGRA              17 42 29.309927   * 17 45 40.040900     17 46 49.627808       0.00
+                    -28 59 18.53332    *-29 00 28.11800     -29 00 42.50665        0.00
+                     From catalog imbedded in main SCHED input file.
+
+   J0854+2006        08 51 57.250618   * 08 54 48.874930     08 55 50.805987       0.11
+   0851+202          20 17 58.41733    * 20 06 30.64078      20 02 16.14127        0.10
+   J0854+20          /data/alma-phasing/sched/catalogs/sources.vlba.2012jul
+ * OJ287             rfc_2012b Petrov, 2012, unpublished 191510 observations
+
+   J1230+1223        12 28 17.569280   * 12 30 49.423382     12 31 45.217960       0.10
+   3C274             12 40 01.74884    * 12 23 28.04366      12 17 25.89626        0.10
+   1228+126          /data/alma-phasing/sched/catalogs/sources.vlba.2012jul
+   J1230+12          rfc_2012b Petrov, 2012, unpublished 47163 observations
+ * M87
+
+   J1256-0547        12 53 35.831299   * 12 56 11.166567     12 57 08.433212       0.69
+ * 3C279            -05 31 07.99595    *-05 47 21.52481     -05 53 17.80502        0.92
+   1253-055          /data/alma-phasing/sched/catalogs/sources.vlba.2012jul
+   J1256-05          GSFC 2011B astro solution      7402 Observations
+
+   J1733-1304        17 30 13.535189   * 17 33 02.705787     17 34 04.495029       0.10
+   1730-130         -13 02 45.83993    *-13 04 49.54840     -13 05 28.75526        0.10
+   J1733-13          /data/alma-phasing/sched/catalogs/sources.vlba.2012jul
+ * NRAO530           rfc_2012b Petrov, 2012, unpublished 17851 observations
+
+
+
+SOURCE SCAN SUMMARY FOR SOURCES LISTED ABOVE
+
+     Scan hours are for recording scans only. 
+     Baseline hours are only counted for scans above horizon at both ends.
+  Source       Setup file             Frequency sets                  Observing hours
+                                   (duplicates not shown)              Scan  Baseline
+  SGRA       1mmlcp.set            1                                 3.850    56.483
+  OJ287      1mmlcp.set            1                                 0.167     0.500
+  M87        1mmlcp.set            1                                 2.633    42.583
+  3C279      1mmlcp.set            1                                 1.067    18.400
+  NRAO530    1mmlcp.set            1                                 0.667    10.800
+
+
+EFFECT OF SOLAR CORONA
+
+  The solar corona can cause unstable phases for sources too close to the Sun.
+  SCHED provides warnings at individual scans for distances less than 10 degrees.
+  The distance from the Sun to each source in this schedule is:
+    Source         Sun distance (deg) 
+   SGRA               123.8
+   OJ287               99.6
+   M87                148.1
+   3C279              164.3
+   NRAO530            126.8
+
+  Barry Clark estimates from predictions by Ketan Desai of IPM scattering sizes 
+  that the Sun will cause amplitude reductions on the  longest VLBA baselines 
+  at a solar distance of 60deg F^(-0.6) where F is in GHz. 
+  For common VLBI bands, this is: 
+       327 MHz        117. deg 
+       610 MHz         81. deg 
+       1.6 GHz         45. deg 
+       2.3 GHz         36. deg 
+       5.0 GHz         23. deg 
+       8.4 GHz         17. deg 
+      15.0 GHz         12. deg 
+      22.0 GHz          9. deg 
+      43.0 GHz          6. deg 
+
+ SOURCE SEPARATIONS
+
+ Source separations in degrees for pairs closer than  30.00 degrees.
+
+     SGRA          NRAO530        16.1936
+     M87           3C279          19.2428
+
+
+CATALOGS, FILES, and CODE VERSIONS
+
+Catalogs: 
+  Station:   stations3c.dat
+                 Version:  2018-Jan-03-14:00:00
+  Location:  /data/alma-phasing/sched/catalogs/locations.dat
+                 Version:  2015Feb26-16:00:00
+  Frequency: /data/alma-phasing/sched/catalogs/freq_RDBE.dat
+                 Version:  2016Mar12-00:26:57
+  Source:   /data/alma-phasing/sched/catalogs/sources.vlba.2012jul
+                 Version:  Not given
+  Source2:  NONE
+                 Version:   ---
+
+
+Other external files: 
+  Ephemeris: NONE
+  PEAKFILE:  /data/alma-phasing/sched/catalogs/peak.cmd
+  MSGFILE:   /data/alma-phasing/sched/catalogs/messages.txt
+
+
+Code versions: 
+  Release version:           11.50  Development version 11.5. Started Apr. 2
+  Version of VEX standard:   1.50
+  Version of VEX code:       0.87
+  Version of plot code:      1.06
+  Version of ephemeris code: 1.01
+  Version of PGPLOT:        v5.2.2
+
+This schedule produced on: Mon Apr  2 11:01:07 2018      
