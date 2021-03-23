@@ -46,7 +46,6 @@ int tcp_client(const char *servIP, const char *servPort, int timeout_secs)
   if (errn < 0) {
     snprintf(buff, sizeof(buff), "connect error: %s", strerror(errno));
     printf("%s\n", buff);
-    close(sockfd);
     return -1;
   }
 
@@ -98,10 +97,6 @@ int readMessage(int sockfd, char *recvline, size_t maxlen)
     printf("Reply: %s", recvline);
     #endif
     return n;
-  } else {
-    #ifdef VERBOSE
-    printf("Reply: (none)");
-    #endif
   }
 
   return -1;
@@ -120,10 +115,6 @@ int readMessage2(int sockfd, char *recvline, size_t maxlen)
     printf("Reply: %s", recvline);
     #endif
     return n;
-  } else {
-    #ifdef VERBOSE
-    printf("Reply: (none)");
-    #endif
   }
 
   return -1;

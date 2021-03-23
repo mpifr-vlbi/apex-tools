@@ -11,4 +11,4 @@ install:
 
 tar: clean
 	rm -f apex_gpib_tools_*.tar.gz
-	tar czf apex_gpib_tools_v102.tar.gz *
+	tar czf apex_gpib_tools_v104.tar.gz *

@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
   //=== On TCP timeouts, we reconnect                              ===
   //==================================================================
 
-  fp = fopen(OUTFILE, "w");
+  fp = fopen(OUTFILE, "a");
   if (fp == NULL) {
     printf("Trouble opening output file %s\n", OUTFILE);
     exit(1);
