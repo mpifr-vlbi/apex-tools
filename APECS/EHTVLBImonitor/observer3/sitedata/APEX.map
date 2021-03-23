@@ -1,0 +1,26 @@
+telescope:observingMode	ABM[1,0]:ANTMOUNT:mode
+telescope:apparentRaDec	derived:telescope:actualRaDec
+telescope:epochType	ABM[1,0]:ANTMOUNT:JEpoch
+telescope:azimuthElevation	derived:telescope:actualAzEl
+
+#maser:timeToGpsTick	APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser
+#maser:chamberTemp	APEX:MASER:HOUSING:temperature
+
+weather:temperature	APEX:WEATHERSTATION:temperature
+weather:airPressure	APEX:WEATHERSTATION:pressure
+weather:relativeHumidity	APEX:WEATHERSTATION:humidity
+weather:windSpeed	APEX:WEATHERSTATION:windSpeed
+weather:windDirection	APEX:WEATHERSTATION:windDirection
+weather:tau225	derived:weather:tau225
+weather:pwv	APEX:RADIOMETER:RESULTS:pwv
+weather:dewPointTemp	APEX:WEATHERSTATION:dewPoint
+
+rx:1:tempHot	Calibrator:PI230-PBE_C:tHot
+rx:1:tempCold	Calibrator:PI230-PBE_C:tCold
+#rx:1:tempSky	Calibrator:PI230-PBE_C:tSky
+#rx:1:calTemp	Calibrator:PI230-PBE_C:tCal
+#rx:1:antTemp	Calibrator:PI230-PBE_C:tAnt
+
+if:1:systemTemp	Calibrator:PI230-PBE_C:tSys
+
+# vim: ts=40 nowrap
