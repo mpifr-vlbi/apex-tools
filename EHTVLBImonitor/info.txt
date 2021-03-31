@@ -7,3 +7,8 @@ sitedata-__init__.py : sitedata/__init__.py
 sitedata-MYSITE.py   : sitedata/MYSITE.py
 vlbimon-config.py    : vlbimon/config.py
 
+
+Extra modules for observer3:
+
+pip2.7 install idna
+
