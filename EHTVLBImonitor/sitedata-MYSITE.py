@@ -109,7 +109,9 @@ class Getter():
 
         params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT')
         params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
-        params['APEX:MASER:HOUSING:temperature'] = getApexPoint('APEX:MASER:HOUSING:temperature')
+
+        #params['APEX:MASER:HOUSING:temperature'] = getApexPoint('APEX:MASER:HOUSING:temperature')  # 03/2021 : measurement point not working, no data
+        params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
 
         az = getApexPoint('ABM[1,0]:ANTMOUNT:actualAz')
         el = getApexPoint('ABM[1,0]:ANTMOUNT:actualEl')
