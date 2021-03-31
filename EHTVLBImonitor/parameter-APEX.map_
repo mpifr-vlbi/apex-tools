@@ -59,7 +59,7 @@ weather_precipCondition	0
 weatherMap_waterVapor_url	0
 # 								
 rx_1_online	0
-rx_1_loFreq	0
+rx_1_loFreq	APEX:NFLASH230:SKYFREQUENCY
 rx_1_loFreqOffset	0
 rx_1_synth1Offset	0
 rx_1_lockStatus	0
@@ -105,7 +105,7 @@ rx_4_antTemp	60
 # 								
 if_1_online	0
 if_1_identifier	0
-if_1_centreFreq	0
+if_1_centreFreq	APEX:NFLASH230:SKYFREQUENCY
 if_1_bandWidth	0
 if_1_polType	0
 if_1_systemTemp	Calibrator:NFLASH230-FFTS1:tSys

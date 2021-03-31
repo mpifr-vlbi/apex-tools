@@ -107,11 +107,13 @@ class Getter():
 
         params['ABM[1,0]:ANTMOUNT:mode'] = getApexPoint('ABM[1,0]:ANTMOUNT:mode')
 
-        params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT')
         params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
+        # params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT') # no vlbimon parameter counterpart due to vlbimon being r2dbe-centric
 
         #params['APEX:MASER:HOUSING:temperature'] = getApexPoint('APEX:MASER:HOUSING:temperature')  # 03/2021 : measurement point not working, no data
         params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
+
+        params['APEX:NFLASH230:SKYFREQUENCY'] = getApexPoint('APEX:NFLASH230:skyFrequency')
 
         az = getApexPoint('ABM[1,0]:ANTMOUNT:actualAz')
         el = getApexPoint('ABM[1,0]:ANTMOUNT:actualEl')
@@ -148,8 +150,8 @@ class Getter():
             params['Calibrator:NFLASH230-FFTS1:tSys'] = convertApexPoint(calResult.tSys[polarization])  # tSys=[95.0042874479913, 85.13580861018505]
             params['Calibrator:NFLASH230-FFTS1:tHot'] = convertApexPoint(calResult.tHot)
             params['Calibrator:NFLASH230-FFTS1:tCold'] = convertApexPoint(calResult.tCold)
-            params['Calibrator:NFLASH230-FFTS1:tAnt'] = convertApexPoint(calResult.tRx[polarization])
-            params['Calibrator:NFLASH230-FFTS1:tCal'] = convertApexPoint(calResult.tCal[polarization])
-            params['Calibrator:NFLASH230-FFTS1:tSky'] = convertApexPoint(calResult.tSky[polarization])
+            # params['Calibrator:NFLASH230-FFTS1:tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
+            # params['Calibrator:NFLASH230-FFTS1:tCal'] = convertApexPoint(calResult.tCal[polarization]) # -"-
+            # params['Calibrator:NFLASH230-FFTS1:tSky'] = convertApexPoint(calResult.tSky[polarization]) # -"-
 
         return params
