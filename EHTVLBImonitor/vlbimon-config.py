@@ -15,8 +15,12 @@ proxies = {
 #    'https': 'http://your.https.proxy.name:3128',
 }
 
-#-- login credentials
-username = "APEX central"
+#-- login credentials: as used on observer3 in 2017/2018
+# username = "APEX central"
+# password = "4pex"
+# facility = "APEX"
+#-- login credentials: as found on eht-cc 2021
+username = "APEX concom"
 password = "4pex"
 facility = "APEX"
 

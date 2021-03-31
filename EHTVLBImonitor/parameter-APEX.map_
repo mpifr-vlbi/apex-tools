@@ -25,9 +25,6 @@ telescope_surfaceRms	60
 telescope_appEfficiency	60
 telescope_beamEfficiency	60
 #
-#maser:timeToGpsTick    APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser
-#maser:chamberTemp      APEX:MASER:HOUSING:temperature
-# 								
 gainElevation_status	0
 gainElevation_curve	0
 gainElevation_freq	0
@@ -68,8 +65,8 @@ rx_1_synth1Offset	0
 rx_1_lockStatus	0
 rx_1_qwpInserted	0
 rx_1_nrIFs	0
-rx_1_tempHot	Calibrator:PI230-PBE_C:tHot
-rx_1_tempCold	Calibrator:PI230-PBE_C:tCold
+rx_1_tempHot	Calibrator:NFLASH230-FFTS1:tHot
+rx_1_tempCold	Calibrator:NFLASH230-FFTS1:tCold
 rx_1_calTemp	60
 rx_1_antTemp	60
 rx_2_online	0
@@ -111,7 +108,7 @@ if_1_identifier	0
 if_1_centreFreq	0
 if_1_bandWidth	0
 if_1_polType	0
-if_1_systemTemp	Calibrator:PI230-PBE_C:tSys
+if_1_systemTemp	Calibrator:NFLASH230-FFTS1:tSys
 if_1_systemTempAzel	60
 if_1_totalPower	300
 if_1_rms	300
@@ -153,7 +150,7 @@ array_source_totalFlux	0
 array_source_totalPolarization	0
 # 								
 maser_status	0
-maser_timeToGpsTick	300
+maser_timeToGpsTick	APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser
 maser_driftRate	300
 maser_frequencyStability	300
 maser_clockEarlyData	300
@@ -212,7 +209,7 @@ maser_heaterIsolator	300
 maser_heaterTube	300
 maser_boxesTemperature	300
 maser_boxesCurrent	300
-maser_ambientTemperature	300
+maser_ambientTemperature	APEX:MASER:HOUSING:temperature
 maser_cfieldVoltage	300
 maser_varactorVoltage	300
 maser_externalHighVoltageValue	300

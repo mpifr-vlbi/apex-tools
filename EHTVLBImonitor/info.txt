@@ -1,0 +1,9 @@
+
+These are copie of APEX-specific files
+related to https://bitbucket.org/vlbi/vlbimonitor-client aka EHTVLBImonitor
+
+parameter-APEX.map_  : parameter.map
+sitedata-__init__.py : sitedata/__init__.py
+sitedata-MYSITE.py   : sitedata/MYSITE.py
+vlbimon-config.py    : vlbimon/config.py
+

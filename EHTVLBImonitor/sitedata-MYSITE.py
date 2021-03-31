@@ -4,6 +4,8 @@ import time
 import math
 import apexObsUtils
 
+polarization = 0  # which polarization to report Tsys etc for; 0=RCP, 1=LCP?
+
 def signif(n, x):
     """Print float to specified number of significant figures"""
     return float("%.*g" % (n, x))
@@ -18,6 +20,9 @@ def ndecimal(x):
     if len(words) < 2: return 0
     return len(words[1])
 
+def currentUTC():
+    return int(time.time()) - 37 #-- TAI to UTC
+
 def convertApexPoint(point):
     #-- On APEX timestamp format Dirk Muders says:
     #-- This is the POSIX format counting the number of 100ns intervals since
@@ -25,16 +30,22 @@ def convertApexPoint(point):
     #-- Convert from TIA (APEX) to UTC (VLBImonitor).
 
     #-- no data
+    if point is None:
+        print("apex data point is 'None': skip")
+        return None
+    if not isinstance(point,tuple):
+        point = (point,)
     if len(point) == 0:
         print("apex data point has len(0): skip")
         return None
 
     #-- calResult values have len(1)
     if len(point) == 1:
-        t = int(time.time()) - 37 #-- TAI to UTC
+        t = currentUTC()
     else:
         posix2unix = lambda t: int((t - 0x01b21dd213814000)*1e-7) - 37
         t = posix2unix(point[1])
+
     return [t, point[0]]
 
 
@@ -49,6 +60,9 @@ class Getter():
         params = self.insertValues()
         for k,v in params.items():
             if v is None: continue
+            if len(v) != 2:
+                print('Warning: data for ',k,' not in [x,y] format but rather ', v)
+                continue
             if v[1] == -999: continue
             self.params[k] = [v]
 
@@ -67,29 +81,35 @@ class Getter():
         params['APEX:WEATHERSTATION:humidity'] = getApexPoint('APEX:WEATHERSTATION:humidity')
 
         point = getApexPoint('APEX:WEATHERSTATION:windSpeed')
+        #print('windSpeed: ',point)
         if point is not None  and  int(point[1]) != 999: params['APEX:WEATHERSTATION:windSpeed'] = point
+
         point = getApexPoint('APEX:WEATHERSTATION:windDirection')
         if point is not None  and  int(point[1]) != 999: params['APEX:WEATHERSTATION:windDirection'] = point
+
         #-- pwv and tau
         point = getApexPoint('APEX:RADIOMETER:RESULTS:pwv')
         if point is not None  and  int(point[1]) != -999:
             params['APEX:RADIOMETER:RESULTS:pwv'] = point
             params['derived:weather:tau225'] = [point[0], signif(5, .058*point[1] + .004)] #-- ATM07 model
+
         #-- degrees C to K
         point = getApexPoint('APEX:WEATHERSTATION:temperature')
         if point is not None: params['APEX:WEATHERSTATION:temperature'] = [point[0], signif(5, 273.15 + point[1])]
+
         #-- degrees C to K
         point = getApexPoint('APEX:WEATHERSTATION:dewPoint')
         if point is not None: params['APEX:WEATHERSTATION:dewPoint'] =  [point[0], signif(5, 273.15 + point[1])]
+
         #-- hPa to kPa
         point = getApexPoint('APEX:WEATHERSTATION:pressure')
         if point is not None: params['APEX:WEATHERSTATION:pressure'] = [point[0], signif(5, .1 * point[1])]
 
         params['ABM[1,0]:ANTMOUNT:mode'] = getApexPoint('ABM[1,0]:ANTMOUNT:mode')
 
-        #params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT')
-        #params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
-        #params['APEX:MASER:HOUSING:temperature'] = getApexPoint('APEX:MASER:HOUSING:temperature')
+        params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT')
+        params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
+        params['APEX:MASER:HOUSING:temperature'] = getApexPoint('APEX:MASER:HOUSING:temperature')
 
         az = getApexPoint('ABM[1,0]:ANTMOUNT:actualAz')
         el = getApexPoint('ABM[1,0]:ANTMOUNT:actualEl')
@@ -117,13 +137,17 @@ class Getter():
         #-- calibration results
         onlineCal = apexObsUtils.getApexCalibrator()
         try:
-            calResult = onlineCal.getCalResult('PI230-PBE_C',1,0)
+            calResult = onlineCal.getCalResult('NFLASH230-FFTS1',1,0)
         except:
             #-- instrument is not available, receiver is not currently in use
             pass
         else:
-            params['Calibrator:PI230-PBE_C:tSys'] = convertApexPoint(calResult.tSys)
-            params['Calibrator:PI230-PBE_C:tHot'] = convertApexPoint(calResult.tHot)
-            params['Calibrator:PI230-PBE_C:tCold'] = convertApexPoint(calResult.tCold)
+            #print(calResult)
+            params['Calibrator:NFLASH230-FFTS1:tSys'] = convertApexPoint(calResult.tSys[polarization])  # tSys=[95.0042874479913, 85.13580861018505]
+            params['Calibrator:NFLASH230-FFTS1:tHot'] = convertApexPoint(calResult.tHot)
+            params['Calibrator:NFLASH230-FFTS1:tCold'] = convertApexPoint(calResult.tCold)
+            params['Calibrator:NFLASH230-FFTS1:tAnt'] = convertApexPoint(calResult.tRx[polarization])
+            params['Calibrator:NFLASH230-FFTS1:tCal'] = convertApexPoint(calResult.tCal[polarization])
+            params['Calibrator:NFLASH230-FFTS1:tSky'] = convertApexPoint(calResult.tSky[polarization])
 
         return params
