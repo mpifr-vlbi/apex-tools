@@ -21,8 +21,8 @@ proxies = {
 # facility = "APEX"
 #-- login credentials: as found on eht-cc 2021
 username = "APEX concom"
-password = "4pex"
-facility = "APEX"
+password = ""
+facility = ""
 
 #-- root dir: directory containing client.py
 startdir = sys.path[0]
