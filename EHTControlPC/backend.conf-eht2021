@@ -1,0 +1,273 @@
+#!/hint/yaml
+# This config file describes a VLBI backend as a graph consisting of nodes and
+# links that together make up chains.  The nodes are backend devices and the
+# links are cables.
+#
+# Nodes:
+# ======
+# Backend device configuration is split in two parts, "layout" and "device",
+# according to:
+#  1. hardware layout (I/O ports) and other unmutable properties
+#  2. device-specific and site-specific properties/settings
+# The layout describes the internal routing, i.e. which outputs are connected to
+# which inputs.  The purpose of this split is to separate variable properties
+# from device properties that are constant over time and for the whole EHT.
+#
+# Links:
+# ======
+# Each link connects one device's output to another device's input.  Each link
+# in this section will be part of a multi-node-link chain.  Each device's input
+# or output can only be used once.
+#
+# Chains:
+# =======
+# Links together with nodes and their internal routing define end-to-end data
+# chains.  Chains can only start/end at inputs/outputs that are labeled
+# accordingly.  Unused outputs that are internally connected to used inputs are
+# not allowed to be left dangling; they need to be terminated with terminator
+# dummy devices.
+
+
+# Execute schedule by instructing components.
+instruct:
+        vexstore: /srv/vexstore
+        stationname: APEX
+        stationcode: Ax
+
+# ChangeLog:
+#  - PV backend.conf provided by H.Rottmann, adapted slightly for band3/band4 vs band4/band3 cabling difference
+#  - ~/vlbicontrol/vlbicontrol.conf modified by J.Soohoo, eth3 replaced by eth2 on recorders 2 and 4
+
+# Report status to VLBImonitor server.
+report:
+
+
+deviceLayouts:
+#       Name    Input   Output
+        rx:
+                analog:
+                        lsb_L: {label: lcp_lsb, sideband: lsb, pol: lcp}
+                        usb_L: {label: lcp_usb, sideband: usb, pol: lcp}
+                        lsb_R: {label: rcp_lsb, sideband: lsb, pol: rcp}
+                        usb_R: {label: rcp_usb, sideband: usb, pol: rcp}
+                _role:  rx
+                _chainstart: [analog]
+
+        bdc_2band:
+                pol0:
+                        pol0_hi: {label: hi, band: high}
+                        pol0_lo: {label: lo, band: low}
+                pol1:
+                        pol1_hi: {label: hi, band: high}
+                        pol1_lo: {label: lo, band: low}
+                _role: bdc
+
+        bdc_1band:
+                sba_pol0:
+                        sba_pol0_hi: {label: hi, band: high}
+                        sba_pol0_lo: {label: lo, band: low}
+                sba_pol1:
+                        sba_pol1_hi: {label: hi, band: high}
+                        sba_pol1_lo: {label: lo, band: low}
+                sbb_pol0:
+                        sbb_pol0_hi: {label: hi, band: high}
+                        sbb_pol0_lo: {label: lo, band: low}
+                sbb_pol1:
+                        sbb_pol1_hi: {label: hi, band: high}
+                        sbb_pol1_lo: {label: lo, band: low}
+                _role: bdc
+
+        nifdc:
+                lsb_polh:
+                        lbb1: {label: lo, band: low}
+                        ubb1: {label: hi, band: high}
+                usb_polh:
+                        lbb2: {label: lo, band: low}
+                        ubb2: {label: hi, band: high}
+                lsb_polv:
+                        lbb3: {label: lo, band: low}
+                        ubb3: {label: hi, band: high}
+                usb_polv:
+                        lbb4: {label: lo, band: low}
+                        ubb4: {label: hi, band: high}
+                _role: bdc
+
+        dbbc3:
+                gcomoA:
+                        A_e0: {label: lo, band: low}
+                        A_e2: {label: hi, band: high}
+                gcomoB:
+                        B_e0: {label: lo, band: low}
+                        B_e2: {label: hi, band: high}
+                gcomoC:
+                        C_e0: {label: lo, band: low}
+                        C_e2: {label: hi, band: high}
+                gcomoD:
+                        D_e0: {label: lo, band: low}
+                        D_e2: {label: hi, band: high}
+                _role: dbbc
+
+        r2dbe:
+                if0:
+                        ch0: {}
+                if1:
+                        ch1: {}
+                _role: digitizer
+
+        mark6:
+                eth2:
+                        groupa: {}
+                eth3:
+                        groupb: {}
+                eth4:
+                        groupc: {}
+                eth5:
+                        groupd: {}
+                _role: recorder
+                _chainend: [groupa, groupb, groupc, groupd]
+
+        terminator:
+                in: {out: {}}
+                _role: terminator
+                _chainstart: [in]
+                _chainend: [out]
+
+
+delim_device: "."
+devices:
+        rx.230: {layout: rx}
+
+        bdc.lsb: {layout: bdc_2band, hostname: bdc1,
+          port: 23, hardware: "2.0", firmware: "3.2a", lo_freq_4to8: 6000, lo_freq_5to9: 7000}
+        bdc.usb: {layout: bdc_2band, hostname: bdc2,
+          port: 23, hardware: "2.0", firmware: "3.2a", lo_freq_4to8: 6000, lo_freq_5to9: 7000}
+
+        bdc.dsb: {layout: bdc_1band, hostname: bdc1,
+          port: 23, hardware: "2.0", firmware: "3.2a", lo_freq: 7000}
+
+        nifdc.dsb: {layout: nifdc}
+
+        #r2dbe.lsb_hi: {layout: r2dbe, hostname: r2dbe1,
+        #  boffile: "r2dbe_rev2_v1.1.bof", version: "32aae4d",
+        #  ch0: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  ch1: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+        #r2dbe.lsb_lo: {layout: r2dbe, hostname: r2dbe2,
+        #  boffile: "r2dbe_rev2_v1.1.bof", version: "32aae4d",
+        #  ch0: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  ch1: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+        #r2dbe.usb_lo: {layout: r2dbe, hostname: r2dbe3,
+        #  boffile: "r2dbe_rev2_v1.1.bof", version: "32aae4d",
+        #  ch0: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  ch1: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+        #r2dbe.usb_hi: {layout: r2dbe, hostname: r2dbe4,
+        #  boffile: "r2dbe_rev2_v1.1.bof", version: "32aae4d",
+        #  ch0: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  ch1: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+
+        dbbc3.all: {layout: dbbc3, hostname: dbbc3,
+          A_e0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          A_e2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          B_e0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          B_e2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          C_e0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          C_e2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          D_e0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          D_e2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+
+        #dbbc3.lsb: {layout: dbbc3, hostname: dbbc3,
+        #  A_e0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  A_e2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  B_e0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  B_e2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+        #dbbc3.usb: {layout: dbbc3, hostname: dbbc3,
+        #  C_e0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  C_e2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  D_e0: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+        #  D_e2: {data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+
+        mark6.lsb_hi:
+                layout: mark6
+                hostname: recorder1
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}
+        mark6.lsb_lo:
+                layout: mark6
+                hostname: recorder2
+                modules: {groupa: [mod1, mod2], groupd: [mod3, mod4]}    # eth2 eth5 -- eth3 dead, relocated the transceiver into eth2 and it works fine there
+                # modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}  # eth3 eth5
+        mark6.usb_lo:
+                layout: mark6
+                hostname: recorder3
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}
+        mark6.usb_hi:
+                layout: mark6
+                hostname: recorder4
+                # modules: {groupa: [mod1, mod2], groupd: [mod3, mod4]}    # eth2 eth5
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}  # eth3 eth5 -- both visible again after cold reboot, but links remain DOWN, despite signal; dead cards?
+
+        terminator.1: {layout: terminator}
+        terminator.2: {layout: terminator}
+
+
+delim_port: ":"
+delim_link: "  "
+links:
+        # level 1-2
+        #- rx.230:lsb_L  bdc.dsb:sbb_pol0
+        #- rx.230:lsb_R  bdc.dsb:sbb_pol1
+        #- rx.230:usb_L  bdc.dsb:sba_pol0
+        #- rx.230:usb_R  bdc.dsb:sba_pol1
+
+        # level 2-3
+        #- bdc.dsb:sbb_pol0_lo  r2dbe.lsb_lo:if0
+        #- bdc.dsb:sbb_pol1_lo  r2dbe.lsb_lo:if1
+        #- bdc.dsb:sbb_pol0_hi  r2dbe.lsb_hi:if0
+        #- bdc.dsb:sbb_pol1_hi  r2dbe.lsb_hi:if1
+        #- bdc.dsb:sba_pol0_lo  r2dbe.usb_lo:if0
+        #- bdc.dsb:sba_pol1_lo  r2dbe.usb_lo:if1
+        #- bdc.dsb:sba_pol0_hi  r2dbe.usb_hi:if0
+        #- bdc.dsb:sba_pol1_hi  r2dbe.usb_hi:if1
+
+        # level 3-4
+        #- r2dbe.lsb_lo:ch0  mark6.lsb_lo:eth3
+        #- r2dbe.lsb_lo:ch1  mark6.lsb_lo:eth5
+        #- r2dbe.lsb_hi:ch0  mark6.lsb_hi:eth3
+        #- r2dbe.lsb_hi:ch1  mark6.lsb_hi:eth5
+        #- r2dbe.usb_lo:ch0  mark6.usb_lo:eth3
+        #- r2dbe.usb_lo:ch1  mark6.usb_lo:eth5
+        #- r2dbe.usb_hi:ch0  mark6.usb_hi:eth3
+        #- r2dbe.usb_hi:ch1  mark6.usb_hi:eth5
+
+
+        ##-- dbbc3 setup
+        ## level 1-2
+        - rx.230:lsb_L  dbbc3.all:gcomoA
+        - rx.230:lsb_R  dbbc3.all:gcomoB
+        - rx.230:usb_L  dbbc3.all:gcomoC
+        - rx.230:usb_R  dbbc3.all:gcomoD
+
+        # Recorder1
+        - dbbc3.all:A_e2  mark6.lsb_hi:eth3
+        - dbbc3.all:B_e2  mark6.lsb_hi:eth5
+
+        # Recorder2
+        - dbbc3.all:A_e0  mark6.lsb_lo:eth2  # eth2 to replace kaputt eth3; didnt really help since "ADDRCONF(NETDEV_UP): eth2: link is not ready" despite switching fiber(with signal!) from eth3 to eth2 port
+        # - dbbc3.all:A_e0  mark6.lsb_lo:eth3  # eth2 to replace kaputt eth3; didnt really help since "ADDRCONF(NETDEV_UP): eth2: link is not ready" despite switching fiber(with signal!) from eth3 to eth2 port
+        - dbbc3.all:B_e0  mark6.lsb_lo:eth5
+
+        # Pico Veleta order of band3/band4 cabling from DBBC3
+        #- dbbc3.all:C_e0  mark6.usb_lo:eth3
+        #- dbbc3.all:D_e0  mark6.usb_lo:eth5
+        #- dbbc3.all:C_e2  mark6.usb_hi:eth3
+        #- dbbc3.all:D_e2  mark6.usb_hi:eth5
+
+        # APEX order of band3/band4 cabling from DBBC3
+        # Recorder3
+        - dbbc3.all:C_e2  mark6.usb_lo:eth3
+        - dbbc3.all:D_e2  mark6.usb_lo:eth5
+
+        # Recorder4
+        #- dbbc3.all:C_e0  mark6.usb_hi:eth2
+        - dbbc3.all:C_e0  mark6.usb_hi:eth3  # eth2+eth3 kaputt, eth4+eth5 kaputt (visible, but "ADDRCONF(NETDEV_UP): eth*: link is not ready")
+        - dbbc3.all:D_e0  mark6.usb_hi:eth5
+
+# vim: ft=yaml:ts=8:sts=8:sw=8:expandtab:tw=80 foldmethod=indent
