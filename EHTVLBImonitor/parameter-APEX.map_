@@ -65,12 +65,12 @@ rx_1_synth1Offset	0
 rx_1_lockStatus	0
 rx_1_qwpInserted	0
 rx_1_nrIFs	0
-rx_1_tempHot	Calibrator:NFLASH230-FFTS1:tHot
-rx_1_tempCold	Calibrator:NFLASH230-FFTS1:tCold
+rx_1_tempHot	Calibrator:NFLASH230-FFTS1:1:tHot
+rx_1_tempCold	Calibrator:NFLASH230-FFTS1:1:tCold
 rx_1_calTemp	60
 rx_1_antTemp	60
 rx_2_online	0
-rx_2_loFreq	0
+rx_2_loFreq	APEX:NFLASH230:SKYFREQUENCY
 rx_2_loFreqOffset	0
 rx_2_synth1Offset	0
 rx_2_lockStatus	0
@@ -81,7 +81,7 @@ rx_2_tempCold	Calibrator:NFLASH230-FFTS1:2:tCold
 rx_2_calTemp	60
 rx_2_antTemp	60
 rx_3_online	0
-rx_3_loFreq	0
+rx_3_loFreq	APEX:NFLASH230:SKYFREQUENCY
 rx_3_loFreqOffset	0
 rx_3_synth1Offset	0
 rx_3_lockStatus	0
@@ -92,7 +92,7 @@ rx_3_tempCold	Calibrator:NFLASH230-FFTS1:3:tCold
 rx_3_calTemp	60
 rx_3_antTemp	60
 rx_4_online	0
-rx_4_loFreq	0
+rx_4_loFreq	APEX:NFLASH230:SKYFREQUENCY
 rx_4_loFreqOffset	0
 rx_4_synth1Offset	0
 rx_4_lockStatus	0

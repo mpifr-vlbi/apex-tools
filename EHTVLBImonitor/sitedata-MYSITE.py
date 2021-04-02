@@ -189,10 +189,10 @@ class Getter():
 
         self.params['APEX:NFLASH230:SKYFREQUENCY'] = skyfreq_GHz
         self.params['APEX:EHT:LO1'] = lo1
-        self.params['APEX:EHT:BAND1_MID'] = [lo1_timestamp, eht_band_centers[0]]
-        self.params['APEX:EHT:BAND2_MID'] = [lo1_timestamp, eht_band_centers[1]]
-        self.params['APEX:EHT:BAND3_MID'] = [lo1_timestamp, eht_band_centers[2]]
-        self.params['APEX:EHT:BAND4_MID'] = [lo1_timestamp, eht_band_centers[3]]
+        #self.params['APEX:EHT:BAND1_MID'] = [lo1_timestamp, eht_band_centers[0]]
+        #self.params['APEX:EHT:BAND2_MID'] = [lo1_timestamp, eht_band_centers[1]]
+        #self.params['APEX:EHT:BAND3_MID'] = [lo1_timestamp, eht_band_centers[2]]
+        #self.params['APEX:EHT:BAND4_MID'] = [lo1_timestamp, eht_band_centers[3]]
 
 
     def __getTemperatures(self):
@@ -225,8 +225,9 @@ class Getter():
                 pass
             else:
                 #print(baseband, target, calResult)
-                self.params[target + ':tSys:X'] = convertApexPoint(calResult.tSys[0])
-                self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
+                if baseband in [1,2]: ## currently limit to 1,2 - don't know in params.map where to stuff 'Calibrator:NFLASH230-FFTS1:3:tSys:X', 'Calibrator:NFLASH230-FFTS1:3:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:X'
+                    self.params[target + ':tSys:X'] = convertApexPoint(calResult.tSys[0])
+                    self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
                 self.params[target + ':tHot'] = convertApexPoint(calResult.tHot)
                 self.params[target + ':tCold'] = convertApexPoint(calResult.tCold)
                 # self.params[target + ':tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
