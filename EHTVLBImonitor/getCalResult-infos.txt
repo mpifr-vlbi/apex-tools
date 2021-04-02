@@ -1,0 +1,67 @@
+
+01 April 2021
+
+Dear Jan and all,
+
+Just to add some extra information to what Kalle sent. 
+In the function getCalResult(FeBe, index, 0) the parameter 'index' is actually the baseband. 
+In the case of nFLASH230 this can only take the values: 1,2,3 and 4.
+
+As Kalle described:
+
+The baseband 1 and 2 correspond to the 4-8GHz IF sections
+The baseband 3 and 4 correspond to the 8-12GHz IF sections 
+
+One of the parameters the getCalResult() function returns is the 'feeds' array with two values (as all other parameters). 
+The first element of the arrays correspond to the X polarization (or pol 0 if you like); while the second element correspond to the Y polarization (or pol 1). The values of the 'feeds' array can also be only 1,2,3 and 4, with 
+
+feeds=[1, 2] - the X and Y pol of the LSB sections
+feeds=[3, 4] - the X and Y pol of the USB sections
+
+So, by combining the baseband input parameter and the returned feeds values, you can reproduce the CLASS labels of the IF sections. For instance, when giving baseband=2 you will get feeds=[3,4].. this correspond to the CLASS labels (or telescope names): AP-N203-F102 and AP-N204-F102 in the plots that Kalle sent.
+
+Regarding the tSys values, they are an average (over the IF section) Tsys value, and they are not tau-corrected. However, you can get the corresponding opacity values (also an average over IF) in the (returned) two-element arrays: tauSig and tauIma.
+
+Hope this helps with the monitoring script.
+
+Cheers,
+JP
+
+-----------------------------------------------------------------------------------------
+
+01 April 2021
+
+Hi Jan, I had a look and compared with the latest calibration, if I got it right the mapping is:
+
+onlineCal.getCalResult('NFLASH230-FFTS1',1,0)
+[0, 1] - [LSB 4-8GHz Pol X, LSB 4-8GHz Pol Y,]
+
+onlineCal.getCalResult('NFLASH230-FFTS1',2,0)
+[0, 1] - [USB 4-8GHz Pol X, USB 4-8GHz Pol Y,]
+
+onlineCal.getCalResult('NFLASH230-FFTS1',3,0)
+[0, 1] - [LSB 8-12GHz Pol X, LSB 8-12GHz Pol Y,]
+
+onlineCal.getCalResult('NFLASH230-FFTS1',4,0)
+[0, 1] - [USB 8-12GHz Pol X, USB 8-12GHz Pol Y,]
+
+So, the 1,0 you had in your script corresponds to LSB 4-8 GHz for Pol X and Pol Y (or 0/1).
+
+See attached file with the full output and the calibration/pointing scan I used for the mapping.
+
+Cheers Kalle
+
+-----------------------------------------------------------------------------------------
+
+31 March 2021
+
+Hi Jan,
+
+it is NFLASH230-FFTS1 and MonitorQuery.
+
+I am currently on leave, reading mail only rarely.
+
+Cheers,
+
+Dirk
+

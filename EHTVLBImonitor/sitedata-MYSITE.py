@@ -4,8 +4,6 @@ import time
 import math
 import apexObsUtils
 
-polarization = 0  # which polarization to report Tsys etc for; 0=RCP, 1=LCP?
-
 def signif(n, x):
     """Print float to specified number of significant figures"""
     return float("%.*g" % (n, x))
@@ -50,108 +48,187 @@ def convertApexPoint(point):
 
 
 class Getter():
+
     def __init__(self, sitelist):
         self.params = {}
         self.sitelist = sitelist
         self.nerrors = 0
 
+
     def update_values(self):
+        '''Query APECS database for new values of all measurement points. Retain valid-looking data in self.params[]'''
         self.params.clear()
-        params = self.insertValues()
-        for k,v in params.items():
-            if v is None: continue
+        self.__populateValues()
+        filtered_params = {}
+        for k,v in self.params.items():
+            if v is None:
+                continue
             if len(v) != 2:
                 print('Warning: data for ',k,' not in [x,y] format but rather ', v)
                 continue
-            if v[1] == -999: continue
-            self.params[k] = [v]
+            if v[1] == -999:
+                continue
+            if v[1] == 999:
+                continue
+            filtered_params[k] = [v]
+        self.params = filtered_params
 
-    def insertValues(self):
+
+    def __populateValues(self):
         params = {}
-        def getApexPoint(par):
-            """get measured points"""
-            try:
-                return convertApexPoint(apexObsUtils.getMCPointTS(par))
-            except Exception as e:
-                if self.nerrors == nerrors0: print(self.nerrors, e)
-                self.nerrors += 1
-                return None
-
         nerrors0 = self.nerrors
-        params['APEX:WEATHERSTATION:humidity'] = getApexPoint('APEX:WEATHERSTATION:humidity')
+	self.__getWeather()
+        self.__getRadiometer()
+        self.__getTarget()
+        self.__getTemperatures()
+        self.__getEHTEquivalentTunings()
+        self.__getMisc()
 
-        point = getApexPoint('APEX:WEATHERSTATION:windSpeed')
-        #print('windSpeed: ',point)
-        if point is not None  and  int(point[1]) != 999: params['APEX:WEATHERSTATION:windSpeed'] = point
 
-        point = getApexPoint('APEX:WEATHERSTATION:windDirection')
-        if point is not None  and  int(point[1]) != 999: params['APEX:WEATHERSTATION:windDirection'] = point
+    def __getApexPoint(self, par):
+        """get measured points"""
+        try:
+            return convertApexPoint(apexObsUtils.getMCPointTS(par))
+        except Exception as e:
+            if self.nerrors == nerrors0:
+                print(self.nerrors, e)
+            self.nerrors += 1
+            return None
 
-        #-- pwv and tau
-        point = getApexPoint('APEX:RADIOMETER:RESULTS:pwv')
-        if point is not None  and  int(point[1]) != -999:
-            params['APEX:RADIOMETER:RESULTS:pwv'] = point
-            params['derived:weather:tau225'] = [point[0], signif(5, .058*point[1] + .004)] #-- ATM07 model
 
-        #-- degrees C to K
-        point = getApexPoint('APEX:WEATHERSTATION:temperature')
-        if point is not None: params['APEX:WEATHERSTATION:temperature'] = [point[0], signif(5, 273.15 + point[1])]
+    def __getWeather(self):
+        '''
+        Fill in params[] with wind, humidity, temperature, dew point, and pressure data.
+        Convert units from APECS database units into those expected by EHT VLBIMonitor.
+        '''
 
-        #-- degrees C to K
-        point = getApexPoint('APEX:WEATHERSTATION:dewPoint')
-        if point is not None: params['APEX:WEATHERSTATION:dewPoint'] =  [point[0], signif(5, 273.15 + point[1])]
+        self.params['APEX:WEATHERSTATION:windSpeed'] = self.__getApexPoint('APEX:WEATHERSTATION:windSpeed')
+        self.params['APEX:WEATHERSTATION:windDirection'] = self.__getApexPoint('APEX:WEATHERSTATION:windDirection')
+        self.params['APEX:WEATHERSTATION:humidity'] = self.__getApexPoint('APEX:WEATHERSTATION:humidity')
 
-        #-- hPa to kPa
-        point = getApexPoint('APEX:WEATHERSTATION:pressure')
-        if point is not None: params['APEX:WEATHERSTATION:pressure'] = [point[0], signif(5, .1 * point[1])]
+        temperature = self.__getApexPoint('APEX:WEATHERSTATION:temperature')
+        dewpoint = self.__getApexPoint('APEX:WEATHERSTATION:dewPoint')
+        pressure = self.__getApexPoint('APEX:WEATHERSTATION:pressure')
 
-        params['ABM[1,0]:ANTMOUNT:mode'] = getApexPoint('ABM[1,0]:ANTMOUNT:mode')
+        if temperature is not None:
+            # convert Celsius to Kelvin
+            self.params['APEX:WEATHERSTATION:temperature'] = [temperature[0], signif(5, 273.15 + temperature[1])]
 
-        params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
-        # params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT') # no vlbimon parameter counterpart due to vlbimon being r2dbe-centric
+        if dewpoint is not None:
+            # convert Celsius to Kelvin
+            self.params['APEX:WEATHERSTATION:dewPoint'] =  [dewpoint[0], signif(5, 273.15 + dewpoint[1])]
 
-        #params['APEX:MASER:HOUSING:temperature'] = getApexPoint('APEX:MASER:HOUSING:temperature')  # 03/2021 : measurement point not working, no data
-        params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
+        if pressure is not None:
+            # convert hPa to kPa
+            self.params['APEX:WEATHERSTATION:pressure'] = [pressure[0], signif(5, .1 * pressure[1])]
 
-        params['APEX:NFLASH230:SKYFREQUENCY'] = getApexPoint('APEX:NFLASH230:skyFrequency')
 
-        az = getApexPoint('ABM[1,0]:ANTMOUNT:actualAz')
-        el = getApexPoint('ABM[1,0]:ANTMOUNT:actualEl')
+    def __getRadiometer(self):
+
+        pwv = self.__getApexPoint('APEX:RADIOMETER:RESULTS:pwv')
+        if pwv is not None  and  int(pwv[1]) != -999:
+            self.params['APEX:RADIOMETER:RESULTS:pwv'] = pwv
+            self.params['derived:weather:tau225'] = [pwv[0], signif(5, .058*pwv[1] + .004)] #-- ATM07 model
+
+
+    def __getTarget(self):
+
+        az = self.__getApexPoint('ABM[1,0]:ANTMOUNT:actualAz')
+        el = self.__getApexPoint('ABM[1,0]:ANTMOUNT:actualEl')
+        ra = self.__getApexPoint('ABM[1,0]:ANTMOUNT:actualRA')
+        dec = self.__getApexPoint('ABM[1,0]:ANTMOUNT:actualDec')
+        epoch = self.__getApexPoint('ABM[1,0]:ANTMOUNT:JEpoch')
+
         if az is not None  and  el is not None:
             ndec = max(list(map(ndecimal, (az[1], el[1]))))
             t = az[0]
             el = el[1]/math.pi * 180
             az = az[1]/math.pi * 180
             azel = "{:.{ndec}f}{:+.{ndec}f}".format(az, el, ndec=max(ndec, 1))
-            params['derived:telescope:actualAzEl'] = [t, azel]
+            self.params['derived:telescope:actualAzEl'] = [t, azel]
 
-        ra = getApexPoint('ABM[1,0]:ANTMOUNT:actualRA')
-        dec = getApexPoint('ABM[1,0]:ANTMOUNT:actualDec')
         if ra is not None  and  dec is not None:
             ndec = max(list(map(ndecimal, (ra[1], dec[1]))))
             t = ra[0]
             ra = ra[1]/math.pi * 12
             dec = dec[1]/math.pi * 180
             radec = "{:.{ndec}f}{:+.{ndec}f}".format(ra, dec, ndec=max(ndec, 1))
-            params['derived:telescope:actualRaDec'] = [t, radec]
+            self.params['derived:telescope:actualRaDec'] = [t, radec]
 
-        point = getApexPoint('ABM[1,0]:ANTMOUNT:JEpoch')
-        if point is not None: params['ABM[1,0]:ANTMOUNT:JEpoch'] = [point[0], "J{:4d}".format(int(point[1]))]
+        if epoch is not None:
+            self.params['ABM[1,0]:ANTMOUNT:JEpoch'] = [epoch[0], "J{:4d}".format(int(epoch[1]))]
 
-        #-- calibration results
+
+    def __getMisc(self):
+
+        self.params['ABM[1,0]:ANTMOUNT:mode'] = self.__getApexPoint('ABM[1,0]:ANTMOUNT:mode')
+
+        self.params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
+        # self.params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT') # no vlbimon parameter counterpart due to vlbimon being r2dbe-centric
+
+        #self.params['APEX:MASER:HOUSING:temperature'] = self.__getApexPoint('APEX:MASER:HOUSING:temperature')  # 03/2021 : measurement point not working, no data
+        self.params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
+
+
+    def __getEHTEquivalentTunings(self):
+        '''Get NFLASH sky frequency. Translate into EHT band1/2/3/4 frequencies'''
+
+        skyfreq_GHz = self.__getApexPoint('APEX:NFLASH230:skyFrequency')
+        lo1 = self.__getApexPoint('APEX:NFLASH230:LO1:frequency')
+
+        lo1_timestamp = lo1[0]
+        lo1_GHz = lo1[1]
+        bdc_LO2_GHz = 7.000
+        subband_bw = 2.048
+        dbc3_LO2_GHz = 9.048  # == bdc_LO2 + 2.048; upper edge of 4.096G band sampled by DBBC3 in LSB 
+        eht_band_centers = [
+            lo1_GHz - bdc_LO2_GHz - subband_bw/2.0,
+            lo1_GHz - bdc_LO2_GHz + subband_bw/2.0,
+            lo1_GHz + bdc_LO2_GHz - subband_bw/2.0,
+            lo1_GHz + bdc_LO2_GHz + subband_bw/2.0 ]
+
+        self.params['APEX:NFLASH230:SKYFREQUENCY'] = skyfreq_GHz
+        self.params['APEX:EHT:LO1'] = lo1
+        self.params['APEX:EHT:BAND1_MID'] = [lo1_timestamp, eht_band_centers[0]]
+        self.params['APEX:EHT:BAND2_MID'] = [lo1_timestamp, eht_band_centers[1]]
+        self.params['APEX:EHT:BAND3_MID'] = [lo1_timestamp, eht_band_centers[2]]
+        self.params['APEX:EHT:BAND4_MID'] = [lo1_timestamp, eht_band_centers[3]]
+
+
+    def __getTemperatures(self):
+        '''Get system temperatures from various FFTS subbands. Note that these do NOT match in frequency nor bandwidth with the EHT subbands.'''
+
+        # Calibrator engine
         onlineCal = apexObsUtils.getApexCalibrator()
-        try:
-            calResult = onlineCal.getCalResult('NFLASH230-FFTS1',1,0)
-        except:
-            #-- instrument is not available, receiver is not currently in use
-            pass
-        else:
-            #print(calResult)
-            params['Calibrator:NFLASH230-FFTS1:tSys'] = convertApexPoint(calResult.tSys[polarization])  # tSys=[95.0042874479913, 85.13580861018505]
-            params['Calibrator:NFLASH230-FFTS1:tHot'] = convertApexPoint(calResult.tHot)
-            params['Calibrator:NFLASH230-FFTS1:tCold'] = convertApexPoint(calResult.tCold)
-            # params['Calibrator:NFLASH230-FFTS1:tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
-            # params['Calibrator:NFLASH230-FFTS1:tCal'] = convertApexPoint(calResult.tCal[polarization]) # -"-
-            # params['Calibrator:NFLASH230-FFTS1:tSky'] = convertApexPoint(calResult.tSky[polarization]) # -"-
 
-        return params
+        # Docu:
+        #   caldata = apexObsUtils.getApexCalibrator()::getCalResult(FeBe:str, baseband:int, 0)
+        # Input:
+        #   FeBe for nFLASH is 'Calibrator:NFLASH230-FFTS1:tSys'
+        #   Baseline is 1 or 2 (4-8GHz IF sections), or 3 or 4 (8-12GHz IF sections)
+        # Output:
+        #   caldata.tSys  : [tSys feed X, tSys feed Y] : tsys are plain Tsys* values not adjusted by tau
+        #   caldata.feeds : [id feed X, id feed Y]     : 1,2 are LSB sections, and 3,4 are USB sections
+
+        # Docu from JP: tSys values are an average (over the IF section) Tsys value, and they are not tau-corrected.
+        #               However, you can get the corresponding opacity values (also an average over IF) in the (returned)
+        #               two-element arrays: tauSig and tauIma.
+
+        basebands = [1,2,3,4]
+        montargets = ['Calibrator:NFLASH230-FFTS1:1', 'Calibrator:NFLASH230-FFTS1:2', 'Calibrator:NFLASH230-FFTS1:3', 'Calibrator:NFLASH230-FFTS1:4']
+        for (baseband,target) in zip(basebands,montargets):
+            try:
+                calResult = onlineCal.getCalResult('NFLASH230-FFTS1', baseband, 0)
+            except:
+                #-- instrument is not available, receiver is not currently in use
+                print("Not available: FeBe'NFLASH230-FFTS1' baseband %d" % (baseband))
+                pass
+            else:
+                #print(baseband, target, calResult)
+                self.params[target + ':tSys:X'] = convertApexPoint(calResult.tSys[0])
+                self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
+                self.params[target + ':tHot'] = convertApexPoint(calResult.tHot)
+                self.params[target + ':tCold'] = convertApexPoint(calResult.tCold)
+                # self.params[target + ':tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
+                # self.params[target + ':tCal'] = convertApexPoint(calResult.tCal[polarization]) # -"-
+                # self.params[target + ':tSky'] = convertApexPoint(calResult.tSky[polarization]) # -"-
