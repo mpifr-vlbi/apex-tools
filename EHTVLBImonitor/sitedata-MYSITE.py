@@ -76,8 +76,7 @@ class Getter():
 
     def __populateValues(self):
         params = {}
-        nerrors0 = self.nerrors
-	self.__getWeather()
+        self.__getWeather()
         self.__getRadiometer()
         self.__getTarget()
         self.__getTemperatures()
@@ -90,8 +89,7 @@ class Getter():
         try:
             return convertApexPoint(apexObsUtils.getMCPointTS(par))
         except Exception as e:
-            if self.nerrors == nerrors0:
-                print(self.nerrors, e)
+            print(self.nerrors, e)
             self.nerrors += 1
             return None
 
