@@ -225,7 +225,8 @@ class Getter():
                 #print(baseband, target, calResult)
                 if baseband in [1,2]: ## currently limit to 1,2 - don't know in params.map where to stuff 'Calibrator:NFLASH230-FFTS1:3:tSys:X', 'Calibrator:NFLASH230-FFTS1:3:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:X'
                     self.params[target + ':tSys:X'] = convertApexPoint(calResult.tSys[0])
-                    self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
+                    if len(calResult.tSys) > 1:
+                        self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
                 self.params[target + ':tHot'] = convertApexPoint(calResult.tHot)
                 self.params[target + ':tCold'] = convertApexPoint(calResult.tCold)
                 # self.params[target + ':tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
