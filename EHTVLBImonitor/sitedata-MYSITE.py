@@ -76,8 +76,7 @@ class Getter():
 
     def __populateValues(self):
         params = {}
-        nerrors0 = self.nerrors
-	self.__getWeather()
+        self.__getWeather()
         self.__getRadiometer()
         self.__getTarget()
         self.__getTemperatures()
@@ -90,8 +89,7 @@ class Getter():
         try:
             return convertApexPoint(apexObsUtils.getMCPointTS(par))
         except Exception as e:
-            if self.nerrors == nerrors0:
-                print(self.nerrors, e)
+            print(self.nerrors, e)
             self.nerrors += 1
             return None
 
@@ -227,7 +225,8 @@ class Getter():
                 #print(baseband, target, calResult)
                 if baseband in [1,2]: ## currently limit to 1,2 - don't know in params.map where to stuff 'Calibrator:NFLASH230-FFTS1:3:tSys:X', 'Calibrator:NFLASH230-FFTS1:3:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:X'
                     self.params[target + ':tSys:X'] = convertApexPoint(calResult.tSys[0])
-                    self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
+                    if len(calResult.tSys) > 1:
+                        self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
                 self.params[target + ':tHot'] = convertApexPoint(calResult.tHot)
                 self.params[target + ':tCold'] = convertApexPoint(calResult.tCold)
                 # self.params[target + ':tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
