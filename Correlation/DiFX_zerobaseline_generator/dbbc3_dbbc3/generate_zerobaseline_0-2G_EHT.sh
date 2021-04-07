@@ -14,12 +14,14 @@ if [ "$1" == "" ] || [ "$2" == "" ]; then
 
 else
 
-	echo "Running vsum -s /mark6_?-fuse/12/$1..."
-	export times=`vsum -s /mark6_?-fuse/12/$1`
+	echo "Running vsum -s /mark6-?_fuse/12/$1..."
+	export times=`vsum -s /mark6-?_fuse/12/$1`
 	echo $times > ${2}_rec1.12.lst
 	echo $times > ${2}_rec1.34.lst
 	echo $times > ${2}_rec2.12.lst
 	echo $times > ${2}_rec2.34.lst
+	sed -i "s/mark6-1/mark6-2/g" ${2}_rec2.12.lst
+	sed -i "s/mark6-1/mark6-2/g" ${2}_rec2.34.lst
 
 	export mjdstart=`echo $times | cut -d " " -f 2`
 	export vexfmt=`vdif_time -q Vex -p 0 $mjdstart`
