@@ -51,7 +51,7 @@ DATASTREAM Ad_ds1 {
   filelist = zerobaseline_rec1.12.lst
 }
 DATASTREAM Ad_ds2 {
-  filelist = zerobaseline_rec1.12.lst
+  filelist = zerobaseline_rec1.34.lst
 }
 ANTENNA Ad {
   datastreams = Ad_ds1,Ad_ds2
@@ -63,7 +63,7 @@ DATASTREAM Ar_ds1 {
   filelist = zerobaseline_rec2.12.lst
 }
 DATASTREAM Ar_ds2 {
-  filelist = zerobaseline_rec2.12.lst
+  filelist = zerobaseline_rec2.34.lst
 }
 ANTENNA Ar {
   datastreams = Ar_ds1,Ar_ds2

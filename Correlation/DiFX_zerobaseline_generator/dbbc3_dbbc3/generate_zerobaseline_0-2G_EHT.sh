@@ -18,10 +18,11 @@ else
 	export times=`vsum -s /mark6-?_fuse/12/$1`
 	echo $times > ${2}_rec1.12.lst
 	echo $times > ${2}_rec1.34.lst
+	sed -i "s/mark6-1_fuse\/12/mark6-1_fuse\/34/g" ${2}_rec1.34.lst
 	echo $times > ${2}_rec2.12.lst
 	echo $times > ${2}_rec2.34.lst
-	sed -i "s/mark6-1/mark6-2/g" ${2}_rec2.12.lst
-	sed -i "s/mark6-1/mark6-2/g" ${2}_rec2.34.lst
+	sed -i "s/mark6-1_fuse/mark6-2_fuse/g" ${2}_rec2.12.lst
+	sed -i "s/mark6-1_fuse\/12/mark6-2_fuse\/34/g" ${2}_rec2.34.lst
 
 	export mjdstart=`echo $times | cut -d " " -f 2`
 	export vexfmt=`vdif_time -q Vex -p 0 $mjdstart`
@@ -48,7 +49,7 @@ else
 	echo "EOP $((mjd0+3)) { xPole=0.049570 yPole=0.423290 tai_utc=37 ut1_utc=0.116485 }" >> ${2}.v2d
 	echo "EOP $((mjd0+4)) { xPole=0.049570 yPole=0.423290 tai_utc=37 ut1_utc=0.116485 }" >> ${2}.v2d
 
-	echo "Generated ${2}.v2d "
+	echo "Generated ${2}.v2d"
 	vex2difx ${2}.v2d
 
 fi
