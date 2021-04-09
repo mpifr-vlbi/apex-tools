@@ -17,6 +17,8 @@ lin_file = 'vlbi-freqs.lin'
 rx_setup = 'NFLASH230_setup.apecs'
 rx_commands = 'vlbi-NFLASH230_commands.py'
 
+always_send_source = True  # set to True to always send source() go() track() for every scan, rather than only at each source change
+
 def coordReformat(s):
 	s = s.strip()
 	repl = list('hmd\'')
@@ -58,6 +60,10 @@ def getAllSources(fn):
 def datetime2SNP(t):
 	# Example SNP timestamp: 2015.016.07:30:00
 	return t.strftime('%Y.%j.%H:%M:%S')
+
+def timedelta2MinsSecs(dt):
+	mins, secs = divmod(dt.total_seconds(), 60)
+	return "%d min %02d sec" % (mins,secs)
 
 def VEX2datetime(tvex):
 	# Example VEX timestamp: 2015y016d07h30m00s
@@ -139,9 +145,10 @@ def obs_writeScans(fd,scans,sources):
 
 	Lslew    = 25  # max slew time in seconds to a new source
 	Ltsys    = 20  # max time for Tsys sky/hot/cold measurement in seconds
-	Lrefscan = 70  # max time for on() scan with Off-Source reference
+	# Lrefscan = 70  # max time for on() scan with Off-Source reference
+	Lrefscan = 25  # 2x10s + margin 5 max time for on() scan with Off-Source reference
 	Lcmdmargin = 5 # allow 5 seconds between issuing any new APECS command
-	L_minimum_for_interactive = 9999999 # seconds required to allow interactive input from observer
+	L_minimum_for_interactive = 100 # seconds required to allow interactive input from observer
 
 	Tstart_next = None  # keep track of starting time of scan after current one
 	prev_source = None  # keep track of source changes
@@ -158,8 +165,13 @@ def obs_writeScans(fd,scans,sources):
 		scan = scans[scanname]
 
 		T = scan['start']
+		T_scan = scan['start']
 		Ldur = scan['dur']
-		
+		T_scan_end = T_scan + datetime.timedelta(seconds=Ldur)
+		if Tprev_end==None:
+			# First scan; virtual end of "previous" scan
+			Tprev_end = T_scan - datetime.timedelta(seconds=(Lslew+Ltsys+Lrefscan+4*Lcmdmargin))
+
 		# Determine scan after current one (time margin, source name)
 		if isorted.index(ii) < (len(isorted)-1):
 			iinext = isorted[isorted.index(ii)+1]
@@ -191,22 +203,13 @@ def obs_writeScans(fd,scans,sources):
 			do_vlbi_reference_scan = True
 			L_start_early = L_start_early + Lrefscan + Lcmdmargin
 
-		# Determine the time between the end of the previous scan, and the first command for this scan
-		if (Tprev_end != None):
-			Tfirstcmd = T - datetime.timedelta(seconds=L_start_early)
-			Lscangap = (Tfirstcmd - Tprev_end)
-			Lscangap = Lscangap.total_seconds()
-			if (Lscangap >= L_minimum_for_interactive):
-				msg = 'About %d seconds available for pointing/focusing/other' % (int(Lscangap)) 
-				obs_writeLine(fd, datetime2SNP(T), 0, 'interactive(\'%s\')' % (msg))
-			fd.write('#     scan end at %s\n' % datetime2SNP(Tprev_end))
-			fd.write('#     %d idle seconds (%.1f minutes) until next remote command\n\n' % (int(Lscangap),Lscangap/60.0) )
-
-		# Now queue up the APECS commands to do for this scan
+		# Queue up the APECS commands to do for this scan
+		# Structure: [prev.VLBIScan] -> change source -> vlbi_tsys() -> vlbi_reference_scan() -> [gap] -> VLBIScan
+		# Old structure of EHT2018: [prev.VLBIScan] -> [gap] -> change source -> vlbi_tsys() -> vlbi_reference_scan() -> VLBIScan
 		sheading = 'Target %s scanname %s to start at %s' % (scan['source'],scanname,datetime2SNP(scan['start']))
 		fd.write('#### %s %s\n' % (sheading, '#'*(80-6-len(sheading))))
-		T = T - datetime.timedelta(seconds=L_start_early)
-		if do_sourcechange:
+		T = Tprev_end + datetime.timedelta(seconds=10) # move to source right after previous VLBI scan
+		if do_sourcechange or always_send_source:
 			obs_writeLine(fd, datetime2SNP(T), Lslew, 'source(\'%s\'); go(); track()' % (scan['source']))
 			T = T + datetime.timedelta(seconds=(Lslew+Lcmdmargin))
 		if do_vlbi_tsys:
@@ -215,17 +218,24 @@ def obs_writeScans(fd,scans,sources):
 		if do_vlbi_reference_scan:
 			obs_writeLine(fd, datetime2SNP(T), Lrefscan, 'vlbi_reference_scan()')
 			T = T + datetime.timedelta(seconds=(Lrefscan+Lcmdmargin))
-		obs_writeLine(fd, datetime2SNP(T), scan['dur'], 'vlbi_scan(t_mins=%d)' % (scan['dur']/60))  # track on source
-		T = T + datetime.timedelta(seconds=Ldur)
-		if not do_vlbi_tsys:
-			# Tsys after scan?
-			pass
 
+		Loperatorgap = T_scan - T
+		if Loperatorgap.total_seconds() >= L_minimum_for_interactive:
+			fd.write('#     OPERATOR calibrations likely end at %s\n' % datetime2SNP(T))
+			fd.write('#     free %s until VLBI scan\n' % (timedelta2MinsSecs(Loperatorgap)))
+		else:
+			fd.write('#     gap %s\n' % (timedelta2MinsSecs(Loperatorgap)))
+
+		obs_writeLine(fd, datetime2SNP(T_scan), scan['dur'], 'vlbi_scan(t_mins=%d)' % (scan['dur']/60))  # track on source
+		T = T + datetime.timedelta(seconds=Ldur)
+		fd.write('#     scan ends at %s\n\n' % datetime2SNP(T_scan_end))
+
+		# Keep history
 		prev_source = scan['source']
-		Tprev_end = T
+		Tprev_end = T_scan_end  # nominal end of VLBI scan, sans calibration
 
 	fd.write('\n# Finished VLBI schedule\n')
-	obs_writeLine(fd, datetime2SNP(T), 1, 'remote_control(\'off\')')
+	obs_writeLine(fd, datetime2SNP(Tprev_end + datetime.timedelta(seconds=30)), 1, 'remote_control(\'off\')')
 
 
 def run(args):
