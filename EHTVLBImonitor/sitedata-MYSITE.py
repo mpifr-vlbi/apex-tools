@@ -173,6 +173,8 @@ class Getter():
 
         skyfreq_GHz = self.__getApexPoint('APEX:NFLASH230:skyFrequency')
         lo1 = self.__getApexPoint('APEX:NFLASH230:LO1:frequency')
+        if lo1 is None or skyfreq_GHz is None:
+            return
 
         lo1_timestamp = lo1[0]
         lo1_GHz = lo1[1]
