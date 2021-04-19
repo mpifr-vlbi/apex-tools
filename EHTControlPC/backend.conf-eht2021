@@ -94,11 +94,11 @@ deviceLayouts:
 
         dbbc3:
                 gcomoA:
-                        A_e0: {label: lo, band: low}
-                        A_e2: {label: hi, band: high}
+                        A_e0: {label: hi, band: high}
+                        A_e2: {label: lo, band: low}
                 gcomoB:
-                        B_e0: {label: lo, band: low}
-                        B_e2: {label: hi, band: high}
+                        B_e0: {label: hi, band: high}
+                        B_e2: {label: lo, band: low}
                 gcomoC:
                         C_e0: {label: lo, band: low}
                         C_e2: {label: hi, band: high}
@@ -246,13 +246,13 @@ links:
         - rx.230:usb_R  dbbc3.all:gcomoD
 
         # Recorder1
-        - dbbc3.all:A_e2  mark6.lsb_hi:eth3
-        - dbbc3.all:B_e2  mark6.lsb_hi:eth5
+        - dbbc3.all:B_e0  mark6.lsb_hi:eth3
+        - dbbc3.all:A_e0  mark6.lsb_hi:eth5
 
         # Recorder2
-        - dbbc3.all:A_e0  mark6.lsb_lo:eth2  # eth2 to replace kaputt eth3; didnt really help since "ADDRCONF(NETDEV_UP): eth2: link is not ready" despite switching fiber(with signal!) from eth3 to eth2 port
-        # - dbbc3.all:A_e0  mark6.lsb_lo:eth3  # eth2 to replace kaputt eth3; didnt really help since "ADDRCONF(NETDEV_UP): eth2: link is not ready" despite switching fiber(with signal!) from eth3 to eth2 port
-        - dbbc3.all:B_e0  mark6.lsb_lo:eth5
+        - dbbc3.all:B_e2  mark6.lsb_lo:eth2  # eth2 to replace kaputt eth3; didnt really help since "ADDRCONF(NETDEV_UP): eth2: link is not ready" despite switching fiber(with signal!) from eth3 to eth2 port
+        # - dbbc3.all:B_e2  mark6.lsb_lo:eth3  # eth2 to replace kaputt eth3; didnt really help since "ADDRCONF(NETDEV_UP): eth2: link is not ready" despite switching fiber(with signal!) from eth3 to eth2 port
+        - dbbc3.all:A_e2  mark6.lsb_lo:eth5
 
         # Pico Veleta order of band3/band4 cabling from DBBC3
         #- dbbc3.all:C_e0  mark6.usb_lo:eth3
@@ -262,12 +262,12 @@ links:
 
         # APEX order of band3/band4 cabling from DBBC3
         # Recorder3
-        - dbbc3.all:C_e2  mark6.usb_lo:eth3
-        - dbbc3.all:D_e2  mark6.usb_lo:eth5
+        - dbbc3.all:D_e2  mark6.usb_lo:eth3
+        - dbbc3.all:C_e2  mark6.usb_lo:eth5
 
         # Recorder4
-        #- dbbc3.all:C_e0  mark6.usb_hi:eth2
-        - dbbc3.all:C_e0  mark6.usb_hi:eth3  # eth2+eth3 kaputt, eth4+eth5 kaputt (visible, but "ADDRCONF(NETDEV_UP): eth*: link is not ready")
-        - dbbc3.all:D_e0  mark6.usb_hi:eth5
+        #- dbbc3.all:D_e0  mark6.usb_hi:eth2
+        - dbbc3.all:D_e0  mark6.usb_hi:eth3  # eth2+eth3 kaputt, eth4+eth5 kaputt (visible, but "ADDRCONF(NETDEV_UP): eth*: link is not ready")
+        - dbbc3.all:C_e0  mark6.usb_hi:eth5
 
 # vim: ft=yaml:ts=8:sts=8:sw=8:expandtab:tw=80 foldmethod=indent
