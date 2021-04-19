@@ -183,6 +183,14 @@ if __name__ == "__main__":
 	times = np.array(flt_t)
 	tdiff_ns = np.array(flt_c)  
 
+	# Dump data into a file
+	if True:
+		fdump = open('counters.raw', 'w')
+		fdump.write('# Time(unix second) Value(nanosec)\n')
+		for t,c in zip(times,tdiff_ns):
+			fdump.write('%d %d\n' % (t, c))
+		fdump.close()
+
 	# Filter outliers
 	if True:
 		std = np.std(tdiff_ns)
