@@ -177,7 +177,7 @@ if __name__ == "__main__":
 			# discard error codes
 			continue
 		if c >= 0.9e9: #  TODO -- improve into an actual unwrap()
-			c = 1.0e9 - c
+			c = c - 1.0e9
 		flt_t.append(t)
 		flt_c.append(c)
 	times = np.array(flt_t)
