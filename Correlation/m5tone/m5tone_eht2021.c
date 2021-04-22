@@ -18,7 +18,6 @@
 #include <complex.h>
 #include <math.h>
 #include <fftw3.h>
-#include <cpgplot.h>
 #include <malloc.h>
 
 
