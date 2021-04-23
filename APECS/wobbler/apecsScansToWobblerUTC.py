@@ -1,5 +1,5 @@
 #!/bin/python
-import sys
+import os, sys
 import glob
 import csv
 import re
@@ -158,7 +158,9 @@ def extractOffSourceTimes(datasetdir, subscan, wob_throw_asec, fake=False):
 	return flagged_unix_timeranges
 
 
-def generateUVFLAG(timeranges, outfile):
+uvflag_header_written = 0
+
+def generateUVFLAG(timeranges, outfile, heading='next apecs scan'):
 	'''
 	Argument 'timeranges' is a list of [tstart,tstop] pairs of Unix timestamps.
 	Output is similar to
@@ -170,22 +172,24 @@ def generateUVFLAG(timeranges, outfile):
 	...
 	  with UT times in doy,hh,mm,ss format.
 	'''
+	global uvflag_header_written
 
-	outfile.write("\n")
-	outfile.write("opcode = 'FLAG'\n")
-	outfile.write("dtimrang = 1  timeoff = 0\n")
+	if uvflag_header_written == 0:
+		outfile.write("opcode = 'FLAG'\n")
+		outfile.write("dtimrang = 1  timeoff = 0\n")
+		uvflag_header_written = 1
 
+	outfile.write('! %s\n' % (heading))
 	for timerange in timeranges:
 		t0,t1 = timerange
 		dtime0 = datetime.utcfromtimestamp(t0)
 		dtime1 = datetime.utcfromtimestamp(t1)
-		#doy0 = dtime0.timetuple().tm_yday 
-		#doy1 = dtime1.timetuple().tm_yday 
 		str0 = dtime0.strftime('%-j,%H,%M,%S.%f')
 		str1 = dtime1.strftime('%-j,%H,%M,%S.%f')
-		outfile.write("ant_name='Ax' timerang= %s, %s  reason='Wobbler off source.' /\n" % (str0,str1))
+		outfile.write("ant_name='Ax' timerang=%s,%s reason='Wobbler off source.' /\n" % (str0,str1))
 
-	outfile.write("\n")
+	outfile.flush()
+	os.fsync(outfile)
 
 
 def processCSV(csvfilename, outfilename):
@@ -199,7 +203,7 @@ def processCSV(csvfilename, outfilename):
 	for scan in scans:
 		datasetdir, subscan, throw_asec = scan[0],scan[1],scan[2]
 		timeranges = extractOffSourceTimes(datasetdir, subscan, throw_asec)
-		generateUVFLAG(timeranges, outfile)
+		generateUVFLAG(timeranges, outfile, heading=datasetdir)
 		numflags += len(timeranges)
 
 	print('Wrote %d flag entries to %s' % (numflags, outfilename))
