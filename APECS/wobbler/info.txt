@@ -17,3 +17,7 @@ Dirk Muders, 14.04.2021
    one can activate via
        source /soft/astro/boa/initboa.[c]sh
    on the MPIfR machines.
+
+Dirk Muders, 19.04.2021
+
+ - At APEX the phase 1 wobbler position is always positive and the phase 2 one is negative
