@@ -8,8 +8,8 @@ from datetime import datetime
 
 import BoaMBFits
 
-RAW_DATA_ROOT = '/homes/t-0107.f-9996a-2021/rawdata-copy-APEX-2021-04-09/'  # where to look for scans
-# RAW_DATA_ROOT = '/homes/t-0107.f-9996a-2021/rawdata/'
+# RAW_DATA_ROOT = '/homes/t-0107.f-9996a-2021/rawdata-copy-APEX-2021-04-09/'  # where to look for scans
+RAW_DATA_ROOT = '/homes/t-0107.f-9996a-2021/rawdata/'
 
 WOB_POSITION_MARGIN = 5.0  # positions by amount of margin within throw are considered as settled ON(/OFF)-source
 
