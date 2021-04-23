@@ -119,11 +119,11 @@ def extractOffSourceTimes(datasetdir, subscan, wob_throw_asec, fake=False):
 	# Note: "at APEX the phase 1 wobbler position is always positive and the phase 2 one is negative"
 	if phase1=='WOFF' and phase2=='WON':
 		wob_onsource_asec = -abs(wob_throw_asec)
-	elif phase1=='WON' and phase=='WOFF':
+	elif phase1=='WON' and phase2=='WOFF':
 		wob_onsource_asec = +abs(wob_throw_asec)
 	else:
 		print('Error: unexpected PHASE1-PHASE2 of %s-%s, expecting WOFF-WON or WON-WOFF!' % (phase1,phase2))
-		return
+		return []
 
 	count_ons = 0
 	count_offs = 0
