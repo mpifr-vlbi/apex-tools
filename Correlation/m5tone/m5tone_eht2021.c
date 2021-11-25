@@ -358,6 +358,7 @@ double processRecordingByCrosscorr(const char *infilename, int chan, int nsampav
 int main(int argc, char **argv)
 {
     char *infile = argv[1];
+    char *filename;
     char *resultsfile;
     FILE *fout;
 
@@ -367,9 +368,17 @@ int main(int argc, char **argv)
     }
 
     // Open unbuffered output file writer stream
-    resultsfile = malloc(strlen(infile) + strlen(".m5t") + 1);
-    sprintf(resultsfile, "%s.m5t", infile);
+    filename = strrchr(infile, '/');
+    if (filename[0] == '/') {
+        filename++;
+    }
+    resultsfile = malloc(strlen(filename) + strlen(".m5t") + 1);
+    sprintf(resultsfile, "%s.m5t\0", filename);
+    printf("resultsfile = %s\n", resultsfile);
     fout = fopen(resultsfile, "w");
+    if (fout == NULL) {
+        printf("Error");
+    }
     setvbuf(fout, (char *)NULL, _IONBF, 0);
 
     // Extract phase of tone in input file
