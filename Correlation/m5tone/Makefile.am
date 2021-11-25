@@ -6,5 +6,7 @@ LDFLAGS = $(shell pkg-config --libs mark5access) -lm -lfftw3f -lgfortran -lX11 -
 bin_PROGRAMS = m5tone2021_Ax m5tone2021_Kt
 
 m5tone2021_Ax_SOURCES = m5tone_eht2021.c
-m5tone2021_Kt_SOURCES = m5tone_eht2021_Kt.c
+m5tone2021_Ax_CFLAGS = -DSTATION_APEX
 
+m5tone2021_Kt_SOURCES = m5tone_eht2021.c
+m5tone2021_Kt_CFLAGS = -DSTATION_KITTPEAK

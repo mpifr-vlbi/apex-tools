@@ -22,12 +22,25 @@
 
 
 /** Baseband */
-#define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
-#define VDIF_CHAN_BW_MHZ 2048    /* Baseband signal bandwidth in MHz */
-#define TONE_FREQ_MHZ    426     /* Baseband tone freq in MHz */
-#define LO_OFFSET_HZ     -15.022 /* Offset of 1st LO to compensate for */
-#define HAVE_LO_OFFSET   1       /* 1: LO offset present and should be removed, 0: disable removal of LO offset */
-#define USE_FAST_LO_OFFSET 1     /* 1: use approximation, de-rotate tone in bin after DFT, faster, 0: no approximation, de-rotate the entire sample stream */
+#ifdef STATION_APEX
+    #define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
+    #define VDIF_CHAN_BW_MHZ 2048    /* Baseband signal bandwidth in MHz */
+    #define TONE_FREQ_MHZ    426     /* Baseband tone freq in MHz */
+    #define LO_OFFSET_HZ     -15.022 /* Offset of 1st LO to compensate for */
+    #define HAVE_LO_OFFSET   1       /* 1: LO offset present and should be removed, 0: disable removal of LO offset */
+    #define USE_FAST_LO_OFFSET 1     /* 1: use approximation, de-rotate tone in bin after DFT, faster, 0: no approximation, de-rotate the entire sample stream */
+#endif
+#ifdef STATION_KITTPEAK
+    #define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
+    #define VDIF_CHAN_BW_MHZ 2048    /* Baseband signal bandwidth in MHz */
+    #define TONE_FREQ_MHZ    500     /* Baseband tone freq in MHz */
+    #define LO_OFFSET_HZ     0       /* Offset of 1st LO to compensate for */
+    #define HAVE_LO_OFFSET   0       /* 1: LO offset present and should be removed, 0: disable removal of LO offset */
+    #define USE_FAST_LO_OFFSET 0     /* 1: use approximation, de-rotate tone in bin after DFT, faster, 0: no approximation, de-rotate the entire sample stream */
+#endif
+#ifndef LO_OFFSET_HZ
+    #error "Please define STATION_APEX or STATION_KITTPEAK for compilation (e.g., gcc -Wall -DSTATION_APEX m5tone_eht2021.c -o m5tone_eht2021_Ax ...)"
+#endif
 
 /** Fourier transform and averaging */
 #define DFT_LENGTH 409600     /* 204800 ch over 4096 Ms/s = 20 kHz/channel */
