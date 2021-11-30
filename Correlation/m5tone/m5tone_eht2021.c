@@ -30,6 +30,22 @@
     #define HAVE_LO_OFFSET   1       /* 1: LO offset present and should be removed, 0: disable removal of LO offset */
     #define USE_FAST_LO_OFFSET 1     /* 1: use approximation, de-rotate tone in bin after DFT, faster, 0: no approximation, de-rotate the entire sample stream */
 #endif
+#ifdef STATION_APEX_2018_VDI // BAND 3 tone, 1st LO was a VDI synth that has an LO offset
+    #define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
+    #define VDIF_CHAN_BW_MHZ 2048    /* Baseband signal bandwidth in MHz */
+    #define TONE_FREQ_MHZ    529.0   /* Baseband tone freq in MHz */
+    #define LO_OFFSET_HZ     -15.022 /* Offset of 1st LO to compensate for */
+    #define HAVE_LO_OFFSET   1       /* 1: LO offset present and should be removed, 0: disable removal of LO offset */
+    #define USE_FAST_LO_OFFSET 1     /* 1: use approximation, de-rotate tone in bin after DFT, faster, 0: no approximation, de-rotate the entire sample stream */
+#endif
+#ifdef STATION_APEX_2018_RS // BAND 3 tone, RohdeSchwarz(?) 1st LO synth borrowed from ALMA, without LO offset
+    #define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
+    #define VDIF_CHAN_BW_MHZ 2048    /* Baseband signal bandwidth in MHz */
+    #define TONE_FREQ_MHZ    529.0   /* Baseband tone freq in MHz */
+    #define LO_OFFSET_HZ     0       /* Offset of 1st LO to compensate for */
+    #define HAVE_LO_OFFSET   0       /* 1: LO offset present and should be removed, 0: disable removal of LO offset */
+    #define USE_FAST_LO_OFFSET 1     /* 1: use approximation, de-rotate tone in bin after DFT, faster, 0: no approximation, de-rotate the entire sample stream */
+#endif
 #ifdef STATION_KITTPEAK
     #define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
     #define VDIF_CHAN_BW_MHZ 2048    /* Baseband signal bandwidth in MHz */
@@ -382,6 +398,9 @@ int main(int argc, char **argv)
 
     // Open unbuffered output file writer stream
     filename = strrchr(infile, '/');
+    if (filename == NULL) {
+        filename = infile;
+    }
     if (filename[0] == '/') {
         filename++;
     }
