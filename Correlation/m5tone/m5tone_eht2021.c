@@ -44,7 +44,7 @@
     #define TONE_FREQ_MHZ    529.0   /* Baseband tone freq in MHz */
     #define LO_OFFSET_HZ     0       /* Offset of 1st LO to compensate for */
     #define HAVE_LO_OFFSET   0       /* 1: LO offset present and should be removed, 0: disable removal of LO offset */
-    #define USE_FAST_LO_OFFSET 1     /* 1: use approximation, de-rotate tone in bin after DFT, faster, 0: no approximation, de-rotate the entire sample stream */
+    #define USE_FAST_LO_OFFSET 0     /* 1: use approximation, de-rotate tone in bin after DFT, faster, 0: no approximation, de-rotate the entire sample stream */
 #endif
 #ifdef STATION_KITTPEAK
     #define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
