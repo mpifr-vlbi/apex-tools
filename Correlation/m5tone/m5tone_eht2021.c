@@ -386,7 +386,7 @@ int main(int argc, char **argv)
         filename++;
     }
     resultsfile = malloc(strlen(filename) + strlen(".m5t") + 1);
-    sprintf(resultsfile, "%s.m5t\0", filename);
+    sprintf(resultsfile, "%s.m5t", filename);
     printf("resultsfile = %s\n", resultsfile);
     fout = fopen(resultsfile, "w");
     if (fout == NULL) {
