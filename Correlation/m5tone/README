@@ -8,7 +8,8 @@ automake -a -c
 ./configure
 make
 
+
 # Or shorter, under a DiFX environment:
-# gcc -Wall -mtune=native -march=native -DSTATION_APEX -I$DIFXROOT/include m5tone_eht2021.c -o m5tone_eht2021 -L$DIFXROOT/lib/ -lfftw3f -lmark5access -lm
-# gcc -Wall -mtune=native -march=native -DSTATION_APEX_2018_VDI -I$DIFXROOT/include m5tone_eht2021.c -o m5tone_eht2018_vdi -L$DIFXROOT/lib/ -lfftw3f -lmark5access -lm
-# gcc -Wall -mtune=native -march=native -DSTATION_APEX_2018_RS  -I$DIFXROOT/include m5tone_eht2021.c -o m5tone_eht2018_rs  -L$DIFXROOT/lib/ -lfftw3f -lmark5access -lm
+gcc -Wall -mtune=native -march=native -DSTATION_APEX -I$DIFXROOT/include m5tone_eht.c -o m5tone_eht2021 -L$DIFXROOT/lib/ -lfftw3f -lmark5access -lm
+gcc -Wall -mtune=native -march=native -DSTATION_APEX_2018_VDI -I$DIFXROOT/include m5tone_eht.c -o m5tone_eht2018_vdi -L$DIFXROOT/lib/ -lfftw3f -lmark5access -lm
+gcc -Wall -mtune=native -march=native -DSTATION_APEX_2018_RS  -I$DIFXROOT/include m5tone_eht.c -o m5tone_eht2018_rs  -L$DIFXROOT/lib/ -lfftw3f -lmark5access -lm
