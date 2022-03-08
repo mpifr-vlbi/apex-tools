@@ -2,7 +2,7 @@ OUTDIR = ../bin/
 CFLAGS = -Wall -O0
 #CFLAGS += -DVERBOSE  # comment out to disable printouts
 
-BINARIES=pollVectorVoltmeter pollCounters pollMaser preplot
+BINARIES=pollVectorVoltmeter pollCounters pollMaser pollCounters_maser
 
 all: $(BINARIES)
 
@@ -18,10 +18,10 @@ pollCounters: pollCounters.o nettools.o
 pollMaser: pollMaser.o nettools.o
 	$(CC) pollMaser.o nettools.o -o pollMaser
 
-preplot: preplot.o
+pollCounters_maser: pollCounters_maser.o nettools.o
+	$(CC) pollCounters_maser.o nettools.o -o pollCounters_maser
 
 install:
 	cp pollVectorVoltmeter $(OUTDIR)/
 	cp pollCounters $(OUTDIR)/
 	cp pollMaser $(OUTDIR)/
-	cp preplot $(OUTDIR)/
