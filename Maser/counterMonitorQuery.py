@@ -17,13 +17,6 @@ from string import replace, join
 from time import gmtime
 from copy import copy
 
-try:
-	import matplotlib
-	matplotlib.use('TkAgg')
-	import pylab
-	havePlot = True
-except:
-	havePlot = False
 import numpy as np
 
 __author__ = "Jan Wagner (MPIfR)"
@@ -208,20 +201,61 @@ if __name__ == "__main__":
 	# linfit = np.polyfit(times, tdiff_ns, 1)
 	linfit = np.polyfit(flt_t, flt_c, 1)
 	rate = linfit[0]*1e-9
-	print('Drift rate: %.6e s/s' % (rate))
+	print('Linear-fit drift rate: %.6e s/s' % (rate))
+
+	# Quadratic fit
+	qfit = np.polyfit(flt_t, flt_c, 2)
+	qrate, qaccel = qfit[0]*1e-9, qfit[1]*1e-18
+	print('Quadratic-fit drift rate: %.6e s/s  acceleration: %.6e s/s^2' % (qrate,qaccel))
+
+	# Plot data if possible
+	try:
+		import matplotlib
+		matplotlib.use('TkAgg')
+		import pylab
+		import matplotlib.dates as md
+		import datetime as dt
+		havePlot = True
+	except:
+		havePlot = False
 
 	if havePlot:
 		med = np.median(tdiff_ns)
 		mad = median_abs_deviation(tdiff_ns)
 		linfit_tdiff_ns = np.polyval(linfit, times)
-		pylab.figure()
+		qfit_tdiff_ns = np.polyval(qfit, times)
+
+		unixdateconv = np.vectorize(dt.datetime.fromtimestamp)
+		dttimes = unixdateconv(times)
+
+		fig = pylab.figure()
+		fig.patch.set_facecolor('white')
+
+		fig.add_subplot(2,1,1)
 		pylab.hold(True)
-		pylab.plot(times, tdiff_ns, 'rx-')
+		pylab.plot(dttimes, tdiff_ns, 'x-', color='#666666')
 		pylab.hold(True)
-		pylab.plot(times, linfit_tdiff_ns, 'k-')
+		pylab.plot(dttimes, linfit_tdiff_ns, '-', color='#660000')
+		pylab.plot(dttimes, qfit_tdiff_ns, '-', color='#006600')
 		pylab.ylim(med-3*mad, med+3*mad)
-		pylab.text(times[0], linfit_tdiff_ns[-1], 'rate %.6e s/s' % (rate))
+		pylab.text(dttimes[len(dttimes)//2], linfit_tdiff_ns[-1], 'rate %.4e s/s' % (rate), color='#660000')
 		pylab.title(counter.key)
-		pylab.ylabel('Time delta (nanoseconds)')
-		pylab.xlabel('Time (seconds from Unix epoch; %.1f days)' % (float(opts.history_days)))
+		pylab.ylabel('Time delta (nsec)')
+		pylab.gca().get_xaxis().set_ticklabels([])
+
+		fig.add_subplot(2,1,2)
+		pylab.plot(dttimes, tdiff_ns - linfit_tdiff_ns, '+', color='#996666')
+		pylab.plot(dttimes, tdiff_ns - qfit_tdiff_ns, 'x', color='#669966')
+		pylab.plot([dttimes[0], dttimes[-1]], [0, 0], 'k-')
+		ymax = np.max(np.abs(pylab.ylim()))
+		pylab.ylim([-ymax, ymax])
+		pylab.ylabel('Fit residual (nsec)')
+
+		pylab.xticks(rotation=25, ha='right', fontsize=8)
+		xfmt = md.DateFormatter('%Yy%jd%Hh%Mm')
+		pylab.gca().xaxis.set_major_formatter(xfmt)
+
+
+		pylab.tight_layout()
+		pylab.draw()
 		pylab.show()
