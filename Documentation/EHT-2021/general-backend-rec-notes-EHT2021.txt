@@ -1,0 +1,251 @@
+
+=== VLBI Monitor Client(s)
+
+See statuses on https://vlbimon1.science.ru.nl/overview.html
+Those are posted by EHTVLBImonitor(s) running at each station
+
+For APEX, one instance on the APEX eht-cc:
+
+[monuser@cc-apex oper]$ systemctl status vlbimon-client
+   if not running, then "su root" and:
+    [root@cc-apex oper]# systemctl restart vlbimon-client
+    [root@cc-apex oper]# systemctl status vlbimon-client
+
+And a second instance on observer3:
+
+observer3 t-0107.f-9996a-2021:~> ps axuf |grep client.py   # check the result, make sure no existing client.py is already running...
+observer3 t-0107.f-9996a-2021:~> cd EHTVLBImonitor
+observer3 t-0107.f-9996a-2021:~/EHTVLBImonitor> ./start.sh
+    parameter.map read successfully
+    masterlist and parameter.map merged successfully, adopted
+    client version: v2.2-22-g57cb-dirty
+    S2:R3592:submission successful
+
+
+=== Mark6 monitor
+
+[oper@cc-apex ~]$ cd vlbicontrol ; python dplane_monitor.py
+(picky about terminal size, you may need to stretch the window to prevent the script from crashing at the start)
+
+
+=== "Backends" Check
+
+[oper@cc-apex ~]$ backendctl cc check
+
+    Reading config file: /etc/backend.conf
+    control-computer (hostname: cc-apex) running pre-config tests ...
+        localhost NTP test passed
+        cc-apex redis server accepting connections test passed
+        cc-apex nfs export test passed
+    control-computer (hostname: cc-apex) all pre-config tests passed
+    control-computer (hostname: cc-apex) checking if device is configured ...
+    control-computer (hostname: cc-apex) running post-config tests ...
+    control-computer (hostname: cc-apex) all post-config tests passed
+
+[oper@cc-apex ~]$ backendctl mark6 all check
+
+    Checks succeeded on all devices
+
+    control-computer configuration:
+
+    mark6.lsb_hi configuration:
+    recorder1 : recorder1
+              : Mods: Slot       MSN   Grp  Ndsc  Nreg   Avail   Total       Status1       Status2  Type
+              :     :    1  MPI%8038  1234     8     8   79685   80000          open         ready    sg
+              :     :    2  MPI%8039  1234     8     8   79685   80000          open         ready    sg
+              :     :    3  MPI%8040  1234     8     8   79685   80000          open         ready    sg
+              :     :    4  MPI%8041  1234     8     8   79685   80000          open         ready    sg
+              : Inps:            Label  Subgrp   Iface      Filter addr   Port  Datfmt  Size  Offset  PSN
+              :     : ark6.lsb_hi.eth5      34    eth5      172.16.5.24   4001    vdif  8224      50   42
+              :     : ark6.lsb_hi.eth3      12    eth3      172.16.3.24   4001    vdif  8224      50   42
+              : Stat: 0x3333301
+              : Schd: M6_CC is not running
+    mark6.lsb_lo configuration:
+    recorder2 : recorder2
+              : Mods: Slot       MSN   Grp  Ndsc  Nreg   Avail   Total       Status1       Status2  Type
+              :     :    1  MPI%8042  1234     8     8   79687   80000          open         ready    sg
+              :     :    2  MPI%8043  1234     8     8   79688   80000          open         ready    sg
+              :     :    3  MPI%8044  1234     8     8   79687   80000          open         ready    sg
+              :     :    4  MPI%8045  1234     8     8   79688   80000          open         ready    sg
+              : Inps:            Label  Subgrp   Iface      Filter addr   Port  Datfmt  Size  Offset  PSN
+              :     : ark6.lsb_lo.eth2      12    eth2      172.16.2.25   4001    vdif  8224      50   42
+              :     : ark6.lsb_lo.eth5      34    eth5      172.16.5.25   4001    vdif  8224      50   42
+              : Stat: 0x3333301
+              : Schd: M6_CC is not running
+    mark6.usb_lo configuration:
+    recorder3 : recorder3
+              : Mods: Slot       MSN   Grp  Ndsc  Nreg   Avail   Total       Status1       Status2  Type
+              :     :    1  MPI%8046  1234     8     8   79688   80000          open         ready    sg
+              :     :    2  MPI%8047  1234     8     8   79688   80000          open         ready    sg
+              :     :    3  MPI%8049  1234     8     8   79688   80000          open         ready    sg
+              :     :    4  MPI%8050  1234     8     8   79688   80000          open         ready    sg
+              : Inps:            Label  Subgrp   Iface      Filter addr   Port  Datfmt  Size  Offset  PSN
+              :     : ark6.usb_lo.eth5      34    eth5      172.16.5.27   4001    vdif  8224      50   42
+              :     : ark6.usb_lo.eth3      12    eth3      172.16.3.27   4001    vdif  8224      50   42
+              : Stat: 0x3333301
+              : Schd: M6_CC is not running
+    mark6.usb_hi configuration:
+    recorder4 : recorder4
+              : Mods: Slot       MSN   Grp  Ndsc  Nreg   Avail   Total       Status1       Status2  Type
+              :     :    1  MPI%8051  1234     8     8   76722   80000          open         ready    sg
+              :     :    2  MPI%8052  1234     8     8   79682   80000          open         ready    sg
+              :     :    3  MPI%8054  1234     8     8   79682   80000          open         ready    sg
+              :     :    4  MPI%8056  1234     8     8   79682   80000          open         ready    sg
+              : Inps:            Label  Subgrp   Iface      Filter addr   Port  Datfmt  Size  Offset  PSN
+              :     : ark6.usb_hi.eth5      34    eth5      172.16.5.26   4001    vdif  8224      50   42
+              :     : ark6.usb_hi.eth3      12    eth3      172.16.3.26   4001    vdif  8224      50   42
+              : Stat: 0x3333301
+              : Schd: M6_CC is not running
+
+
+=== Follow Schedule (even when not started on Mark6'es and observer3 yet)
+
+[oper@cc-apex ~]$ backendctl whole schedule follow trigger
+    Reading config file: /etc/backend.conf
+    candidate schedule /srv/vexstore/trigger/e21b09.vex is valid for station Ax
+    schedule file e21b09.vex contains the following scans for station 'Ax':
+             #scan                 start             stop     duration       source
+                 0   2021y098d-23h52m00s   098d-23h56m00s         240s        3C273
+                 1   2021y099d-00h00m00s   099d-00h05m00s         300s          M87
+                 2   2021y099d-00h08m00s   099d-00h13m00s         300s          M87
+                 3   2021y099d-00h21m00s   099d-00h24m00s         180s        3C279
+    ...
+                89   2021y099d-15h12m00s   099d-15h17m00s         300s         SGRA
+                90   2021y099d-15h20m00s   099d-15h23m00s         180s   J1924-2914
+    running the schedule now ...
+    (run_sched.py) time is 20:36:46, next commands at 23:51:57
+
+
+
+=== DBBC3 Monitoring
+
+Manual, in client:
+
+[oper@cc-apex ~]$ dbbc3client.py 10.0.2.91
+
+    core3hstat=1
+    core3hstats=2
+    core3hstats=3
+    core3hstats=4
+
+    Perfect stats would be : 18%:32%:32%:18%  for each sampler
+    Ignore the "Corr." entries at the end of output, they are only valid until before 0-2G,2-4G FIR filters were loaded
+
+    dbbcifa
+    dbbcifb
+    dbbcifc
+    dbbcifd
+
+    perfect response would be   dbbcifa=2,30,
+
+Don't use other commands.
+
+Don't close client with Ctrl-C, use the "quit" command.
+
+Loss of sync is indicated by core3hstat that are not perfect (off by >3% or so).
+Need to wait and give DBBC3 30-60 seconds inside a VLBI scan (outside of Tsys sky-hot-cold scan)
+to report reliable core3hstat. Only if stats away from 18%:32%:32%:18% persist for long this
+actually indicates an issue. Other times stats are just due to settling of the slow DBBC3 gain control loop.
+
+    Reconfiguring DBBC3 e.g.
+        "Setting up the DBBC3 for APEX EHT observation (with script).pdf"
+    won't really help for long in this case, now that cooling is pretty good, if there is a loss of sync
+    then even after a reconfig it will probably happen again in due course.
+
+
+=== VLBI Control of APECS
+
+[oper@cc-apex ~]$ scp /srv/vexstore/staging/e21b09.vex observer3:vlbisystem/
+[oper@cc-apex ~]$ ssh observer3
+
+observer3 t-0107.f-9996a-2021:~> cd vlbisystem
+
+observer3 t-0107.f-9996a-2021:~/vlbisystem> mv e21x03.apecs.obs e21x03.apecs.obs.log e21x03-APECS-vlbisystem.tar.gz e21x03.vex ./observed/
+
+observer3 t-0107.f-9996a-2021:~/vlbisystem> ./vex2apecs.py e21b09.vex
+    SGRA                  EQ  2000   17:45:40.0409000  -29:00:28.118000   LSR 0.0
+    3C273                 EQ  2000   12:29:06.6997290   02:03:08.598280   LSR 0.0
+    M87                   EQ  2000   12:30:49.4233820   12:23:28.043660   LSR 0.0
+    3C279                 EQ  2000   12:56:11.1665670  -05:47:21.524810   LSR 0.0
+    NRAO530               EQ  2000   17:33:02.7057870  -13:04:49.548400   LSR 0.0
+    J1743-0350            EQ  2000   17:43:58.8561340  -03:50:04.616850   LSR 0.0
+    J1924-2914            EQ  2000   19:24:51.0559560  -29:14:30.121160   LSR 0.0
+
+    Done. Created APECS observing file e21b09.apecs.obs with 91 scans.
+
+observer3 t-0107.f-9996a-2021:~/vlbisystem> nano ~/Observation/t-0107.f-9996a-2021.cat
+(added these: )
+
+    ! --- e21b09
+    SGRA                  EQ  2000   17:45:40.0409000  -29:00:28.118000   LSR 0.0
+    3C273                 EQ  2000   12:29:06.6997290   02:03:08.598280   LSR 0.0
+    M87                   EQ  2000   12:30:49.4233820   12:23:28.043660   LSR 0.0
+    3C279                 EQ  2000   12:56:11.1665670  -05:47:21.524810   LSR 0.0
+    NRAO530               EQ  2000   17:33:02.7057870  -13:04:49.548400   LSR 0.0
+    J1743-0350            EQ  2000   17:43:58.8561340  -03:50:04.616850   LSR 0.0
+    J1924-2914            EQ  2000   19:24:51.0559560  -29:14:30.121160   LSR 0.0
+
+observer3 t-0107.f-9996a-2021:~/vlbisystem> ll
+total 144
+    -rwxr-xr-x 1 t-0107.f-9996a-2021 t-107.f-9996a-21  6895 Mar 31 12:18 apecsVLBI.py
+    -rw-r--r-- 1 t-0107.f-9996a-2021 t-107.f-9996a-21   447 Apr  1 00:48 dummy_schedblock.py
+    -rw-r--r-- 1 t-0107.f-9996a-2021 t-107.f-9996a-21 37517 Apr  8 18:48 e21b09.apecs.obs
+    -rw-r--r-- 1 t-0107.f-9996a-2021 t-107.f-9996a-21 72045 Apr  8 18:47 e21b09.vex
+    drwxr-xr-x 2 t-0107.f-9996a-2021 t-107.f-9996a-21   110 Apr  8 18:55 observed
+    drwxr-xr-x 2 t-0107.f-9996a-2021 t-107.f-9996a-21  4096 Apr  3 23:10 old
+    -rwxr-xr-x 1 t-0107.f-9996a-2021 t-107.f-9996a-21  8939 Apr  3 15:31 vex2apecs.py
+    -rwxr-xr-- 1 t-0107.f-9996a-2021 t-107.f-9996a-21  1335 Mar 31 14:33 vexGetSources2cat.py
+
+observer3 t-0107.f-9996a-2021:~/vlbisystem 982 > ./apecsVLBI.py
+    INFO: Apparently running on Observer3. Correction computer time (TAI) by 37 leap seconds to have UTC!
+    Usage: apecsVLBI.py <experiment.obs>
+
+
+
+=== START schedule on Mark6's and observer3
+
+[oper@cc-apex ~]$ backendctl mark6 all check
+[oper@cc-apex ~]$ backendctl mark6 all run test-recording 10 10
+[oper@cc-apex ~]$ backendctl mark6 all schedule unload  # just in case...
+[oper@cc-apex ~]$ backendctl mark6 all schedule load trigger
+
+
+wait until APECS in "remote" mode (operator says when), then:
+
+observer3 t-0107.f-9996a-2021:~/vlbisystem 982 > ./apecsVLBI.py e21b09.apecs.obs
+
+
+=== Restart schedule on Mark6 where recordings stopped
+
+If for example  recorder1  stopped, can (hopefully) restart with:
+
+observer1/miles:  ssh cc
+  (no password needed)
+[oper@cc-apex ~]$ backendctl mark6 recorder1 schedule unload
+[oper@cc-apex ~]$ backendctl mark6 recorder1 schedule load trigger
+
+   worst case, if schedule load produces an error ("WC enabled" test failed):
+   [oper@cc-apex ~]$ backendctl mark6 recorder1 reconfigure
+   [oper@cc-apex ~]$ backendctl mark6 recorder1 schedule load trigger
+   
+   if that fails then:
+   [oper@cc-apex ~]$ ssh root@recorder1
+   [root@recorder1 ~]# ifdown eth3; ifdown eth5; ifup eth3; ifup eth5
+             (or on recorder2:   ifdown eth2; ifdown eth5; ifup eth2; ifup eth5  ) 
+   [oper@cc-apex ~]$ backendctl mark6 recorder1 reconfigure
+   [oper@cc-apex ~]$ backendctl mark6 recorder1 schedule load trigger
+
+
+then verify that the recorder now indeed is planning to record the upcoming scan(s):
+
+[oper@cc-apex ~]$ da-client -h recorder1
+Host: recorder1 port: 14242
+>> record?
+<<  !record?0:0:pending:81:099-1242;
+ (Ctrl-C to exit)
+   099-1242 should be the time of the next scan
+
+=== Spectrum check, at least 1-2 minutes before a recording starts
+
+example: vzb_corr.py --nfft 32768 -p e21a14_Ax_104-0007 -j 12500
+
