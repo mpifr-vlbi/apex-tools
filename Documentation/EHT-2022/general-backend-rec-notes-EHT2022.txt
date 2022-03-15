@@ -25,6 +25,35 @@ observer3 t-0109.f-9996a-2022:~/EHTVLBImonitor> ./start.sh
     S2:R3592:submission successful
 
 
+=== VLBI Control of APECS
+
+ssh t-0109.f-9996a-2022@observer3
+
+Advance prep
+
+    observer3 t-0109.f-9996a-2022:~> scp oper@vlbi-control1:/srv/vexstore/staging/e22*.vex  ~/vlbisystem/candidate/
+    observer3 t-0109.f-9996a-2022:~> cd vlbisystem
+    observer3 t-0109.f-9996a-2022:~/vlbisystem> ./vex2apecs.py candidate/e22a17.vex Ax
+        Done. Created APECS observing file e22a17.apecs.obs with 73 scans.
+
+Wait until APECS in "remote" mode (operator says when), then:
+
+    observer3 t-0109.f-9996a-2022:~/vlbisystem> ./apecsVLBI.py e22a17.apecs.obs
+
+    note, can interrupt with Ctrl-C and start again afterwards, the schedule will
+    resume from the next nearest in time command in the .obs file
+
+
+=== START schedule on Mark6's and observer3
+
+ssh oper@vlbi-control1
+
+[oper@cc-apex ~]$ backendctl mark6 all check
+[oper@cc-apex ~]$ backendctl mark6 all run test-recording 10 10
+[oper@cc-apex ~]$ backendctl mark6 all schedule unload  # just in case...
+[oper@cc-apex ~]$ backendctl mark6 all schedule load trigger
+
+
 === Mark6 recording monitor
 
 ssh oper@vlbi-control1
@@ -96,6 +125,8 @@ ssh oper@vlbi-control1
 
 === Follow Schedule (even when not started on Mark6'es and observer3 yet)
 
+ssh oper@vlbi-control1
+
 [oper@cc-apex ~]$ backendctl whole schedule follow trigger
     Reading config file: /etc/backend.conf
     candidate schedule /srv/vexstore/trigger/e21b09.vex is valid for station Ax
@@ -117,36 +148,28 @@ ssh oper@vlbi-control1
 
 Note: only *ONE* program can be connected to DBBC3 TCP Client port at any time
 
-Manual checks, in client:
+Continuous total power logger, 1PPS offset logger:
 
     ssh oper@vlbi-control1
 
-    [oper@cc-apex ~]$ dbbc3client.py 192.168.0.91
+    [oper@cc-apex ~]$ dbbc3_powerlogger.py -b 0,1,2,3 power.log
+    Trying to connect....connected
+    22011 0 22480 0 21716 0 23389 0
+    22059 0 21537 0 21796 0 23167 0
+    ...  (counts ~22k, attenuators at 0*0.5dB because no IF power while writing this doc)
 
-    core3hstats=1
-    core3hstats=2
-    core3hstats=3
-    core3hstats=4
-
-    Perfect stats would be : 18%:32%:32%:18%  for each sampler
-    Ignore the "Corr." entries at the end of output, they are only valid until before 0-2G,2-4G FIR filters were loaded
-
-    dbbcifa
-    dbbcifb
-    dbbcifc
-    dbbcifd
-
-    perfect response would be   dbbcifa=2,30,
-
-    Don't use other commands.
-
-    Don't close client with Ctrl-C, use the "quit" command.
+    [oper@cc-apex ~]$ dbbc3_ppslogger.py -b 0,1,2,3 pps.log
+    Trying to connect....connected
+    999999883 999999891 999999883 999999891
+    999999883 999999891 999999883 999999891
+    ...
 
 Semi-automated checks:
 
     ssh oper@vlbi-control1
 
     [oper@cc-apex ~]$ dbbc3ctl.py 192.168.0.91
+       (Ctrl-C if you want to exit)
 
     (dbbc3ctl): check bstate
         [OK] === Checking bit statistics for board A sampler 0 - Asymmetry = 0.806950%
@@ -171,33 +194,41 @@ Semi-automated checks:
     (dbbc3ctl): check sampler phase all
         note: works only when IF power is present (230G receiver tuned, selected)
 
+
+Monitoring GUI:
+
+    ssh -Y oper@vlbi-control1
+
+    [oper@cc-apex ~]$ dbbc3mon.py -b 0,1,2,3
+
+    -> overview screen should open, with three status tabs
+
+
+Manual checks, in client:
+
+    [oper@cc-apex ~]$ dbbc3client.py 192.168.0.91
+
+    core3hstats=1
+    core3hstats=2
+    core3hstats=3
+    core3hstats=4
+
+    Perfect stats would be : 18%:32%:32%:18%  for each sampler
+    Ignore the "Corr." entries at the end of output, they are only valid until before 0-2G,2-4G FIR filters were loaded
+
+    dbbcifa
+    dbbcifb
+    dbbcifc
+    dbbcifd
+
+    perfect response would be   dbbcifa=2,30,
+
+    Don't use other commands.
+
+    Don't close client with Ctrl-C, use the "quit" command.
+
+
  
-=== VLBI Control of APECS
-
-ssh t-0109.f-9996a-2022@observer3
-
-Advance prep
-
-    observer3 t-0109.f-9996a-2022:~> scp oper@vlbi-control1:/srv/vexstore/staging/e22*.vex  ~/vlbisystem/candidate/
-    observer3 t-0109.f-9996a-2022:~> cd vlbisystem
-    observer3 t-0109.f-9996a-2022:~/vlbisystem> ./vex2apecs.py candidate/e22a17.vex Ax
-        Done. Created APECS observing file e22a17.apecs.obs with 73 scans.
-
-Wait until APECS in "remote" mode (operator says when), then:
-
-    observer3 t-0109.f-9996a-2022:~/vlbisystem> ./apecsVLBI.py e22a17.apecs.obs
-
-    note, can interrupt with Ctrl-C and start again afterwards, the schedule will
-    resume from the next nearest in time command in the .obs file
-
-
-=== START schedule on Mark6's and observer3
-
-[oper@cc-apex ~]$ backendctl mark6 all check
-[oper@cc-apex ~]$ backendctl mark6 all run test-recording 10 10
-[oper@cc-apex ~]$ backendctl mark6 all schedule unload  # just in case...
-[oper@cc-apex ~]$ backendctl mark6 all schedule load trigger
-
 
 === Restart schedule on Mark6 where recordings stopped
 
