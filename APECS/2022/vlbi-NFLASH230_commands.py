@@ -50,7 +50,7 @@ def vlbi_reference_scan():
     track()
 
 
-def vlbi_scan(t_mins=5):
+def vlbi_scan(t_mins=5,targetSource=''):
     '''
     Call at the start of a VLBI scan, possibly after vlbi_reference_scan(),
     while already tracking the VLBI target source.
@@ -62,6 +62,13 @@ def vlbi_scan(t_mins=5):
     Turns Doppler off, Wobbler off, disables off-source reference position; the telescope
     must be ON source for the whole  duration of the VLBI scan (~t_mins minutes).
     '''
+
+    if targetSource:
+        # If 'targetSource' arg is not empty, make sure we are on that source before starting VLBI scan
+        # todo: query current APECS source somehow? to avoid possibly no-op commands?
+        source(targetSource)
+        go()
+        track()
 
     # EHT2022: added re-tune to 'vlbifreq7' in case operator forgets and apecs still on CO line
     setup_nflash(fenames=['nflash230'], linenames=['vlbifreq7'], sidebands=[''],mode='spec', sbwidths=[8], numchan=65536, cats='all',doppler='off')

@@ -227,7 +227,7 @@ def obs_writeScans(fd,scans,sources):
 		else:
 			fd.write('#                      gap        max ~%s\n' % (timedelta2MinsSecs(Loperatorgap)))
 
-		obs_writeLine(fd, datetime2SNP(T_scan), scan['dur'], 'vlbi_scan(t_mins=%d)' % (scan['dur']/60))  # track on source
+		obs_writeLine(fd, datetime2SNP(T_scan), scan['dur'], 'vlbi_scan(t_mins=%d,targetSource=\'%s\')' % (scan['dur']/60,scan['source']))  # track on source
 		T = T + datetime.timedelta(seconds=Ldur)
 		fd.write('#     scan ends at %s\n\n' % datetime2SNP(T_scan_end))
 
