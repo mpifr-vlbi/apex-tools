@@ -9,24 +9,29 @@ import os
 # VLBI Calibration and Scan/VLBI Recording Helpers
 #############################################################################
 
-def vlbi_tsys():
+def vlbi_tsys(mode_='COLD',time_=10):
     '''
     Initiate Tsys measurement. Takes about 4 x 5 seconds to complete.
     Should ideally be called after vlbi_reference_scan() and
     before vlbi_scan().
+
+    2022: calibrate(time=6,mode='HOT')    does Sky-Hot without Cold, takes ~40 sec in total
+          calibrate(time=10,mode='COLD')  full Sky-Hot-Cold, takes ~65sec(?) in total
     '''
 
     # EHT2022: added re-tune to 'vlbifreq7' in case operator forgets and apecs still on CO line
     setup_nflash(fenames=['nflash230'], linenames=['vlbifreq7'], sidebands=[''],mode='spec', sbwidths=[8], numchan=65536, cats='all',doppler='off')
     
     reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='HO', epoch=2000.0)
-    calibrate(time=10)
+    calibrate(mode=mode_,time=time_)
 
 
 def vlbi_reference_scan():
     '''
     Take an on() scan with duration of 20s (was:~1 minute) with an off-source reference.
     Prior to calling this function, must already be tracking a source.
+
+    2022: on(drift='no',time=10) takes ??? seconds
     '''
 
     # Doppler off
@@ -43,6 +48,7 @@ def vlbi_reference_scan():
     repeat(1)
     ## on(drift='no',time=30) # 2 x 30s = 1 minute   ; e21b09 : too long for 2-3min gaps!
     on(drift='no',time=10) # 2 x 10s = 20 s   # e21b09 - todo ask operators is 10s ok...
+
     use_ref('OFF')
 
     # Stay on target
@@ -103,6 +109,10 @@ def vlbi_tp_onsource_JP(src='M87', t_mins=4):
     
        t_mins : integration time on-source in MINUTES, not including other calibrations (1-2 minutes extra overhead)
     '''
+
+    ## EXAMPLE
+    # UNUSED CODE
+
     nflash230.configure(doppler='off')
     #
     # First on() subscan will have a reference
@@ -164,3 +174,23 @@ def vlbi_get_calibration():
     except:
         print 'No calibration result available.'
 
+def vwcpoint(t=24., l=[], cal=1, line='vlbifreq7', dopp='OFF', ptRun=False, dbpcorr=False):
+    '''
+
+    Continuum pointing cross scan in beam switching (wob) mode using pseudocontinumm.
+
+    Parameters:   t: Integration time per subscan. Must be given.
+                  l: Length of the arms of the cross
+                     [] = use default value for current FE.
+                cal: 1 = calibrate before the pointing
+               line: 'vlbifreq7' = do pointing at vlbifreq7
+                     '' = do pointing at current frequency
+                     '*' = use standard line for current FE.
+               dopp: 'ON' apply Doppler correction in the tuning frequency.
+              ptRun: True = add "POINTING RUN" to the log comments.
+            dbpcorr: True = apply pointing corrections from database.
+
+    '''
+    ask = 0
+    doPoint(t, l, ask, cal, line, dopp, ptRun,
+            dbpcorr, obsmode='wob', mode='otf')
