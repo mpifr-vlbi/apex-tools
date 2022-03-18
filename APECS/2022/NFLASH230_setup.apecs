@@ -1,4 +1,4 @@
-sourcecats('t-0107.f-9996a-2021.cat')
+sourcecats('t-0109.f-9996a-2022.cat')
 linecats('t-0109.f-9996a-2022.lin')
 
 exec_apecs_script('nflash_commands')
@@ -23,6 +23,7 @@ setup_nflash(fenames=['nflash230'], linenames=['vlbifreq7'], sidebands=[''],mode
 use_ref('on')
 continuous_data('off')
 skip_hardware_setup('off')
+use_tiltmeters('on','on')
 nflash230.configure(doppler='off')
 tp() # Added to be extra sure we disable the wobbler after line pointings (JPE: 2021-04-13)
 
