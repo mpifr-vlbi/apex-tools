@@ -9,21 +9,19 @@ import os
 # VLBI Calibration and Scan/VLBI Recording Helpers
 #############################################################################
 
-def vlbi_tsys(mode_='COLD',time_=10):
+def vlbi_tsys(mode_='COLD',time_s=10):
     '''
-    Initiate Tsys measurement. Takes about 4 x 5 seconds to complete.
-    Should ideally be called after vlbi_reference_scan() and
-    before vlbi_scan().
+    Initiate Tsys measurement. Should ideally be called on-target before vlbi_scan().
 
     2022: calibrate(time=6,mode='HOT')    does Sky-Hot without Cold, takes ~40 sec in total
-          calibrate(time=10,mode='COLD')  full Sky-Hot-Cold, takes ~65sec(?) in total
+          calibrate(time=10,mode='COLD')  full Sky-Hot-Cold, takes ~90 sec in total
     '''
 
     # EHT2022: added re-tune to 'vlbifreq7' in case operator forgets and apecs still on CO line
     setup_nflash(fenames=['nflash230'], linenames=['vlbifreq7'], sidebands=[''],mode='spec', sbwidths=[8], numchan=65536, cats='all',doppler='off')
     
     reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='HO', epoch=2000.0)
-    calibrate(mode=mode_,time=time_)
+    calibrate(mode=mode_,time=time_s)
 
 
 def vlbi_reference_scan():
@@ -31,7 +29,8 @@ def vlbi_reference_scan():
     Take an on() scan with duration of 20s (was:~1 minute) with an off-source reference.
     Prior to calling this function, must already be tracking a source.
 
-    2022: on(drift='no',time=10) takes ??? seconds
+    2022: on(drift='no',time=10) takes 40(?) seconds
+          on(drift='no',time=5)  takes 30(?) seconds
     '''
 
     # Doppler off
@@ -46,8 +45,7 @@ def vlbi_reference_scan():
 
     # Do one on() subscan that has a reference
     repeat(1)
-    ## on(drift='no',time=30) # 2 x 30s = 1 minute   ; e21b09 : too long for 2-3min gaps!
-    on(drift='no',time=10) # 2 x 10s = 20 s   # e21b09 - todo ask operators is 10s ok...
+    on(drift='no',time=5) # EHT2022: reduced to 2 x 5sec, from 2 x 10sec/EHT2021, due e22b19 scan gaps being very short
 
     use_ref('OFF')
 
