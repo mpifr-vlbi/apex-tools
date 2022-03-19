@@ -143,7 +143,7 @@ def obs_writeStandardsetup(fd):
 
 def obs_writeScans(fd,scans,sources):
 
-	Lslew    = 10		# max slew time in seconds to a new source (TODO: take into account slew rates and angular separation!)
+	Lslew    = 20		# max slew time in seconds to a new source (TODO: take into account slew rates and angular separation!)
 	Ltsys    = 80		# max time for Tsys sky/hot/cold measurement in seconds - EHT2022: calibrate(mode='HOT',time=6)  takes 65 sec
 	Ltsys_no_cold = 40	# max time for Tsys sky/hot measurement in seconds - EHT2022: calibrate(mode='COLD',time=6) takes 40 sec, calibrate(..,time=10) takes ~80 sec
 	Lrefscan = 30  		# EHT2022: 2x10s + margin 10 max time for on() scan with Off-Source reference
