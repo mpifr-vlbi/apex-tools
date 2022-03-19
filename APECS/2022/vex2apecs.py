@@ -145,7 +145,8 @@ def obs_writeScans(fd,scans,sources):
 
 	Lslew    = 20		# max slew time in seconds to a new source (TODO: take into account slew rates and angular separation!)
 	Ltsys    = 80		# max time for Tsys sky/hot/cold measurement in seconds - EHT2022: calibrate(mode='HOT',time=6)  takes 65 sec
-	Ltsys_no_cold = 40	# max time for Tsys sky/hot measurement in seconds - EHT2022: calibrate(mode='COLD',time=6) takes 40 sec, calibrate(..,time=10) takes ~80 sec
+	#Ltsys_no_cold = 40	# max time for Tsys sky/hot measurement in seconds - EHT2022: calibrate(mode='COLD',time=6) takes 40 sec, calibrate(..,time=10) takes ~80 sec
+	Ltsys_no_cold = 22	# -"- but lie about duration, allowing short Tsys in e22b19 50sec gaps (30sec after slew!) and accept first 10 sec of vlbi data are likely on Hot load
 	Lrefscan = 30  		# EHT2022: 2x10s + margin 10 max time for on() scan with Off-Source reference
 	Lcmdmargin = 5		# allow n seconds between issuing any new APECS command
 	L_minimum_for_interactive = 6*60 # seconds required to allow interactive input from observer - EHT2022: 6 minutes
@@ -201,23 +202,25 @@ def obs_writeScans(fd,scans,sources):
 		L_prescan_tasks = 0
 
 		# Plan what to do, time permitting
-		print sheading
+
 		if (isorted.index(ii) == 0) or (scan['source'] != prev_source) or always_send_source:
 			do_sourcechange = True
 			L_prescan_tasks += Lslew + Lcmdmargin
-		print 'do_sourcechange', do_sourcechange, gap_to_curr, L_prescan_tasks
+
 		if (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Ltsys:
 			do_vlbi_tsys = True
 			L_prescan_tasks += Ltsys + Lcmdmargin
-		elif (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Ltsys_no_cold:
+		#elif (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Ltsys_no_cold:
+		#	do_vlbi_tsys_shorter = True
+		#	L_prescan_tasks += Ltsys_no_cold + Lcmdmargin
+		# e22b19:
+		elif (gap_to_curr - L_prescan_tasks) > Ltsys_no_cold:
 			do_vlbi_tsys_shorter = True
-			L_prescan_tasks += Ltsys_no_cold + Lcmdmargin
-		print 'do_vlbi_tsys', do_vlbi_tsys, 'do_vlbi_tsys_shorter', do_vlbi_tsys_shorter, gap_to_curr, L_prescan_tasks
+			L_prescan_tasks += Ltsys_no_cold
+
 		if (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Lrefscan:
 			do_vlbi_reference_scan = True
 			L_prescan_tasks += Lrefscan + Lcmdmargin
-		print 'do_vlbi_reference_scan', do_vlbi_reference_scan, gap_to_curr, L_prescan_tasks
-		print ''
 
 		# Queue up the APECS commands indeed to do for this scan
 		# Structure: [prev.VLBIScan] -> change source -> vlbi_tsys() -> vlbi_reference_scan() -> [gap] -> VLBIScan
@@ -230,8 +233,8 @@ def obs_writeScans(fd,scans,sources):
 			obs_writeLine(fd, datetime2SNP(T), Ltsys, 'vlbi_tsys()')
 			T = T + datetime.timedelta(seconds=(Ltsys+Lcmdmargin))
 		elif do_vlbi_tsys_shorter:
-			obs_writeLine(fd, datetime2SNP(T), Ltsys, "vlbi_tsys(mode_='HOT',time_s=6)")
-			T = T + datetime.timedelta(seconds=(Ltsys+Lcmdmargin))
+			obs_writeLine(fd, datetime2SNP(T), Ltsys_no_cold, "vlbi_tsys(mode_='HOT',time_s=5)")
+			T = T + datetime.timedelta(seconds=(Ltsys_no_cold))
 		if do_vlbi_reference_scan:
 			obs_writeLine(fd, datetime2SNP(T), Lrefscan, 'vlbi_reference_scan()')
 			T = T + datetime.timedelta(seconds=(Lrefscan+Lcmdmargin))
