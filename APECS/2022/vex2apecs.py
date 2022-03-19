@@ -227,7 +227,7 @@ def obs_writeScans(fd,scans,sources):
 		fd.write('#### %s %s\n' % (sheading, '#'*(80-6-len(sheading))))
 		T = Tprev_end
 		if do_sourcechange or always_send_source:
-			obs_writeLine(fd, datetime2SNP(T), Lslew, 'source(\'%s\'); go(); track()' % (scan['source']))
+			obs_writeLine(fd, datetime2SNP(T), Lslew, 'source(\'%s\',cats=\'user\'); go(); track()' % (scan['source']))
 			T = T + datetime.timedelta(seconds=(Lslew+Lcmdmargin))
 		if do_vlbi_tsys:
 			obs_writeLine(fd, datetime2SNP(T), Ltsys, 'vlbi_tsys()')
