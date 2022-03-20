@@ -51,8 +51,8 @@ def vlbi_reference_scan():
     Take an on() scan with duration of 20s (was:~1 minute) with an off-source reference.
     Prior to calling this function, must already be tracking a source.
 
-    2022: on(drift='no',time=10) takes 40(?) seconds
-          on(drift='no',time=5)  takes 30(?) seconds
+    2022: on(drift='no',time=10) takes ~40 seconds
+          on(drift='no',time=5)  takes ~30 seconds
     '''
 
     vlbi_tuning()
