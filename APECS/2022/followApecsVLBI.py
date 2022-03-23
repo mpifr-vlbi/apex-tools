@@ -167,7 +167,7 @@ def showTaskList(stdscr, currtaskidx, title):
 			if currtaskidx < (Ntasks-1):
 				dtgap = (taskQueue[currtaskidx+1]['tstart'] - taskQueue[currtaskidx]['tend']).total_seconds()
 				timingstr += ", then gap of %d seconds" % (dtgap)
-				if dtgap >= 9*60:
+				if dtgap >= 5*60:
 					timingstr += " - time for OPERATOR"
 
 			stdscr.addstr(row, 0, timingstr)
