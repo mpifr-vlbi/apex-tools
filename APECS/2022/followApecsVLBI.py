@@ -112,19 +112,26 @@ def showTaskList(stdscr, currtaskidx):
 
 	# Dimensions of screen, and start-stop indices of tasks to display
 	Ntasks = len(taskQueue)
-	Nscreenrows = curses.LINES
+	#Nscreenrows = curses.LINES
+	Nscreenrows, Nscreencols = stdscr.getmaxyx()
 	startrow = max(0, Nscreenrows//2 - currtaskidx)
 	starttask = max(0, currtaskidx - Nscreenrows//2)
 	endtask = min(Ntasks, starttask + (Nscreenrows-startrow) - 2)
 
 	# Show tasks and their timing and status
 	tcurr = utc_now()
+	row = startrow
 	for n in range(starttask, endtask):
 		task = taskQueue[n]
 		taskstate = taskState[n]
 
 		msg = '%-12s' % (taskState2Str(taskState[n]))
-		msg += task['tstart_snp'] + '--' + task['tend_snp']
+		indent = ' ' * 12
+		msg += task['tstart_snp'] + '--' + task['tend_snp'] + ' ' + task['cmd']
+		msg = msg[0:(Nscreencols-5)]  # crop to less than screen width
+
+		if len(msg) < 1:
+			continue
 
 		if n == currtaskidx:
 			rowattrib = curses.A_STANDOUT
@@ -132,17 +139,32 @@ def showTaskList(stdscr, currtaskidx):
 			rowattrib = 0
 
 		if taskstate == STATE_PENDING and n == currtaskidx:
-			msg += ' (in %d seconds)' % ((task['tstart'] - tcurr).total_seconds())
-		elif taskstate == STATE_ACTIVE:
-			msg += ' (%d seconds remaining)' % ((task['tend'] - tcurr).total_seconds())
-		msg += ' ' + task['cmd']
 
-		msg = msg[0:(curses.COLS-5)]  # crop to less than screen width
+			timingstr = indent + 'in %d seconds:' % ((task['tstart'] - tcurr).total_seconds())
+			stdscr.addstr(row, 0, timingstr)
+			stdscr.clrtoeol()
+			row += 1
 
-		row = startrow + n - starttask
-		if len(msg) > 0:
 			stdscr.addstr(row, 0, msg, rowattrib)
 			stdscr.clrtoeol()
+			row += 1
+
+		elif taskstate == STATE_ACTIVE:
+
+			stdscr.addstr(row, 0, msg, rowattrib)
+			stdscr.clrtoeol()
+			row += 1
+
+			timingstr = indent + '%d seconds remaining' % ((task['tend'] - tcurr).total_seconds())
+			stdscr.addstr(row, 0, timingstr)
+			stdscr.clrtoeol()
+			row += 1
+
+		else:
+
+			stdscr.addstr(row, 0, msg, rowattrib)
+			stdscr.clrtoeol()
+			row += 1
 
 	stdscr.refresh()
 
