@@ -98,7 +98,7 @@ def splitLine(l):
 	return [tstart,tdur,cmd]
 
 
-def showTaskList(stdscr, currtaskidx):
+def showTaskList(stdscr, currtaskidx, title):
 	'''
 	Show the series of tasks (list[str]) on the screen, highlighting
 	a "current" task at given index and placing it at the center row
@@ -114,12 +114,18 @@ def showTaskList(stdscr, currtaskidx):
 	Ntasks = len(taskQueue)
 	#Nscreenrows = curses.LINES
 	Nscreenrows, Nscreencols = stdscr.getmaxyx()
-	startrow = max(0, Nscreenrows//2 - currtaskidx)
+	startrow = max(1, Nscreenrows//2 - currtaskidx)
 	starttask = max(0, currtaskidx - Nscreenrows//2)
 	endtask = min(Ntasks, starttask + (Nscreenrows-startrow) - 2)
 
-	# Show tasks and their timing and status
+	# Title bar
 	tcurr = utc_now()
+	msg = '%s UT -  %s' % (datetime2SNP(tcurr), title)
+	msg = msg.ljust(Nscreencols, ' ')
+	stdscr.addstr(0, 0, msg, curses.A_REVERSE)
+	stdscr.clrtoeol()
+
+	# Show tasks and their timing and status
 	row = startrow
 	for n in range(starttask, endtask):
 		task = taskQueue[n]
@@ -135,6 +141,8 @@ def showTaskList(stdscr, currtaskidx):
 
 		if n == currtaskidx:
 			rowattrib = curses.A_STANDOUT
+		elif n < currtaskidx:
+			rowattrib = curses.A_DIM
 		else:
 			rowattrib = 0
 
@@ -145,7 +153,7 @@ def showTaskList(stdscr, currtaskidx):
 			stdscr.clrtoeol()
 			row += 1
 
-			stdscr.addstr(row, 0, msg, rowattrib)
+			stdscr.addstr(row, 0, msg, curses.A_UNDERLINE)
 			stdscr.clrtoeol()
 			row += 1
 
@@ -242,7 +250,7 @@ def followApecsVLBI(stdscr, obsfile):
 				currTaskIdx += 1
 
 		# Display list of tasks on screen centered on current task
-		showTaskList(stdscr, currTaskIdx)
+		showTaskList(stdscr, currTaskIdx, title=obsfile)
 
 		time.sleep(0.25)
 
