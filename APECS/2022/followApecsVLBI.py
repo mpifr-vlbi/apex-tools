@@ -9,7 +9,7 @@ import curses
 
 def usage():
 	print ('')
-	print ('Usage: followApecsVLBI.py <experiment.obs>')
+	print ('DEBUG / Usage: followApecsVLBI.py <experiment.obs>')
 	print ('')
 	print ('The .obs file can be generated from a VEX file using vex2apecs.py,')
 	print ('or from the vex2xml output XML file using xml2apecs.py.')
@@ -49,28 +49,15 @@ def signal_handler(signal, frame):
 	gotCtrlC = True
 	print('Ctrl-C pressed, stopping...')
 
-def waitUntil(stdscr,T,Tsnp='',msg=''):
-	'''Waits until UTC datetime T, corrected for local clock offset (e.g. TAI time)'''
-	global offsetUTC, gotCtrlC
-	iter = 0
-	while True:
-		Tcurr_obs3 = datetime.datetime.utcnow()
-		Tcurr = Tcurr_obs3 + datetime.timedelta(seconds=-offsetUTC)
-		dT = T - Tcurr
-		dT = dT.total_seconds()
+def utc_now():
+	'''
+	Return current UTC.
+	On observer3 that runs on TAI, account for TAI leading UTC by some nr of leap seconds.
+	'''
+	T = datetime.datetime.utcnow()
+	T += datetime.timedelta(seconds=-offsetUTC)
+	return T
 
-		# skip the wait: for testing purposes:
-		#dT = 0
-
-		if (dT <= 0) or gotCtrlC:
-			break		
-
-		iter = iter + 1
-		info = 'Still %ds from now (%s) to start (%s) of %s' % (int(dT),datetime2SNP(Tcurr),Tsnp,msg)
-		stdscr.addstr(curses.LINES//2, 0, info)
-		stdscr.clrtoeol()
-		stdscr.refresh()
-		time.sleep(0.25)
 
 	if gotCtrlC:
 		return False	# Cancelled
@@ -111,98 +98,151 @@ def splitLine(l):
 	return [tstart,tdur,cmd]
 
 
-def showTaskList(stdscr, tasks, currtaskidx, taskstatuses=None):
+def showTaskList(stdscr, currtaskidx):
 	'''
 	Show the series of tasks (list[str]) on the screen, highlighting
 	a "current" task at given index and placing it at the center row
 	of the screen.
-
-	If 'taskstatuses' is given, each index in 'tasks' must have at
-	the same index an entry in list 'taskstatuses'. The expected
-	values are -1=missed, 0=pending, 1=ongoing, 2=completed or errored out.
 	'''
+	global taskQueue, taskState
 
 	stdscr.clrtobot()
 	stdscr.nodelay(True)
-	curses.cbreak()
+	# curses.cbreak()
 
-	Ntasks = len(tasks)
+	# Dimensions of screen, and start-stop indices of tasks to display
+	Ntasks = len(taskQueue)
 	Nscreenrows = curses.LINES
 	startrow = max(0, Nscreenrows//2 - currtaskidx)
 	starttask = max(0, currtaskidx - Nscreenrows//2)
 	endtask = min(Ntasks, starttask + (Nscreenrows-startrow) - 2)
 
+	# Show tasks and their timing and status
+	tcurr = utc_now()
 	for n in range(starttask, endtask):
-		Tsnp, Tdur, cmd = tasks[n][0:3]
+		task = taskQueue[n]
+		taskstate = taskState[n]
 
-		msg = ''
-		if taskstatuses:
-			statestr = taskState2Str(taskstatuses[n])		
-			msg = '%-12s' % (statestr)
-		msg += Tsnp + ' ' + cmd
-		msg = msg[0:(curses.COLS-5)]
+		msg = '%-12s' % (taskState2Str(taskState[n]))
+		msg += task['tstart_snp'] + '--' + task['tend_snp']
+
+		if n == currtaskidx:
+			rowattrib = curses.A_STANDOUT
+		else:
+			rowattrib = 0
+
+		if taskstate == STATE_PENDING and n == currtaskidx:
+			msg += ' (in %d seconds)' % ((task['tstart'] - tcurr).total_seconds())
+		elif taskstate == STATE_ACTIVE:
+			msg += ' (%d seconds remaining)' % ((task['tend'] - tcurr).total_seconds())
+		msg += ' ' + task['cmd']
+
+		msg = msg[0:(curses.COLS-5)]  # crop to less than screen width
 
 		row = startrow + n - starttask
 		if len(msg) > 0:
-			stdscr.addstr(row, 0, msg)
+			stdscr.addstr(row, 0, msg, rowattrib)
 			stdscr.clrtoeol()
 
 	stdscr.refresh()
 
 
-def followApecsVLBI(stdscr, obsfile):
+def loadApecsScript(obsfile):
+	'''
+	Gather all timed tasks in the schedule/script into an internal list.
+	'''
 	global taskQueue, taskState
-
 	taskQueue = []
 	taskState = []
 
-	# Grab full list of all timed tasks in the schedule
 	fd = open(obsfile, 'r')
+
+	talways = utc_now()  # when the first/next @always should start
+
 	for line in fd:
+
 		line = line.strip()
 		if (len(line)<1) or (line[0]=='#'):
 			continue
+
 		task = splitLine(line)  # should have: [tstart,tdur,cmd]
 		if (len(task) != 3):
 			print ('Invalid task %s' % (str(t)))
+			continue
+
+		if '@always' in task[0]:
+			tstart = talways
+			dur = int(task[1])
+			cmd = '<<@always>> ' + str(task[2])
+			talways += datetime.timedelta(seconds=dur+2)
 		else:
-			taskQueue.append(task)
-			taskState.append(STATE_PENDING)
+			tstart = SNP2datetime(task[0])
+			dur = int(task[1])
+			cmd = str(task[2])
+
+		tend = tstart + datetime.timedelta(seconds=dur)
+		tstart_snp = datetime2SNP(tstart)
+		tend_snp = datetime2SNP(tend)
+
+		entry = {'tstart':tstart, 'tstart_snp':tstart_snp, 'tend':tend, 'tend_snp': tend_snp, 'dur':dur, 'cmd':cmd}
+		taskQueue.append(entry)
+		taskState.append(STATE_PENDING)
+
 	fd.close()
+
+
+def followApecsVLBI(stdscr, obsfile):
+	global taskQueue, taskState
 
 	# Work through the list of tasks
 	currTaskIdx = 0
-	for currTaskIdx in range(len(taskQueue)):
+	while currTaskIdx < len(taskQueue):
 
 		if gotCtrlC:
 			return False
 
+		# Pick active task
 		task = taskQueue[currTaskIdx]
-		taskState[currTaskIdx] = STATE_ACTIVE
-		if '@always' in task[0]:
+
+		# Pending, ongoing, completed/missed?
+		tcurr = utc_now()
+		if tcurr < task['tstart']:
+			taskState[currTaskIdx] = STATE_PENDING
+		elif tcurr >= task['tstart'] and tcurr <= task['tend']:
 			taskState[currTaskIdx] = STATE_ACTIVE
-		else:
-			Tsnp, Tdur, cmd = task[0:3]
-			Tstart = SNP2datetime(Tsnp)
-			reached = waitUntil(stdscr, Tstart, Tsnp=Tsnp, msg=cmd)
-			if reached:
-				taskState[currTaskIdx] = STATE_ACTIVE
-			else:
+		elif tcurr > task['tend']:
+			if taskState[currTaskIdx] != STATE_ACTIVE:
 				taskState[currTaskIdx] = STATE_MISSED
+				currTaskIdx += 1
+				continue  # skip a screen refresh and a sleep()
+			else:
+				taskState[currTaskIdx] = STATE_OVER
+				currTaskIdx += 1
 
-		if currTaskIdx>0 and taskState[currTaskIdx-1] != STATE_MISSED:
-			taskState[currTaskIdx-1] = STATE_OVER
+		# Display list of tasks on screen centered on current task
+		showTaskList(stdscr, currTaskIdx)
 
-		showTaskList(stdscr, taskQueue, currTaskIdx, taskState)
+		time.sleep(0.25)
+
 
 #########################################################################################
-#### ENTRY
+#### Main
 #########################################################################################
 
 def run(cmdfile):
+
 	signal.signal(signal.SIGINT, signal_handler)
+
 	stdscr = curses.initscr()
+
+	loadApecsScript(cmdfile)
 	followApecsVLBI(stdscr, cmdfile)
+
+	curses.nocbreak()
+	stdscr.keypad(0)
+	curses.echo()
+	curses.endwin()
+
 
 if (len(sys.argv) != 2):
 	usage()
