@@ -164,6 +164,10 @@ def showTaskList(stdscr, currtaskidx, title):
 			row += 1
 
 			timingstr = indent + '%d seconds remaining' % ((task['tend'] - tcurr).total_seconds())
+			if currtaskidx < (Ntasks-1):
+				dtgap = (taskQueue[currtaskidx+1]['tstart'] - taskQueue[currtaskidx]['tend']).total_seconds()
+				timingstr += ", then gap of %d seconds" % (dtgap)
+
 			stdscr.addstr(row, 0, timingstr)
 			stdscr.clrtoeol()
 			row += 1
