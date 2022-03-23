@@ -140,7 +140,7 @@ def showTaskList(stdscr, currtaskidx):
 
 		if taskstate == STATE_PENDING and n == currtaskidx:
 
-			timingstr = indent + 'in %d seconds:' % ((task['tstart'] - tcurr).total_seconds())
+			timingstr = indent + '%d seconds until' % ((task['tstart'] - tcurr).total_seconds())
 			stdscr.addstr(row, 0, timingstr)
 			stdscr.clrtoeol()
 			row += 1
