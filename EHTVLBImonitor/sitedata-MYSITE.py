@@ -2,7 +2,13 @@ from __future__ import print_function
 
 import time
 import math
+import Queue
+import datetime
+
+from Acspy.Nc.Consumer import Consumer
+import apexCDS
 import apexObsUtils
+
 
 def signif(n, x):
     """Print float to specified number of significant figures"""
@@ -47,6 +53,50 @@ def convertApexPoint(point):
     return [t, point[0]]
 
 
+class calibratorEventConsumer:
+    '''
+    Calibrator event consumer to get APEX calibration results,
+    in event driven mode rather than via polling.
+
+    (C) D. Muders, MPIfR, 2022
+    '''
+
+    def __init__(self, q):
+        self._q = q
+        self._NCConsumer = Consumer("CalClientChannel")
+        self._connected = False
+
+    def connect(self):
+
+        ''' Connect to CORBA channel '''
+
+        try:
+            self._NCConsumer.addSubscription(apexCDS.displayEvent,self.eventHandler)
+            self._NCConsumer.consumerReady()
+            self._connected = True
+        except Exception as e:
+            print("Error connecting to NC",e)
+            self._connected = False
+
+    def disconnect(self):
+
+        ''' Disconnect from CORBA channel '''
+
+        try:
+            if self._connected:
+                self._NCConsumer.disconnect()
+                self._connected = False
+        except Exception as e:
+            print("Error disconnecting from NC",e)
+            self._connected = False
+
+    def eventHandler(self,receivedData):
+
+        ''' CORBA notification channel event handling '''
+
+        self._q.put(receivedData)
+
+
 class Getter():
 
     def __init__(self, sitelist):
@@ -54,6 +104,13 @@ class Getter():
         self.sitelist = sitelist
         self.nerrors = 0
 
+        self.calibrator = apexObsUtils.getApexCalibrator()
+        self.q_apecs = Queue.Queue()
+        self.eventConsumer = calibratorEventConsumer(self.q_apecs)
+        self.eventConsumer.connect()
+
+    def __del__(self):
+        self.eventConsumer.disconnect()
 
     def update_values(self):
         '''Query APECS database for new values of all measurement points. Retain valid-looking data in self.params[]'''
@@ -198,9 +255,6 @@ class Getter():
     def __getTemperatures(self):
         '''Get system temperatures from various FFTS subbands. Note that these do NOT match in frequency nor bandwidth with the EHT subbands.'''
 
-        # Calibrator engine
-        onlineCal = apexObsUtils.getApexCalibrator()
-
         # Docu:
         #   caldata = apexObsUtils.getApexCalibrator()::getCalResult(FeBe:str, baseband:int, 0)
         # Input:
@@ -214,23 +268,35 @@ class Getter():
         #               However, you can get the corresponding opacity values (also an average over IF) in the (returned)
         #               two-element arrays: tauSig and tauIma.
 
-        basebands = [1,2,3,4]
-        montargets = ['Calibrator:NFLASH230-FFTS1:1', 'Calibrator:NFLASH230-FFTS1:2', 'Calibrator:NFLASH230-FFTS1:3', 'Calibrator:NFLASH230-FFTS1:4']
-        for (baseband,target) in zip(basebands,montargets):
-            try:
-                calResult = onlineCal.getCalResult('NFLASH230-FFTS1', baseband, 0)
-            except:
-                #-- instrument is not available, receiver is not currently in use
-                print("Not available: FeBe'NFLASH230-FFTS1' baseband %d" % (baseband))
-                pass
-            else:
-                #print(baseband, target, calResult)
-                if baseband in [1,2]: ## currently limit to 1,2 - don't know in params.map where to stuff 'Calibrator:NFLASH230-FFTS1:3:tSys:X', 'Calibrator:NFLASH230-FFTS1:3:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:X'
-                    self.params[target + ':tSys:X'] = convertApexPoint(calResult.tSys[0])
-                    if len(calResult.tSys) > 1:
-                        self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
-                self.params[target + ':tHot'] = convertApexPoint(calResult.tHot)
-                self.params[target + ':tCold'] = convertApexPoint(calResult.tCold)
-                # self.params[target + ':tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
-                # self.params[target + ':tCal'] = convertApexPoint(calResult.tCal[polarization]) # -"-
-                # self.params[target + ':tSky'] = convertApexPoint(calResult.tSky[polarization]) # -"-
+        try:
+            e = self.q_apecs.get(block=False)
+        except Queue.Empty:
+            print(datetime.datetime.now(), 'No new APECS Calibrator data yet...')
+        else:
+            if e.scanIntent == apexCDS.CALIBRATION and e.resultContent == apexCDS.INDIVIDUAL:
+
+                phaseNum = 0
+                if e.numPhases != 1:
+                    phaseNum = e.phaseNum
+
+                basebands = [1,2,3,4]
+                montargets = ['Calibrator:NFLASH230-FFTS1:1', 'Calibrator:NFLASH230-FFTS1:2', 'Calibrator:NFLASH230-FFTS1:3', 'Calibrator:NFLASH230-FFTS1:4']
+                print('__getTemperatures(): e.FEBE is ', e.FEBE)
+
+                for (baseband,target) in zip(basebands,montargets):
+                    try:
+                        calResult = self.calibrator.getCalResult('NFLASH230-FFTS1', baseband, phaseNum)
+                    except:
+                        #-- instrument is not available, receiver is not currently in use
+                        print("Not available: FeBe'NFLASH230-FFTS1' baseband %d" % (baseband))
+                    else:
+                        #print(baseband, target, calResult)
+                        if baseband in [1,2]: ## currently limit to 1,2 - don't know in params.map where to stuff 'Calibrator:NFLASH230-FFTS1:3:tSys:X', 'Calibrator:NFLASH230-FFTS1:3:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:X'
+                            self.params[target + ':tSys:X'] = convertApexPoint(calResult.tSys[0])
+                            if len(calResult.tSys) > 1:
+                                self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
+                        self.params[target + ':tHot'] = convertApexPoint(calResult.tHot)
+                        self.params[target + ':tCold'] = convertApexPoint(calResult.tCold)
+                        # self.params[target + ':tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
+                        # self.params[target + ':tCal'] = convertApexPoint(calResult.tCal[polarization]) # -"-
+                        # self.params[target + ':tSky'] = convertApexPoint(calResult.tSky[polarization]) # -"-
