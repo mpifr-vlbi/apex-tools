@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
       }
       fprintf(fp, "\n");
     }
-    printf("Elapsed time: %.0lf s\t", elapsedTime);
+    printf("Elapsed time: %.0lf s\t  Time now: %zu s\t ", elapsedTime, (size_t)timerNow);
     for (device = base_device; device <= max_device; device++) {
       printf("%s:  %.9le s\t", _device_names[device], timeIntervals[device]);
     }
