@@ -115,12 +115,14 @@ int main(int argc, char **argv) {
     sendMessage(sockfd, ":SENS:ROSC:SOURCE:AUTO ON\n");
     sendMessage(sockfd, ":INP1:ATT 1\n");
     sendMessage(sockfd, ":INP1:COUP DC\n");
-    sendMessage(sockfd, ":INP1:IMP 50 OHM\n");
+//   sendMessage(sockfd, ":INP1:IMP 50 OHM\n");
+    sendMessage(sockfd, ":INP1:IMP 1E6 OHM\n");
     sendMessage(sockfd, ":EVEN1:LEVEL 1.0\n");
     sendMessage(sockfd, ":EVEN1:SLOP POS\n");
     sendMessage(sockfd, ":INP2:ATT 1\n");
     sendMessage(sockfd, ":INP2:COUP DC\n");
-    sendMessage(sockfd, ":INP2:IMP 50 OHM\n");
+//    sendMessage(sockfd, ":INP2:IMP 50 OHM\n");
+    sendMessage(sockfd, ":INP2:IMP 1E6 OHM\n");
     sendMessage(sockfd, ":EVEN2:LEVEL 1.0\n");
     sendMessage(sockfd, ":EVEN2:SLOP POS\n");
     sendMessage(sockfd, ":FUNC 'TINT'\n");
