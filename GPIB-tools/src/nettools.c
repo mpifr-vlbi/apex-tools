@@ -76,7 +76,7 @@ int sendMessage(int sockfd, char *buff)
 
   /* If not all characters were sent then report an error */
   if (n != messageLength) {
-    snprintf(buff, sizeof(buff), "write error: %s", strerror(errno));
+    snprintf(buff, messageLength, "write error: %s", strerror(errno));
   }
   return n;  
 }
