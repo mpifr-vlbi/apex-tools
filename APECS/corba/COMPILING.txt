@@ -1,0 +1,17 @@
+
+$ ssh apex@instruments3
+
+$ cd Testing/VLBI/apexVLBI-r7850-h2/src  # or other src code location
+
+Debug build:
+
+  $ unset INTROOT
+
+  $ make -j all
+
+  $ ../bin/apexCountersControl
+
+Normal build:
+
+  $ make -j all
+
