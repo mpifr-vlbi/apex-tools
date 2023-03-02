@@ -101,7 +101,7 @@ static void *use_rcsId = ((void)&use_rcsId,(void *) &rcsId);
 
 /* Program control */
 
-#define _DEBUG 1
+#define _DEBUG 0
 #define READPERIOD 30         /* time in s between reading the counters */
 #define COMMERRORTIME READPERIOD*3  /* timeout in s, to return ERROR COMM */
 #define SOCKETREADTIMEOUT  3   /*  timeout in s when read from socket blocks */
@@ -895,7 +895,7 @@ int sendMessage(int *sockfd, const char *buff)
 
         sent = 1;
 
-    } else if ((n != messageLength) || (errno == ECONNRESET) || (errno == EAGAIN)) {
+    } else if ((n != messageLength) || (errno == ECONNRESET) || (errno == EAGAIN) || (errno == EPIPE)) {
 
       if (_DEBUG) {
         printf("Short write or write error: %d bytes, %s\n", n, strerror(errno));
