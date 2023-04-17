@@ -1,0 +1,571 @@
+# 
+# 
+# 
+observatory_timeZone	private:0
+# 
+observerMessages_observer	private:0
+observerMessages_observatoryStatus	private:0
+observerMessages_weather	private:0
+# 
+telescope_status	private:0
+telescope_observingMode	private:0
+telescope_onSource	private:0
+telescope_raDecTargetJ2000	private:10
+telescope_raDecTargetCurrent	private:10
+telescope_raDecActualCurrent	private:10
+telescope_apparentRaDec	private:10
+telescope_sourceName	private:0
+telescope_epochRaDec	private:10
+telescope_epochType	private:0
+telescope_azimuthElevation	private:60
+telescope_pointingCorrection	private:60
+telescope_focusCorrection	private:60
+telescope_surfaceStatus	private:60
+telescope_surfaceRms	private:60
+telescope_appEfficiency	private:60
+telescope_beamEfficiency	private:60
+# 
+gainElevation_status	private:0
+gainElevation_curve	private:0
+gainElevation_freq	private:0
+# 
+phasing_phasing	private:60
+phasing_referenceAntennaID	private:0
+phasing_referencePad	private:0
+phasing_referenceCoordinates	private:0
+phasing_referenceAltitude	private:0
+phasing_phaseCenter	private:0
+phasing_antennaIDs	private:0
+phasing_numberOfAntennas	private:0
+phasing_status	private:0
+phasing_efficiency	private:20
+phasing_efficiencyEvaluationWindow	private:60
+phasing_solutionApplicationTime	private:60
+# 
+weather_online	private:0, public:0
+weather_temperature	private:30, public:30
+weather_airPressure	private:30, public:30
+weather_relativeHumidity	private:30, public:30
+weather_windSpeed	private:30, public:30
+weather_windDirection	private:30, public:30
+weather_tau225	private:30, public:30
+weather_wvrStatus	private:0, public:0
+weather_wvrMillimeter	private:30, public:30
+weather_pwv	private:30, public:30
+weather_atmosphericPhaseRMS	private:30, public:30
+weather_dewPointTemp	private:30, public:30
+weather_precipCondition	private:0, public:0
+# 
+weatherMap_waterVapor_url	private:0
+# 
+rx_1_online	private:0
+rx_1_loFreq	private:0
+rx_1_loFreqOffset	private:0
+rx_1_synth1Offset	private:0
+rx_1_lockStatus	private:0
+rx_1_qwpInserted	private:0
+rx_1_nrIFs	private:0
+rx_1_tempHot	private:60
+rx_1_tempCold	private:60
+rx_1_calTemp	private:60
+rx_1_antTemp	private:60
+rx_2_online	private:0
+rx_2_loFreq	private:0
+rx_2_loFreqOffset	private:0
+rx_2_synth1Offset	private:0
+rx_2_lockStatus	private:0
+rx_2_qwpInserted	private:0
+rx_2_nrIFs	private:0
+rx_2_tempHot	private:60
+rx_2_tempCold	private:60
+rx_2_calTemp	private:60
+rx_2_antTemp	private:60
+rx_3_online	private:0
+rx_3_loFreq	private:0
+rx_3_loFreqOffset	private:0
+rx_3_synth1Offset	private:0
+rx_3_lockStatus	private:0
+rx_3_qwpInserted	private:0
+rx_3_nrIFs	private:0
+rx_3_tempHot	private:60
+rx_3_tempCold	private:60
+rx_3_calTemp	private:60
+rx_3_antTemp	private:60
+rx_4_online	private:0
+rx_4_loFreq	private:0
+rx_4_loFreqOffset	private:0
+rx_4_synth1Offset	private:0
+rx_4_lockStatus	private:0
+rx_4_qwpInserted	private:0
+rx_4_nrIFs	private:0
+rx_4_tempHot	private:60
+rx_4_tempCold	private:60
+rx_4_calTemp	private:60
+rx_4_antTemp	private:60
+# 
+if_1_online	private:0
+if_1_identifier	private:0
+if_1_centreFreq	private:0
+if_1_bandWidth	private:0
+if_1_polType	private:0
+if_1_systemTemp	private:60
+if_1_systemTempAzel	private:60
+if_1_totalPower	private:300
+if_1_rms	private:300
+if_1_attenuatorLevel	private:300
+if_2_online	private:0
+if_2_identifier	private:0
+if_2_centreFreq	private:0
+if_2_bandWidth	private:0
+if_2_polType	private:0
+if_2_systemTemp	private:60
+if_2_systemTempAzel	private:60
+if_2_totalPower	private:300
+if_2_rms	private:300
+if_2_attenuatorLevel	private:300
+if_3_online	private:0
+if_3_identifier	private:0
+if_3_centreFreq	private:0
+if_3_bandWidth	private:0
+if_3_polType	private:0
+if_3_systemTemp	private:60
+if_3_systemTempAzel	private:60
+if_3_totalPower	private:300
+if_3_rms	private:300
+if_3_attenuatorLevel	private:300
+if_4_online	private:0
+if_4_identifier	private:0
+if_4_centreFreq	private:0
+if_4_bandWidth	private:0
+if_4_polType	private:0
+if_4_systemTemp	private:60
+if_4_systemTempAzel	private:60
+if_4_totalPower	private:300
+if_4_rms	private:300
+if_4_attenuatorLevel	private:300
+# 
+array_correlation_phase	private:0
+array_correlation_evaluationWindow	private:0
+array_source_totalFlux	private:0
+array_source_totalPolarization	private:0
+# 
+maser_status	private:0, public:300
+maser_timeToGpsTick	private:300, public:300
+maser_driftRate	private:300, public:300
+maser_frequencyStability	private:300, public:300
+maser_clockEarlyData	private:300, public:300
+maser_ifAmplitude	private:300, public:300
+maser_cavityRegister	private:300, public:300
+maser_vcoControlVoltage	private:300, public:300
+maser_viPumpH2	private:300, public:300
+maser_viPumpUpper	private:300, public:300
+maser_localOscillator	private:300, public:300
+maser_cavityHeater	private:300, public:300
+maser_outerOvenHeater	private:300, public:300
+maser_lowerSupportHeater	private:300, public:300
+maser_topPlateHeater	private:300, public:300
+maser_dischargeCurrent	private:300, public:300
+maser_batteryCharge	private:300, public:300
+maser_thermalShield	private:300, public:300
+maser_vcoHeater	private:300, public:300
+maser_mainMagneticField	private:300, public:300
+maser_hydrogenPressure	private:300, public:300
+maser_piraniGaugeHeater	private:300, public:300
+maser_pdH2ValveHeater	private:300, public:300
+maser_dischargeVoltage	private:300, public:300
+maser_batteryVoltage	private:300, public:300
+maser_mainBus	private:300, public:300
+maser_averager	private:300, public:300
+maser_acDc1	private:300, public:300
+maser_acDc2	private:300, public:300
+maser_dcx	private:300, public:300
+maser_bottleHeater	private:300, public:300
+maser_ifAmplitudeAlarm	private:300, public:300
+maser_vcoLockAlarm	private:300, public:300
+maser_registerLimitAlarm	private:300, public:300
+maser_dcExtAvailable	private:300, public:300
+maser_ac1and2Available	private:300, public:300
+maser_batteryInUseAlarm	private:300, public:300
+maser_thumbwheelSwitches	private:300, public:300
+maser_extSynth	private:300, public:300
+maser_frontPanelSwitch	private:300, public:300
+maser_extConf	private:300, public:300
+maser_lock100Mhz	private:300, public:300
+maser_ocxo100MhzVoltage	private:300, public:300
+maser_batteryVoltageA	private:300, public:300
+maser_batteryCurrentA	private:300, public:300
+maser_batteryVoltageB	private:300, public:300
+maser_batteryCurrentB	private:300, public:300
+maser_hydrogenPressureSetting	private:300, public:300
+maser_hydrogenPressureMeasurement	private:300, public:300
+maser_purifierCurrent	private:300, public:300
+maser_dissociatorCurrent	private:300, public:300
+maser_dissociatorLight	private:300, public:300
+maser_heaterInternalTop	private:300, public:300
+maser_heaterInternalBottom	private:300, public:300
+maser_heaterInternalSide	private:300, public:300
+maser_heaterThermalControlUnit	private:300, public:300
+maser_heaterExternalSide	private:300, public:300
+maser_heaterExternalBottom	private:300, public:300
+maser_heaterIsolator	private:300, public:300
+maser_heaterTube	private:300, public:300
+maser_boxesTemperature	private:300, public:300
+maser_boxesCurrent	private:300, public:300
+maser_ambientTemperature	private:300, public:300
+maser_cfieldVoltage	private:300, public:300
+maser_varactorVoltage	private:300, public:300
+maser_externalHighVoltageValue	private:300, public:300
+maser_externalHighVoltageCurrent	private:300, public:300
+maser_internalHighVoltageValue	private:300, public:300
+maser_internalHighVoltageCurrent	private:300, public:300
+maser_hydrogenStoragePressure	private:300, public:300
+maser_hydrogenStorageHeater	private:300, public:300
+maser_piraniHeater	private:300, public:300
+maser_405kHzAmplitude	private:300, public:300
+maser_ocxoVoltage	private:300, public:300
+maser_supplyP24V	private:300, public:300
+maser_supplyP15V	private:300, public:300
+maser_supplyM15V	private:300, public:300
+maser_supplyP5V	private:300, public:300
+maser_supplyM5V	private:300, public:300
+maser_supplyP8V	private:300, public:300
+maser_supplyP18V	private:300, public:300
+maser_lock	private:0, public:300
+maser_dds	private:300, public:300
+# 
+recorder_1_serialnumber	private:0
+recorder_1_mainboardName	private:0
+recorder_1_status	private:0
+recorder_1_dplaneTalking	private:0
+recorder_1_m6ccStatus	private:0
+recorder_1_shouldRecord	private:0
+recorder_1_groupaChainlabel	private:0
+recorder_1_groupbChainlabel	private:0
+recorder_1_groupcChainlabel	private:0
+recorder_1_groupdChainlabel	private:0
+recorder_1_groupaDatarate	private:0
+recorder_1_groupbDatarate	private:0
+recorder_1_groupcDatarate	private:0
+recorder_1_groupdDatarate	private:0
+recorder_1_groupaSpaceLeft	private:0
+recorder_1_groupbSpaceLeft	private:0
+recorder_1_groupcSpaceLeft	private:0
+recorder_1_groupdSpaceLeft	private:0
+recorder_1_groupaTimeLeft	private:0
+recorder_1_groupbTimeLeft	private:0
+recorder_1_groupcTimeLeft	private:0
+recorder_1_groupdTimeLeft	private:0
+recorder_1_groupaFillrate	private:0
+recorder_1_groupbFillrate	private:0
+recorder_1_groupcFillrate	private:0
+recorder_1_groupdFillrate	private:0
+recorder_1_groupaModules	private:0
+recorder_1_groupbModules	private:0
+recorder_1_groupcModules	private:0
+recorder_1_groupdModules	private:0
+recorder_1_groupaSpooling	private:0
+recorder_1_groupbSpooling	private:0
+recorder_1_groupcSpooling	private:0
+recorder_1_groupdSpooling	private:0
+recorder_1_module1ID	private:0
+recorder_1_module2ID	private:0
+recorder_1_module3ID	private:0
+recorder_1_module4ID	private:0
+recorder_1_scancheckId	private:0
+recorder_1_scancheckStatus	private:0
+recorder_1_scancheckDatarate	private:0
+recorder_1_scancheckBytesMissing	private:0
+# 
+recorder_2_serialnumber	private:0
+recorder_2_mainboardName	private:0
+recorder_2_status	private:0
+recorder_2_dplaneTalking	private:0
+recorder_2_m6ccStatus	private:0
+recorder_2_shouldRecord	private:0
+recorder_2_groupaChainlabel	private:0
+recorder_2_groupbChainlabel	private:0
+recorder_2_groupcChainlabel	private:0
+recorder_2_groupdChainlabel	private:0
+recorder_2_groupaDatarate	private:0
+recorder_2_groupbDatarate	private:0
+recorder_2_groupcDatarate	private:0
+recorder_2_groupdDatarate	private:0
+recorder_2_groupaSpaceLeft	private:0
+recorder_2_groupbSpaceLeft	private:0
+recorder_2_groupcSpaceLeft	private:0
+recorder_2_groupdSpaceLeft	private:0
+recorder_2_groupaTimeLeft	private:0
+recorder_2_groupbTimeLeft	private:0
+recorder_2_groupcTimeLeft	private:0
+recorder_2_groupdTimeLeft	private:0
+recorder_2_groupaFillrate	private:0
+recorder_2_groupbFillrate	private:0
+recorder_2_groupcFillrate	private:0
+recorder_2_groupdFillrate	private:0
+recorder_2_groupaModules	private:0
+recorder_2_groupbModules	private:0
+recorder_2_groupcModules	private:0
+recorder_2_groupdModules	private:0
+recorder_2_groupaSpooling	private:0
+recorder_2_groupbSpooling	private:0
+recorder_2_groupcSpooling	private:0
+recorder_2_groupdSpooling	private:0
+recorder_2_module1ID	private:0
+recorder_2_module2ID	private:0
+recorder_2_module3ID	private:0
+recorder_2_module4ID	private:0
+recorder_2_scancheckId	private:0
+recorder_2_scancheckStatus	private:0
+recorder_2_scancheckDatarate	private:0
+recorder_2_scancheckBytesMissing	private:0
+recorder_3_serialnumber	private:0
+recorder_3_mainboardName	private:0
+recorder_3_status	private:0
+recorder_3_dplaneTalking	private:0
+recorder_3_m6ccStatus	private:0
+recorder_3_shouldRecord	private:0
+recorder_3_groupaChainlabel	private:0
+recorder_3_groupbChainlabel	private:0
+recorder_3_groupcChainlabel	private:0
+recorder_3_groupdChainlabel	private:0
+recorder_3_groupaDatarate	private:0
+recorder_3_groupbDatarate	private:0
+recorder_3_groupcDatarate	private:0
+recorder_3_groupdDatarate	private:0
+recorder_3_groupaSpaceLeft	private:0
+recorder_3_groupbSpaceLeft	private:0
+recorder_3_groupcSpaceLeft	private:0
+recorder_3_groupdSpaceLeft	private:0
+recorder_3_groupaTimeLeft	private:0
+recorder_3_groupbTimeLeft	private:0
+recorder_3_groupcTimeLeft	private:0
+recorder_3_groupdTimeLeft	private:0
+recorder_3_groupaFillrate	private:0
+recorder_3_groupbFillrate	private:0
+recorder_3_groupcFillrate	private:0
+recorder_3_groupdFillrate	private:0
+recorder_3_groupaModules	private:0
+recorder_3_groupbModules	private:0
+recorder_3_groupcModules	private:0
+recorder_3_groupdModules	private:0
+recorder_3_groupaSpooling	private:0
+recorder_3_groupbSpooling	private:0
+recorder_3_groupcSpooling	private:0
+recorder_3_groupdSpooling	private:0
+recorder_3_module1ID	private:0
+recorder_3_module2ID	private:0
+recorder_3_module3ID	private:0
+recorder_3_module4ID	private:0
+recorder_3_scancheckId	private:0
+recorder_3_scancheckStatus	private:0
+recorder_3_scancheckDatarate	private:0
+recorder_3_scancheckBytesMissing	private:0
+recorder_4_serialnumber	private:0
+recorder_4_mainboardName	private:0
+recorder_4_status	private:0
+recorder_4_dplaneTalking	private:0
+recorder_4_m6ccStatus	private:0
+recorder_4_shouldRecord	private:0
+recorder_4_groupaChainlabel	private:0
+recorder_4_groupbChainlabel	private:0
+recorder_4_groupcChainlabel	private:0
+recorder_4_groupdChainlabel	private:0
+recorder_4_groupaDatarate	private:0
+recorder_4_groupbDatarate	private:0
+recorder_4_groupcDatarate	private:0
+recorder_4_groupdDatarate	private:0
+recorder_4_groupaSpaceLeft	private:0
+recorder_4_groupbSpaceLeft	private:0
+recorder_4_groupcSpaceLeft	private:0
+recorder_4_groupdSpaceLeft	private:0
+recorder_4_groupaTimeLeft	private:0
+recorder_4_groupbTimeLeft	private:0
+recorder_4_groupcTimeLeft	private:0
+recorder_4_groupdTimeLeft	private:0
+recorder_4_groupaFillrate	private:0
+recorder_4_groupbFillrate	private:0
+recorder_4_groupcFillrate	private:0
+recorder_4_groupdFillrate	private:0
+recorder_4_groupaModules	private:0
+recorder_4_groupbModules	private:0
+recorder_4_groupcModules	private:0
+recorder_4_groupdModules	private:0
+recorder_4_groupaSpooling	private:0
+recorder_4_groupbSpooling	private:0
+recorder_4_groupcSpooling	private:0
+recorder_4_groupdSpooling	private:0
+recorder_4_module1ID	private:0
+recorder_4_module2ID	private:0
+recorder_4_module3ID	private:0
+recorder_4_module4ID	private:0
+recorder_4_scancheckId	private:0
+recorder_4_scancheckStatus	private:0
+recorder_4_scancheckDatarate	private:0
+recorder_4_scancheckBytesMissing	private:0
+# 
+r2dbe_1_status	private:0
+r2dbe_1_serialnumber	private:0
+r2dbe_1_uptime	private:60
+r2dbe_1_upSince	private:0
+r2dbe_1_ppsOffset	private:0
+r2dbe_1_timeSecOffset0	private:0
+r2dbe_1_timeSecOffset1	private:0
+r2dbe_1_pol0	private:0
+r2dbe_1_pol1	private:0
+r2dbe_1_rxSideband0	private:0
+r2dbe_1_rxSideband1	private:0
+r2dbe_1_bdcBand0	private:0
+r2dbe_1_bdcBand1	private:0
+r2dbe_1_stationCode0	private:0
+r2dbe_1_stationCode1	private:0
+r2dbe_1_2bitThreshold0	private:0
+r2dbe_1_2bitThreshold1	private:0
+# 
+r2dbe_2_status	private:0
+r2dbe_2_serialnumber	private:0
+r2dbe_2_uptime	private:60
+r2dbe_2_upSince	private:0
+r2dbe_2_ppsOffset	private:0
+r2dbe_2_timeSecOffset0	private:0
+r2dbe_2_timeSecOffset1	private:0
+r2dbe_2_pol0	private:0
+r2dbe_2_pol1	private:0
+r2dbe_2_rxSideband0	private:0
+r2dbe_2_rxSideband1	private:0
+r2dbe_2_bdcBand0	private:0
+r2dbe_2_bdcBand1	private:0
+r2dbe_2_stationCode0	private:0
+r2dbe_2_stationCode1	private:0
+r2dbe_2_2bitThreshold0	private:0
+r2dbe_2_2bitThreshold1	private:0
+r2dbe_3_status	private:0
+r2dbe_3_serialnumber	private:0
+r2dbe_3_uptime	private:60
+r2dbe_3_upSince	private:0
+r2dbe_3_ppsOffset	private:0
+r2dbe_3_timeSecOffset0	private:0
+r2dbe_3_timeSecOffset1	private:0
+r2dbe_3_pol0	private:0
+r2dbe_3_pol1	private:0
+r2dbe_3_rxSideband0	private:0
+r2dbe_3_rxSideband1	private:0
+r2dbe_3_bdcBand0	private:0
+r2dbe_3_bdcBand1	private:0
+r2dbe_3_stationCode0	private:0
+r2dbe_3_stationCode1	private:0
+r2dbe_3_2bitThreshold0	private:0
+r2dbe_3_2bitThreshold1	private:0
+r2dbe_4_status	private:0
+r2dbe_4_serialnumber	private:0
+r2dbe_4_uptime	private:60
+r2dbe_4_upSince	private:0
+r2dbe_4_ppsOffset	private:0
+r2dbe_4_timeSecOffset0	private:0
+r2dbe_4_timeSecOffset1	private:0
+r2dbe_4_pol0	private:0
+r2dbe_4_pol1	private:0
+r2dbe_4_rxSideband0	private:0
+r2dbe_4_rxSideband1	private:0
+r2dbe_4_bdcBand0	private:0
+r2dbe_4_bdcBand1	private:0
+r2dbe_4_stationCode0	private:0
+r2dbe_4_stationCode1	private:0
+r2dbe_4_2bitThreshold0	private:0
+r2dbe_4_2bitThreshold1	private:0
+# 
+bdc_1_status	private:0
+bdc_1_serialnumber	private:0
+bdc_1_hwVersion	private:0
+bdc_1_fwVersion	private:0
+bdc_1_conf	private:0
+bdc_1_ctrl	private:0
+bdc_1_loStatus	private:0
+bdc_1_band	private:0
+bdc_1_loFreq4to8	private:0
+bdc_1_loFreq5to9	private:0
+bdc_1_loFreq4to8Ref	private:0
+bdc_1_loFreq5to9Ref	private:0
+bdc_1_loLock4to8	private:0
+bdc_1_loLock5to9	private:0
+bdc_1_attnLoPol0	private:0
+bdc_1_attnLoPol1	private:0
+bdc_1_attnHiPol0	private:0
+bdc_1_attnHiPol1	private:0
+bdc_1_loFreqA	private:0
+bdc_1_loFreqB	private:0
+bdc_1_loFreqARef	private:0
+bdc_1_loFreqBRef	private:0
+bdc_1_loLockA	private:0
+bdc_1_loLockB	private:0
+bdc_1_attnBandALoPol0	private:0
+bdc_1_attnBandALoPol1	private:0
+bdc_1_attnBandAHiPol0	private:0
+bdc_1_attnBandAHiPol1	private:0
+bdc_1_attnBandBLoPol0	private:0
+bdc_1_attnBandBLoPol1	private:0
+bdc_1_attnBandBHiPol0	private:0
+bdc_1_attnBandBHiPol1	private:0
+# 
+bdc_2_status	private:0
+bdc_2_serialnumber	private:0
+bdc_2_hwVersion	private:0
+bdc_2_fwVersion	private:0
+bdc_2_conf	private:0
+bdc_2_ctrl	private:0
+bdc_2_loStatus	private:0
+bdc_2_band	private:0
+bdc_2_loFreq4to8	private:0
+bdc_2_loFreq5to9	private:0
+bdc_2_loFreq4to8Ref	private:0
+bdc_2_loFreq5to9Ref	private:0
+bdc_2_loLock4to8	private:0
+bdc_2_loLock5to9	private:0
+bdc_2_attnLoPol0	private:0
+bdc_2_attnLoPol1	private:0
+bdc_2_attnHiPol0	private:0
+bdc_2_attnHiPol1	private:0
+bdc_2_loFreqA	private:0
+bdc_2_loFreqB	private:0
+bdc_2_loFreqARef	private:0
+bdc_2_loFreqBRef	private:0
+bdc_2_loLockA	private:0
+bdc_2_loLockB	private:0
+bdc_2_attnBandALoPol0	private:0
+bdc_2_attnBandALoPol1	private:0
+bdc_2_attnBandAHiPol0	private:0
+bdc_2_attnBandAHiPol1	private:0
+bdc_2_attnBandBLoPol0	private:0
+bdc_2_attnBandBLoPol1	private:0
+bdc_2_attnBandBHiPol0	private:0
+bdc_2_attnBandBHiPol1	private:0
+# 
+cc_clientglobalUtime	private:60
+cc_clientglobalStime	private:60
+cc_clientglobalMaxrss	private:60
+# 
+# vim: ts=40 nowrap
+telescope_observingMode	ABM[1,0]:ANTMOUNT:mode
+telescope_apparentRaDec	derived:telescope:actualRaDec
+telescope_epochType	ABM[1,0]:ANTMOUNT:JEpoch
+telescope_azimuthElevation	derived:telescope:actualAzEl
+
+weather_temperature	APEX:WEATHERSTATION:temperature
+weather_airPressure	APEX:WEATHERSTATION:pressure
+weather_relativeHumidity	APEX:WEATHERSTATION:humidity
+weather_windSpeed	APEX:WEATHERSTATION:windSpeed
+weather_windDirection	APEX:WEATHERSTATION:windDirection
+weather_tau225	derived:weather:tau225
+weather_pwv	APEX:RADIOMETER:RESULTS:pwv
+weather_dewPointTemp	APEX:WEATHERSTATION:dewPoint
+
+# may need to change this, skyfreq is not really loFreq
+rx_1_loFreq	APEX:NFLASH230:SKYFREQUENCY
+
+rx_1_tempHot	Calibrator:NFLASH230-FFTS1:tHot
+rx_1_tempCold	Calibrator:NFLASH230-FFTS1:tCold
+
+if_1_centreFreq	APEX:NFLASH230:SKYFREQUENCY
+if_1_systemTemp	Calibrator:NFLASH230-FFTS1:tSys
+
+maser_timeToGpsTick	APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser
+maser_ambientTemperature	APEX:MASER:HOUSING:temperature
