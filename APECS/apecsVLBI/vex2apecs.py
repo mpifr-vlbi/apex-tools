@@ -14,7 +14,7 @@ import ntpath
 
 rx_name = 'NFLASH230'
 
-always_send_source = True  # set to True to always send source() go() track() for every scan, rather than only at each source change
+always_send_source = False  # set to True to always send source() go() track() for every scan, rather than only at each source change
 
 
 def coordReformatVex2Apecs(s):
@@ -227,7 +227,7 @@ def obs_writeScans(fd,scans,sources):
 			gap_to_curr = Lschedule_lead_time
 
 		# Label for scan
-		sheading = 'Block for %s scan No%04d %s at %s in %ds' % (scan['source'],scanNr,scanname,datetimeToSNP_str(scan['start']),gap_to_curr)
+		sheading = "Block for %s scan %d '%s' at %s in %ds" % (scan['source'],scanNr,scanname,datetimeToSNP_str(scan['start']),gap_to_curr)
 
 		# Determine what things to do for the current scan,
  		# i.e., make a list of pre-obs and on-scan functions to call.
@@ -250,10 +250,14 @@ def obs_writeScans(fd,scans,sources):
 		elif (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Ltsys_no_cold:
 			do_vlbi_tsys_shorter = True
 			L_prescan_tasks += Ltsys_no_cold + Lcmdmargin
+		else:
+			print('Warning: pre-scan cals for %s (%s) must omit Tsys, time margin is only %d sec, need >%d sec' % (scanname, scan['source'], gap_to_curr - L_prescan_tasks - Lcmdmargin, Ltsys_no_cold))
 
 		if (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Lrefscan:
 			do_vlbi_reference_scan = True
 			L_prescan_tasks += Lrefscan + Lcmdmargin
+		else:
+			print('Warning: pre-scan cals for %s (%s) must omit reference scan, time margin is only %d sec, need >%d sec' % (scanname, scan['source'], gap_to_curr - L_prescan_tasks - Lcmdmargin, Lrefscan))
 
 		# Assemble the calibration commands determined above
 
@@ -287,14 +291,16 @@ def obs_writeScans(fd,scans,sources):
 		# B) [prev VLBI Scan] -> [long gap] -> change source -> vlbi_tsys() -> vlbi_reference_scan() -> [VLBI Scan]
 
 		Loperatorgap = datetime.timedelta(seconds=gap_to_curr - calTotalTime)
-		immediateCal = Loperatorgap.total_seconds() < L_minimum_for_interactive
+		immediateCal = Loperatorgap.total_seconds() < (60 + 6*Lcmdmargin)
+		allowInteractive = Loperatorgap.total_seconds() >= L_minimum_for_interactive
 
 		if immediateCal:
 			T_cal_start = Tprev_end
 		else:
-			T_cal_start = T_scan - datetime.timedelta(seconds=calTotalTime)
+			T_cal_start = T_scan - datetime.timedelta(seconds=calTotalTime+2*Lcmdmargin)
+		T_cal_end = T_cal_start + datetime.timedelta(seconds=calTotalTime)
 
-		if not immediateCal:
+		if (not immediateCal) and allowInteractive:
 			obs_writeComment(fd, '')
 			obs_writeComment(fd, 'OPERATOR free %s until VLBI calibrations to start at %s' % (timedelta2MinsSecs_str(Loperatorgap),datetimeToSNP_str(T_cal_start)))
 			obs_writeComment(fd, '')
@@ -305,11 +311,12 @@ def obs_writeScans(fd,scans,sources):
 			calT = T_cal_start + datetime.timedelta(seconds=calEntry['offset'])
 			obs_writeLine(fd, datetimeToSNP_str(calT), calEntry['dur'], calEntry['cmd'])
 
-		if immediateCal:
-			if Loperatorgap.total_seconds() > 0:
-				obs_writeComment(fd, '                     gap        max ~%s' % (timedelta2MinsSecs_str(Loperatorgap)))
+		if immediateCal or True:
+			LpostCalGap = T_scan - T_cal_end
+			if LpostCalGap.total_seconds() > 0:
+				obs_writeComment(fd, '                     gap        max ~%s' % (timedelta2MinsSecs_str(LpostCalGap)))
 			else:
-				obs_writeComment(fd, '                     TIME       ran short, ~%s "gap"' % (timedelta2MinsSecs_str(Loperatorgap)))
+				obs_writeComment(fd, '                     TIME       ran short, ~%s "gap"' % (timedelta2MinsSecs_str(LpostCalGap)))
 
 		# Place VLBI scan command
 
