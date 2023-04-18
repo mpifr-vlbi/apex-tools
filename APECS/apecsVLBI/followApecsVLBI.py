@@ -5,6 +5,7 @@ import datetime
 import time
 import signal
 import platform
+import psutil
 import curses
 
 def usage():
@@ -22,9 +23,13 @@ def usage():
 #### Globals
 ###########################################################################################################
 
+# Process that should be running (if local host is observer3) if the schedule is actually executing
+dispatcherProcess = 'apecsVLBI.py'
+
 # APECS system (observer3) runs from abm.apex-telesc .IRIG. that is running TAI
 # VLBI is using UTC; need to correct for http://www.leapsecond.com/java/gpsclock.htm
-if ('observer3' not in platform.node()) and ('10.0.2.170' not in platform.node()):
+is_observer3 = ('observer3' in platform.node()) or ('10.0.2.170' in platform.node())
+if not is_observer3:
 	offsetUTC = 0
 	print ('\nINFO: Apparently not running on Observer3. Not applying TAI/UTC leap seconds correction!\n')
 else:
@@ -118,9 +123,20 @@ def showTaskList(stdscr, currtaskidx, title):
 	starttask = max(0, currtaskidx - Nscreenrows//2)
 	endtask = min(Ntasks, starttask + (Nscreenrows-startrow) - 2)
 
+	# Check that command dispatcher is running, i.e. tasks are truly getting submitted to APECS
+	foundDispatcher = False
+	for proc in psutil.process_iter():
+		if any(dispatcherProcess in cl_arg for cl_arg in proc.cmdline()):
+			foundDispatcher = True
+			break
+
 	# Title bar
 	tcurr = utc_now()
-	msg = '%s UT -  %s' % (datetime2SNP(tcurr), title)
+	msg = '%s UT - %s' % (datetime2SNP(tcurr), title)
+	if not foundDispatcher:
+		msg += ' - WARNING: %s not running, tasks probably not getting submitted to APECS' % (dispatcherProcess)
+	else:
+		msg += ' - %s is active and submitting tasks' % (dispatcherProcess)
 	msg = msg.ljust(Nscreencols, ' ')
 	stdscr.addstr(0, 0, msg, curses.A_REVERSE)
 	stdscr.clrtoeol()
@@ -272,6 +288,7 @@ def run(cmdfile):
 	stdscr = curses.initscr()
 
 	loadApecsScript(cmdfile)
+
 	followApecsVLBI(stdscr, cmdfile)
 
 	curses.nocbreak()
