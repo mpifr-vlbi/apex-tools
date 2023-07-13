@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 '''
 Usage: vexGetSources2cat.py *.vex
 
