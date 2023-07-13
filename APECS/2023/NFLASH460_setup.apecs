@@ -1,0 +1,32 @@
+sourcecats('t-0111.f-9996a-2023.cat')
+linecats('t-0111.f-9996a-2023.lin')
+
+exec_apecs_script('nflash_commands')
+# execfile('/homes/software/apecs/start_pi230.apecs')  # OUTDATED
+# execfile('/homes/software/apecs/Testing/HetCalPlan/startObsCommands.apecs')  # OUTDATED
+
+execfile('/homes/software/apecs/startObsCommands.apecs')
+
+execfile('vlbi-NFLASH460_commands.py')
+
+
+NFLASH460.monPoints.append(['GPS_COUNTERS_FMOUT_MASER', 
+                           [('prop', 'APEX:COUNTERS:GPSMINUSFMOUT.GPSMinusFMOUT', 1.0, '-'), 
+                            ('prop', 'APEX:COUNTERS:GPSMINUSMASER.GPSMinusMaser', 1.0, '-')],
+                           5])
+
+
+setup_nflash(fenames=['nflash460'], linenames=['vlbifreq460'], sidebands=[''],mode='spec', sbwidths=[4], numchan=65536, cats='all',doppler='off')
+
+# setup_nflash(fenames=['nflash230'], linenames=['test_tone'], sidebands=[''],mode='spec', sbwidths=[8], numchan=65536, cats='all',doppler='off')
+
+use_ref('on')
+continuous_data('off')
+skip_hardware_setup('off')
+use_tiltmeters('on','on')
+nflash460.configure(doppler='off')
+tp() # Added to be extra sure we disable the wobbler after line pointings (JPE: 2021-04-13)
+load()
+
+################################################################
+
