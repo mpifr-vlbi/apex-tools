@@ -128,7 +128,6 @@ $FREQ;
 def FREQ_ZBT; * Ap  -- Zero baseline "station"  7200 Mbps
      sample_rate =  3600.000 Ms/sec;
      chan_def = &B:80000.000 MHz : U : 1800.00 MHz : &CH01 : &BBC01 : &NoCal;
-     chan_def = &B:80000.000 MHz : U : 1800.00 MHz : &CH02 : &BBC02 : &NoCal;
 enddef;
 *------------------------------------------------------------------------------
 $IF;
@@ -140,7 +139,6 @@ enddef;
 $BBC;
 def BBC_ZBT;
      BBC_assign = &BBC01 : 1: &IF_R;
-     BBC_assign = &BBC02 : 2: &IF_L;
 enddef;
 *------------------------------------------------------------------------------
 $PHASE_CAL_DETECT;
@@ -151,7 +149,7 @@ enddef;
 $TRACKS;
 def VDIF.8224; track_frame_format = VDIF/8224/2; enddef;
 def VDIF.8032; track_frame_format = VDIF/8032/2; enddef;
-def VDIF.BRAND; track_frame_format = VDIF/8032/2; enddef;
+def VDIF.BRAND; track_frame_format = VDIF/7232/2; enddef;
 *------------------------------------------------------------------------------
 $HEAD_POS;
 def DiskVoid;
