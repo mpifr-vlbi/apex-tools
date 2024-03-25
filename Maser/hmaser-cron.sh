@@ -8,6 +8,6 @@ DCMD="SETDATE=`date -u +'%Y/%m/%d'`;"
 TCMD="SETTIME=`date -u +'%H:%M:%S'`;"
 
 echo "Sending date-time commands $DCMD $TCMD"
-echo -e "$DCMD;\r\n" | nc -u -l -w 1 maser.apex-telescope.org 14000 || true
-echo -e "$TCMD;\r\n" | nc -u -l -w 1 maser.apex-telescope.org 14000 || true
+echo -e "$DCMD;\r\n" | nc -u -c maser.apex-telescope.org 14000 || true
+echo -e "$TCMD;\r\n" | nc -u -c maser.apex-telescope.org 14000 || true
 
