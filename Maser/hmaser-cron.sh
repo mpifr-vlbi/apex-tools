@@ -21,7 +21,7 @@ echo "Uploading log to T4 Science... (dummy func)"
 function upload_to_t4s()
 {
 echo "Uploading log to T4 Science..."
-cd $LOGDIR
+pushd $LOGDIR
 ftp -n -v www.t4science.ch << EOT
 ascii
 user chqw_mpi iMaser56
@@ -31,6 +31,7 @@ put iMaser56-MonitInst.dat
 put iMaser56-MonitMax.dat
 put iMaser56-MonitMin.dat
 EOT
+popd
 }
 
 ## Grab newest logs from the H-maser
@@ -39,12 +40,13 @@ wget -q ftp://iMaser:ndcu@10.0.2.96/Monitoring/MonitMin.dat -O $LOGDIR/iMaser56-
 wget -q ftp://iMaser:ndcu@10.0.2.96/Monitoring/MonitMax.dat -O $LOGDIR/iMaser56-MonitMax.dat  || true
 
 ## Upload to T4Sscience / Safran
-cd $LOGDIR
+pushd $LOGDIR
 if [ -s iMaser56-MonitInst.dat ]; then
         upload_to_t4s
 else
         echo "Error: File iMaser56-MonitInst.dat appears to be empty! Not uploading by FTP to T4S."
 fi
+popd
 
 ## Force update of H-maser datetime
 DCMD="SETDATE=`date -u +'%Y/%m/%d'`;"
