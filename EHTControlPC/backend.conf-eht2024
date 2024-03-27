@@ -106,7 +106,7 @@ devices:
 #    Pv: dbbc3_oct_D_2hv2_310822.bit    Ax 2023: dbbc3_oct_D_2hv2_270921.bit
 #    Pv: synth_freq 9048 MHz            Ax 2023: 9051 MHz (Valon#1 2*4525.5 MHz) + 9045 MHz (Valon#2 2*4522.5 MHz) to remove 1st LO offset of 3.0 MHz
 #
-        dbbc3.all: {layout: dbbc3, hostname: dbbc3, port: 4000, mode: "OCT_D", sw_major: 120, sw_minor: 220831,
+        dbbc3.all: {layout: dbbc3, hostname: dbbc3, port: 4000, mode: "OCT_D", sw_major: 120, sw_minor: 220309,
           boardA: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
           boardB: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
           boardC: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
