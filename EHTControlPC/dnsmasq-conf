@@ -43,7 +43,7 @@
 
 # Change this line if you want dns to get its upstream servers from
 # somewhere other that /etc/resolv.conf
-#resolv-file=
+resolv-file=/etc/resolv.conf
 
 # By  default,  dnsmasq  will  send queries to any of the upstream
 # servers it knows about and tries to favour servers to are  known
@@ -55,7 +55,7 @@
 # If you don't want dnsmasq to read /etc/resolv.conf or any other
 # file, getting its servers from this file instead (see below), then
 # uncomment this.
-no-resolv
+# no-resolv
 
 # If you don't want dnsmasq to poll /etc/resolv.conf or other resolv
 # files for changes and re-read them then uncomment this.
@@ -229,25 +229,29 @@ dhcp-range=192.168.0.161,192.168.0.240,1h
 dhcp-host=ff:ff:ff:ff:ff:ff,gps1
 dhcp-host=ff:ff:ff:ff:ff:ff,gps2
 
+## DBBC3 lower Eth relocated from control 10.0.2.91 to internal 192.168.0.91
+dhcp-host=c4:00:ad:8d:30:31,dbbc3
+
 ### APEX PDU for recorder1 & 2; APC AP7920 running AOS v3.7.3 dated 02/02/2010
 dhcp-host=00:C0:B7:53:E5:71,pdu1   # entry for the future; currently PDU still 10.0.2.92
 ### APEX PDU for recorder3 & 4; Schneider Electric RPDU2G
 dhcp-host=00:C0:B7:FD:3D:3A,pdu2   # entry for the future; currently PDU still 10.0.2.90
 
-dhcp-host=78:24:af:85:3e:55,recorder4
-dhcp-host=bc:5f:f4:97:0c:0b,recorder3
+# dhcp-host=78:24:af:85:3e:55,recorder4  # replaced 03-2023
+# dhcp-host=bc:5f:f4:97:0c:0b,recorder3  # replaced 03-2023
+dhcp-host=3c:ec:ef:74:8e:b6,recorder4 # mark6-4009
+dhcp-host=3c:ec:ef:73:ca:e2,recorder3 # mark6-4034
 dhcp-host=78:24:af:84:04:6d,recorder1
 dhcp-host=78:24:af:84:04:91,recorder2
 
 #dhcp-host=02:44:01:02:11:1b,r2dbe4 ## this one died
-dhcp-host=02:44:01:02:11:0f,r2dbe4
-dhcp-host=02:44:01:02:0a:31,r2dbe3
+dhcp-host=02:44:01:02:11:0f,r2dbe4 # absent 2020, back for 2021
+dhcp-host=02:44:01:02:0a:31,r2dbe3 # absent 2020, back for 2021
 dhcp-host=02:44:01:02:0b:17,r2dbe1
 dhcp-host=02:44:01:02:0b:01,r2dbe2
 
 dhcp-host=ff:ff:ff:ff:ff:ff,bdc1
 dhcp-host=ff:ff:ff:ff:ff:ff,bdc2
-#-- dbbc3
 dhcp-host=ff:ff:ff:ff:ff:ff,dbe1
 dhcp-host=ff:ff:ff:ff:ff:ff,dbe2
 
@@ -386,10 +390,6 @@ dhcp-option=17,192.168.0.1:/srv/roach2_boot/current
 
 # Set the NTP time server addresses to 192.168.0.4 and 10.10.0.5
 dhcp-option=option:ntp-server,192.168.0.1
-## dhcp-option=option:ntp-server,192.168.0.1,200.27.106.116,37.235.52.50,200.68.58.170
-# ntp.shoa.cl<200.27.106.116>, stratum2-01.scl01.publicntp.org<37.235.52.50>, 200-68-58-170.static.tie.cl<200.68.58.170> 
-
-dhcp-option=option:dns-server,192.168.0.1
 
 # Send DHCPv6 option. Note [] around IPv6 addresses.
 #dhcp-option=option6:dns-server,[1234::77],[1234::88]
