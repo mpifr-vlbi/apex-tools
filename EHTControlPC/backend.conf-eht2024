@@ -1,0 +1,169 @@
+#!/hint/yaml
+# This config file describes a VLBI backend as a graph consisting of nodes and
+# links that together make up chains.  The nodes are backend devices and the
+# links are cables.
+#
+# Nodes:
+# ======
+# Backend device configuration is split in two parts, "layout" and "device",
+# according to:
+#  1. hardware layout (I/O ports) and other unmutable properties
+#  2. device-specific and site-specific properties/settings
+# The layout describes the internal routing, i.e. which outputs are connected to
+# which inputs.  The purpose of this split is to separate variable properties
+# from device properties that are constant over time and for the whole EHT.
+#
+# Links:
+# ======
+# Each link connects one device's output to another device's input.  Each link
+# in this section will be part of a multi-node-link chain.  Each device's input
+# or output can only be used once.
+#
+# Chains:
+# =======
+# Links together with nodes and their internal routing define end-to-end data
+# chains.  Chains can only start/end at inputs/outputs that are labeled
+# accordingly.  Unused outputs that are internally connected to used inputs are
+# not allowed to be left dangling; they need to be terminated with terminator
+# dummy devices.
+
+
+# Execute schedule by instructing components.
+instruct:
+        vexstore: /srv/vexstore
+        stationname: APEX
+        stationcode: Ax
+
+# Report status to VLBImonitor server.
+report:
+
+deviceLayouts:
+#       Name    Input   Output
+        rx:
+                analog:
+                        lsb_L: {label: lcp_lsb, sideband: lsb, pol: lcp}
+                        lsb_R: {label: rcp_lsb, sideband: lsb, pol: rcp}
+                        usb_L: {label: lcp_usb, sideband: usb, pol: lcp}
+                        usb_R: {label: rcp_usb, sideband: usb, pol: rcp}
+                _role:  rx
+                _chainstart: [analog]
+
+        dbbc3:
+                boardA:
+                        A_e0: {label: lo, band: low}
+                        A_e2: {label: hi, band: high}
+                boardB:
+                        B_e0: {label: lo, band: low}
+                        B_e2: {label: hi, band: high}
+                boardC:
+                        C_e0: {label: lo, band: low}
+                        C_e2: {label: hi, band: high}
+                boardD:
+                        D_e0: {label: lo, band: low}
+                        D_e2: {label: hi, band: high}
+                _role: dbbc
+
+        mark6:
+                eth2:
+                        groupa: {}
+                eth3:
+                        groupb: {}
+                eth4:
+                        groupc: {}
+                eth5:
+                        groupd: {}
+                _role: recorder
+                _chainend: [groupa, groupb, groupc, groupd]
+
+        terminator:
+                in: {out: {}}
+                _role: terminator
+                _chainstart: [in]
+                _chainend: [out]
+
+
+delim_device: "."
+devices:
+        rx.230: {layout: rx}
+        rx.345: {layout: rx}
+        rx.460: {layout: rx}
+
+# "dbbc3_config_file_oct_D_120-230G.txt"
+#   3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_1.fila10g COM26
+#   3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_2.fila10g COM27
+#   3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_2.fila10g COM28
+#   3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_2.fila10g COM29
+#   3 4525.5 10 32000 COM30
+#   3 4525.5 10 32000
+#   3 4522.5 10 32000 COM31
+#   3 4522.5 10 32000
+
+# Pico EHT2024:
+#   " mode: "OCT_D", sw_major: 120, sw_minor: 220831, "
+#   " boardA: {bitfile: "dbbc3_oct_D_2hv2_310822.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9048} "
+#  comparison to EHT 2023 APEX dbbc3_config_file_oct_D_120-230G.txt
+#    Pv: sw_minor 220831                Ax 2023: sw_minor 220309
+#    Pv: dbbc3_oct_D_2hv2_310822.bit    Ax 2023: dbbc3_oct_D_2hv2_270921.bit
+#    Pv: synth_freq 9048 MHz            Ax 2023: 9051 MHz (Valon#1 2*4525.5 MHz) + 9045 MHz (Valon#2 2*4522.5 MHz) to remove 1st LO offset of 3.0 MHz
+#
+        dbbc3.all: {layout: dbbc3, hostname: dbbc3, port: 4000, mode: "OCT_D", sw_major: 120, sw_minor: 220831,
+          boardA: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
+          boardB: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
+          boardC: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
+          boardD: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
+          A_e0: {thread: 10, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          A_e2: {thread: 12, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          B_e0: {thread: 20, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          B_e2: {thread: 22, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          C_e0: {thread: 30, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          C_e2: {thread: 32, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          D_e0: {thread: 40, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
+          D_e2: {thread: 42, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
+
+        mark6.lsb_hi:
+                layout: mark6
+                hostname: recorder1
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}  # eth3 eth5 ixgbe
+        mark6.lsb_lo:
+                layout: mark6
+                hostname: recorder2
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}  # eth3 eth5 ixgbe
+        mark6.usb_lo:
+                layout: mark6
+                hostname: recorder3
+                modules: {groupa: [mod1, mod2], groupc: [mod3, mod4]}  # eth2 eth4 i40e
+        mark6.usb_hi:
+                layout: mark6
+                hostname: recorder4
+                modules: {groupa: [mod1, mod2], groupc: [mod3, mod4]}  # eth2 eth4 i40e
+
+        terminator.1: {layout: terminator}
+        terminator.2: {layout: terminator}
+
+
+delim_port: ":"
+delim_link: "  "
+links:
+        # level 1-2
+        - rx.230:lsb_L  dbbc3.all:boardA
+        - rx.230:lsb_R  dbbc3.all:boardB
+        - rx.230:usb_L  dbbc3.all:boardC
+        - rx.230:usb_R  dbbc3.all:boardD
+
+        # Recorder1
+        - dbbc3.all:A_e2  mark6.lsb_hi:eth3
+        - dbbc3.all:B_e2  mark6.lsb_hi:eth5
+
+        # Recorder2
+        - dbbc3.all:A_e0  mark6.lsb_lo:eth3
+        - dbbc3.all:B_e0  mark6.lsb_lo:eth5
+
+        # Recorder3
+        - dbbc3.all:C_e2  mark6.usb_lo:eth2
+        - dbbc3.all:D_e2  mark6.usb_lo:eth4
+
+        # Recorder4
+        - dbbc3.all:C_e0  mark6.usb_hi:eth2
+        - dbbc3.all:D_e0  mark6.usb_hi:eth4
+
+# vim: ft=yaml:ts=8:sts=8:sw=8:expandtab:tw=80 foldmethod=indent
