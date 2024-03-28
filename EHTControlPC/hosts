@@ -5,7 +5,9 @@
 127.0.0.1	localhost.localdomain	localhost
 ::1		localhost.localdomain	localhost
 
+10.0.2.96	maser.apex-telescope.org	maser
 10.0.2.102 	vlbi-control1.apex-telescope.org	cc-apex
+10.0.2.170	observer3.apex-telescope.org	observer3
 131.174.31.24 	vlbi-control1.science.ru.nl	cc-ru
 
 192.168.0.17	gps1
@@ -34,6 +36,8 @@
 192.168.0.82	powerstrip2
 192.168.0.83	powerstrip3
 192.168.0.84	powerstrip4
+
+192.168.0.91	dbbc3
 
 192.168.0.97	netswitch1
 192.168.0.98	netswitch2
