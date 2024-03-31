@@ -1,0 +1,21 @@
+config_adb3l.txt
+3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_1.fila10g COM26
+3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_2.fila10g COM27
+3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_3.fila10g COM28
+3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_4.fila10g COM29
+0 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_5.fila10g COM50
+0 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_6.fila10g COM51
+0 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_7.fila10g COM52
+0 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_8.fila10g COM53
+3 4525.5 10 32000 COM30
+3 4525.5 10 32000
+3 4522.5 10 32000 COM31
+3 4522.5 10 32000
+0 28000
+0 28000
+0 28000
+0 28000
+CAT3 2048
+192.168.0.91
+224.0.0.255:25000
+5
