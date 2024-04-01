@@ -1,0 +1,18 @@
+
+
+Version to use for EHT 2024 is not release-0.3 but rather
+the 'develop' branch at level of git commit 926c085.
+
+[oper@cc-apex dbbc3-git]$ git branch
+* develop
+  hotfix-0.3-freqDataType
+  master
+
+[oper@cc-apex dbbc3-git]$ git log -n1
+commit 926c0854f104cd5fc68ec63085bb4d5a7a811d8f (HEAD -> develop, origin/develop)
+Merge: ca775a0 69a928e
+Author: rottmann@mpifr-bonn.mpg.de <rottmann@mpifr-bonn.mpg.de>
+Date:   Wed Jan 17 13:05:28 2024 +0000
+
+    Merge branch 'develop' of https://github.com/mpifr-vlbi/dbbc3 into develop
+
