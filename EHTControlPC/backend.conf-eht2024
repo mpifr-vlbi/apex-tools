@@ -102,15 +102,22 @@ devices:
 #   " mode: "OCT_D", sw_major: 120, sw_minor: 220831, "
 #   " boardA: {bitfile: "dbbc3_oct_D_2hv2_310822.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9048} "
 #  comparison to EHT 2023 APEX dbbc3_config_file_oct_D_120-230G.txt
-#    Pv: sw_minor 220831                Ax 2023: sw_minor 220309
-#    Pv: dbbc3_oct_D_2hv2_310822.bit    Ax 2023: dbbc3_oct_D_2hv2_270921.bit
+#    Pv: sw_minor 220831                Ax 2023: sw_minor 220309                 Ax 2024: 220831
+#    Pv: dbbc3_oct_D_2hv2_310822.bit    Ax 2023: dbbc3_oct_D_2hv2_270921.bit     Ax 2024: dbbc3_oct_D_2hv2_221122.bit
 #    Pv: synth_freq 9048 MHz            Ax 2023: 9051 MHz (Valon#1 2*4525.5 MHz) + 9045 MHz (Valon#2 2*4522.5 MHz) to remove 1st LO offset of 3.0 MHz
 #
-        dbbc3.all: {layout: dbbc3, hostname: dbbc3, port: 4000, mode: "OCT_D", sw_major: 120, sw_minor: 220309,
-          boardA: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
-          boardB: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
-          boardC: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
-          boardD: {bitfile: "dbbc3_oct_D_2hv2_270921.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
+# 28mar2024 updated dbbc3 firmware to one shared by Helge,
+#   dbbc3_oct_D_2hv2_221122.bit
+# though the bundled config file with that refers to a two-day fresher
+#   dbbc3_oct_D_2hv2_241122.bit
+# and Change Log also dated 24.11., by mistake, it seems --> 221122.bit is correct
+
+
+        dbbc3.all: {layout: dbbc3, hostname: dbbc3, port: 4000, mode: "OCT_D", sw_major: 120, sw_minor: 220831,
+          boardA: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
+          boardB: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
+          boardC: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
+          boardD: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
           A_e0: {thread: 10, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
           A_e2: {thread: 12, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
           B_e0: {thread: 20, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
