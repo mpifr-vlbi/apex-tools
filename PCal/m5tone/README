@@ -5,7 +5,7 @@ autoconf
 autoheader
 automake -a -c
 
-./configure
+./configure --prefix=/usr/local/
 make
 
 
