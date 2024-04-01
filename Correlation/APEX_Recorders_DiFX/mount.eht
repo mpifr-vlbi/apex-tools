@@ -1,6 +1,6 @@
 
 #!/bin/bash
-echo "Disks currently present : `mount|grep disks|wc -l`"
+echo "Disks currently present : `mount |grep disks|grep -v meta|wc -l`"
 
 echo "Unmounting previously mounted FUSE filesystems"
 fusermount -u /mark6-?_fuse/12
