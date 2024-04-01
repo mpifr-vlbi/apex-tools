@@ -1,0 +1,5 @@
+#!/bin/bash
+. /usr/local/src/difx-281/setup_difx
+mpifxcorr $@
+
+

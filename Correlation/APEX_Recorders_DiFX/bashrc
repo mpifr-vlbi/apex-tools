@@ -2,8 +2,21 @@
 
 # Update /home/oper/.bashrc and perhaps /root/.bashrc to have
 
+# DiFX-2.8.1
+alias dtrunk='source /usr/local/src/difx/setup/setup.bash'
+alias d281="source /usr/local/difx-281/setup_bash"
+alias cd281="cd /usr/local/src/difx-281/svn"
+alias hops="source /usr/local/difx-281/bin/hops.bash"
 if test "$PS1" != ""; then
-   . /usr/local/src/difx/setup/setup.bash
-   . /usr/local/difx/bin/hops.bash
+   d281
+else
+   export PATH=$PATH:/usr/local/difx-281/bin/    # to see runmpifxcorr.DiFX-281
+fi
+
+# HOPS
+if test "$PS1" != ""; then
+   if [ -f /usr/local/src/hops/install-3.24/bin/hops.bash ]; then
+      source /usr/local/src/hops/install-3.24/bin/hops.bash
+   fi
 fi
 
