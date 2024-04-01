@@ -88,16 +88,6 @@ devices:
         rx.345: {layout: rx}
         rx.460: {layout: rx}
 
-# "dbbc3_config_file_oct_D_120-230G.txt"
-#   3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_1.fila10g COM26
-#   3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_2.fila10g COM27
-#   3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_2.fila10g COM28
-#   3 dbbc3_oct_D_2hv2_270921.bit oct_D_core3H_2.fila10g COM29
-#   3 4525.5 10 32000 COM30
-#   3 4525.5 10 32000
-#   3 4522.5 10 32000 COM31
-#   3 4522.5 10 32000
-
 # Pico EHT2024:
 #   " mode: "OCT_D", sw_major: 120, sw_minor: 220831, "
 #   " boardA: {bitfile: "dbbc3_oct_D_2hv2_310822.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9048} "
@@ -112,12 +102,23 @@ devices:
 #   dbbc3_oct_D_2hv2_241122.bit
 # and Change Log also dated 24.11., by mistake, it seems --> 221122.bit is correct
 
-
         dbbc3.all: {layout: dbbc3, hostname: dbbc3, port: 4000, mode: "OCT_D", sw_major: 120, sw_minor: 220831,
+          # 230G VLBI
           boardA: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
           boardB: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
           boardC: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
           boardD: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
+          # 260G VLBI
+          #boardA: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9054},
+          #boardB: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9054},
+          #boardC: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9042},
+          #boardD: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9042},
+          # 345G VLBI
+          #boardA: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 8048},
+          #boardB: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 8048},
+          #boardC: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 8048},
+          #boardD: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 8048},
+          # COMMON:
           A_e0: {thread: 10, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
           A_e2: {thread: 12, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
           B_e0: {thread: 20, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
