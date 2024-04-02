@@ -1,7 +1,8 @@
-sourcecats('t-0111.f-9996a-2023.cat')
-linecats('t-0111.f-9996a-2023.lin')
+sourcecats('t-0113.f-9996a-2024.cat')
+linecats('t-0113.f-9996a-2024.lin')
 
 exec_apecs_script('sepia_commands')
+
 
 execfile('/homes/software/apecs/startObsCommands.apecs')
 
@@ -14,14 +15,20 @@ SEPIA345.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
 
 
 # Need to setup the line frequency <HERE> for SEPIA345
-# setup_sepia(fename='sepia345', linename='CO(3-2)', sideband='', mode='spec', cats='all', doppler='ON', sbwidth=8)
-setup_sepia(fename='sepia345', linename='vlbifreq345', sideband='', mode='spec', cats='all', doppler='off', sbwidth=8)
+setup_sepia(fenames=['sepia345'], linenames=['vlbifreq345'], sidebands=[''], mode='spec', cats='all', doppler='off', numchans=[65536], sbwidths=[8])
+
+
+use_linear_sensors('on')
+use_tiltmeters('on','on')
+
+# fcorr_reset()
+use_foc_temp_corr('on')
 
 use_ref('on')
 continuous_data('off')
 skip_hardware_setup('off')
 sepia345.configure(doppler='off')
 tp() # Added to be extra sure we disable the wobbler after line pointings (JPE: 2021-04-13)
-load()
+#load()
 ################################################################
 

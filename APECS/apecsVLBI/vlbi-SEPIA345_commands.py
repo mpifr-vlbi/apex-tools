@@ -9,6 +9,26 @@ import os
 # VLBI Calibration and Scan/VLBI Recording Helpers
 #############################################################################
 
+def vlbi_tuning():
+    '''
+    (Re)Configure SEPIA.
+
+    This needs to be invoked regulary in case 1) operator interaction left apecs
+    tuned to e.g. CO line instead of vlbi freq, or 2) backend for Tsys was left
+    in continuum rather than in line mode.
+    '''
+
+    setup_sepia( fenames=['sepia345'],
+        linenames=['vlbifreq345'],
+        sidebands=[''], mode='spec', numchans=[65536], sbwidths=[8],
+        cats='all',
+        doppler='off')
+
+    sepia345.configure(doppler='off')  # prevent Doppler correction during VLBI scan on()
+    tp()                               # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
+    use_ref('OFF')                     # avoid going off-source during VLBI scan on()
+
+
 def vlbi_reference_scan():
     '''
     Take an on() scan with duration of 20s (was:~1 minute) with an off-source reference.
