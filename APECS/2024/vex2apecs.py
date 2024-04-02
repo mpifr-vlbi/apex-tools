@@ -337,7 +337,7 @@ def obs_writeScans(fd,scans,sources):
 
 def run(args):
 
-	if (len(args) != 2):
+	if (len(args) != 2) or (args[1] == '--help' or args[1]=='-h'):
 		print(__doc__)
 		sys.exit(-1)
 
