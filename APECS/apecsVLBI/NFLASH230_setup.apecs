@@ -1,5 +1,5 @@
-sourcecats('t-0111.f-9996a-2023.cat')
-linecats('t-0111.f-9996a-2023.lin')
+sourcecats('t-0113.f-9996a-2024.cat')
+linecats('t-0113.f-9996a-2024.lin')
 
 exec_apecs_script('nflash_commands')
 # execfile('/homes/software/apecs/start_pi230.apecs')  # OUTDATED
@@ -16,9 +16,9 @@ NFLASH230.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
                            5])
 
 
-setup_nflash(fenames=['nflash230'], linenames=['vlbifreq7'], sidebands=[''],mode='spec', sbwidths=[8], numchan=65536, cats='all',doppler='off')
+setup_nflash(fenames=['nflash230'], linenames=['vlbifreq7'], sidebands=[''],mode='spec', sbwidths=[8], numchans=[65536], cats='all',doppler='off')
 
-# setup_nflash(fenames=['nflash230'], linenames=['test_tone'], sidebands=[''],mode='spec', sbwidths=[8], numchan=65536, cats='all',doppler='off')
+# setup_nflash(fenames=['nflash230'], linenames=['test_tone'], sidebands=[''],mode='spec', sbwidths=[8], numchans=[65536], cats='all',doppler='off')
 
 use_ref('on')
 continuous_data('off')
