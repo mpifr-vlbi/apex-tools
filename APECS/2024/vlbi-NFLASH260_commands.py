@@ -11,7 +11,7 @@ import os
 
 def vlbi_tuning():
     '''
-    (Re)Configure nflash230.
+    (Re)Configure nflash230 to the 260(!) GHz VLBI line freq
 
     This needs to be invoked regulary in case 1) operator interaction left apecs
     tuned to e.g. CO line instead of vlbi freq, or 2) backend for Tsys was left
