@@ -22,4 +22,3 @@ nflash230.configure(doppler='off')
 tp() # Added to be extra sure we disable the wobbler after line pointings (JPE: 2021-04-13)
 
 ################################################################
-
