@@ -171,7 +171,7 @@ double processRecordingByDFT(const char *infilename, int chan, int fftlen, int n
         for (l = 0; l < navg; l++) {
 
             n = mark5_stream_decode(ms, fftlen, data);
-            if (n < 1) { // (n != fftlen) {
+            if (n < 0) { // (n != fftlen) {
                 endoffile = 1;
                 printf("Short read, %d bytes. EOF.\n", n);
                 break;
