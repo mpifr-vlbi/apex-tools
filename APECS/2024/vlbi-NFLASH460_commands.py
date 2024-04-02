@@ -16,10 +16,6 @@ def vlbi_tuning():
     This needs to be invoked regulary in case 1) operator interaction left apecs
     tuned to e.g. CO line instead of vlbi freq, or 2) backend for Tsys was left
     in continuum rather than in line mode.
-
-    Note: In 2022 we verified CO line pointing works fine while tuned to 'vlbifreq7',
-          nevertheless it remains prudent for the scripted schedule to hammer in the
-          correct VLBI tuning at every opportunity.
     '''
 
     setup_nflash( fenames=['nflash460'],
@@ -187,7 +183,7 @@ def vlbi_get_calibration():
     except:
         print 'No calibration result available.'
 
-def vwcpoint(t=24., l=[], cal=1, line='vlbifreq7', dopp='OFF', ptRun=False, dbpcorr=False):
+def vwcpoint(t=24., l=[], cal=1, line='vlbifreq460', dopp='OFF', ptRun=False, dbpcorr=False):
     '''
 
     Continuum pointing cross scan in beam switching (wob) mode using pseudocontinumm.
@@ -196,7 +192,7 @@ def vwcpoint(t=24., l=[], cal=1, line='vlbifreq7', dopp='OFF', ptRun=False, dbpc
                   l: Length of the arms of the cross
                      [] = use default value for current FE.
                 cal: 1 = calibrate before the pointing
-               line: 'vlbifreq7' = do pointing at vlbifreq7
+               line: 'vlbifreq460' = do pointing at vlbifreq460
                      '' = do pointing at current frequency
                      '*' = use standard line for current FE.
                dopp: 'ON' apply Doppler correction in the tuning frequency.
