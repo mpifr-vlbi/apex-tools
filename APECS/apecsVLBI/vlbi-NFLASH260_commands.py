@@ -23,8 +23,8 @@ def vlbi_tuning():
     '''
 
     setup_nflash( fenames=['nflash230'],
-        linenames=['vlbifreq7'],
-        sidebands=[''], mode='spec', sbwidths=[8], numchans=[65536],
+        linenames=['vlbifreq260'],
+        sidebands=[''],mode='spec', sbwidths=[8], numchans=[65536],
         cats='all',
         doppler='off' )
 
@@ -187,7 +187,7 @@ def vlbi_get_calibration():
     except:
         print 'No calibration result available.'
 
-def vwcpoint(t=24., l=[], cal=1, line='vlbifreq7', dopp='OFF', ptRun=False, dbpcorr=False):
+def vwcpoint(t=24., l=[], cal=1, line='vlbifreq260', dopp='OFF', ptRun=False, dbpcorr=False):
     '''
 
     Continuum pointing cross scan in beam switching (wob) mode using pseudocontinumm.
@@ -196,7 +196,7 @@ def vwcpoint(t=24., l=[], cal=1, line='vlbifreq7', dopp='OFF', ptRun=False, dbpc
                   l: Length of the arms of the cross
                      [] = use default value for current FE.
                 cal: 1 = calibrate before the pointing
-               line: 'vlbifreq7' = do pointing at vlbifreq7
+               line: 'vlbifreq260' = do pointing at vlbifreq260
                      '' = do pointing at current frequency
                      '*' = use standard line for current FE.
                dopp: 'ON' apply Doppler correction in the tuning frequency.

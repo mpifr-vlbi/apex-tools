@@ -24,12 +24,12 @@ def vlbi_tuning():
 
     setup_nflash( fenames=['nflash230'],
         linenames=['vlbifreq7'],
-        sidebands=[''], mode='spec', sbwidths=[8], numchan=65536,
+        sidebands=[''], mode='spec', sbwidths=[8], numchans=[65536],
         cats='all',
         doppler='off' )
 
     nflash230.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
-    tp()                               # cancel any wob() wobbler config persisting from operator line pointing
+    tp()                               # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
     use_ref('OFF')                     # avoid going off-source during VLBI scan on()
 
 

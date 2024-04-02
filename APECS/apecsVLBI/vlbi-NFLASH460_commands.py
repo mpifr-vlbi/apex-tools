@@ -11,7 +11,7 @@ import os
 
 def vlbi_tuning():
     '''
-    (Re)Configure nflash230.
+    (Re)Configure nflash460.
 
     This needs to be invoked regulary in case 1) operator interaction left apecs
     tuned to e.g. CO line instead of vlbi freq, or 2) backend for Tsys was left
@@ -22,14 +22,14 @@ def vlbi_tuning():
           correct VLBI tuning at every opportunity.
     '''
 
-    setup_nflash( fenames=['nflash230'],
-        linenames=['vlbifreq7'],
-        sidebands=[''], mode='spec', sbwidths=[8], numchans=[65536],
+    setup_nflash( fenames=['nflash460'],
+        linenames=['vlbifreq460'],
+        sidebands=[''], mode='spec', sbwidths=[8], numchan=65536,
         cats='all',
         doppler='off' )
 
-    nflash230.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
-    tp()                               # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
+    nflash460.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
+    tp()                               # cancel any wob() wobbler config persisting from operator line pointing
     use_ref('OFF')                     # avoid going off-source during VLBI scan on()
 
 
@@ -126,7 +126,7 @@ def vlbi_tp_onsource_JP(src='M87', t_mins=4):
     ## EXAMPLE
     # UNUSED CODE
 
-    nflash230.configure(doppler='off')
+    nflash460.configure(doppler='off')
     #
     # First on() subscan will have a reference
     #
@@ -158,7 +158,7 @@ def vlbi_tp_onsource_JP(src='M87', t_mins=4):
 
 def vlbi_wpoint(t=20,cal=1):
     '''Wobbler pointing for VLBI.'''
-    nflash230.configure(doppler='on')  # should be OFF
+    nflash460.configure(doppler='on')  # should be OFF
     if (cal):
         calibrate('cold')
     wob(amplitude=75, rate=1.5, mode='pos')
@@ -166,18 +166,18 @@ def vlbi_wpoint(t=20,cal=1):
     point(length=54, unit='arcsec', time=t, mode='ras', points=5, direction='x')
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    nflash230.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
+    nflash460.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
 
 
 def vlbi_focus(axis='Z',t=6):
     '''Focus scan for VLBI.'''
-    nflash230.configure(doppler='on')
+    nflash460.configure(doppler='on')
     vlbi_focus.func_defaults = (axis,)
     wob(amplitude=75, rate=1.5, mode='pos')
     focus(amplitude=1, points=5, axis=axis, time=t)
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    nflash230.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
+    nflash460.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
 
 def vlbi_get_calibration():
     '''Collect calibration results'''
