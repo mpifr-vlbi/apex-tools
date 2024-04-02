@@ -12,6 +12,10 @@ Command entry:
   POW <nn.n> dBm
   OUTPUT [on|off]
 
+Spectrometer view (XFFTS) on VNC:
+  vnc server:  ffts1:2
+  passwd:      ... ask staff...
+
 Two harmonic mixers (HM) for tone generation:
  - HM for NFLASH (230G/260G VLBI)
  - HM for SEPIA (345G VLBI)
@@ -25,8 +29,8 @@ Synthesizer power should be ramped up/down in
 small steps to be delicate to the HMs.
 
 The settings below all produce a tone at
-  ~423.0 MHz  in EHT Band 4 of 230/260/345G VLBI
-provided that the DBBC3 Valon LO is accordingly tuned
+  ~423.0 MHz  in recorded EHT Band 4 of 230/260/345G VLBI
+provided that the DBBC3 Valon synth is tuned accordingly,
   cf. DBBC3-Valon-Tuning.txt
 
 
@@ -89,7 +93,8 @@ pow 18 dbm
 pow 22 dbm
 pow 23.6 dbm
 
-  Tone should be visible on XFFTS screen #5 at ~3500 MHz
+  Tone should be visible on XFFTS screen #8 at ~550 MHz
+  (was: Tone should be visible on XFFTS screen #5 at ~3500 MHz)
 
 Disable tone:
 
