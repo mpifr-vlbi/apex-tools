@@ -226,8 +226,15 @@ double processRecordingByDFT(const char *infilename, int chan, int fftlen, int n
             APmidMJD, 1e-3*(APcount*AP_msec + AP_msec/2),
             amp, phase, coherence
         );
-        fprintf(out, resultline);
         printf(resultline);
+
+        memset(resultline, '\0', sizeof(resultline));
+        snprintf(resultline, sizeof(resultline)-1,
+            "%.9lf %10.6lf %11.6e %+8.3f %.3f\n",
+            APmidMJD, 1e-3*(APcount*AP_msec + AP_msec/2),
+            amp, phase, coherence
+        );
+        fprintf(out, resultline);
 
         APcount++;
     }
@@ -380,8 +387,15 @@ double processRecordingByCrosscorr(const char *infilename, int chan, int nsampav
             APmidMJD, 1e-3*(APcount*AP_msec + AP_msec/2),
             amp, phase, coherence
         );
-        fprintf(out, resultline);
         printf(resultline);
+
+        memset(resultline, '\0', sizeof(resultline));
+        snprintf(resultline, sizeof(resultline)-1,
+            "%.9lf %10.6lf %11.6e %+8.3f %.3f\n",
+            APmidMJD, 1e-3*(APcount*AP_msec + AP_msec/2),
+            amp, phase, coherence
+        );
+        fprintf(out, resultline);
 
         APcount++;
     }
