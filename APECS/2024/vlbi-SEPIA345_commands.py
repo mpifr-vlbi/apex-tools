@@ -22,11 +22,24 @@ def vlbi_tuning():
         linenames=['vlbifreq345'],
         sidebands=[''], mode='spec', numchans=[65536], sbwidths=[8],
         cats='all',
-        doppler='off')
+        doppler='off' )
 
     sepia345.configure(doppler='off')  # prevent Doppler correction during VLBI scan on()
     tp()                               # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
     use_ref('OFF')                     # avoid going off-source during VLBI scan on()
+
+
+def vlbi_tsys(mode_='COLD',time_s=10):
+    '''
+    Initiate Tsys measurement. Should ideally be called on-target before vlbi_scan().
+
+    2022: calibrate(time=6,mode='HOT')    does Sky-Hot without Cold, takes ~40 sec in total
+          calibrate(time=10,mode='COLD')  full Sky-Hot-Cold, takes ~85 sec in total
+    '''
+
+    vlbi_tuning()
+    reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='HO', epoch=2000.0)
+    calibrate(mode=mode_,time=time_s)
 
 
 def vlbi_reference_scan():
@@ -35,36 +48,23 @@ def vlbi_reference_scan():
     Prior to calling this function, must already be tracking a source.
     '''
 
-    #nflash230.configure(doppler='off')
-    sepia345.configure(doppler='off')
+    vlbi_tuning()
 
     # Set reference in Horizontal mode, so it is at the same elevation as the target source.
     use_ref('ON')
     reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='HO', epoch=2000.0)
-
-    # Wobbler off
-    tp()
+    tp()  # wobbler off
 
     # Do one on() subscan that has a reference
     repeat(1)
-    ## on(drift='no',time=30) # 2 x 30s = 1 minute   ; e21b09 : too long for 2-3min gaps!
-    on(drift='no',time=10) # 2 x 10s = 20 s   # e21b09 - todo ask operators is 10s ok...
-    use_ref('OFF')
+    # on(drift='no',time=30) # 2 x 30s = 1 minute   ; e21b09 : too long for 2-3min gaps!
+    # on(drift='no',time=10) # 2 x 10s = 20 s
+    on(drift='no',time=5) # EHT2022: reduced to 2 x 5sec, from 2 x 10sec/EHT2021, due e22b19 scan gaps being very short
 
-    # Stay on target
+    # Continue tracking VLBI target
+    use_ref('OFF')
     repeat(1)
     track()
-
-
-def vlbi_tsys():
-    '''
-    Initiate Tsys measurement. Takes about 4 x 5 seconds to complete.
-    Should ideally be called after vlbi_reference_scan() and
-    before vlbi_scan().
-    '''
-
-    reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='HO', epoch=2000.0)
-    calibrate(time=10)
 
 
 def vlbi_scan(t_mins=5,targetSource=''):
@@ -80,12 +80,7 @@ def vlbi_scan(t_mins=5,targetSource=''):
     must be ON source for the whole  duration of the VLBI scan (~t_mins minutes).
     '''
 
-    # Tune receiver; no Doppler, no reference position, disable Wobbler (tp() overrides
-    # any wob() that may have persisted from operators line pointing scans)
-    #nflash230.configure(doppler='off')
-    sepia345.configure(doppler='off')
-    use_ref('OFF')
-    tp()
+    vlbi_tuning()
 
     if targetSource:
         # If 'targetSource' arg is not empty, make sure we are on that source before starting VLBI scan
@@ -97,60 +92,20 @@ def vlbi_scan(t_mins=5,targetSource=''):
     # Fill most of the VLBI scan time with series of on()
     repeat(t_mins)
     # on(drift='no',time=60) # EHT2017, EHT2018
-    on(drift='no',time=30) # EHT2021, changed to 50% of t_mins from middle of e21b09 due to overheads (30%) that are greater than before
+    # on(drift='no',time=30) # EHT2021: changed to 50% of t_mins from middle of e21b09 due to overheads (30%) that are greater than before
+    on(drift='no',time=30)   # EHT2022, EHT2023: assume same high overhead as found EHT2021. Worked out okay in e22b19 with 1-5min long scans.
 
     # Continue tracking for remainder of VLBI scan; ought to be less than auto-standby timeout time
     repeat(1)
     track()
 
 
-
-# ==EXAMPLE== function by JP below for Tsys measurement
-# JP recommended this process:
-#  do a 1min calibrate OFF-Source before VLBI scan, if time allows -- use_ref('ON'); reference(x=-100.0, ...); repeat(1); on(drift='no', time=60); 
-#  do the VLBI scan                                                -- use_ref('OFF'); repeat(N_minutes); on(drift='no', time=60):
-#  do a 20s..1min Tsys VLBI scan, if time allows                   -- calibrate(time=5);
-#      move the Tsys to be done after the Off-Source reference cal and _before_ the VLBI scan rather than after
-#
-def vlbi_tp_onsource_JP(src='M87', t_mins=4):
-    '''Total power monitoring for VLBI, taken while tracking source.
-    
-       t_mins : integration time on-source in MINUTES, not including other calibrations (1-2 minutes extra overhead)
-    '''
-    #nflash230.configure(doppler='off')
-    sepia345.configure(doppler='off')
-    #
-    # First on() subscan will have a reference
-    #
-    # Set reference in Horizontal mode, so it is at the same elevation as the target source.
-    use_ref('ON')
-    reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='HO', epoch=2000.0)
-    repeat(1)
-    on(drift='no', time=60)
-    
-    #
-    # The next on() subscans will not have a reference to stay on target.
-    # 
-    use_ref('OFF')
-    repeat(t-1)
-    on(drift='no', time=60)
-    
-    #
-    # Just stay on target
-    #
-    repeat(1)
-    track()
-
-    # Now get Tsys
-    calibrate(time=10)
-    #use_ref('ON')
-
-
-# ------------------- probably unused functions:
+#############################################################################
+# probably unused functions
+#############################################################################
 
 def vlbi_wpoint(t=20,cal=1):
     '''Wobbler pointing for VLBI.'''
-    #nflash230.configure(doppler='on')
     sepia345.configure(doppler='on')
     if (cal):
         calibrate('cold')
@@ -159,22 +114,19 @@ def vlbi_wpoint(t=20,cal=1):
     point(length=54, unit='arcsec', time=t, mode='ras', points=5, direction='x')
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    #nflash230.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
     sepia345.configure(doppler='off')
-
 
 
 def vlbi_focus(axis='Z',t=6):
     '''Focus scan for VLBI.'''
-    #nflash230.configure(doppler='on')
     sepia345.configure(doppler='on')
     vlbi_focus.func_defaults = (axis,)
     wob(amplitude=75, rate=1.5, mode='pos')
     focus(amplitude=1, points=5, axis=axis, time=t)
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    #nflash230.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
     sepia345.configure(doppler='off')
+
 
 def vlbi_get_calibration():
     '''Collect calibration results'''

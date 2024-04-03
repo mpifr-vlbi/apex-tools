@@ -4,6 +4,7 @@
 ! For virtual APECS "line freq" at 6 GHz in the IF, 221.103 GHz => "227.103 GHz"
 !
 vlbifreq7    227.103 GHz USB
+vlbifreq230  227.103 GHz USB ! just a different name for vlbifreq7
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
