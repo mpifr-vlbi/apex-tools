@@ -63,6 +63,36 @@ deviceLayouts:
                         D_e2: {label: hi, band: high}
                 _role: dbbc
 
+        dbbc3_260G:
+                boardA:
+                        A_e0: {label: lo, band: low}
+                        A_e2: {label: hi, band: high}
+                boardB:
+                        B_e0: {label: lo, band: low}
+                        B_e2: {label: hi, band: high}
+                boardC:
+                        C_e0: {label: lo, band: low}
+                        C_e2: {label: hi, band: high}
+                boardD:
+                        D_e0: {label: lo, band: low}
+                        D_e2: {label: hi, band: high}
+                _role: dbbc
+
+        dbbc3_345G:
+                boardA:
+                        A_e0: {label: lo, band: low}
+                        A_e2: {label: hi, band: high}
+                boardB:
+                        B_e0: {label: lo, band: low}
+                        B_e2: {label: hi, band: high}
+                boardC:
+                        C_e0: {label: lo, band: low}
+                        C_e2: {label: hi, band: high}
+                boardD:
+                        D_e0: {label: lo, band: low}
+                        D_e2: {label: hi, band: high}
+                _role: dbbc
+
         mark6:
                 eth2:
                         groupa: {}
@@ -128,19 +158,19 @@ devices:
           D_e0: {thread: 40, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000},
           D_e2: {thread: 42, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 125000}}
 
-        mark6.lsb_hi:
+        mark6.band3:  # ex mark6.lsb_hi
                 layout: mark6
                 hostname: recorder1
                 modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}  # eth3 eth5 ixgbe
-        mark6.lsb_lo:
+        mark6.band4:  # ex mark6.lsb_lo
                 layout: mark6
                 hostname: recorder2
                 modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}  # eth3 eth5 ixgbe
-        mark6.usb_lo:
+        mark6.band1:  # ex mark6.usb_lo
                 layout: mark6
                 hostname: recorder3
                 modules: {groupa: [mod1, mod2], groupc: [mod3, mod4]}  # eth2 eth4 i40e
-        mark6.usb_hi:
+        mark6.band2:  # ex mark6.usb_hi
                 layout: mark6
                 hostname: recorder4
                 modules: {groupa: [mod1, mod2], groupc: [mod3, mod4]}  # eth2 eth4 i40e
@@ -158,20 +188,20 @@ links:
         - rx.230:usb_L  dbbc3.all:boardC
         - rx.230:usb_R  dbbc3.all:boardD
 
-        # Recorder1
-        - dbbc3.all:A_e2  mark6.lsb_hi:eth3
-        - dbbc3.all:B_e2  mark6.lsb_hi:eth5
+        # Recorder1 - band3
+        - dbbc3.all:C_e0  mark6.band3:eth3
+        - dbbc3.all:D_e0  mark6.band3:eth5
 
-        # Recorder2
-        - dbbc3.all:A_e0  mark6.lsb_lo:eth3
-        - dbbc3.all:B_e0  mark6.lsb_lo:eth5
+        # Recorder2 - band4
+        - dbbc3.all:C_e2  mark6.band4:eth3
+        - dbbc3.all:D_e2  mark6.band4:eth5
 
-        # Recorder3
-        - dbbc3.all:C_e2  mark6.usb_lo:eth2
-        - dbbc3.all:D_e2  mark6.usb_lo:eth4
+        # Recorder3 - band1
+        - dbbc3.all:A_e2  mark6.band1:eth2
+        - dbbc3.all:B_e2  mark6.band1:eth4
 
-        # Recorder4
-        - dbbc3.all:C_e0  mark6.usb_hi:eth2
-        - dbbc3.all:D_e0  mark6.usb_hi:eth4
+        # Recorder4 - band2
+        - dbbc3.all:A_e0  mark6.band2:eth2
+        - dbbc3.all:B_e0  mark6.band2:eth4
 
 # vim: ft=yaml:ts=8:sts=8:sw=8:expandtab:tw=80 foldmethod=indent
