@@ -5,7 +5,7 @@ exec_apecs_script('nflash_commands')
 
 execfile('/homes/software/apecs/startObsCommands.apecs')
 
-execfile('vlbi-NFLASH230_commands.py')
+execfile('vlbi-NFLASH260_commands.py')
 
 NFLASH230.monPoints.append(['GPS_COUNTERS_FMOUT_MASER', 
                            [('prop', 'APEX:COUNTERS:GPSMINUSFMOUT.GPSMinusFMOUT', 1.0, '-'), 
