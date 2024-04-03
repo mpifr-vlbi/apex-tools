@@ -9,7 +9,7 @@ import platform
 
 def usage():
 	print ('')
-	print ('Usage: apecsVLBI.py <experiment.obs>')
+	print ('Usage: apecsVLBI.py <experiment.apecs.obs>')
 	print ('')
 	print ('The .obs file can be generated from a VEX file using vex2apecs.py,')
 	print ('or from the vex2xml output XML file using xml2apecs.py.')
@@ -223,8 +223,9 @@ def run():
 
 	sock.close()
 
-if (len(sys.argv) != 2):
+if (len(sys.argv) != 2) or (sys.argv[1] == '--help' or sys.argv[1] == '-h'):
 	usage()
 	sys.exit(-1)
+
 run()
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Usage: vexGetSources2cat.py *.vex
+Usage: vexGetSources2cat.py <vexfile.vex> [<vexfile.vex> ...]
 
 Extract source names and coordinates from VEX file(s)
 and show them in APECS .cat format.
@@ -37,7 +37,7 @@ def checkVex(fn):
                         dec = coordReformat(v[1].split('=')[1])
                         print ('%-20s  EQ  2000  %17s %17s   LSR 0.0' % (currSrc,ra,dec))
 
-if len(sys.argv)<2:
+if (len(sys.argv) < 2) or (sys.argv[1] == '--help' or sys.argv[1]=='-h'):
 	print (__doc__)
 	sys.exit(1)
 

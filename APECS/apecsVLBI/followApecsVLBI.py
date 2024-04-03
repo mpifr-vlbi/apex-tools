@@ -10,14 +10,16 @@ import curses
 
 def usage():
 	print ('')
-	print ('DEBUG / Usage: followApecsVLBI.py <experiment.obs>')
+	print ('DEBUG / Usage: followApecsVLBI.py <experiment.apecs.obs>')
 	print ('')
 	print ('The .obs file can be generated from a VEX file using vex2apecs.py,')
 	print ('or from the vex2xml output XML file using xml2apecs.py.')
+	print ('')
 	print ('Unlike apecsVLBI.py that actually sends commands to APECS,')
-	print ('this script merely *displays* the progress of the timed commands')
-	print ('in the script without sending anything (someday this display')
-	print ('will be integrated into apecsVLBI.py itself...)')
+	print ('this script merely *displays* the progress of the timed commands.')
+	print ('It does not actually send any commands. TODO: Some day, progress')
+	print ('display will be integrated into apecsVLBI.py itself...)')
+	print ('')
 
 ###########################################################################################################
 #### Globals
@@ -297,9 +299,9 @@ def run(cmdfile):
 	curses.endwin()
 
 
-if (len(sys.argv) != 2):
+if (len(sys.argv) != 2) or (sys.argv[1] == '--help' or sys.argv[1] == '-h'):
 	usage()
 	sys.exit(-1)
-else:
-	run(sys.argv[1])
+
+run(sys.argv[1])
 
