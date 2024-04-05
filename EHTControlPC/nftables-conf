@@ -18,6 +18,7 @@ define correlator_networks = {
 	192.52.62.234,    # Haystack etransfer-external
 }
 define site_networks = {
+	10.0.33.0/24, #apex local wifi
 	10.0.6.0/24, #apex local
 	10.0.3.0/24, #apex local
 	10.0.2.0/24, #apex local
@@ -97,6 +98,8 @@ table inet filter {
 		meta l4proto {tcp, udp} th dport {2620-2631, 9000-9003} ip saddr @ipv4_whitelist counter accept comment "jive5ab and UDR Rsync evlbi (EHT DR2021)"
 
 		tcp dport {http, https} accept comment "VLBImonitor server"
+
+		tcp dport {3000, 8086} ip saddr @ipv4_whitelist accept comment "TIG stack"
 
 		# pkttype { broadcast,multicast} accept
 
