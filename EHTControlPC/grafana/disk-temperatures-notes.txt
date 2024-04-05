@@ -42,3 +42,9 @@ Transform, "Rename by regex":
   Labels on the graph then end up as
      sdaa sdab sdac ...
 
+
+Smartmontools on Mark6 with Debian Squeeze should be updated.
+The distro-included smartctl 5.40 does not support "--format=brief" required by Telegraf.
+Version 6.3 seems to work (https://github.com/smartmontools/smartmontools/releases)
+and it still compiles under the old GCC 4.4 of Debian Squeeze, unlike current version 7.4.
+
