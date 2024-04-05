@@ -1,0 +1,215 @@
+
+[global_tags]
+
+[agent]
+interval = "10s"
+round_interval = true
+metric_batch_size = 1000
+metric_buffer_limit = 10000
+collection_jitter = "0s"
+# collection_offset = "0s"
+flush_interval = "10s"
+flush_jitter = "0s"
+precision = "0s"
+## Log at debug level.
+# debug = false
+## Log only error level messages.
+# quiet = false
+
+[[outputs.influxdb_v2]]
+urls = ["http://192.168.0.1:8086"]
+token = "16GPmHAXsutcsNbZQZ9ON541gfMKMEVd2KU9Kezw6TdTHyc2ZWkAEuhY8CJUUlcW-3M_P28VzJDOspp0Ofdg8A=="
+organization = "APEX"
+bucket = "eht"
+
+[[inputs.cpu]]
+percpu = true
+totalcpu = true
+name_prefix = "recorder1_"
+
+[[inputs.mem]]
+name_prefix = "recorder1_"
+
+[[inputs.system]]
+name_prefix = "recorder1_"
+
+[[inputs.sensors]]
+name_prefix = "recorder1_"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
