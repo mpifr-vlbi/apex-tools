@@ -1,0 +1,44 @@
+
+
+Grafana, InfluxDB2 input, Flux query language
+
+
+Bucket
+
+  eht
+
+
+Telegraf, on each recorder
+
+  [[inputs.smart]]
+  nocheck = "standby"
+  excludes = [ "/dev/sda" ]   # ignore OS disk
+  read_method = "concurrent"
+  name_prefix = "recorder3_"
+
+
+Query, for all-disk set of temperatures:
+
+  from(bucket: "eht")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["_measurement"] == "recorder3_smart_device")
+  |> filter(fn: (r) => r["_field"] == "temp_c")
+  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+  |> yield(name: "mean")
+
+
+  Labels on the graph end up looking like
+
+    recorder3_smart_device temp_c {capacity="10000831348736", device="sdaa", enabled="Enabled", host="Mark6-4034", model="HGST HUH721010ALE600", power="ACTIVE", serial_no="2TJGJA3D", wwn="5000cca26ae2c97d"}
+      or actually
+    temp_c {capacity="10000831348736", device="sdaa", enabled="Enabled", host="Mark6-4034", model="HGST HUH721010ALE600", power="ACTIVE", serial_no="2TJGJA3D", wwn="5000cca26ae2c97d"}
+  
+
+Transform, "Rename by regex":
+
+  Match: temp_c[\s]*{[\s]*capacity="[0-9]*",[\s]+device="([a-zA-Z]+)",[\s]enabled(.*)
+  Replace: $1
+
+  Labels on the graph then end up as
+     sdaa sdab sdac ...
+
