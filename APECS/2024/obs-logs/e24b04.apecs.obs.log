@@ -1,0 +1,2123 @@
+2024.094.22:57:00;"----------| START OF e24b04.apecs.obs |----------
+2024.094.22:57:00;"Using TAI-UTC offset of +37 seconds
+2024.094.22:57:00;"#
+2024.094.22:57:00;"# APEX observing script for station Ax from file vexfiles/staging/e24b04.vex
+2024.094.22:57:00;"# File created on 2024.093.19:43:44 UT
+2024.094.22:57:00;"#
+2024.094.22:57:00;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2024.094.22:57:00;"# Details on the columns:
+2024.094.22:57:00;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2024.094.22:57:00;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2024.094.22:57:00;"#    2) estimated duration of the command in seconds
+2024.094.22:57:00;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2024.094.22:57:00;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2024.094.22:57:00;"#
+2024.094.22:57:00;"# At time              Duration   Command
+2024.094.22:57:00;"execfile('NFLASH260_setup.apecs')
+2024.094.22:57:00;"reply from APECS: OK
+2024.094.22:57:01;"reply from APECS: (timeout)
+2024.094.22:57:03;"execfile('vlbi-NFLASH260_commands.py')
+2024.094.22:57:03;"reply from APECS: OK
+2024.094.22:57:04;"reply from APECS: (timeout)
+2024.094.22:57:06;"
+2024.094.22:57:06;"# ### Block for 3C273 scan 1 'No0005' at 2024.094.23:05:00 in 200s ##############
+2024.094.23:01:40;"source('3C273',cats='user'); go(); track()
+2024.094.23:01:41;"reply from APECS: (timeout)
+2024.094.23:02:05;"vlbi_tsys()
+2024.094.23:02:05;"reply from APECS: OK
+2024.094.23:02:05;"reply from APECS: OK
+2024.094.23:02:06;"reply from APECS: (timeout)
+2024.094.23:03:30;"vlbi_reference_scan()
+2024.094.23:03:31;"reply from APECS: (timeout)
+2024.094.23:03:31;"#                      gap        max ~0 min 55 sec
+2024.094.23:05:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.094.23:05:00;"reply from APECS: OK
+2024.094.23:05:01;"reply from APECS: (timeout)
+2024.094.23:05:01;"#     scan ends at 2024.094.23:08:00
+2024.094.23:05:01;"
+2024.094.23:05:01;"# ### Block for M87 scan 2 'No0006' at 2024.094.23:11:00 in 180s ################
+2024.094.23:08:00;"source('M87',cats='user'); go(); track()
+2024.094.23:08:00;"reply from APECS: OK
+2024.094.23:08:01;"reply from APECS: (timeout)
+2024.094.23:08:25;"vlbi_tsys()
+2024.094.23:08:25;"reply from APECS: OK
+2024.094.23:08:25;"reply from APECS: OK
+2024.094.23:08:26;"reply from APECS: (timeout)
+2024.094.23:09:50;"vlbi_reference_scan()
+2024.094.23:09:51;"reply from APECS: (timeout)
+2024.094.23:09:51;"#                      gap        max ~0 min 35 sec
+2024.094.23:11:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.094.23:11:00;"reply from APECS: OK
+2024.094.23:11:01;"reply from APECS: (timeout)
+2024.094.23:11:01;"#     scan ends at 2024.094.23:15:00
+2024.094.23:11:01;"
+2024.094.23:11:01;"# ### Block for M87 scan 3 'No0007' at 2024.094.23:18:00 in 180s ################
+2024.094.23:15:00;"vlbi_tsys()
+2024.094.23:15:00;"reply from APECS: OK
+2024.094.23:15:00;"reply from APECS: OK
+2024.094.23:15:01;"reply from APECS: (timeout)
+2024.094.23:16:25;"vlbi_reference_scan()
+2024.094.23:16:26;"reply from APECS: (timeout)
+2024.094.23:16:26;"#                      gap        max ~1 min 00 sec
+2024.094.23:18:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.094.23:18:00;"reply from APECS: OK
+2024.094.23:18:01;"reply from APECS: (timeout)
+2024.094.23:18:01;"#     scan ends at 2024.094.23:22:00
+2024.094.23:18:01;"
+2024.094.23:18:01;"# ### Block for 3C279 scan 4 'No0008' at 2024.094.23:25:00 in 180s ##############
+2024.094.23:22:00;"source('3C279',cats='user'); go(); track()
+2024.094.23:22:00;"reply from APECS: OK
+2024.094.23:22:01;"reply from APECS: (timeout)
+2024.094.23:22:25;"vlbi_tsys()
+2024.094.23:22:25;"reply from APECS: OK
+2024.094.23:22:25;"reply from APECS: OK
+2024.094.23:22:26;"reply from APECS: (timeout)
+2024.094.23:23:50;"vlbi_reference_scan()
+2024.094.23:23:51;"reply from APECS: (timeout)
+2024.094.23:23:51;"#                      gap        max ~0 min 35 sec
+2024.094.23:25:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.094.23:25:00;"reply from APECS: OK
+2024.094.23:25:01;"reply from APECS: (timeout)
+2024.094.23:25:01;"#     scan ends at 2024.094.23:28:00
+2024.094.23:25:01;"
+2024.094.23:25:01;"# ### Block for 3C273 scan 5 'No0009' at 2024.094.23:38:00 in 600s ##############
+2024.094.23:25:01;"#
+2024.094.23:25:01;"# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2024.094.23:35:25
+2024.094.23:25:01;"#
+2024.094.23:28:00;"remote_control('off'); print('You have 7 min 35 sec until VLBI pre-scan calibrations at 2024.094.23:35:25. Remember to do remote_control ON.')
+2024.094.23:28:00;"reply from APECS: OK
+2024.094.23:28:00;"reply from APECS: OK
+2024.094.23:28:01;"reply from APECS: (timeout)
+2024.094.23:35:25;"source('3C273',cats='user'); go(); track()
+2024.094.23:35:26;"reply from APECS: (timeout)
+2024.094.23:35:50;"vlbi_tsys()
+2024.094.23:35:51;"reply from APECS: (timeout)
+2024.094.23:37:15;"vlbi_reference_scan()
+2024.094.23:37:16;"reply from APECS: (timeout)
+2024.094.23:37:16;"#                      gap        max ~0 min 10 sec
+2024.094.23:38:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.094.23:38:01;"reply from APECS: (timeout)
+2024.094.23:38:01;"#     scan ends at 2024.094.23:41:00
+2024.094.23:38:01;"
+2024.094.23:38:01;"# ### Block for M87 scan 6 'No0010' at 2024.094.23:44:00 in 180s ################
+2024.094.23:40:32;"----------| USER-REQUESTED STOP OF  e24b04.apecs.obs |----------
+2024.094.23:40:33;"----------| START OF e24b04.apecs.obs |----------
+2024.094.23:40:33;"Using TAI-UTC offset of +37 seconds
+2024.094.23:40:33;"#
+2024.094.23:40:33;"# APEX observing script for station Ax from file vexfiles/staging/e24b04.vex
+2024.094.23:40:33;"# File created on 2024.093.19:43:44 UT
+2024.094.23:40:33;"#
+2024.094.23:40:33;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2024.094.23:40:33;"# Details on the columns:
+2024.094.23:40:33;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2024.094.23:40:33;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2024.094.23:40:33;"#    2) estimated duration of the command in seconds
+2024.094.23:40:33;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2024.094.23:40:33;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2024.094.23:40:33;"#
+2024.094.23:40:33;"# At time              Duration   Command
+2024.094.23:40:33;"execfile('NFLASH260_setup.apecs')
+2024.094.23:40:33;"reply from APECS: OK
+2024.094.23:40:34;"reply from APECS: (timeout)
+2024.094.23:40:36;"execfile('vlbi-NFLASH260_commands.py')
+2024.094.23:40:36;"reply from APECS: OK
+2024.094.23:40:37;"reply from APECS: (timeout)
+2024.094.23:40:39;"
+2024.094.23:40:39;"# ### Block for 3C273 scan 1 'No0005' at 2024.094.23:05:00 in 200s ##############
+2024.094.23:40:39;"missed time 2024.094.23:01:40 : source('3C273',cats='user'); go(); track()
+2024.094.23:40:39;"missed time 2024.094.23:02:05 : vlbi_tsys()
+2024.094.23:40:39;"missed time 2024.094.23:03:30 : vlbi_reference_scan()
+2024.094.23:40:39;"#                      gap        max ~0 min 55 sec
+2024.094.23:40:39;"missed time 2024.094.23:05:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.094.23:40:39;"#     scan ends at 2024.094.23:08:00
+2024.094.23:40:39;"
+2024.094.23:40:39;"# ### Block for M87 scan 2 'No0006' at 2024.094.23:11:00 in 180s ################
+2024.094.23:40:39;"missed time 2024.094.23:08:00 : source('M87',cats='user'); go(); track()
+2024.094.23:40:39;"missed time 2024.094.23:08:25 : vlbi_tsys()
+2024.094.23:40:39;"missed time 2024.094.23:09:50 : vlbi_reference_scan()
+2024.094.23:40:39;"#                      gap        max ~0 min 35 sec
+2024.094.23:40:39;"missed time 2024.094.23:11:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.094.23:40:39;"#     scan ends at 2024.094.23:15:00
+2024.094.23:40:39;"
+2024.094.23:40:39;"# ### Block for M87 scan 3 'No0007' at 2024.094.23:18:00 in 180s ################
+2024.094.23:40:39;"missed time 2024.094.23:15:00 : vlbi_tsys()
+2024.094.23:40:39;"missed time 2024.094.23:16:25 : vlbi_reference_scan()
+2024.094.23:40:39;"#                      gap        max ~1 min 00 sec
+2024.094.23:40:39;"missed time 2024.094.23:18:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.094.23:40:39;"#     scan ends at 2024.094.23:22:00
+2024.094.23:40:39;"
+2024.094.23:40:39;"# ### Block for 3C279 scan 4 'No0008' at 2024.094.23:25:00 in 180s ##############
+2024.094.23:40:39;"missed time 2024.094.23:22:00 : source('3C279',cats='user'); go(); track()
+2024.094.23:40:39;"missed time 2024.094.23:22:25 : vlbi_tsys()
+2024.094.23:40:39;"missed time 2024.094.23:23:50 : vlbi_reference_scan()
+2024.094.23:40:39;"#                      gap        max ~0 min 35 sec
+2024.094.23:40:39;"missed time 2024.094.23:25:00 : vlbi_scan(t_mins=3,targetSource='3C279')
+2024.094.23:40:39;"#     scan ends at 2024.094.23:28:00
+2024.094.23:40:39;"
+2024.094.23:40:39;"# ### Block for 3C273 scan 5 'No0009' at 2024.094.23:38:00 in 600s ##############
+2024.094.23:40:39;"#
+2024.094.23:40:39;"# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2024.094.23:35:25
+2024.094.23:40:39;"#
+2024.094.23:40:39;"missed time 2024.094.23:28:00 : remote_control('on'); print('You have 7 min 35 sec until VLBI pre-scan calibrations at 2024.094.23:35:25. Remember to do remote_control ON.')
+2024.094.23:40:39;"missed time 2024.094.23:35:25 : source('3C273',cats='user'); go(); track()
+2024.094.23:40:39;"missed time 2024.094.23:35:50 : vlbi_tsys()
+2024.094.23:40:39;"missed time 2024.094.23:37:15 : vlbi_reference_scan()
+2024.094.23:40:39;"#                      gap        max ~0 min 10 sec
+2024.094.23:40:39;"missed time 2024.094.23:38:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.094.23:40:39;"#     scan ends at 2024.094.23:41:00
+2024.094.23:40:39;"
+2024.094.23:40:39;"# ### Block for M87 scan 6 'No0010' at 2024.094.23:44:00 in 180s ################
+2024.094.23:41:00;"source('M87',cats='user'); go(); track()
+2024.094.23:41:01;"reply from APECS: (timeout)
+2024.094.23:41:25;"vlbi_tsys()
+2024.094.23:41:25;"reply from APECS: OK
+2024.094.23:41:25;"reply from APECS: OK
+2024.094.23:41:26;"reply from APECS: (timeout)
+2024.094.23:42:50;"vlbi_reference_scan()
+2024.094.23:42:51;"reply from APECS: (timeout)
+2024.094.23:42:51;"#                      gap        max ~0 min 35 sec
+2024.094.23:44:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.094.23:44:00;"reply from APECS: OK
+2024.094.23:44:01;"reply from APECS: (timeout)
+2024.094.23:44:01;"#     scan ends at 2024.094.23:48:00
+2024.094.23:44:01;"
+2024.094.23:44:01;"# ### Block for 3C279 scan 7 'No0011' at 2024.094.23:51:00 in 180s ##############
+2024.094.23:48:00;"source('3C279',cats='user'); go(); track()
+2024.094.23:48:00;"reply from APECS: OK
+2024.094.23:48:01;"reply from APECS: (timeout)
+2024.094.23:48:25;"vlbi_tsys()
+2024.094.23:48:25;"reply from APECS: OK
+2024.094.23:48:25;"reply from APECS: OK
+2024.094.23:48:26;"reply from APECS: (timeout)
+2024.094.23:49:50;"vlbi_reference_scan()
+2024.094.23:49:51;"reply from APECS: (timeout)
+2024.094.23:49:51;"#                      gap        max ~0 min 35 sec
+2024.094.23:51:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.094.23:51:00;"reply from APECS: OK
+2024.094.23:51:01;"reply from APECS: (timeout)
+2024.094.23:51:01;"#     scan ends at 2024.094.23:54:00
+2024.094.23:51:01;"
+2024.094.23:51:01;"# ### Block for OJ287 scan 8 'No0012' at 2024.094.23:58:00 in 240s ##############
+2024.094.23:55:25;"source('OJ287',cats='user'); go(); track()
+2024.094.23:55:25;"reply from APECS: OK
+2024.094.23:55:26;"reply from APECS: (timeout)
+2024.094.23:55:50;"vlbi_tsys()
+2024.094.23:55:50;"reply from APECS: OK
+2024.094.23:55:51;"reply from APECS: (timeout)
+2024.094.23:57:15;"vlbi_reference_scan()
+2024.094.23:57:15;"reply from APECS: OK
+2024.094.23:57:16;"reply from APECS: (timeout)
+2024.094.23:57:16;"#                      gap        max ~0 min 10 sec
+2024.094.23:58:00;"vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.094.23:58:00;"reply from APECS: OK
+2024.094.23:58:01;"reply from APECS: (timeout)
+2024.094.23:58:01;"#     scan ends at 2024.095.00:01:00
+2024.094.23:58:01;"
+2024.094.23:58:01;"# ### Block for OJ287 scan 9 'No0013' at 2024.095.00:10:00 in 540s ##############
+2024.094.23:58:01;"#
+2024.094.23:58:01;"# OPERATOR free 7 min 00 sec until VLBI calibrations to start at 2024.095.00:07:50
+2024.094.23:58:01;"#
+2024.095.00:01:00;"remote_control('on'); print('You have 7 min 00 sec until VLBI pre-scan calibrations at 2024.095.00:07:50. Remember to do remote_control ON.')
+2024.095.00:01:00;"reply from APECS: OK
+2024.095.00:01:00;"reply from APECS: OK
+2024.095.00:01:01;"reply from APECS: (timeout)
+2024.095.00:07:50;"vlbi_tsys()
+2024.095.00:07:50;"reply from APECS: OK
+2024.095.00:07:51;"reply from APECS: (timeout)
+2024.095.00:09:15;"vlbi_reference_scan()
+2024.095.00:09:16;"reply from APECS: (timeout)
+2024.095.00:09:16;"#                      gap        max ~0 min 10 sec
+2024.095.00:10:00;"vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.095.00:10:00;"reply from APECS: OK
+2024.095.00:10:01;"reply from APECS: (timeout)
+2024.095.00:10:01;"#     scan ends at 2024.095.00:13:00
+2024.095.00:10:01;"
+2024.095.00:10:01;"# ### Block for 3C273 scan 10 'No0014' at 2024.095.00:17:00 in 240s #############
+2024.095.00:14:25;"source('3C273',cats='user'); go(); track()
+2024.095.00:14:25;"reply from APECS: OK
+2024.095.00:14:26;"reply from APECS: (timeout)
+2024.095.00:14:50;"vlbi_tsys()
+2024.095.00:14:50;"reply from APECS: OK
+2024.095.00:14:50;"reply from APECS: OK
+2024.095.00:14:51;"reply from APECS: (timeout)
+2024.095.00:16:15;"vlbi_reference_scan()
+2024.095.00:16:16;"reply from APECS: (timeout)
+2024.095.00:16:16;"#                      gap        max ~0 min 10 sec
+2024.095.00:17:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.00:17:00;"reply from APECS: OK
+2024.095.00:17:01;"reply from APECS: (timeout)
+2024.095.00:17:01;"#     scan ends at 2024.095.00:20:00
+2024.095.00:17:01;"
+2024.095.00:17:01;"# ### Block for M87 scan 11 'No0015' at 2024.095.00:23:00 in 180s ###############
+2024.095.00:20:00;"source('M87',cats='user'); go(); track()
+2024.095.00:20:00;"reply from APECS: OK
+2024.095.00:20:01;"reply from APECS: (timeout)
+2024.095.00:20:25;"vlbi_tsys()
+2024.095.00:20:25;"reply from APECS: OK
+2024.095.00:20:25;"reply from APECS: OK
+2024.095.00:20:26;"reply from APECS: (timeout)
+2024.095.00:21:50;"vlbi_reference_scan()
+2024.095.00:21:51;"reply from APECS: (timeout)
+2024.095.00:21:51;"#                      gap        max ~0 min 35 sec
+2024.095.00:23:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.00:23:00;"reply from APECS: OK
+2024.095.00:23:01;"reply from APECS: (timeout)
+2024.095.00:23:01;"#     scan ends at 2024.095.00:27:00
+2024.095.00:23:01;"
+2024.095.00:23:01;"# ### Block for 3C279 scan 12 'No0016' at 2024.095.00:30:00 in 180s #############
+2024.095.00:27:00;"source('3C279',cats='user'); go(); track()
+2024.095.00:27:00;"reply from APECS: OK
+2024.095.00:27:01;"reply from APECS: (timeout)
+2024.095.00:27:25;"vlbi_tsys()
+2024.095.00:27:25;"reply from APECS: OK
+2024.095.00:27:25;"reply from APECS: OK
+2024.095.00:27:26;"reply from APECS: (timeout)
+2024.095.00:28:50;"vlbi_reference_scan()
+2024.095.00:28:51;"reply from APECS: (timeout)
+2024.095.00:28:51;"#                      gap        max ~0 min 35 sec
+2024.095.00:30:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.00:30:00;"reply from APECS: OK
+2024.095.00:30:01;"reply from APECS: (timeout)
+2024.095.00:30:01;"#     scan ends at 2024.095.00:33:00
+2024.095.00:30:01;"
+2024.095.00:30:01;"# ### Block for 3C273 scan 13 'No0017' at 2024.095.00:41:00 in 480s #############
+2024.095.00:38:25;"source('3C273',cats='user'); go(); track()
+2024.095.00:38:25;"reply from APECS: OK
+2024.095.00:38:26;"reply from APECS: (timeout)
+2024.095.00:38:50;"vlbi_tsys()
+2024.095.00:38:50;"reply from APECS: OK
+2024.095.00:38:50;"reply from APECS: OK
+2024.095.00:38:51;"reply from APECS: (timeout)
+2024.095.00:40:15;"vlbi_reference_scan()
+2024.095.00:40:16;"reply from APECS: (timeout)
+2024.095.00:40:16;"#                      gap        max ~0 min 10 sec
+2024.095.00:41:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.00:41:00;"reply from APECS: OK
+2024.095.00:41:01;"reply from APECS: (timeout)
+2024.095.00:41:01;"#     scan ends at 2024.095.00:44:00
+2024.095.00:41:01;"
+2024.095.00:41:01;"# ### Block for M87 scan 14 'No0018' at 2024.095.00:47:00 in 180s ###############
+2024.095.00:44:00;"source('M87',cats='user'); go(); track()
+2024.095.00:44:00;"reply from APECS: OK
+2024.095.00:44:01;"reply from APECS: (timeout)
+2024.095.00:44:25;"vlbi_tsys()
+2024.095.00:44:25;"reply from APECS: OK
+2024.095.00:44:25;"reply from APECS: OK
+2024.095.00:44:26;"reply from APECS: (timeout)
+2024.095.00:45:50;"vlbi_reference_scan()
+2024.095.00:45:51;"reply from APECS: (timeout)
+2024.095.00:45:51;"#                      gap        max ~0 min 35 sec
+2024.095.00:47:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.00:47:00;"reply from APECS: OK
+2024.095.00:47:01;"reply from APECS: (timeout)
+2024.095.00:47:01;"#     scan ends at 2024.095.00:51:00
+2024.095.00:47:01;"
+2024.095.00:47:01;"# ### Block for OJ287 scan 15 'No0019' at 2024.095.00:55:00 in 240s #############
+2024.095.00:52:25;"source('OJ287',cats='user'); go(); track()
+2024.095.00:52:25;"reply from APECS: OK
+2024.095.00:52:26;"reply from APECS: (timeout)
+2024.095.00:52:50;"vlbi_tsys()
+2024.095.00:52:50;"reply from APECS: OK
+2024.095.00:52:50;"reply from APECS: OK
+2024.095.00:52:51;"reply from APECS: (timeout)
+2024.095.00:54:15;"vlbi_reference_scan()
+2024.095.00:54:16;"reply from APECS: (timeout)
+2024.095.00:54:16;"#                      gap        max ~0 min 10 sec
+2024.095.00:55:00;"vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.095.00:55:00;"reply from APECS: OK
+2024.095.00:55:01;"reply from APECS: (timeout)
+2024.095.00:55:01;"#     scan ends at 2024.095.00:58:00
+2024.095.00:55:01;"
+2024.095.00:55:01;"# ### Block for 3C273 scan 16 'No0020' at 2024.095.01:07:00 in 540s #############
+2024.095.00:55:01;"#
+2024.095.00:55:01;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.01:04:25
+2024.095.00:55:01;"#
+2024.095.00:58:00;"remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.01:04:25. Remember to do remote_control ON.')
+2024.095.00:58:00;"reply from APECS: OK
+2024.095.00:58:00;"reply from APECS: OK
+2024.095.00:58:01;"reply from APECS: (timeout)
+2024.095.01:04:25;"source('3C273',cats='user'); go(); track()
+2024.095.01:04:26;"reply from APECS: (timeout)
+2024.095.01:04:50;"vlbi_tsys()
+2024.095.01:04:50;"reply from APECS: OK
+2024.095.01:04:50;"reply from APECS: OK
+2024.095.01:04:51;"reply from APECS: (timeout)
+2024.095.01:06:15;"vlbi_reference_scan()
+2024.095.01:06:16;"reply from APECS: (timeout)
+2024.095.01:06:16;"#                      gap        max ~0 min 10 sec
+2024.095.01:07:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.01:07:00;"reply from APECS: OK
+2024.095.01:07:01;"reply from APECS: (timeout)
+2024.095.01:07:01;"#     scan ends at 2024.095.01:10:00
+2024.095.01:07:01;"
+2024.095.01:07:01;"# ### Block for M87 scan 17 'No0021' at 2024.095.01:13:00 in 180s ###############
+2024.095.01:10:00;"source('M87',cats='user'); go(); track()
+2024.095.01:10:00;"reply from APECS: OK
+2024.095.01:10:01;"reply from APECS: (timeout)
+2024.095.01:10:25;"vlbi_tsys()
+2024.095.01:10:25;"reply from APECS: OK
+2024.095.01:10:25;"reply from APECS: OK
+2024.095.01:10:26;"reply from APECS: (timeout)
+2024.095.01:11:50;"vlbi_reference_scan()
+2024.095.01:11:51;"reply from APECS: (timeout)
+2024.095.01:11:51;"#                      gap        max ~0 min 35 sec
+2024.095.01:13:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.01:13:00;"reply from APECS: OK
+2024.095.01:13:01;"reply from APECS: (timeout)
+2024.095.01:13:01;"#     scan ends at 2024.095.01:17:00
+2024.095.01:13:01;"
+2024.095.01:13:01;"# ### Block for M87 scan 18 'No0022' at 2024.095.01:20:00 in 180s ###############
+2024.095.01:17:00;"vlbi_tsys()
+2024.095.01:17:00;"reply from APECS: OK
+2024.095.01:17:00;"reply from APECS: OK
+2024.095.01:17:01;"reply from APECS: (timeout)
+2024.095.01:18:25;"vlbi_reference_scan()
+2024.095.01:18:26;"reply from APECS: (timeout)
+2024.095.01:18:26;"#                      gap        max ~1 min 00 sec
+2024.095.01:20:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.01:20:00;"reply from APECS: OK
+2024.095.01:20:01;"reply from APECS: (timeout)
+2024.095.01:20:01;"#     scan ends at 2024.095.01:24:00
+2024.095.01:20:01;"
+2024.095.01:20:01;"# ### Block for 3C279 scan 19 'No0023' at 2024.095.01:27:00 in 180s #############
+2024.095.01:24:00;"source('3C279',cats='user'); go(); track()
+2024.095.01:24:00;"reply from APECS: OK
+2024.095.01:24:01;"reply from APECS: (timeout)
+2024.095.01:24:25;"vlbi_tsys()
+2024.095.01:24:25;"reply from APECS: OK
+2024.095.01:24:25;"reply from APECS: OK
+2024.095.01:24:26;"reply from APECS: (timeout)
+2024.095.01:25:50;"vlbi_reference_scan()
+2024.095.01:25:51;"reply from APECS: (timeout)
+2024.095.01:25:51;"#                      gap        max ~0 min 35 sec
+2024.095.01:27:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.01:27:00;"reply from APECS: OK
+2024.095.01:27:01;"reply from APECS: (timeout)
+2024.095.01:27:01;"#     scan ends at 2024.095.01:30:00
+2024.095.01:27:01;"
+2024.095.01:27:01;"# ### Block for 3C273 scan 20 'No0024' at 2024.095.01:38:00 in 480s #############
+2024.095.01:35:25;"source('3C273',cats='user'); go(); track()
+2024.095.01:35:25;"reply from APECS: OK
+2024.095.01:35:26;"reply from APECS: (timeout)
+2024.095.01:35:50;"vlbi_tsys()
+2024.095.01:35:50;"reply from APECS: OK
+2024.095.01:35:50;"reply from APECS: OK
+2024.095.01:35:51;"reply from APECS: (timeout)
+2024.095.01:37:15;"vlbi_reference_scan()
+2024.095.01:37:16;"reply from APECS: (timeout)
+2024.095.01:37:16;"#                      gap        max ~0 min 10 sec
+2024.095.01:38:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.01:38:00;"reply from APECS: OK
+2024.095.01:38:01;"reply from APECS: (timeout)
+2024.095.01:38:01;"#     scan ends at 2024.095.01:41:00
+2024.095.01:38:01;"
+2024.095.01:38:01;"# ### Block for M87 scan 21 'No0025' at 2024.095.01:44:00 in 180s ###############
+2024.095.01:41:00;"source('M87',cats='user'); go(); track()
+2024.095.01:41:00;"reply from APECS: OK
+2024.095.01:41:01;"reply from APECS: (timeout)
+2024.095.01:41:25;"vlbi_tsys()
+2024.095.01:41:25;"reply from APECS: OK
+2024.095.01:41:25;"reply from APECS: OK
+2024.095.01:41:26;"reply from APECS: (timeout)
+2024.095.01:42:50;"vlbi_reference_scan()
+2024.095.01:42:51;"reply from APECS: (timeout)
+2024.095.01:42:51;"#                      gap        max ~0 min 35 sec
+2024.095.01:44:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.01:44:00;"reply from APECS: OK
+2024.095.01:44:01;"reply from APECS: (timeout)
+2024.095.01:44:01;"#     scan ends at 2024.095.01:48:00
+2024.095.01:44:01;"
+2024.095.01:44:01;"# ### Block for OJ287 scan 22 'No0026' at 2024.095.01:52:00 in 240s #############
+2024.095.01:49:25;"source('OJ287',cats='user'); go(); track()
+2024.095.01:49:25;"reply from APECS: OK
+2024.095.01:49:26;"reply from APECS: (timeout)
+2024.095.01:49:50;"vlbi_tsys()
+2024.095.01:49:50;"reply from APECS: OK
+2024.095.01:49:50;"reply from APECS: OK
+2024.095.01:49:51;"reply from APECS: (timeout)
+2024.095.01:51:15;"vlbi_reference_scan()
+2024.095.01:51:16;"reply from APECS: (timeout)
+2024.095.01:51:16;"#                      gap        max ~0 min 10 sec
+2024.095.01:52:00;"vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.095.01:52:00;"reply from APECS: OK
+2024.095.01:52:01;"reply from APECS: (timeout)
+2024.095.01:52:01;"#     scan ends at 2024.095.01:55:00
+2024.095.01:52:01;"
+2024.095.01:52:01;"# ### Block for 3C273 scan 23 'No0027' at 2024.095.02:04:00 in 540s #############
+2024.095.01:52:01;"#
+2024.095.01:52:01;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.02:01:25
+2024.095.01:52:01;"#
+2024.095.01:55:00;"remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.02:01:25. Remember to do remote_control ON.')
+2024.095.01:55:00;"reply from APECS: OK
+2024.095.01:55:00;"reply from APECS: OK
+2024.095.01:55:01;"reply from APECS: (timeout)
+2024.095.02:01:25;"source('3C273',cats='user'); go(); track()
+2024.095.02:01:26;"reply from APECS: (timeout)
+2024.095.02:01:50;"vlbi_tsys()
+2024.095.02:01:50;"reply from APECS: OK
+2024.095.02:01:50;"reply from APECS: OK
+2024.095.02:01:51;"reply from APECS: (timeout)
+2024.095.02:03:15;"vlbi_reference_scan()
+2024.095.02:03:16;"reply from APECS: (timeout)
+2024.095.02:03:16;"#                      gap        max ~0 min 10 sec
+2024.095.02:04:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.02:04:00;"reply from APECS: OK
+2024.095.02:04:01;"reply from APECS: (timeout)
+2024.095.02:04:01;"#     scan ends at 2024.095.02:07:00
+2024.095.02:04:01;"
+2024.095.02:04:01;"# ### Block for M87 scan 24 'No0028' at 2024.095.02:10:00 in 180s ###############
+2024.095.02:07:00;"source('M87',cats='user'); go(); track()
+2024.095.02:07:00;"reply from APECS: OK
+2024.095.02:07:01;"reply from APECS: (timeout)
+2024.095.02:07:25;"vlbi_tsys()
+2024.095.02:07:25;"reply from APECS: OK
+2024.095.02:07:25;"reply from APECS: OK
+2024.095.02:07:26;"reply from APECS: (timeout)
+2024.095.02:08:50;"vlbi_reference_scan()
+2024.095.02:08:51;"reply from APECS: (timeout)
+2024.095.02:08:51;"#                      gap        max ~0 min 35 sec
+2024.095.02:10:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.02:10:00;"reply from APECS: OK
+2024.095.02:10:01;"reply from APECS: (timeout)
+2024.095.02:10:01;"#     scan ends at 2024.095.02:14:00
+2024.095.02:10:01;"
+2024.095.02:10:01;"# ### Block for M87 scan 25 'No0029' at 2024.095.02:17:00 in 180s ###############
+2024.095.02:14:00;"vlbi_tsys()
+2024.095.02:14:00;"reply from APECS: OK
+2024.095.02:14:00;"reply from APECS: OK
+2024.095.02:14:01;"reply from APECS: (timeout)
+2024.095.02:15:25;"vlbi_reference_scan()
+2024.095.02:15:26;"reply from APECS: (timeout)
+2024.095.02:15:26;"#                      gap        max ~1 min 00 sec
+2024.095.02:17:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.02:17:00;"reply from APECS: OK
+2024.095.02:17:01;"reply from APECS: (timeout)
+2024.095.02:17:01;"#     scan ends at 2024.095.02:21:00
+2024.095.02:17:01;"
+2024.095.02:17:01;"# ### Block for 3C279 scan 26 'No0030' at 2024.095.02:24:00 in 180s #############
+2024.095.02:21:00;"source('3C279',cats='user'); go(); track()
+2024.095.02:21:00;"reply from APECS: OK
+2024.095.02:21:01;"reply from APECS: (timeout)
+2024.095.02:21:25;"vlbi_tsys()
+2024.095.02:21:25;"reply from APECS: OK
+2024.095.02:21:25;"reply from APECS: OK
+2024.095.02:21:26;"reply from APECS: (timeout)
+2024.095.02:22:50;"vlbi_reference_scan()
+2024.095.02:22:51;"reply from APECS: (timeout)
+2024.095.02:22:51;"#                      gap        max ~0 min 35 sec
+2024.095.02:24:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.02:24:00;"reply from APECS: OK
+2024.095.02:24:01;"reply from APECS: (timeout)
+2024.095.02:24:01;"#     scan ends at 2024.095.02:27:00
+2024.095.02:24:01;"
+2024.095.02:24:01;"# ### Block for 3C273 scan 27 'No0031' at 2024.095.02:35:00 in 480s #############
+2024.095.02:32:25;"source('3C273',cats='user'); go(); track()
+2024.095.02:32:25;"reply from APECS: OK
+2024.095.02:32:26;"reply from APECS: (timeout)
+2024.095.02:32:50;"vlbi_tsys()
+2024.095.02:32:50;"reply from APECS: OK
+2024.095.02:32:50;"reply from APECS: OK
+2024.095.02:32:51;"reply from APECS: (timeout)
+2024.095.02:34:15;"vlbi_reference_scan()
+2024.095.02:34:16;"reply from APECS: (timeout)
+2024.095.02:34:16;"#                      gap        max ~0 min 10 sec
+2024.095.02:35:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.02:35:00;"reply from APECS: OK
+2024.095.02:35:01;"reply from APECS: (timeout)
+2024.095.02:35:01;"#     scan ends at 2024.095.02:38:00
+2024.095.02:35:01;"
+2024.095.02:35:01;"# ### Block for M87 scan 28 'No0032' at 2024.095.02:41:00 in 180s ###############
+2024.095.02:38:00;"source('M87',cats='user'); go(); track()
+2024.095.02:38:00;"reply from APECS: OK
+2024.095.02:38:01;"reply from APECS: (timeout)
+2024.095.02:38:25;"vlbi_tsys()
+2024.095.02:38:25;"reply from APECS: OK
+2024.095.02:38:25;"reply from APECS: OK
+2024.095.02:38:26;"reply from APECS: (timeout)
+2024.095.02:39:50;"vlbi_reference_scan()
+2024.095.02:39:51;"reply from APECS: (timeout)
+2024.095.02:39:51;"#                      gap        max ~0 min 35 sec
+2024.095.02:41:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.02:41:00;"reply from APECS: OK
+2024.095.02:41:01;"reply from APECS: (timeout)
+2024.095.02:41:01;"#     scan ends at 2024.095.02:45:00
+2024.095.02:41:01;"
+2024.095.02:41:01;"# ### Block for OJ287 scan 29 'No0033' at 2024.095.02:50:00 in 300s #############
+2024.095.02:47:25;"source('OJ287',cats='user'); go(); track()
+2024.095.02:47:25;"reply from APECS: OK
+2024.095.02:47:26;"reply from APECS: (timeout)
+2024.095.02:47:50;"vlbi_tsys()
+2024.095.02:47:50;"reply from APECS: OK
+2024.095.02:47:50;"reply from APECS: OK
+2024.095.02:47:51;"reply from APECS: (timeout)
+2024.095.02:49:15;"vlbi_reference_scan()
+2024.095.02:49:16;"reply from APECS: (timeout)
+2024.095.02:49:16;"#                      gap        max ~0 min 10 sec
+2024.095.02:50:00;"vlbi_scan(t_mins=2,targetSource='OJ287')
+2024.095.02:50:00;"reply from APECS: OK
+2024.095.02:50:01;"reply from APECS: (timeout)
+2024.095.02:50:01;"#     scan ends at 2024.095.02:52:00
+2024.095.02:50:01;"
+2024.095.02:50:01;"# ### Block for 3C273 scan 30 'No0034' at 2024.095.03:01:00 in 540s #############
+2024.095.02:50:01;"#
+2024.095.02:50:01;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.02:58:25
+2024.095.02:50:01;"#
+2024.095.02:52:00;"remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.02:58:25. Remember to do remote_control ON.')
+2024.095.02:52:00;"reply from APECS: OK
+2024.095.02:52:00;"reply from APECS: OK
+2024.095.02:52:01;"reply from APECS: (timeout)
+2024.095.02:58:25;"source('3C273',cats='user'); go(); track()
+2024.095.02:58:26;"reply from APECS: (timeout)
+2024.095.02:58:50;"vlbi_tsys()
+2024.095.02:58:50;"reply from APECS: OK
+2024.095.02:58:50;"reply from APECS: OK
+2024.095.02:58:51;"reply from APECS: (timeout)
+2024.095.03:00:15;"vlbi_reference_scan()
+2024.095.03:00:16;"reply from APECS: (timeout)
+2024.095.03:00:16;"#                      gap        max ~0 min 10 sec
+2024.095.03:01:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.03:01:00;"reply from APECS: OK
+2024.095.03:01:01;"reply from APECS: (timeout)
+2024.095.03:01:01;"#     scan ends at 2024.095.03:04:00
+2024.095.03:01:01;"
+2024.095.03:01:01;"# ### Block for M87 scan 31 'No0035' at 2024.095.03:07:00 in 180s ###############
+2024.095.03:04:00;"source('M87',cats='user'); go(); track()
+2024.095.03:04:00;"reply from APECS: OK
+2024.095.03:04:01;"reply from APECS: (timeout)
+2024.095.03:04:25;"vlbi_tsys()
+2024.095.03:04:25;"reply from APECS: OK
+2024.095.03:04:25;"reply from APECS: OK
+2024.095.03:04:26;"reply from APECS: (timeout)
+2024.095.03:05:50;"vlbi_reference_scan()
+2024.095.03:05:51;"reply from APECS: (timeout)
+2024.095.03:05:51;"#                      gap        max ~0 min 35 sec
+2024.095.03:07:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.03:07:00;"reply from APECS: OK
+2024.095.03:07:01;"reply from APECS: (timeout)
+2024.095.03:07:01;"#     scan ends at 2024.095.03:11:00
+2024.095.03:07:01;"
+2024.095.03:07:01;"# ### Block for 3C279 scan 32 'No0036' at 2024.095.03:14:00 in 180s #############
+2024.095.03:11:00;"source('3C279',cats='user'); go(); track()
+2024.095.03:11:00;"reply from APECS: OK
+2024.095.03:11:01;"reply from APECS: (timeout)
+2024.095.03:11:25;"vlbi_tsys()
+2024.095.03:11:25;"reply from APECS: OK
+2024.095.03:11:25;"reply from APECS: OK
+2024.095.03:11:26;"reply from APECS: (timeout)
+2024.095.03:12:50;"vlbi_reference_scan()
+2024.095.03:12:51;"reply from APECS: (timeout)
+2024.095.03:12:51;"#                      gap        max ~0 min 35 sec
+2024.095.03:14:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.03:14:00;"reply from APECS: OK
+2024.095.03:14:01;"reply from APECS: (timeout)
+2024.095.03:14:01;"#     scan ends at 2024.095.03:17:00
+2024.095.03:14:01;"
+2024.095.03:14:01;"# ### Block for OJ287 scan 33 'No0037' at 2024.095.03:23:00 in 360s #############
+2024.095.03:20:25;"source('OJ287',cats='user'); go(); track()
+2024.095.03:20:25;"reply from APECS: OK
+2024.095.03:20:26;"reply from APECS: (timeout)
+2024.095.03:20:50;"vlbi_tsys()
+2024.095.03:20:50;"reply from APECS: OK
+2024.095.03:20:51;"reply from APECS: (timeout)
+2024.095.03:22:15;"vlbi_reference_scan()
+2024.095.03:22:15;"reply from APECS: OK
+2024.095.03:22:16;"reply from APECS: (timeout)
+2024.095.03:22:16;"#                      gap        max ~0 min 10 sec
+2024.095.03:23:00;"vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.095.03:23:00;"reply from APECS: OK
+2024.095.03:23:01;"reply from APECS: (timeout)
+2024.095.03:23:01;"#     scan ends at 2024.095.03:26:00
+2024.095.03:23:01;"
+2024.095.03:23:01;"# ### Block for 3C273 scan 34 'No0038' at 2024.095.03:32:00 in 360s #############
+2024.095.03:29:25;"source('3C273',cats='user'); go(); track()
+2024.095.03:29:25;"reply from APECS: OK
+2024.095.03:29:26;"reply from APECS: (timeout)
+2024.095.03:29:50;"vlbi_tsys()
+2024.095.03:29:50;"reply from APECS: OK
+2024.095.03:29:50;"reply from APECS: OK
+2024.095.03:29:51;"reply from APECS: (timeout)
+2024.095.03:31:15;"vlbi_reference_scan()
+2024.095.03:31:16;"reply from APECS: (timeout)
+2024.095.03:31:16;"#                      gap        max ~0 min 10 sec
+2024.095.03:32:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.03:32:00;"reply from APECS: OK
+2024.095.03:32:01;"reply from APECS: (timeout)
+2024.095.03:32:01;"#     scan ends at 2024.095.03:35:00
+2024.095.03:32:01;"
+2024.095.03:32:01;"# ### Block for M87 scan 35 'No0039' at 2024.095.03:38:00 in 180s ###############
+2024.095.03:35:00;"source('M87',cats='user'); go(); track()
+2024.095.03:35:00;"reply from APECS: OK
+2024.095.03:35:01;"reply from APECS: (timeout)
+2024.095.03:35:25;"vlbi_tsys()
+2024.095.03:35:25;"reply from APECS: OK
+2024.095.03:35:25;"reply from APECS: OK
+2024.095.03:35:26;"reply from APECS: (timeout)
+2024.095.03:36:50;"vlbi_reference_scan()
+2024.095.03:36:51;"reply from APECS: (timeout)
+2024.095.03:36:51;"#                      gap        max ~0 min 35 sec
+2024.095.03:38:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.03:38:00;"reply from APECS: OK
+2024.095.03:38:01;"reply from APECS: (timeout)
+2024.095.03:38:01;"#     scan ends at 2024.095.03:42:00
+2024.095.03:38:01;"
+2024.095.03:38:01;"# ### Block for M87 scan 36 'No0040' at 2024.095.03:45:00 in 180s ###############
+2024.095.03:42:00;"vlbi_tsys()
+2024.095.03:42:00;"reply from APECS: OK
+2024.095.03:42:00;"reply from APECS: OK
+2024.095.03:42:01;"reply from APECS: (timeout)
+2024.095.03:43:25;"vlbi_reference_scan()
+2024.095.03:43:26;"reply from APECS: (timeout)
+2024.095.03:43:26;"#                      gap        max ~1 min 00 sec
+2024.095.03:45:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.03:45:00;"reply from APECS: OK
+2024.095.03:45:01;"reply from APECS: (timeout)
+2024.095.03:45:01;"#     scan ends at 2024.095.03:49:00
+2024.095.03:45:01;"
+2024.095.03:45:01;"# ### Block for 3C273 scan 37 'No0041' at 2024.095.03:58:00 in 540s #############
+2024.095.03:45:01;"#
+2024.095.03:45:01;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.03:55:25
+2024.095.03:45:01;"#
+2024.095.03:49:00;"remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.03:55:25. Remember to do remote_control ON.')
+2024.095.03:49:00;"reply from APECS: OK
+2024.095.03:49:00;"reply from APECS: OK
+2024.095.03:49:01;"reply from APECS: (timeout)
+2024.095.03:55:25;"source('3C273',cats='user'); go(); track()
+2024.095.03:55:26;"reply from APECS: (timeout)
+2024.095.03:55:50;"vlbi_tsys()
+2024.095.03:55:50;"reply from APECS: OK
+2024.095.03:55:50;"reply from APECS: OK
+2024.095.03:55:51;"reply from APECS: (timeout)
+2024.095.03:57:15;"vlbi_reference_scan()
+2024.095.03:57:16;"reply from APECS: (timeout)
+2024.095.03:57:16;"#                      gap        max ~0 min 10 sec
+2024.095.03:58:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.03:58:00;"reply from APECS: OK
+2024.095.03:58:01;"reply from APECS: (timeout)
+2024.095.03:58:01;"#     scan ends at 2024.095.04:01:00
+2024.095.03:58:01;"
+2024.095.03:58:01;"# ### Block for M87 scan 38 'No0042' at 2024.095.04:04:00 in 180s ###############
+2024.095.04:01:00;"source('M87',cats='user'); go(); track()
+2024.095.04:01:00;"reply from APECS: OK
+2024.095.04:01:01;"reply from APECS: (timeout)
+2024.095.04:01:25;"vlbi_tsys()
+2024.095.04:01:25;"reply from APECS: OK
+2024.095.04:01:25;"reply from APECS: OK
+2024.095.04:01:26;"reply from APECS: (timeout)
+2024.095.04:02:50;"vlbi_reference_scan()
+2024.095.04:02:51;"reply from APECS: (timeout)
+2024.095.04:02:51;"#                      gap        max ~0 min 35 sec
+2024.095.04:04:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.04:04:00;"reply from APECS: OK
+2024.095.04:04:01;"reply from APECS: (timeout)
+2024.095.04:04:01;"#     scan ends at 2024.095.04:08:00
+2024.095.04:04:01;"
+2024.095.04:04:01;"# ### Block for 3C279 scan 39 'No0043' at 2024.095.04:11:00 in 180s #############
+2024.095.04:08:00;"source('3C279',cats='user'); go(); track()
+2024.095.04:08:00;"reply from APECS: OK
+2024.095.04:08:01;"reply from APECS: (timeout)
+2024.095.04:08:25;"vlbi_tsys()
+2024.095.04:08:25;"reply from APECS: OK
+2024.095.04:08:25;"reply from APECS: OK
+2024.095.04:08:26;"reply from APECS: (timeout)
+2024.095.04:09:50;"vlbi_reference_scan()
+2024.095.04:09:51;"reply from APECS: (timeout)
+2024.095.04:09:51;"#                      gap        max ~0 min 35 sec
+2024.095.04:11:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.04:11:00;"reply from APECS: OK
+2024.095.04:11:01;"reply from APECS: (timeout)
+2024.095.04:11:01;"#     scan ends at 2024.095.04:14:00
+2024.095.04:11:01;"
+2024.095.04:11:01;"# ### Block for 3C273 scan 40 'No0044' at 2024.095.04:22:00 in 480s #############
+2024.095.04:19:25;"source('3C273',cats='user'); go(); track()
+2024.095.04:19:25;"reply from APECS: OK
+2024.095.04:19:26;"reply from APECS: (timeout)
+2024.095.04:19:50;"vlbi_tsys()
+2024.095.04:19:50;"reply from APECS: OK
+2024.095.04:19:50;"reply from APECS: OK
+2024.095.04:19:51;"reply from APECS: (timeout)
+2024.095.04:21:15;"vlbi_reference_scan()
+2024.095.04:21:16;"reply from APECS: (timeout)
+2024.095.04:21:16;"#                      gap        max ~0 min 10 sec
+2024.095.04:22:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.04:22:00;"reply from APECS: OK
+2024.095.04:22:01;"reply from APECS: (timeout)
+2024.095.04:22:01;"#     scan ends at 2024.095.04:25:00
+2024.095.04:22:01;"
+2024.095.04:22:01;"# ### Block for M87 scan 41 'No0045' at 2024.095.04:28:00 in 180s ###############
+2024.095.04:25:00;"source('M87',cats='user'); go(); track()
+2024.095.04:25:00;"reply from APECS: OK
+2024.095.04:25:01;"reply from APECS: (timeout)
+2024.095.04:25:25;"vlbi_tsys()
+2024.095.04:25:25;"reply from APECS: OK
+2024.095.04:25:25;"reply from APECS: OK
+2024.095.04:25:26;"reply from APECS: (timeout)
+2024.095.04:26:50;"vlbi_reference_scan()
+2024.095.04:26:51;"reply from APECS: (timeout)
+2024.095.04:26:51;"#                      gap        max ~0 min 35 sec
+2024.095.04:28:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.04:28:00;"reply from APECS: OK
+2024.095.04:28:01;"reply from APECS: (timeout)
+2024.095.04:28:01;"#     scan ends at 2024.095.04:32:00
+2024.095.04:28:01;"
+2024.095.04:28:01;"# ### Block for 3C273 scan 42 'No0046' at 2024.095.04:45:00 in 780s #############
+2024.095.04:28:01;"#
+2024.095.04:28:01;"# OPERATOR free 10 min 35 sec until VLBI calibrations to start at 2024.095.04:42:25
+2024.095.04:28:01;"#
+2024.095.04:32:00;"remote_control('on'); print('You have 10 min 35 sec until VLBI pre-scan calibrations at 2024.095.04:42:25. Remember to do remote_control ON.')
+2024.095.04:32:00;"reply from APECS: OK
+2024.095.04:32:00;"reply from APECS: OK
+2024.095.04:32:01;"reply from APECS: (timeout)
+2024.095.04:42:25;"source('3C273',cats='user'); go(); track()
+2024.095.04:42:26;"reply from APECS: (timeout)
+2024.095.04:42:50;"vlbi_tsys()
+2024.095.04:42:50;"reply from APECS: OK
+2024.095.04:42:50;"reply from APECS: OK
+2024.095.04:42:51;"reply from APECS: (timeout)
+2024.095.04:44:15;"vlbi_reference_scan()
+2024.095.04:44:16;"reply from APECS: (timeout)
+2024.095.04:44:16;"#                      gap        max ~0 min 10 sec
+2024.095.04:45:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.04:45:00;"reply from APECS: OK
+2024.095.04:45:01;"reply from APECS: (timeout)
+2024.095.04:45:01;"#     scan ends at 2024.095.04:48:00
+2024.095.04:45:01;"
+2024.095.04:45:01;"# ### Block for M87 scan 43 'No0047' at 2024.095.04:51:00 in 180s ###############
+2024.095.04:48:00;"source('M87',cats='user'); go(); track()
+2024.095.04:48:00;"reply from APECS: OK
+2024.095.04:48:01;"reply from APECS: (timeout)
+2024.095.04:48:25;"vlbi_tsys()
+2024.095.04:48:25;"reply from APECS: OK
+2024.095.04:48:25;"reply from APECS: OK
+2024.095.04:48:26;"reply from APECS: (timeout)
+2024.095.04:49:50;"vlbi_reference_scan()
+2024.095.04:49:51;"reply from APECS: (timeout)
+2024.095.04:49:51;"#                      gap        max ~0 min 35 sec
+2024.095.04:51:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.04:51:00;"reply from APECS: OK
+2024.095.04:51:01;"reply from APECS: (timeout)
+2024.095.04:51:01;"#     scan ends at 2024.095.04:55:00
+2024.095.04:51:01;"
+2024.095.04:51:01;"# ### Block for M87 scan 44 'No0048' at 2024.095.04:58:00 in 180s ###############
+2024.095.04:55:00;"vlbi_tsys()
+2024.095.04:55:00;"reply from APECS: OK
+2024.095.04:55:00;"reply from APECS: OK
+2024.095.04:55:01;"reply from APECS: (timeout)
+2024.095.04:56:25;"vlbi_reference_scan()
+2024.095.04:56:26;"reply from APECS: (timeout)
+2024.095.04:56:26;"#                      gap        max ~1 min 00 sec
+2024.095.04:58:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.04:58:00;"reply from APECS: OK
+2024.095.04:58:01;"reply from APECS: (timeout)
+2024.095.04:58:01;"#     scan ends at 2024.095.05:02:00
+2024.095.04:58:01;"
+2024.095.04:58:01;"# ### Block for 3C273 scan 45 'No0049' at 2024.095.05:10:00 in 480s #############
+2024.095.05:07:25;"source('3C273',cats='user'); go(); track()
+2024.095.05:07:25;"reply from APECS: OK
+2024.095.05:07:26;"reply from APECS: (timeout)
+2024.095.05:07:50;"vlbi_tsys()
+2024.095.05:07:50;"reply from APECS: OK
+2024.095.05:07:50;"reply from APECS: OK
+2024.095.05:07:51;"reply from APECS: (timeout)
+2024.095.05:09:15;"vlbi_reference_scan()
+2024.095.05:09:16;"reply from APECS: (timeout)
+2024.095.05:09:16;"#                      gap        max ~0 min 10 sec
+2024.095.05:10:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:10:00;"reply from APECS: OK
+2024.095.05:10:01;"reply from APECS: (timeout)
+2024.095.05:10:01;"#     scan ends at 2024.095.05:13:00
+2024.095.05:10:01;"
+2024.095.05:10:01;"# ### Block for M87 scan 46 'No0050' at 2024.095.05:16:00 in 180s ###############
+2024.095.05:13:00;"source('M87',cats='user'); go(); track()
+2024.095.05:13:00;"reply from APECS: OK
+2024.095.05:13:01;"reply from APECS: (timeout)
+2024.095.05:13:25;"vlbi_tsys()
+2024.095.05:13:25;"reply from APECS: OK
+2024.095.05:13:25;"reply from APECS: OK
+2024.095.05:13:26;"reply from APECS: (timeout)
+2024.095.05:14:50;"vlbi_reference_scan()
+2024.095.05:14:51;"reply from APECS: (timeout)
+2024.095.05:14:51;"#                      gap        max ~0 min 35 sec
+2024.095.05:16:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:16:00;"reply from APECS: OK
+2024.095.05:16:01;"reply from APECS: (timeout)
+2024.095.05:16:01;"#     scan ends at 2024.095.05:20:00
+2024.095.05:16:01;"
+2024.095.05:16:01;"# ### Block for 3C279 scan 47 'No0051' at 2024.095.05:23:00 in 180s #############
+2024.095.05:20:00;"source('3C279',cats='user'); go(); track()
+2024.095.05:20:00;"reply from APECS: OK
+2024.095.05:20:01;"reply from APECS: (timeout)
+2024.095.05:20:25;"vlbi_tsys()
+2024.095.05:20:25;"reply from APECS: OK
+2024.095.05:20:25;"reply from APECS: OK
+2024.095.05:20:26;"reply from APECS: (timeout)
+2024.095.05:21:50;"vlbi_reference_scan()
+2024.095.05:21:51;"reply from APECS: (timeout)
+2024.095.05:21:51;"#                      gap        max ~0 min 35 sec
+2024.095.05:23:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.05:23:00;"reply from APECS: OK
+2024.095.05:23:01;"reply from APECS: (timeout)
+2024.095.05:23:01;"#     scan ends at 2024.095.05:26:00
+2024.095.05:23:01;"
+2024.095.05:23:01;"# ### Block for SGRA scan 48 'No0052' at 2024.095.05:35:00 in 540s ##############
+2024.095.05:23:01;"#
+2024.095.05:23:01;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.05:32:25
+2024.095.05:23:01;"#
+2024.095.05:26:00;"remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.05:32:25. Remember to do remote_control ON.')
+2024.095.05:26:00;"reply from APECS: OK
+2024.095.05:26:00;"reply from APECS: OK
+2024.095.05:26:01;"reply from APECS: (timeout)
+2024.095.05:32:25;"source('SGRA',cats='user'); go(); track()
+2024.095.05:32:26;"reply from APECS: (timeout)
+2024.095.05:32:50;"vlbi_tsys()
+2024.095.05:32:50;"reply from APECS: OK
+2024.095.05:32:50;"reply from APECS: OK
+2024.095.05:32:51;"reply from APECS: (timeout)
+2024.095.05:34:15;"vlbi_reference_scan()
+2024.095.05:34:16;"reply from APECS: (timeout)
+2024.095.05:34:16;"#                      gap        max ~0 min 10 sec
+2024.095.05:35:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.05:35:01;"reply from APECS: (timeout)
+2024.095.05:35:01;"#     scan ends at 2024.095.05:50:00
+2024.095.05:35:01;"
+2024.095.05:35:01;"# ### Block for J1751+0939 scan 49 'No0053' at 2024.095.05:54:00 in 240s ########
+2024.095.05:51:25;"source('J1751+0939',cats='user'); go(); track()
+2024.095.05:51:26;"reply from APECS: (timeout)
+2024.095.05:51:50;"vlbi_tsys()
+2024.095.05:51:51;"reply from APECS: (timeout)
+2024.095.05:53:15;"vlbi_reference_scan()
+2024.095.05:53:16;"reply from APECS: (timeout)
+2024.095.05:53:16;"#                      gap        max ~0 min 10 sec
+2024.095.05:54:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.05:54:01;"reply from APECS: (timeout)
+2024.095.05:54:01;"#     scan ends at 2024.095.05:57:00
+2024.095.05:54:01;"
+2024.095.05:54:01;"# ### Block for SGRA scan 50 'No0054' at 2024.095.06:01:00 in 240s ##############
+2024.095.05:57:37;"----------| USER-REQUESTED STOP OF  e24b04.apecs.obs |----------
+2024.095.05:59:17;"----------| START OF e24b04.apecs.obs |----------
+2024.095.05:59:17;"Using TAI-UTC offset of +37 seconds
+2024.095.05:59:17;"#
+2024.095.05:59:17;"# APEX observing script for station Ax from file vexfiles/staging/e24b04.vex
+2024.095.05:59:17;"# File created on 2024.093.19:43:44 UT
+2024.095.05:59:17;"#
+2024.095.05:59:17;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2024.095.05:59:17;"# Details on the columns:
+2024.095.05:59:17;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2024.095.05:59:17;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2024.095.05:59:17;"#    2) estimated duration of the command in seconds
+2024.095.05:59:17;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2024.095.05:59:17;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2024.095.05:59:17;"#
+2024.095.05:59:17;"# At time              Duration   Command
+2024.095.05:59:17;"execfile('NFLASH260_setup.apecs')
+2024.095.05:59:17;"reply from APECS: OK
+2024.095.05:59:18;"reply from APECS: (timeout)
+2024.095.05:59:20;"execfile('vlbi-NFLASH260_commands.py')
+2024.095.05:59:20;"reply from APECS: OK
+2024.095.05:59:21;"reply from APECS: (timeout)
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 1 'No0005' at 2024.094.23:05:00 in 200s ##############
+2024.095.05:59:23;"missed time 2024.094.23:01:40 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.094.23:02:05 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.094.23:03:30 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 55 sec
+2024.095.05:59:23;"missed time 2024.094.23:05:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.094.23:08:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 2 'No0006' at 2024.094.23:11:00 in 180s ################
+2024.095.05:59:23;"missed time 2024.094.23:08:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.094.23:08:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.094.23:09:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.094.23:11:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.094.23:15:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 3 'No0007' at 2024.094.23:18:00 in 180s ################
+2024.095.05:59:23;"missed time 2024.094.23:15:00 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.094.23:16:25 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~1 min 00 sec
+2024.095.05:59:23;"missed time 2024.094.23:18:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.094.23:22:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C279 scan 4 'No0008' at 2024.094.23:25:00 in 180s ##############
+2024.095.05:59:23;"missed time 2024.094.23:22:00 : source('3C279',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.094.23:22:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.094.23:23:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.094.23:25:00 : vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.05:59:23;"#     scan ends at 2024.094.23:28:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 5 'No0009' at 2024.094.23:38:00 in 600s ##############
+2024.095.05:59:23;"#
+2024.095.05:59:23;"# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2024.094.23:35:25
+2024.095.05:59:23;"#
+2024.095.05:59:23;"missed time 2024.094.23:28:00 : remote_control('on'); print('You have 7 min 35 sec until VLBI pre-scan calibrations at 2024.094.23:35:25. Remember to do remote_control ON.')
+2024.095.05:59:23;"missed time 2024.094.23:35:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.094.23:35:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.094.23:37:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.094.23:38:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.094.23:41:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 6 'No0010' at 2024.094.23:44:00 in 180s ################
+2024.095.05:59:23;"missed time 2024.094.23:41:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.094.23:41:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.094.23:42:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.094.23:44:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.094.23:48:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C279 scan 7 'No0011' at 2024.094.23:51:00 in 180s ##############
+2024.095.05:59:23;"missed time 2024.094.23:48:00 : source('3C279',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.094.23:48:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.094.23:49:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.094.23:51:00 : vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.05:59:23;"#     scan ends at 2024.094.23:54:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for OJ287 scan 8 'No0012' at 2024.094.23:58:00 in 240s ##############
+2024.095.05:59:23;"missed time 2024.094.23:55:25 : source('OJ287',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.094.23:55:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.094.23:57:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.094.23:58:00 : vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.095.05:59:23;"#     scan ends at 2024.095.00:01:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for OJ287 scan 9 'No0013' at 2024.095.00:10:00 in 540s ##############
+2024.095.05:59:23;"#
+2024.095.05:59:23;"# OPERATOR free 7 min 00 sec until VLBI calibrations to start at 2024.095.00:07:50
+2024.095.05:59:23;"#
+2024.095.05:59:23;"missed time 2024.095.00:01:00 : remote_control('on'); print('You have 7 min 00 sec until VLBI pre-scan calibrations at 2024.095.00:07:50. Remember to do remote_control ON.')
+2024.095.05:59:23;"missed time 2024.095.00:07:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.00:09:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.00:10:00 : vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.095.05:59:23;"#     scan ends at 2024.095.00:13:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 10 'No0014' at 2024.095.00:17:00 in 240s #############
+2024.095.05:59:23;"missed time 2024.095.00:14:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.00:14:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.00:16:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.00:17:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.00:20:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 11 'No0015' at 2024.095.00:23:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.00:20:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.00:20:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.00:21:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.00:23:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.00:27:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C279 scan 12 'No0016' at 2024.095.00:30:00 in 180s #############
+2024.095.05:59:23;"missed time 2024.095.00:27:00 : source('3C279',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.00:27:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.00:28:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.00:30:00 : vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.05:59:23;"#     scan ends at 2024.095.00:33:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 13 'No0017' at 2024.095.00:41:00 in 480s #############
+2024.095.05:59:23;"missed time 2024.095.00:38:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.00:38:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.00:40:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.00:41:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.00:44:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 14 'No0018' at 2024.095.00:47:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.00:44:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.00:44:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.00:45:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.00:47:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.00:51:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for OJ287 scan 15 'No0019' at 2024.095.00:55:00 in 240s #############
+2024.095.05:59:23;"missed time 2024.095.00:52:25 : source('OJ287',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.00:52:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.00:54:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.00:55:00 : vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.095.05:59:23;"#     scan ends at 2024.095.00:58:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 16 'No0020' at 2024.095.01:07:00 in 540s #############
+2024.095.05:59:23;"#
+2024.095.05:59:23;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.01:04:25
+2024.095.05:59:23;"#
+2024.095.05:59:23;"missed time 2024.095.00:58:00 : remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.01:04:25. Remember to do remote_control ON.')
+2024.095.05:59:23;"missed time 2024.095.01:04:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.01:04:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.01:06:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.01:07:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.01:10:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 17 'No0021' at 2024.095.01:13:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.01:10:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.01:10:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.01:11:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.01:13:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.01:17:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 18 'No0022' at 2024.095.01:20:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.01:17:00 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.01:18:25 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~1 min 00 sec
+2024.095.05:59:23;"missed time 2024.095.01:20:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.01:24:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C279 scan 19 'No0023' at 2024.095.01:27:00 in 180s #############
+2024.095.05:59:23;"missed time 2024.095.01:24:00 : source('3C279',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.01:24:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.01:25:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.01:27:00 : vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.05:59:23;"#     scan ends at 2024.095.01:30:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 20 'No0024' at 2024.095.01:38:00 in 480s #############
+2024.095.05:59:23;"missed time 2024.095.01:35:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.01:35:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.01:37:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.01:38:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.01:41:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 21 'No0025' at 2024.095.01:44:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.01:41:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.01:41:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.01:42:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.01:44:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.01:48:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for OJ287 scan 22 'No0026' at 2024.095.01:52:00 in 240s #############
+2024.095.05:59:23;"missed time 2024.095.01:49:25 : source('OJ287',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.01:49:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.01:51:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.01:52:00 : vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.095.05:59:23;"#     scan ends at 2024.095.01:55:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 23 'No0027' at 2024.095.02:04:00 in 540s #############
+2024.095.05:59:23;"#
+2024.095.05:59:23;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.02:01:25
+2024.095.05:59:23;"#
+2024.095.05:59:23;"missed time 2024.095.01:55:00 : remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.02:01:25. Remember to do remote_control ON.')
+2024.095.05:59:23;"missed time 2024.095.02:01:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.02:01:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.02:03:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.02:04:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.02:07:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 24 'No0028' at 2024.095.02:10:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.02:07:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.02:07:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.02:08:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.02:10:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.02:14:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 25 'No0029' at 2024.095.02:17:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.02:14:00 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.02:15:25 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~1 min 00 sec
+2024.095.05:59:23;"missed time 2024.095.02:17:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.02:21:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C279 scan 26 'No0030' at 2024.095.02:24:00 in 180s #############
+2024.095.05:59:23;"missed time 2024.095.02:21:00 : source('3C279',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.02:21:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.02:22:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.02:24:00 : vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.05:59:23;"#     scan ends at 2024.095.02:27:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 27 'No0031' at 2024.095.02:35:00 in 480s #############
+2024.095.05:59:23;"missed time 2024.095.02:32:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.02:32:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.02:34:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.02:35:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.02:38:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 28 'No0032' at 2024.095.02:41:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.02:38:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.02:38:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.02:39:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.02:41:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.02:45:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for OJ287 scan 29 'No0033' at 2024.095.02:50:00 in 300s #############
+2024.095.05:59:23;"missed time 2024.095.02:47:25 : source('OJ287',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.02:47:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.02:49:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.02:50:00 : vlbi_scan(t_mins=2,targetSource='OJ287')
+2024.095.05:59:23;"#     scan ends at 2024.095.02:52:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 30 'No0034' at 2024.095.03:01:00 in 540s #############
+2024.095.05:59:23;"#
+2024.095.05:59:23;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.02:58:25
+2024.095.05:59:23;"#
+2024.095.05:59:23;"missed time 2024.095.02:52:00 : remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.02:58:25. Remember to do remote_control ON.')
+2024.095.05:59:23;"missed time 2024.095.02:58:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.02:58:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.03:00:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.03:01:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.03:04:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 31 'No0035' at 2024.095.03:07:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.03:04:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.03:04:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.03:05:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.03:07:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.03:11:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C279 scan 32 'No0036' at 2024.095.03:14:00 in 180s #############
+2024.095.05:59:23;"missed time 2024.095.03:11:00 : source('3C279',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.03:11:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.03:12:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.03:14:00 : vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.05:59:23;"#     scan ends at 2024.095.03:17:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for OJ287 scan 33 'No0037' at 2024.095.03:23:00 in 360s #############
+2024.095.05:59:23;"missed time 2024.095.03:20:25 : source('OJ287',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.03:20:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.03:22:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.03:23:00 : vlbi_scan(t_mins=3,targetSource='OJ287')
+2024.095.05:59:23;"#     scan ends at 2024.095.03:26:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 34 'No0038' at 2024.095.03:32:00 in 360s #############
+2024.095.05:59:23;"missed time 2024.095.03:29:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.03:29:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.03:31:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.03:32:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.03:35:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 35 'No0039' at 2024.095.03:38:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.03:35:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.03:35:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.03:36:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.03:38:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.03:42:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 36 'No0040' at 2024.095.03:45:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.03:42:00 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.03:43:25 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~1 min 00 sec
+2024.095.05:59:23;"missed time 2024.095.03:45:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.03:49:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 37 'No0041' at 2024.095.03:58:00 in 540s #############
+2024.095.05:59:23;"#
+2024.095.05:59:23;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.03:55:25
+2024.095.05:59:23;"#
+2024.095.05:59:23;"missed time 2024.095.03:49:00 : remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.03:55:25. Remember to do remote_control ON.')
+2024.095.05:59:23;"missed time 2024.095.03:55:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.03:55:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.03:57:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.03:58:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.04:01:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 38 'No0042' at 2024.095.04:04:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.04:01:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.04:01:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.04:02:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.04:04:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.04:08:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C279 scan 39 'No0043' at 2024.095.04:11:00 in 180s #############
+2024.095.05:59:23;"missed time 2024.095.04:08:00 : source('3C279',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.04:08:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.04:09:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.04:11:00 : vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.05:59:23;"#     scan ends at 2024.095.04:14:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 40 'No0044' at 2024.095.04:22:00 in 480s #############
+2024.095.05:59:23;"missed time 2024.095.04:19:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.04:19:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.04:21:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.04:22:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.04:25:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 41 'No0045' at 2024.095.04:28:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.04:25:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.04:25:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.04:26:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.04:28:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.04:32:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 42 'No0046' at 2024.095.04:45:00 in 780s #############
+2024.095.05:59:23;"#
+2024.095.05:59:23;"# OPERATOR free 10 min 35 sec until VLBI calibrations to start at 2024.095.04:42:25
+2024.095.05:59:23;"#
+2024.095.05:59:23;"missed time 2024.095.04:32:00 : remote_control('on'); print('You have 10 min 35 sec until VLBI pre-scan calibrations at 2024.095.04:42:25. Remember to do remote_control ON.')
+2024.095.05:59:23;"missed time 2024.095.04:42:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.04:42:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.04:44:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.04:45:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.04:48:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 43 'No0047' at 2024.095.04:51:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.04:48:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.04:48:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.04:49:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.04:51:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.04:55:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 44 'No0048' at 2024.095.04:58:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.04:55:00 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.04:56:25 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~1 min 00 sec
+2024.095.05:59:23;"missed time 2024.095.04:58:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.05:02:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C273 scan 45 'No0049' at 2024.095.05:10:00 in 480s #############
+2024.095.05:59:23;"missed time 2024.095.05:07:25 : source('3C273',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.05:07:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.05:09:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.05:10:00 : vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.05:59:23;"#     scan ends at 2024.095.05:13:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for M87 scan 46 'No0050' at 2024.095.05:16:00 in 180s ###############
+2024.095.05:59:23;"missed time 2024.095.05:13:00 : source('M87',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.05:13:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.05:14:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.05:16:00 : vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.05:59:23;"#     scan ends at 2024.095.05:20:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for 3C279 scan 47 'No0051' at 2024.095.05:23:00 in 180s #############
+2024.095.05:59:23;"missed time 2024.095.05:20:00 : source('3C279',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.05:20:25 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.05:21:50 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 35 sec
+2024.095.05:59:23;"missed time 2024.095.05:23:00 : vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.05:59:23;"#     scan ends at 2024.095.05:26:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for SGRA scan 48 'No0052' at 2024.095.05:35:00 in 540s ##############
+2024.095.05:59:23;"#
+2024.095.05:59:23;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.05:32:25
+2024.095.05:59:23;"#
+2024.095.05:59:23;"missed time 2024.095.05:26:00 : remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.05:32:25. Remember to do remote_control ON.')
+2024.095.05:59:23;"missed time 2024.095.05:32:25 : source('SGRA',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.05:32:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.05:34:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.05:35:00 : vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.05:59:23;"#     scan ends at 2024.095.05:50:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for J1751+0939 scan 49 'No0053' at 2024.095.05:54:00 in 240s ########
+2024.095.05:59:23;"missed time 2024.095.05:51:25 : source('J1751+0939',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.05:51:50 : vlbi_tsys()
+2024.095.05:59:23;"missed time 2024.095.05:53:15 : vlbi_reference_scan()
+2024.095.05:59:23;"#                      gap        max ~0 min 10 sec
+2024.095.05:59:23;"missed time 2024.095.05:54:00 : vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.05:59:23;"#     scan ends at 2024.095.05:57:00
+2024.095.05:59:23;"
+2024.095.05:59:23;"# ### Block for SGRA scan 50 'No0054' at 2024.095.06:01:00 in 240s ##############
+2024.095.05:59:23;"missed time 2024.095.05:58:25 : source('SGRA',cats='user'); go(); track()
+2024.095.05:59:23;"missed time 2024.095.05:58:50 : vlbi_tsys()
+2024.095.06:00:15;"vlbi_reference_scan()
+2024.095.06:00:16;"reply from APECS: (timeout)
+2024.095.06:00:16;"#                      gap        max ~0 min 10 sec
+2024.095.06:01:00;"vlbi_scan(t_mins=13,targetSource='SGRA')
+2024.095.06:01:00;"reply from APECS: OK
+2024.095.06:01:01;"reply from APECS: (timeout)
+2024.095.06:01:01;"#     scan ends at 2024.095.06:14:00
+2024.095.06:01:01;"
+2024.095.06:01:01;"# ### Block for J1924-2914 scan 51 'No0055' at 2024.095.06:17:00 in 180s ########
+2024.095.06:14:00;"source('J1924-2914',cats='user'); go(); track()
+2024.095.06:14:00;"reply from APECS: OK
+2024.095.06:14:01;"reply from APECS: (timeout)
+2024.095.06:14:25;"vlbi_tsys()
+2024.095.06:14:25;"reply from APECS: OK
+2024.095.06:14:25;"reply from APECS: OK
+2024.095.06:14:26;"reply from APECS: (timeout)
+2024.095.06:15:50;"vlbi_reference_scan()
+2024.095.06:15:51;"reply from APECS: (timeout)
+2024.095.06:15:51;"#                      gap        max ~0 min 35 sec
+2024.095.06:17:00;"vlbi_scan(t_mins=3,targetSource='J1924-2914')
+2024.095.06:17:00;"reply from APECS: OK
+2024.095.06:17:01;"reply from APECS: (timeout)
+2024.095.06:17:01;"#     scan ends at 2024.095.06:20:00
+2024.095.06:17:01;"
+2024.095.06:17:01;"# ### Block for SGRA scan 52 'No0066' at 2024.095.06:45:00 in 1500s #############
+2024.095.06:17:01;"#
+2024.095.06:17:01;"# OPERATOR free 22 min 35 sec until VLBI calibrations to start at 2024.095.06:42:25
+2024.095.06:17:01;"#
+2024.095.06:20:00;"remote_control('on'); print('You have 22 min 35 sec until VLBI pre-scan calibrations at 2024.095.06:42:25. Remember to do remote_control ON.')
+2024.095.06:20:00;"reply from APECS: OK
+2024.095.06:20:00;"reply from APECS: OK
+2024.095.06:20:01;"reply from APECS: (timeout)
+2024.095.06:42:25;"source('SGRA',cats='user'); go(); track()
+2024.095.06:42:26;"reply from APECS: (timeout)
+2024.095.06:42:50;"vlbi_tsys()
+2024.095.06:42:50;"reply from APECS: OK
+2024.095.06:42:50;"reply from APECS: OK
+2024.095.06:42:51;"reply from APECS: (timeout)
+2024.095.06:44:15;"vlbi_reference_scan()
+2024.095.06:44:16;"reply from APECS: (timeout)
+2024.095.06:44:16;"#                      gap        max ~0 min 10 sec
+2024.095.06:45:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.06:45:00;"reply from APECS: OK
+2024.095.06:45:01;"reply from APECS: (timeout)
+2024.095.06:45:01;"#     scan ends at 2024.095.07:00:00
+2024.095.06:45:01;"
+2024.095.06:45:01;"# ### Block for J1751+0939 scan 53 'No0067' at 2024.095.07:03:00 in 180s ########
+2024.095.07:00:00;"source('J1751+0939',cats='user'); go(); track()
+2024.095.07:00:00;"reply from APECS: OK
+2024.095.07:00:01;"reply from APECS: (timeout)
+2024.095.07:00:25;"vlbi_tsys()
+2024.095.07:00:25;"reply from APECS: OK
+2024.095.07:00:25;"reply from APECS: OK
+2024.095.07:00:26;"reply from APECS: (timeout)
+2024.095.07:01:50;"vlbi_reference_scan()
+2024.095.07:01:51;"reply from APECS: (timeout)
+2024.095.07:01:51;"#                      gap        max ~0 min 35 sec
+2024.095.07:03:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.07:03:00;"reply from APECS: OK
+2024.095.07:03:01;"reply from APECS: (timeout)
+2024.095.07:03:01;"#     scan ends at 2024.095.07:06:00
+2024.095.07:03:01;"
+2024.095.07:03:01;"# ### Block for 3C273 scan 54 'No0068' at 2024.095.07:11:00 in 300s #############
+2024.095.07:08:25;"source('3C273',cats='user'); go(); track()
+2024.095.07:08:25;"reply from APECS: OK
+2024.095.07:08:26;"reply from APECS: (timeout)
+2024.095.07:08:50;"vlbi_tsys()
+2024.095.07:08:50;"reply from APECS: OK
+2024.095.07:08:51;"reply from APECS: (timeout)
+2024.095.07:10:15;"vlbi_reference_scan()
+2024.095.07:10:15;"reply from APECS: OK
+2024.095.07:10:16;"reply from APECS: (timeout)
+2024.095.07:10:16;"#                      gap        max ~0 min 10 sec
+2024.095.07:11:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.07:11:00;"reply from APECS: OK
+2024.095.07:11:01;"reply from APECS: (timeout)
+2024.095.07:11:01;"#     scan ends at 2024.095.07:14:00
+2024.095.07:11:01;"
+2024.095.07:11:01;"# ### Block for M87 scan 55 'No0069' at 2024.095.07:17:00 in 180s ###############
+2024.095.07:14:00;"source('M87',cats='user'); go(); track()
+2024.095.07:14:00;"reply from APECS: OK
+2024.095.07:14:01;"reply from APECS: (timeout)
+2024.095.07:14:25;"vlbi_tsys()
+2024.095.07:14:25;"reply from APECS: OK
+2024.095.07:14:25;"reply from APECS: OK
+2024.095.07:14:26;"reply from APECS: (timeout)
+2024.095.07:15:50;"vlbi_reference_scan()
+2024.095.07:15:51;"reply from APECS: (timeout)
+2024.095.07:15:51;"#                      gap        max ~0 min 35 sec
+2024.095.07:17:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.07:17:00;"reply from APECS: OK
+2024.095.07:17:01;"reply from APECS: (timeout)
+2024.095.07:17:01;"#     scan ends at 2024.095.07:21:00
+2024.095.07:17:01;"
+2024.095.07:17:01;"# ### Block for M87 scan 56 'No0070' at 2024.095.07:24:00 in 180s ###############
+2024.095.07:21:00;"vlbi_tsys()
+2024.095.07:21:00;"reply from APECS: OK
+2024.095.07:21:00;"reply from APECS: OK
+2024.095.07:21:01;"reply from APECS: (timeout)
+2024.095.07:22:25;"vlbi_reference_scan()
+2024.095.07:22:26;"reply from APECS: (timeout)
+2024.095.07:22:26;"#                      gap        max ~1 min 00 sec
+2024.095.07:24:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.07:24:00;"reply from APECS: OK
+2024.095.07:24:01;"reply from APECS: (timeout)
+2024.095.07:24:01;"#     scan ends at 2024.095.07:28:00
+2024.095.07:24:01;"
+2024.095.07:24:01;"# ### Block for 3C279 scan 57 'No0071' at 2024.095.07:31:00 in 180s #############
+2024.095.07:28:00;"source('3C279',cats='user'); go(); track()
+2024.095.07:28:00;"reply from APECS: OK
+2024.095.07:28:01;"reply from APECS: (timeout)
+2024.095.07:28:25;"vlbi_tsys()
+2024.095.07:28:25;"reply from APECS: OK
+2024.095.07:28:25;"reply from APECS: OK
+2024.095.07:28:26;"reply from APECS: (timeout)
+2024.095.07:29:50;"vlbi_reference_scan()
+2024.095.07:29:51;"reply from APECS: (timeout)
+2024.095.07:29:51;"#                      gap        max ~0 min 35 sec
+2024.095.07:31:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.07:31:00;"reply from APECS: OK
+2024.095.07:31:01;"reply from APECS: (timeout)
+2024.095.07:31:01;"#     scan ends at 2024.095.07:34:00
+2024.095.07:31:01;"
+2024.095.07:31:01;"# ### Block for 3C273 scan 58 'No0074' at 2024.095.07:43:00 in 540s #############
+2024.095.07:31:01;"#
+2024.095.07:31:01;"# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2024.095.07:40:25
+2024.095.07:31:01;"#
+2024.095.07:34:00;"remote_control('on'); print('You have 6 min 35 sec until VLBI pre-scan calibrations at 2024.095.07:40:25. Remember to do remote_control ON.')
+2024.095.07:34:00;"reply from APECS: OK
+2024.095.07:34:00;"reply from APECS: OK
+2024.095.07:34:01;"reply from APECS: (timeout)
+2024.095.07:40:25;"source('3C273',cats='user'); go(); track()
+2024.095.07:40:26;"reply from APECS: (timeout)
+2024.095.07:40:50;"vlbi_tsys()
+2024.095.07:40:51;"reply from APECS: (timeout)
+2024.095.07:42:15;"vlbi_reference_scan()
+2024.095.07:42:15;"reply from APECS: OK
+2024.095.07:42:15;"reply from APECS: OK
+2024.095.07:42:16;"reply from APECS: (timeout)
+2024.095.07:42:16;"#                      gap        max ~0 min 10 sec
+2024.095.07:43:00;"vlbi_scan(t_mins=3,targetSource='3C273')
+2024.095.07:43:01;"reply from APECS: (timeout)
+2024.095.07:43:01;"#     scan ends at 2024.095.07:46:00
+2024.095.07:43:01;"
+2024.095.07:43:01;"# ### Block for M87 scan 59 'No0075' at 2024.095.07:49:00 in 180s ###############
+2024.095.07:46:00;"source('M87',cats='user'); go(); track()
+2024.095.07:46:00;"reply from APECS: OK
+2024.095.07:46:00;"reply from APECS: OK
+2024.095.07:46:01;"reply from APECS: (timeout)
+2024.095.07:46:25;"vlbi_tsys()
+2024.095.07:46:25;"reply from APECS: OK
+2024.095.07:46:25;"reply from APECS: OK
+2024.095.07:46:26;"reply from APECS: (timeout)
+2024.095.07:47:50;"vlbi_reference_scan()
+2024.095.07:47:51;"reply from APECS: (timeout)
+2024.095.07:47:51;"#                      gap        max ~0 min 35 sec
+2024.095.07:49:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.07:49:00;"reply from APECS: OK
+2024.095.07:49:01;"reply from APECS: (timeout)
+2024.095.07:49:01;"#     scan ends at 2024.095.07:53:00
+2024.095.07:49:01;"
+2024.095.07:49:01;"# ### Block for M87 scan 60 'No0076' at 2024.095.07:56:00 in 180s ###############
+2024.095.07:53:00;"vlbi_tsys()
+2024.095.07:53:00;"reply from APECS: OK
+2024.095.07:53:00;"reply from APECS: OK
+2024.095.07:53:01;"reply from APECS: (timeout)
+2024.095.07:54:25;"vlbi_reference_scan()
+2024.095.07:54:26;"reply from APECS: (timeout)
+2024.095.07:54:26;"#                      gap        max ~1 min 00 sec
+2024.095.07:56:00;"vlbi_scan(t_mins=4,targetSource='M87')
+2024.095.07:56:00;"reply from APECS: OK
+2024.095.07:56:01;"reply from APECS: (timeout)
+2024.095.07:56:01;"#     scan ends at 2024.095.08:00:00
+2024.095.07:56:01;"
+2024.095.07:56:01;"# ### Block for 3C279 scan 61 'No0077' at 2024.095.08:03:00 in 180s #############
+2024.095.08:00:00;"source('3C279',cats='user'); go(); track()
+2024.095.08:00:00;"reply from APECS: OK
+2024.095.08:00:01;"reply from APECS: (timeout)
+2024.095.08:00:25;"vlbi_tsys()
+2024.095.08:00:25;"reply from APECS: OK
+2024.095.08:00:25;"reply from APECS: OK
+2024.095.08:00:26;"reply from APECS: (timeout)
+2024.095.08:01:50;"vlbi_reference_scan()
+2024.095.08:01:51;"reply from APECS: (timeout)
+2024.095.08:01:51;"#                      gap        max ~0 min 35 sec
+2024.095.08:03:00;"vlbi_scan(t_mins=3,targetSource='3C279')
+2024.095.08:03:00;"reply from APECS: OK
+2024.095.08:03:01;"reply from APECS: (timeout)
+2024.095.08:03:01;"#     scan ends at 2024.095.08:06:00
+2024.095.08:03:01;"
+2024.095.08:03:01;"# ### Block for J1751+0939 scan 62 'No0078' at 2024.095.08:11:00 in 300s ########
+2024.095.08:08:25;"source('J1751+0939',cats='user'); go(); track()
+2024.095.08:08:25;"reply from APECS: OK
+2024.095.08:08:26;"reply from APECS: (timeout)
+2024.095.08:08:50;"vlbi_tsys()
+2024.095.08:08:50;"reply from APECS: OK
+2024.095.08:08:51;"reply from APECS: (timeout)
+2024.095.08:10:15;"vlbi_reference_scan()
+2024.095.08:10:15;"reply from APECS: OK
+2024.095.08:10:16;"reply from APECS: (timeout)
+2024.095.08:10:16;"#                      gap        max ~0 min 10 sec
+2024.095.08:11:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.08:11:00;"reply from APECS: OK
+2024.095.08:11:01;"reply from APECS: (timeout)
+2024.095.08:11:01;"#     scan ends at 2024.095.08:14:00
+2024.095.08:11:01;"
+2024.095.08:11:01;"# ### Block for SGRA scan 63 'No0079' at 2024.095.08:17:00 in 180s ##############
+2024.095.08:14:00;"source('SGRA',cats='user'); go(); track()
+2024.095.08:14:00;"reply from APECS: OK
+2024.095.08:14:01;"reply from APECS: (timeout)
+2024.095.08:14:25;"vlbi_tsys()
+2024.095.08:14:25;"reply from APECS: OK
+2024.095.08:14:26;"reply from APECS: (timeout)
+2024.095.08:15:50;"vlbi_reference_scan()
+2024.095.08:15:50;"reply from APECS: OK
+2024.095.08:15:51;"reply from APECS: (timeout)
+2024.095.08:15:51;"#                      gap        max ~0 min 35 sec
+2024.095.08:17:00;"vlbi_scan(t_mins=10,targetSource='SGRA')
+2024.095.08:17:00;"reply from APECS: OK
+2024.095.08:17:01;"reply from APECS: (timeout)
+2024.095.08:17:01;"#     scan ends at 2024.095.08:27:00
+2024.095.08:17:01;"
+2024.095.08:17:01;"# ### Block for J1924-2914 scan 64 'No0080' at 2024.095.08:30:00 in 180s ########
+2024.095.08:27:00;"source('J1924-2914',cats='user'); go(); track()
+2024.095.08:27:00;"reply from APECS: OK
+2024.095.08:27:01;"reply from APECS: (timeout)
+2024.095.08:27:25;"vlbi_tsys()
+2024.095.08:27:25;"reply from APECS: OK
+2024.095.08:27:25;"reply from APECS: OK
+2024.095.08:27:26;"reply from APECS: (timeout)
+2024.095.08:28:50;"vlbi_reference_scan()
+2024.095.08:28:51;"reply from APECS: (timeout)
+2024.095.08:28:51;"#                      gap        max ~0 min 35 sec
+2024.095.08:30:00;"vlbi_scan(t_mins=3,targetSource='J1924-2914')
+2024.095.08:30:00;"reply from APECS: OK
+2024.095.08:30:01;"reply from APECS: (timeout)
+2024.095.08:30:01;"#     scan ends at 2024.095.08:33:00
+2024.095.08:30:01;"
+2024.095.08:30:01;"# ### Block for J1751+0939 scan 65 'No0081' at 2024.095.08:43:00 in 600s ########
+2024.095.08:30:01;"#
+2024.095.08:30:01;"# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2024.095.08:40:25
+2024.095.08:30:01;"#
+2024.095.08:33:00;"remote_control('on'); print('You have 7 min 35 sec until VLBI pre-scan calibrations at 2024.095.08:40:25. Remember to do remote_control ON.')
+2024.095.08:33:00;"reply from APECS: OK
+2024.095.08:33:00;"reply from APECS: OK
+2024.095.08:33:01;"reply from APECS: (timeout)
+2024.095.08:40:25;"source('J1751+0939',cats='user'); go(); track()
+2024.095.08:40:26;"reply from APECS: (timeout)
+2024.095.08:40:50;"vlbi_tsys()
+2024.095.08:40:50;"reply from APECS: OK
+2024.095.08:40:50;"reply from APECS: OK
+2024.095.08:40:51;"reply from APECS: (timeout)
+2024.095.08:42:15;"vlbi_reference_scan()
+2024.095.08:42:16;"reply from APECS: (timeout)
+2024.095.08:42:16;"#                      gap        max ~0 min 10 sec
+2024.095.08:43:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.08:43:00;"reply from APECS: OK
+2024.095.08:43:01;"reply from APECS: (timeout)
+2024.095.08:43:01;"#     scan ends at 2024.095.08:46:00
+2024.095.08:43:01;"
+2024.095.08:43:01;"# ### Block for SGRA scan 66 'No0082' at 2024.095.08:49:00 in 180s ##############
+2024.095.08:46:00;"source('SGRA',cats='user'); go(); track()
+2024.095.08:46:00;"reply from APECS: OK
+2024.095.08:46:01;"reply from APECS: (timeout)
+2024.095.08:46:25;"vlbi_tsys()
+2024.095.08:46:25;"reply from APECS: OK
+2024.095.08:46:26;"reply from APECS: (timeout)
+2024.095.08:47:50;"vlbi_reference_scan()
+2024.095.08:47:50;"reply from APECS: OK
+2024.095.08:47:51;"reply from APECS: (timeout)
+2024.095.08:47:51;"#                      gap        max ~0 min 35 sec
+2024.095.08:49:00;"vlbi_scan(t_mins=13,targetSource='SGRA')
+2024.095.08:49:00;"reply from APECS: OK
+2024.095.08:49:01;"reply from APECS: (timeout)
+2024.095.08:49:01;"#     scan ends at 2024.095.09:02:00
+2024.095.08:49:01;"
+2024.095.08:49:01;"# ### Block for SGRA scan 67 'No0083' at 2024.095.09:05:00 in 180s ##############
+2024.095.09:02:00;"vlbi_tsys()
+2024.095.09:02:00;"reply from APECS: OK
+2024.095.09:02:00;"reply from APECS: OK
+2024.095.09:02:01;"reply from APECS: (timeout)
+2024.095.09:03:25;"vlbi_reference_scan()
+2024.095.09:03:26;"reply from APECS: (timeout)
+2024.095.09:03:26;"#                      gap        max ~1 min 00 sec
+2024.095.09:05:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.09:05:00;"reply from APECS: OK
+2024.095.09:05:01;"reply from APECS: (timeout)
+2024.095.09:05:01;"#     scan ends at 2024.095.09:20:00
+2024.095.09:05:01;"
+2024.095.09:05:01;"# ### Block for J1751+0939 scan 68 'No0084' at 2024.095.09:25:00 in 300s ########
+2024.095.09:22:25;"source('J1751+0939',cats='user'); go(); track()
+2024.095.09:22:25;"reply from APECS: OK
+2024.095.09:22:26;"reply from APECS: (timeout)
+2024.095.09:22:50;"vlbi_tsys()
+2024.095.09:22:51;"reply from APECS: (timeout)
+2024.095.09:24:15;"vlbi_reference_scan()
+2024.095.09:24:15;"reply from APECS: OK
+2024.095.09:24:15;"reply from APECS: OK
+2024.095.09:24:16;"reply from APECS: (timeout)
+2024.095.09:24:16;"#                      gap        max ~0 min 10 sec
+2024.095.09:25:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.09:25:00;"reply from APECS: OK
+2024.095.09:25:01;"reply from APECS: (timeout)
+2024.095.09:25:01;"#     scan ends at 2024.095.09:28:00
+2024.095.09:25:01;"
+2024.095.09:25:01;"# ### Block for SGRA scan 69 'No0085' at 2024.095.09:32:00 in 240s ##############
+2024.095.09:29:25;"source('SGRA',cats='user'); go(); track()
+2024.095.09:29:25;"reply from APECS: OK
+2024.095.09:29:26;"reply from APECS: (timeout)
+2024.095.09:29:50;"vlbi_tsys()
+2024.095.09:29:51;"reply from APECS: (timeout)
+2024.095.09:31:15;"vlbi_reference_scan()
+2024.095.09:31:15;"reply from APECS: OK
+2024.095.09:31:15;"reply from APECS: OK
+2024.095.09:31:16;"reply from APECS: (timeout)
+2024.095.09:31:16;"#                      gap        max ~0 min 10 sec
+2024.095.09:32:00;"vlbi_scan(t_mins=14,targetSource='SGRA')
+2024.095.09:32:00;"reply from APECS: OK
+2024.095.09:32:01;"reply from APECS: (timeout)
+2024.095.09:32:01;"#     scan ends at 2024.095.09:46:00
+2024.095.09:32:01;"
+2024.095.09:32:01;"# ### Block for J1924-2914 scan 70 'No0086' at 2024.095.09:49:00 in 180s ########
+2024.095.09:46:00;"source('J1924-2914',cats='user'); go(); track()
+2024.095.09:46:00;"reply from APECS: OK
+2024.095.09:46:01;"reply from APECS: (timeout)
+2024.095.09:46:25;"vlbi_tsys()
+2024.095.09:46:25;"reply from APECS: OK
+2024.095.09:46:26;"reply from APECS: (timeout)
+2024.095.09:47:50;"vlbi_reference_scan()
+2024.095.09:47:50;"reply from APECS: OK
+2024.095.09:47:51;"reply from APECS: (timeout)
+2024.095.09:47:51;"#                      gap        max ~0 min 35 sec
+2024.095.09:49:00;"vlbi_scan(t_mins=3,targetSource='J1924-2914')
+2024.095.09:49:00;"reply from APECS: OK
+2024.095.09:49:01;"reply from APECS: (timeout)
+2024.095.09:49:01;"#     scan ends at 2024.095.09:52:00
+2024.095.09:49:01;"
+2024.095.09:49:01;"# ### Block for J1751+0939 scan 71 'No0087' at 2024.095.10:02:00 in 600s ########
+2024.095.09:49:01;"#
+2024.095.09:49:01;"# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2024.095.09:59:25
+2024.095.09:49:01;"#
+2024.095.09:52:00;"remote_control('on'); print('You have 7 min 35 sec until VLBI pre-scan calibrations at 2024.095.09:59:25. Remember to do remote_control ON.')
+2024.095.09:52:00;"reply from APECS: OK
+2024.095.09:52:00;"reply from APECS: OK
+2024.095.09:52:01;"reply from APECS: (timeout)
+2024.095.09:59:25;"source('J1751+0939',cats='user'); go(); track()
+2024.095.09:59:26;"reply from APECS: (timeout)
+2024.095.09:59:50;"vlbi_tsys()
+2024.095.09:59:51;"reply from APECS: (timeout)
+2024.095.10:01:15;"vlbi_reference_scan()
+2024.095.10:01:15;"reply from APECS: OK
+2024.095.10:01:15;"reply from APECS: OK
+2024.095.10:01:16;"reply from APECS: (timeout)
+2024.095.10:01:16;"#                      gap        max ~0 min 10 sec
+2024.095.10:02:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.10:02:00;"reply from APECS: OK
+2024.095.10:02:01;"reply from APECS: (timeout)
+2024.095.10:02:01;"#     scan ends at 2024.095.10:05:00
+2024.095.10:02:01;"
+2024.095.10:02:01;"# ### Block for SGRA scan 72 'No0088' at 2024.095.10:08:00 in 180s ##############
+2024.095.10:05:00;"source('SGRA',cats='user'); go(); track()
+2024.095.10:05:00;"reply from APECS: OK
+2024.095.10:05:01;"reply from APECS: (timeout)
+2024.095.10:05:25;"vlbi_tsys()
+2024.095.10:05:25;"reply from APECS: OK
+2024.095.10:05:26;"reply from APECS: (timeout)
+2024.095.10:06:50;"vlbi_reference_scan()
+2024.095.10:06:50;"reply from APECS: OK
+2024.095.10:06:51;"reply from APECS: (timeout)
+2024.095.10:06:51;"#                      gap        max ~0 min 35 sec
+2024.095.10:08:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.10:08:00;"reply from APECS: OK
+2024.095.10:08:01;"reply from APECS: (timeout)
+2024.095.10:08:01;"#     scan ends at 2024.095.10:23:00
+2024.095.10:08:01;"
+2024.095.10:08:01;"# ### Block for SGRA scan 73 'No0089' at 2024.095.10:26:00 in 180s ##############
+2024.095.10:23:00;"vlbi_tsys()
+2024.095.10:23:00;"reply from APECS: OK
+2024.095.10:23:00;"reply from APECS: OK
+2024.095.10:23:01;"reply from APECS: (timeout)
+2024.095.10:24:25;"vlbi_reference_scan()
+2024.095.10:24:26;"reply from APECS: (timeout)
+2024.095.10:24:26;"#                      gap        max ~1 min 00 sec
+2024.095.10:26:00;"vlbi_scan(t_mins=12,targetSource='SGRA')
+2024.095.10:26:00;"reply from APECS: OK
+2024.095.10:26:01;"reply from APECS: (timeout)
+2024.095.10:26:01;"#     scan ends at 2024.095.10:38:00
+2024.095.10:26:01;"
+2024.095.10:26:01;"# ### Block for J1924-2914 scan 74 'No0090' at 2024.095.10:41:00 in 180s ########
+2024.095.10:38:00;"source('J1924-2914',cats='user'); go(); track()
+2024.095.10:38:00;"reply from APECS: OK
+2024.095.10:38:01;"reply from APECS: (timeout)
+2024.095.10:38:25;"vlbi_tsys()
+2024.095.10:38:25;"reply from APECS: OK
+2024.095.10:38:26;"reply from APECS: (timeout)
+2024.095.10:39:50;"vlbi_reference_scan()
+2024.095.10:39:50;"reply from APECS: OK
+2024.095.10:39:51;"reply from APECS: (timeout)
+2024.095.10:39:51;"#                      gap        max ~0 min 35 sec
+2024.095.10:41:00;"vlbi_scan(t_mins=3,targetSource='J1924-2914')
+2024.095.10:41:00;"reply from APECS: OK
+2024.095.10:41:01;"reply from APECS: (timeout)
+2024.095.10:41:01;"#     scan ends at 2024.095.10:44:00
+2024.095.10:41:01;"
+2024.095.10:41:01;"# ### Block for SGRA scan 75 'No0091' at 2024.095.10:49:00 in 300s ##############
+2024.095.10:46:25;"source('SGRA',cats='user'); go(); track()
+2024.095.10:46:25;"reply from APECS: OK
+2024.095.10:46:26;"reply from APECS: (timeout)
+2024.095.10:46:50;"vlbi_tsys()
+2024.095.10:46:50;"reply from APECS: OK
+2024.095.10:46:51;"reply from APECS: (timeout)
+2024.095.10:48:15;"vlbi_reference_scan()
+2024.095.10:48:15;"reply from APECS: OK
+2024.095.10:48:16;"reply from APECS: (timeout)
+2024.095.10:48:16;"#                      gap        max ~0 min 10 sec
+2024.095.10:49:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.10:49:00;"reply from APECS: OK
+2024.095.10:49:01;"reply from APECS: (timeout)
+2024.095.10:49:01;"#     scan ends at 2024.095.11:04:00
+2024.095.10:49:01;"
+2024.095.10:49:01;"# ### Block for J1751+0939 scan 76 'No0092' at 2024.095.11:07:00 in 180s ########
+2024.095.11:04:00;"source('J1751+0939',cats='user'); go(); track()
+2024.095.11:04:00;"reply from APECS: OK
+2024.095.11:04:01;"reply from APECS: (timeout)
+2024.095.11:04:25;"vlbi_tsys()
+2024.095.11:04:25;"reply from APECS: OK
+2024.095.11:04:26;"reply from APECS: (timeout)
+2024.095.11:05:50;"vlbi_reference_scan()
+2024.095.11:05:50;"reply from APECS: OK
+2024.095.11:05:51;"reply from APECS: (timeout)
+2024.095.11:05:51;"#                      gap        max ~0 min 35 sec
+2024.095.11:07:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.11:07:00;"reply from APECS: OK
+2024.095.11:07:01;"reply from APECS: (timeout)
+2024.095.11:07:01;"#     scan ends at 2024.095.11:10:00
+2024.095.11:07:01;"
+2024.095.11:07:01;"# ### Block for J1751+0939 scan 77 'No0093' at 2024.095.11:20:00 in 600s ########
+2024.095.11:07:01;"#
+2024.095.11:07:01;"# OPERATOR free 8 min 00 sec until VLBI calibrations to start at 2024.095.11:17:50
+2024.095.11:07:01;"#
+2024.095.11:10:00;"remote_control('on'); print('You have 8 min 00 sec until VLBI pre-scan calibrations at 2024.095.11:17:50. Remember to do remote_control ON.')
+2024.095.11:10:00;"reply from APECS: OK
+2024.095.11:10:00;"reply from APECS: OK
+2024.095.11:10:01;"reply from APECS: (timeout)
+2024.095.11:17:50;"vlbi_tsys()
+2024.095.11:17:50;"reply from APECS: OK
+2024.095.11:17:51;"reply from APECS: (timeout)
+2024.095.11:19:15;"vlbi_reference_scan()
+2024.095.11:19:16;"reply from APECS: (timeout)
+2024.095.11:19:16;"#                      gap        max ~0 min 10 sec
+2024.095.11:20:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.11:20:00;"reply from APECS: OK
+2024.095.11:20:01;"reply from APECS: (timeout)
+2024.095.11:20:01;"#     scan ends at 2024.095.11:23:00
+2024.095.11:20:01;"
+2024.095.11:20:01;"# ### Block for SGRA scan 78 'No0094' at 2024.095.11:26:00 in 180s ##############
+2024.095.11:23:00;"source('SGRA',cats='user'); go(); track()
+2024.095.11:23:00;"reply from APECS: OK
+2024.095.11:23:01;"reply from APECS: (timeout)
+2024.095.11:23:25;"vlbi_tsys()
+2024.095.11:23:25;"reply from APECS: OK
+2024.095.11:23:25;"reply from APECS: OK
+2024.095.11:23:26;"reply from APECS: (timeout)
+2024.095.11:24:50;"vlbi_reference_scan()
+2024.095.11:24:51;"reply from APECS: (timeout)
+2024.095.11:24:51;"#                      gap        max ~0 min 35 sec
+2024.095.11:26:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.11:26:00;"reply from APECS: OK
+2024.095.11:26:01;"reply from APECS: (timeout)
+2024.095.11:26:01;"#     scan ends at 2024.095.11:41:00
+2024.095.11:26:01;"
+2024.095.11:26:01;"# ### Block for SGRA scan 79 'No0095' at 2024.095.11:44:00 in 180s ##############
+2024.095.11:41:00;"vlbi_tsys()
+2024.095.11:41:00;"reply from APECS: OK
+2024.095.11:41:00;"reply from APECS: OK
+2024.095.11:41:01;"reply from APECS: (timeout)
+2024.095.11:42:25;"vlbi_reference_scan()
+2024.095.11:42:26;"reply from APECS: (timeout)
+2024.095.11:42:26;"#                      gap        max ~1 min 00 sec
+2024.095.11:44:00;"vlbi_scan(t_mins=12,targetSource='SGRA')
+2024.095.11:44:00;"reply from APECS: OK
+2024.095.11:44:01;"reply from APECS: (timeout)
+2024.095.11:44:01;"#     scan ends at 2024.095.11:56:00
+2024.095.11:44:01;"
+2024.095.11:44:01;"# ### Block for J1751+0939 scan 80 'No0096' at 2024.095.11:59:00 in 180s ########
+2024.095.11:56:00;"source('J1751+0939',cats='user'); go(); track()
+2024.095.11:56:00;"reply from APECS: OK
+2024.095.11:56:01;"reply from APECS: (timeout)
+2024.095.11:56:25;"vlbi_tsys()
+2024.095.11:56:25;"reply from APECS: OK
+2024.095.11:56:26;"reply from APECS: (timeout)
+2024.095.11:57:50;"vlbi_reference_scan()
+2024.095.11:57:50;"reply from APECS: OK
+2024.095.11:57:51;"reply from APECS: (timeout)
+2024.095.11:57:51;"#                      gap        max ~0 min 35 sec
+2024.095.11:59:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.11:59:00;"reply from APECS: OK
+2024.095.11:59:01;"reply from APECS: (timeout)
+2024.095.11:59:01;"#     scan ends at 2024.095.12:02:00
+2024.095.11:59:01;"
+2024.095.11:59:01;"# ### Block for SGRA scan 81 'No0097' at 2024.095.12:07:00 in 300s ##############
+2024.095.12:04:25;"source('SGRA',cats='user'); go(); track()
+2024.095.12:04:25;"reply from APECS: OK
+2024.095.12:04:26;"reply from APECS: (timeout)
+2024.095.12:04:50;"vlbi_tsys()
+2024.095.12:04:50;"reply from APECS: OK
+2024.095.12:04:50;"reply from APECS: OK
+2024.095.12:04:51;"reply from APECS: (timeout)
+2024.095.12:06:15;"vlbi_reference_scan()
+2024.095.12:06:16;"reply from APECS: (timeout)
+2024.095.12:06:16;"#                      gap        max ~0 min 10 sec
+2024.095.12:07:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.12:07:00;"reply from APECS: OK
+2024.095.12:07:01;"reply from APECS: (timeout)
+2024.095.12:07:01;"#     scan ends at 2024.095.12:22:00
+2024.095.12:07:01;"
+2024.095.12:07:01;"# ### Block for J1924-2914 scan 82 'No0098' at 2024.095.12:25:00 in 180s ########
+2024.095.12:22:00;"source('J1924-2914',cats='user'); go(); track()
+2024.095.12:22:00;"reply from APECS: OK
+2024.095.12:22:01;"reply from APECS: (timeout)
+2024.095.12:22:25;"vlbi_tsys()
+2024.095.12:22:25;"reply from APECS: OK
+2024.095.12:22:25;"reply from APECS: OK
+2024.095.12:22:26;"reply from APECS: (timeout)
+2024.095.12:23:50;"vlbi_reference_scan()
+2024.095.12:23:51;"reply from APECS: (timeout)
+2024.095.12:23:51;"#                      gap        max ~0 min 35 sec
+2024.095.12:25:00;"vlbi_scan(t_mins=3,targetSource='J1924-2914')
+2024.095.12:25:00;"reply from APECS: OK
+2024.095.12:25:01;"reply from APECS: (timeout)
+2024.095.12:25:01;"#     scan ends at 2024.095.12:28:00
+2024.095.12:25:01;"
+2024.095.12:25:01;"# ### Block for J1751+0939 scan 83 'No0099' at 2024.095.12:38:00 in 600s ########
+2024.095.12:25:01;"#
+2024.095.12:25:01;"# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2024.095.12:35:25
+2024.095.12:25:01;"#
+2024.095.12:28:00;"remote_control('on'); print('You have 7 min 35 sec until VLBI pre-scan calibrations at 2024.095.12:35:25. Remember to do remote_control ON.')
+2024.095.12:28:00;"reply from APECS: OK
+2024.095.12:28:00;"reply from APECS: OK
+2024.095.12:28:01;"reply from APECS: (timeout)
+2024.095.12:35:25;"source('J1751+0939',cats='user'); go(); track()
+2024.095.12:35:26;"reply from APECS: (timeout)
+2024.095.12:35:50;"vlbi_tsys()
+2024.095.12:35:51;"reply from APECS: (timeout)
+2024.095.12:37:15;"vlbi_reference_scan()
+2024.095.12:37:16;"reply from APECS: (timeout)
+2024.095.12:37:16;"#                      gap        max ~0 min 10 sec
+2024.095.12:38:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.12:38:01;"reply from APECS: (timeout)
+2024.095.12:38:01;"#     scan ends at 2024.095.12:41:00
+2024.095.12:38:01;"
+2024.095.12:38:01;"# ### Block for SGRA scan 84 'No0100' at 2024.095.12:44:00 in 180s ##############
+2024.095.12:41:00;"source('SGRA',cats='user'); go(); track()
+2024.095.12:41:01;"reply from APECS: (timeout)
+2024.095.12:41:25;"vlbi_tsys()
+2024.095.12:41:26;"reply from APECS: (timeout)
+2024.095.12:42:50;"vlbi_reference_scan()
+2024.095.12:42:51;"reply from APECS: (timeout)
+2024.095.12:42:51;"#                      gap        max ~0 min 35 sec
+2024.095.12:44:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.12:44:01;"reply from APECS: (timeout)
+2024.095.12:44:01;"#     scan ends at 2024.095.12:59:00
+2024.095.12:44:01;"
+2024.095.12:44:01;"# ### Block for SGRA scan 85 'No0101' at 2024.095.13:02:00 in 180s ##############
+2024.095.12:59:00;"vlbi_tsys()
+2024.095.12:59:00;"reply from APECS: OK
+2024.095.12:59:01;"reply from APECS: (timeout)
+2024.095.13:00:25;"vlbi_reference_scan()
+2024.095.13:00:26;"reply from APECS: (timeout)
+2024.095.13:00:26;"#                      gap        max ~1 min 00 sec
+2024.095.13:02:00;"vlbi_scan(t_mins=10,targetSource='SGRA')
+2024.095.13:02:00;"reply from APECS: OK
+2024.095.13:02:01;"reply from APECS: (timeout)
+2024.095.13:02:01;"#     scan ends at 2024.095.13:12:00
+2024.095.13:02:01;"
+2024.095.13:02:01;"# ### Block for J1751+0939 scan 86 'No0102' at 2024.095.13:15:00 in 180s ########
+2024.095.13:12:00;"source('J1751+0939',cats='user'); go(); track()
+2024.095.13:12:00;"reply from APECS: OK
+2024.095.13:12:01;"reply from APECS: (timeout)
+2024.095.13:12:25;"vlbi_tsys()
+2024.095.13:12:25;"reply from APECS: OK
+2024.095.13:12:25;"reply from APECS: OK
+2024.095.13:12:26;"reply from APECS: (timeout)
+2024.095.13:13:50;"vlbi_reference_scan()
+2024.095.13:13:51;"reply from APECS: (timeout)
+2024.095.13:13:51;"#                      gap        max ~0 min 35 sec
+2024.095.13:15:00;"vlbi_scan(t_mins=3,targetSource='J1751+0939')
+2024.095.13:15:00;"reply from APECS: OK
+2024.095.13:15:01;"reply from APECS: (timeout)
+2024.095.13:15:01;"#     scan ends at 2024.095.13:18:00
+2024.095.13:15:01;"
+2024.095.13:15:01;"# ### Block for J1924-2914 scan 87 'No0103' at 2024.095.13:21:00 in 180s ########
+2024.095.13:18:00;"source('J1924-2914',cats='user'); go(); track()
+2024.095.13:18:00;"reply from APECS: OK
+2024.095.13:18:01;"reply from APECS: (timeout)
+2024.095.13:18:25;"vlbi_tsys()
+2024.095.13:18:25;"reply from APECS: OK
+2024.095.13:18:25;"reply from APECS: OK
+2024.095.13:18:26;"reply from APECS: (timeout)
+2024.095.13:19:50;"vlbi_reference_scan()
+2024.095.13:19:51;"reply from APECS: (timeout)
+2024.095.13:19:51;"#                      gap        max ~0 min 35 sec
+2024.095.13:21:00;"vlbi_scan(t_mins=3,targetSource='J1924-2914')
+2024.095.13:21:00;"reply from APECS: OK
+2024.095.13:21:01;"reply from APECS: (timeout)
+2024.095.13:21:01;"#     scan ends at 2024.095.13:24:00
+2024.095.13:21:01;"
+2024.095.13:21:01;"# ### Block for SGRA scan 88 'No0104' at 2024.095.13:27:00 in 180s ##############
+2024.095.13:24:00;"source('SGRA',cats='user'); go(); track()
+2024.095.13:24:00;"reply from APECS: OK
+2024.095.13:24:01;"reply from APECS: (timeout)
+2024.095.13:24:25;"vlbi_tsys()
+2024.095.13:24:25;"reply from APECS: OK
+2024.095.13:24:25;"reply from APECS: OK
+2024.095.13:24:26;"reply from APECS: (timeout)
+2024.095.13:25:50;"vlbi_reference_scan()
+2024.095.13:25:51;"reply from APECS: (timeout)
+2024.095.13:25:51;"#                      gap        max ~0 min 35 sec
+2024.095.13:27:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.13:27:00;"reply from APECS: OK
+2024.095.13:27:01;"reply from APECS: (timeout)
+2024.095.13:27:01;"#     scan ends at 2024.095.13:42:00
+2024.095.13:27:01;"
+2024.095.13:27:01;"# ### Block for SGRA scan 89 'No0105' at 2024.095.13:52:00 in 600s ##############
+2024.095.13:27:01;"#
+2024.095.13:27:01;"# OPERATOR free 8 min 00 sec until VLBI calibrations to start at 2024.095.13:49:50
+2024.095.13:27:01;"#
+2024.095.13:42:00;"remote_control('on'); print('You have 8 min 00 sec until VLBI pre-scan calibrations at 2024.095.13:49:50. Remember to do remote_control ON.')
+2024.095.13:42:00;"reply from APECS: OK
+2024.095.13:42:00;"reply from APECS: OK
+2024.095.13:42:01;"reply from APECS: (timeout)
+2024.095.13:49:50;"vlbi_tsys()
+2024.095.13:49:50;"reply from APECS: OK
+2024.095.13:49:51;"reply from APECS: (timeout)
+2024.095.13:51:15;"vlbi_reference_scan()
+2024.095.13:51:16;"reply from APECS: (timeout)
+2024.095.13:51:16;"#                      gap        max ~0 min 10 sec
+2024.095.13:52:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.13:52:00;"reply from APECS: OK
+2024.095.13:52:01;"reply from APECS: (timeout)
+2024.095.13:52:01;"#     scan ends at 2024.095.14:07:00
+2024.095.13:52:01;"
+2024.095.13:52:01;"# ### Block for SGRA scan 90 'No0106' at 2024.095.14:10:00 in 180s ##############
+2024.095.14:07:00;"vlbi_tsys()
+2024.095.14:07:00;"reply from APECS: OK
+2024.095.14:07:00;"reply from APECS: OK
+2024.095.14:07:01;"reply from APECS: (timeout)
+2024.095.14:08:25;"vlbi_reference_scan()
+2024.095.14:08:26;"reply from APECS: (timeout)
+2024.095.14:08:26;"#                      gap        max ~1 min 00 sec
+2024.095.14:10:00;"vlbi_scan(t_mins=10,targetSource='SGRA')
+2024.095.14:10:00;"reply from APECS: OK
+2024.095.14:10:01;"reply from APECS: (timeout)
+2024.095.14:10:01;"#     scan ends at 2024.095.14:20:00
+2024.095.14:10:01;"
+2024.095.14:10:01;"# ### Block for J1924-2914 scan 91 'No0107' at 2024.095.14:23:00 in 180s ########
+2024.095.14:20:00;"source('J1924-2914',cats='user'); go(); track()
+2024.095.14:20:00;"reply from APECS: OK
+2024.095.14:20:01;"reply from APECS: (timeout)
+2024.095.14:20:25;"vlbi_tsys()
+2024.095.14:20:25;"reply from APECS: OK
+2024.095.14:20:25;"reply from APECS: OK
+2024.095.14:20:26;"reply from APECS: (timeout)
+2024.095.14:21:50;"vlbi_reference_scan()
+2024.095.14:21:51;"reply from APECS: (timeout)
+2024.095.14:21:51;"#                      gap        max ~0 min 35 sec
+2024.095.14:23:00;"vlbi_scan(t_mins=3,targetSource='J1924-2914')
+2024.095.14:23:00;"reply from APECS: OK
+2024.095.14:23:01;"reply from APECS: (timeout)
+2024.095.14:23:01;"#     scan ends at 2024.095.14:26:00
+2024.095.14:23:01;"
+2024.095.14:23:01;"# ### Block for SGRA scan 92 'No0108' at 2024.095.14:29:00 in 180s ##############
+2024.095.14:26:00;"source('SGRA',cats='user'); go(); track()
+2024.095.14:26:00;"reply from APECS: OK
+2024.095.14:26:01;"reply from APECS: (timeout)
+2024.095.14:26:25;"vlbi_tsys()
+2024.095.14:26:25;"reply from APECS: OK
+2024.095.14:26:25;"reply from APECS: OK
+2024.095.14:26:26;"reply from APECS: (timeout)
+2024.095.14:27:50;"vlbi_reference_scan()
+2024.095.14:27:51;"reply from APECS: (timeout)
+2024.095.14:27:51;"#                      gap        max ~0 min 35 sec
+2024.095.14:29:00;"vlbi_scan(t_mins=10,targetSource='SGRA')
+2024.095.14:29:00;"reply from APECS: OK
+2024.095.14:29:01;"reply from APECS: (timeout)
+2024.095.14:29:01;"#     scan ends at 2024.095.14:39:00
+2024.095.14:29:01;"
+2024.095.14:29:01;"# ### Block for J1924-2914 scan 93 'No0109' at 2024.095.14:42:00 in 180s ########
+2024.095.14:39:00;"source('J1924-2914',cats='user'); go(); track()
+2024.095.14:39:00;"reply from APECS: OK
+2024.095.14:39:01;"reply from APECS: (timeout)
+2024.095.14:39:25;"vlbi_tsys()
+2024.095.14:39:25;"reply from APECS: OK
+2024.095.14:39:25;"reply from APECS: OK
+2024.095.14:39:26;"reply from APECS: (timeout)
+2024.095.14:40:50;"vlbi_reference_scan()
+2024.095.14:40:51;"reply from APECS: (timeout)
+2024.095.14:40:51;"#                      gap        max ~0 min 35 sec
+2024.095.14:42:00;"vlbi_scan(t_mins=3,targetSource='J1924-2914')
+2024.095.14:42:01;"reply from APECS: (timeout)
+2024.095.14:42:01;"#     scan ends at 2024.095.14:45:00
+2024.095.14:42:01;"
+2024.095.14:42:01;"# ### Block for SGRA scan 94 'No0110' at 2024.095.14:50:00 in 300s ##############
+2024.095.14:47:25;"source('SGRA',cats='user'); go(); track()
+2024.095.14:47:26;"reply from APECS: (timeout)
+2024.095.14:47:50;"vlbi_tsys()
+2024.095.14:47:50;"reply from APECS: OK
+2024.095.14:47:50;"reply from APECS: OK
+2024.095.14:47:51;"reply from APECS: (timeout)
+2024.095.14:49:15;"vlbi_reference_scan()
+2024.095.14:49:16;"reply from APECS: (timeout)
+2024.095.14:49:16;"#                      gap        max ~0 min 10 sec
+2024.095.14:50:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.14:50:00;"reply from APECS: OK
+2024.095.14:50:01;"reply from APECS: (timeout)
+2024.095.14:50:01;"#     scan ends at 2024.095.15:05:00
+2024.095.14:50:01;"
+2024.095.14:50:01;"# ### Block for J1924-2914 scan 95 'No0111' at 2024.095.15:10:00 in 300s ########
+2024.095.15:07:25;"source('J1924-2914',cats='user'); go(); track()
+2024.095.15:07:25;"reply from APECS: OK
+2024.095.15:07:26;"reply from APECS: (timeout)
+2024.095.15:07:50;"vlbi_tsys()
+2024.095.15:07:50;"reply from APECS: OK
+2024.095.15:07:50;"reply from APECS: OK
+2024.095.15:07:51;"reply from APECS: (timeout)
+2024.095.15:09:15;"vlbi_reference_scan()
+2024.095.15:09:16;"reply from APECS: (timeout)
+2024.095.15:09:16;"#                      gap        max ~0 min 10 sec
+2024.095.15:10:00;"vlbi_scan(t_mins=5,targetSource='J1924-2914')
+2024.095.15:10:00;"reply from APECS: OK
+2024.095.15:10:01;"reply from APECS: (timeout)
+2024.095.15:10:01;"#     scan ends at 2024.095.15:15:00
+2024.095.15:10:01;"
+2024.095.15:10:01;"# ### Block for SGRA scan 96 'No0112' at 2024.095.15:20:00 in 300s ##############
+2024.095.15:17:25;"source('SGRA',cats='user'); go(); track()
+2024.095.15:17:25;"reply from APECS: OK
+2024.095.15:17:26;"reply from APECS: (timeout)
+2024.095.15:17:50;"vlbi_tsys()
+2024.095.15:17:50;"reply from APECS: OK
+2024.095.15:17:50;"reply from APECS: OK
+2024.095.15:17:51;"reply from APECS: (timeout)
+2024.095.15:19:15;"vlbi_reference_scan()
+2024.095.15:19:16;"reply from APECS: (timeout)
+2024.095.15:19:16;"#                      gap        max ~0 min 10 sec
+2024.095.15:20:00;"vlbi_scan(t_mins=15,targetSource='SGRA')
+2024.095.15:20:00;"reply from APECS: OK
+2024.095.15:20:01;"reply from APECS: (timeout)
+2024.095.15:20:01;"#     scan ends at 2024.095.15:35:00
+2024.095.15:20:01;"
+2024.095.15:20:01;"# ### Block for J1924-2914 scan 97 'No0113' at 2024.095.15:40:00 in 300s ########
+2024.095.15:37:25;"source('J1924-2914',cats='user'); go(); track()
+2024.095.15:37:25;"reply from APECS: OK
+2024.095.15:37:26;"reply from APECS: (timeout)
+2024.095.15:37:50;"vlbi_tsys()
+2024.095.15:37:50;"reply from APECS: OK
+2024.095.15:37:50;"reply from APECS: OK
+2024.095.15:37:51;"reply from APECS: (timeout)
+2024.095.15:39:15;"vlbi_reference_scan()
+2024.095.15:39:16;"reply from APECS: (timeout)
+2024.095.15:39:16;"#                      gap        max ~0 min 10 sec
+2024.095.15:40:00;"vlbi_scan(t_mins=5,targetSource='J1924-2914')
+2024.095.15:40:00;"reply from APECS: OK
+2024.095.15:40:01;"reply from APECS: (timeout)
+2024.095.15:40:01;"#     scan ends at 2024.095.15:45:00
+2024.095.15:40:01;"
+2024.095.15:40:01;"# ### Block for J1924-2914 scan 98 'No0115' at 2024.095.16:10:00 in 200s ########
+2024.095.15:45:00;"vlbi_tsys()
+2024.095.15:45:00;"reply from APECS: OK
+2024.095.15:45:00;"reply from APECS: OK
+2024.095.15:45:01;"reply from APECS: (timeout)
+2024.095.15:46:25;"vlbi_reference_scan()
+2024.095.15:46:26;"reply from APECS: (timeout)
+2024.095.15:46:26;"#                      gap        max ~23 min 00 sec
+2024.095.16:10:00;"vlbi_scan(t_mins=5,targetSource='J1924-2914')
+2024.095.16:10:00;"reply from APECS: OK
+2024.095.16:10:01;"reply from APECS: (timeout)
+2024.095.16:10:01;"#     scan ends at 2024.095.16:15:00
+2024.095.16:10:01;"
+2024.095.16:10:01;"
+2024.095.16:10:01;"# Finished VLBI schedule
+2024.095.16:15:30;"remote_control('on')
+2024.095.16:15:31;"reply from APECS: (timeout)
+2024.095.16:15:31;"################################################################################
+2024.095.16:15:31;"### end of schedule
+2024.095.16:15:31;"################################################################################

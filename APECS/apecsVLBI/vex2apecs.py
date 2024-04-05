@@ -304,8 +304,13 @@ def obs_writeScans(fd,scans,sources):
 			obs_writeComment(fd, '')
 			obs_writeComment(fd, 'OPERATOR free %s until VLBI calibrations to start at %s' % (timedelta2MinsSecs_str(Loperatorgap),datetimeToSNP_str(T_cal_start)))
 			obs_writeComment(fd, '')
-			note = 'You have %s until VLBI pre-scan calibrations at %s. Remember to do remote_control ON.' % (timedelta2MinsSecs_str(Loperatorgap),datetimeToSNP_str(T_cal_start))
-			obs_writeLine(fd, datetimeToSNP_str(Tprev_end), 1, 'remote_control(\'off\'); print(\'%s\')' % (note))
+			#note = 'You have %s until VLBI pre-scan calibrations at %s. Remember to do remote_control ON.' % (timedelta2MinsSecs_str(Loperatorgap),datetimeToSNP_str(T_cal_start))
+			#obs_writeLine(fd, datetimeToSNP_str(Tprev_end), 1, 'remote_control(\'off\'); print(\'%s\')' % (note))
+			## Changed in e24b04 to be always ON,
+			## after Mauricio told that he can do pointing etc even when remote is ON.
+			## When not doing the auto-off, we do not risk forgetting to turn remote ON again.
+			note = 'You have %s until the next VLBI calibration scan at %s.' % (timedelta2MinsSecs_str(Loperatorgap),datetimeToSNP_str(T_cal_start))
+			obs_writeLine(fd, datetimeToSNP_str(Tprev_end), 1, 'print(\'%s\')' % (note))
 	
 		for calEntry in calBlock:
 			calT = T_cal_start + datetime.timedelta(seconds=calEntry['offset'])

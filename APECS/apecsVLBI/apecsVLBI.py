@@ -39,7 +39,7 @@ if ('observer3' not in platform.node()) and ('10.0.2.170' not in platform.node()
 else:
 	# The TAI time leads UTC by 37 seconds as of April 2024
 	offsetUTC = 37
-	print ('\nINFO: Apparently running on Observer3. Correction computer time (TAI) by %d leap seconds to have UTC!\n' % (offsetUTC))
+	print ('\nINFO: Apparently running on Observer3. Correcting computer time (TAI) by %d leap seconds to have UTC!\n' % (offsetUTC))
 
 # Ctrl-C
 gotCtrlC = False
