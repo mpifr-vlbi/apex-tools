@@ -33,6 +33,13 @@ table inet filter {
 		elements = { $trusted_networks }
 	}
 
+	# whitelist only local
+	set ipv4_whitelist_local {
+		type ipv4_addr
+		flags interval
+		elements = { $site_networks }
+	}
+
 	# temporary whitelist
 	set ipv4_whitelist_temp {
 		type ipv4_addr
@@ -99,7 +106,7 @@ table inet filter {
 
 		tcp dport {http, https} accept comment "VLBImonitor server"
 
-		tcp dport {3000, 8086} ip saddr @ipv4_whitelist accept comment "TIG stack"
+		tcp dport {3000, 8086} ip saddr @ipv4_whitelist_local accept comment "TIG stack"
 
 		# pkttype { broadcast,multicast} accept
 
