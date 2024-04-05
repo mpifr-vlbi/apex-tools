@@ -7,6 +7,7 @@ round_interval = true
 metric_batch_size = 1000
 metric_buffer_limit = 10000
 collection_jitter = "0s"
+# collection_offset = "0s"
 flush_interval = "10s"
 flush_jitter = "0s"
 precision = "0s"
@@ -14,10 +15,6 @@ precision = "0s"
 # debug = false
 ## Log only error level messages.
 # quiet = false
-## Override default hostname, if empty use os.Hostname()
-hostname = ""
-## If set to true, do no set the "host" tag in the telegraf agent.
-omit_hostname = false
 
 [[outputs.influxdb_v2]]
 urls = ["http://192.168.0.1:8086"]
@@ -25,6 +22,194 @@ token = "16GPmHAXsutcsNbZQZ9ON541gfMKMEVd2KU9Kezw6TdTHyc2ZWkAEuhY8CJUUlcW-3M_P28
 organization = "APEX"
 bucket = "eht"
 
-[[inputs.ipmi_sensor]]
-path = "/usr/bin/ipmitool"
-name_prefix = "recorder4_"
+[[inputs.cpu]]
+percpu = true
+totalcpu = true
+name_prefix = "recorder2_"
+
+[[inputs.mem]]
+name_prefix = "recorder2_"
+
+[[inputs.system]]
+name_prefix = "recorder2_"
+
+[[inputs.sensors]]
+name_prefix = "recorder2_"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

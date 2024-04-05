@@ -27,4 +27,4 @@ bucket = "eht"
 
 [[inputs.ipmi_sensor]]
 path = "/usr/bin/ipmitool"
-name_prefix = "recorder4_"
+name_prefix = "recorder3_"
