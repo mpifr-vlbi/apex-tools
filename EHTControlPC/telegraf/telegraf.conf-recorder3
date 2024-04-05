@@ -28,3 +28,10 @@ bucket = "eht"
 [[inputs.ipmi_sensor]]
 path = "/usr/bin/ipmitool"
 name_prefix = "recorder3_"
+
+[[inputs.smart]]
+nocheck = "standby"
+excludes = [ "/dev/sda" ]   # OS disk
+read_method = "concurrent"
+name_prefix = "recorder3_"
+
