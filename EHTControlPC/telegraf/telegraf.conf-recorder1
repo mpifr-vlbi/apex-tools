@@ -38,6 +38,7 @@ name_prefix = "recorder1_"
 
 [[inputs.smart]]
 nocheck = "standby"
-excludes = [ "/dev/sda" ]   # OS disk
+excludes = [ "/dev/sda" ]   # ignore OS disk
 read_method = "concurrent"
+tagexclude = ["model", "power", "wwn"]
 name_prefix = "recorder1_"
