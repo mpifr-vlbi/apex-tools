@@ -1,0 +1,6 @@
+
+nft add inet filter input tcp dport 8086 ip saddr @ipv4_whitelist accept
+nft add inet filter input tcp dport 3000 ip saddr @ipv4_whitelist accept
+
+http://10.0.2.102:8086/
+
