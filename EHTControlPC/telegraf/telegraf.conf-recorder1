@@ -37,6 +37,17 @@ name_prefix = "recorder1_"
 name_prefix = "recorder1_"
 
 [[inputs.smart]]
+#
+# Debian Squeeze with outdated smartctl does not support
+#   smartctl --format=brief
+# Need to install smartmontools release 6.3 (newer fails on ancient g++)
+#   https://github.com/smartmontools/smartmontools/releases
+#   cd smartmontools ; ./autogen.sh
+#   ./configure --prefix=/usr/local/ ; make ; make install
+# Test:
+#   /usr/local/sbin/smartctl --info --attributes --health --format=brief /dev/sdav -d scsi
+#
+path_smartctl = "/usr/local/sbin/smartctl"
 nocheck = "standby"
 excludes = [ "/dev/sda" ]   # ignore OS disk
 read_method = "concurrent"
