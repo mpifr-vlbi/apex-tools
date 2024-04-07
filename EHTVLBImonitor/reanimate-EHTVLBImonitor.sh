@@ -22,7 +22,9 @@ if [ -f $PIDFILE ]; then
 	fi
 fi
 
-python2 client.py
+# su -s /bin/bash -c "nohup /alma/ACS-2021DEC/pyenv/shims/python2 client.py &" `whoami`  # downside: asks for passwd
+nohup /alma/ACS-2021DEC/pyenv/shims/python2 client.py &
+disown
 # NB: client.py has to write $PIDFILE on its own
 # TODO: background python2 and store bash $$ pid into $PIDFILE
 
