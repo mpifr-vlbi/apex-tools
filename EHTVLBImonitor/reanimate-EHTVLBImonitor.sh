@@ -1,4 +1,15 @@
 #!/bin/bash
+#
+# Restart the EHTVLBImonitor client.py script
+#
+# Seems needed, since sometimes the connection to APECS remains
+# intact yet all queries for monitoring data begin to fail.
+#
+# This script is intended to be paired with an hourly restart via
+# $ crontab -e
+#   # Hourly restart of EHTVLBImonitor client.py
+#   0 * * * *  /homes/t-0113.f-9996a-2024/EHTVLBImonitor/reanimate-EHTVLBImonitor.sh >/dev/null 2>&1
+#
 
 PIDFILE=/tmp/vlbimonclient.pid
 
