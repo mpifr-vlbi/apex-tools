@@ -1,11 +1,12 @@
 
-These are copie of APEX-specific files
-related to https://bitbucket.org/vlbi/vlbimonitor-client aka EHTVLBImonitor
+These are copies of APEX-specific files related
+to EHTVLBImonitor at https://bitbucket.org/vlbi/vlbimonitor-client
 
-parameter-APEX.map_  : parameter.map
-sitedata-__init__.py : sitedata/__init__.py
-sitedata-MYSITE.py   : sitedata/MYSITE.py
-vlbimon-config.py    : vlbimon/config.py
+APEX.map_20xx        : ./parameter.map of given year (symbolic link to sitedata/APEX.map)
+sitedata-__init__.py : ./sitedata/__init__.py - selector for MYSITE.py on obs3, or backend.py on cc-apex
+sitedata-APEX.py     : ./sitedata/MYSITE.py (symbolic link to sitedata/APEX.py)
+iMaser.py            : ./sitedata/iMaser.py
+vlbimon-config.py    : ./vlbimon/config.py
 
 
 Extra modules for observer3:
