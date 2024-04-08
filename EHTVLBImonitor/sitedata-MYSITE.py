@@ -9,6 +9,12 @@ from Acspy.Nc.Consumer import Consumer
 import apexCDS
 import apexObsUtils
 
+try:
+    # assume module code
+    from .iMaser import get_maser_data
+except:
+    # for standalone command-line testing
+    from iMaser import get_maser_data
 
 def signif(n, x):
     """Print float to specified number of significant figures"""
@@ -112,6 +118,13 @@ class Getter():
     def __del__(self):
         self.eventConsumer.disconnect()
 
+    def close(self):
+        self.eventConsumer.disconnect()
+
+    def close(self, signum, frame):
+        print("Sitedata received signal %d, closing..." % signum)
+        self.eventConsumer.disconnect()
+
     def update_values(self):
         '''Query APECS database for new values of all measurement points. Retain valid-looking data in self.params[]'''
         self.params.clear()
@@ -129,17 +142,18 @@ class Getter():
                 continue
             filtered_params[k] = [v]
         self.params = filtered_params
+        return self.params
 
 
     def __populateValues(self):
         params = {}
+        self.__getMaserData()
         self.__getWeather()
         self.__getRadiometer()
         self.__getTarget()
         self.__getTemperatures()
         self.__getEHTEquivalentTunings()
         self.__getMisc()
-
 
     def __getApexPoint(self, par):
         """get measured points"""
@@ -149,6 +163,18 @@ class Getter():
             print(self.nerrors, e)
             self.nerrors += 1
             return None
+
+
+    def __getMaserData(self):
+        '''
+        Fill in params[] with data extracted from http://10.0.2.96/monit.htm monitoring page
+        '''
+        maser_data = get_maser_data(url="http://10.0.2.96/monit.htm")
+        #print("maser_data: %s" % str(maser_data))
+        for k, v in maser_data.items():
+            if isinstance(v[1], float):
+                v[1] = signif(6, float(v[1]))
+            self.params[k] = v
 
 
     def __getWeather(self):
@@ -222,7 +248,7 @@ class Getter():
         # self.params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT') # no vlbimon parameter counterpart due to vlbimon being r2dbe-centric
 
         #self.params['APEX:MASER:HOUSING:temperature'] = self.__getApexPoint('APEX:MASER:HOUSING:temperature')  # 03/2021 : measurement point not working, no data
-        self.params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
+        #self.params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
 
 
     def __getEHTEquivalentTunings(self):
@@ -300,3 +326,10 @@ class Getter():
                         # self.params[target + ':tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
                         # self.params[target + ':tCal'] = convertApexPoint(calResult.tCal[polarization]) # -"-
                         # self.params[target + ':tSky'] = convertApexPoint(calResult.tSky[polarization]) # -"-
+
+
+if __name__ == "__main__":
+
+    g = Getter("APEX")
+    p = g.update_values()
+    print(p)
