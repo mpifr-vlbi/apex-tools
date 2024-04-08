@@ -19,6 +19,9 @@ rx_1_tempHot	Calibrator:NFLASH230-FFTS1:tHot
 rx_1_tempCold	Calibrator:NFLASH230-FFTS1:tCold
 
 if_1_centreFreq	APEX:NFLASH230:SKYFREQUENCY
+if_2_centreFreq APEX:EHT:LO1
+if_3_centreFreq APEX:EHT:LO1
+if_4_centreFreq APEX:EHT:LO1
 
 # if_1_systemTemp	Calibrator:NFLASH230-FFTS1:tSys
 if_1_systemTemp	Calibrator:NFLASH230-FFTS1:1:tSys:X
@@ -27,8 +30,8 @@ if_3_systemTemp	Calibrator:NFLASH230-FFTS1:2:tSys:X
 if_4_systemTemp	Calibrator:NFLASH230-FFTS1:2:tSys:Y
 
 maser_timeToGpsTick	APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser
-maser_ambientTemperature	APEX:MASER:HOUSING:temperature
-
+#maser_ambientTemperature	APEX:MASER:HOUSING:temperature
+maser_ambientTemperature maser_ambientTemperature
 maser_405kHzAmplitude maser_405kHzAmplitude
 maser_batteryCurrentA maser_batteryCurrentA
 maser_batteryCurrentB maser_batteryCurrentB
