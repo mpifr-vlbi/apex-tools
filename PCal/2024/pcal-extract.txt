@@ -7,7 +7,7 @@ Extraction with
    from https://github.com/mpifr-vlbi/apex-tools/tree/master/Correlation/m5tone
 
 
-Extraction of tone at 423.0 MHz tone in baseband:
+Extraction of tone at 423.0 MHz in baseband of Band 4 (recorder2) data:
 
   1 millisec averaging
   819200 DFT channels over 2048 MHz for 5 kHz wide bin across tone
