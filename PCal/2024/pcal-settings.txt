@@ -36,7 +36,7 @@ provided that the DBBC3 Valon synth is tuned accordingly,
 
 === 230G VLBI ===
 
-Command sequence for http://10.0.6.209/scpi to enable tone:
+Command sequence for http://10.0.6.209/scpi to enable tone in band 4:
 
 pow -20 dbm
 freq 15315.0 mhz
@@ -57,9 +57,23 @@ pow -20 dbm
 output off
 
 
+Alternate pcal tuning (track e24a08) to place tone in band 3:
+
+pow -20 dbm
+freq 15315.0 mhz
+output on
+pow 0 dbm
+pow 15 dbm
+pow 22 dbm
+pow 22.5 dbm
+pow 22.30 dbm
+
+  Tone should be visible on XFFTS screen #6 at ~2500 MHz
+
+
 === 260G VLBI ===
 
-Command sequence for http://10.0.6.209/scpi to enable tone:
+Command sequence for http://10.0.6.209/scpi to enable tone in band 4:
 
 pow -20 dbm
 freq 17875.0 mhz
@@ -82,7 +96,7 @@ output off
 
 === 345G VLBI ===
 
-Command sequence for http://10.0.6.209/scpi to enable tone:
+Command sequence for http://10.0.6.209/scpi to enable tone in band 4:
 
 pow -20 dbm
 freq 14009.0 mhz
