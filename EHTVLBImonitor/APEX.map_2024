@@ -13,21 +13,21 @@ weather_pwv	APEX:RADIOMETER:RESULTS:pwv
 weather_dewPointTemp	APEX:WEATHERSTATION:dewPoint
 
 # may need to change this, skyfreq is not really loFreq
-rx_1_loFreq	APEX:NFLASH230:SKYFREQUENCY
+rx_1_loFreq	APEX:RECEIVER:SKYFREQUENCY
 
-rx_1_tempHot	Calibrator:NFLASH230-FFTS1:tHot
-rx_1_tempCold	Calibrator:NFLASH230-FFTS1:tCold
+rx_1_tempHot	activeRx:tHot
+rx_1_tempCold	activeRx:tCold
 
-if_1_centreFreq	APEX:NFLASH230:SKYFREQUENCY
+if_1_centreFreq	APEX:RECEIVER:SKYFREQUENCY
 if_2_centreFreq APEX:EHT:LO1
 if_3_centreFreq APEX:EHT:LO1
 if_4_centreFreq APEX:EHT:LO1
 
-# if_1_systemTemp	Calibrator:NFLASH230-FFTS1:tSys
-if_1_systemTemp	Calibrator:NFLASH230-FFTS1:1:tSys:X
-if_2_systemTemp	Calibrator:NFLASH230-FFTS1:1:tSys:Y
-if_3_systemTemp	Calibrator:NFLASH230-FFTS1:2:tSys:X
-if_4_systemTemp	Calibrator:NFLASH230-FFTS1:2:tSys:Y
+# if_1_systemTemp	activeRx:tSys
+if_1_systemTemp	activeRx:1:tSys:X
+if_2_systemTemp	activeRx:1:tSys:Y
+if_3_systemTemp	activeRx:2:tSys:X
+if_4_systemTemp	activeRx:2:tSys:Y
 
 maser_timeToGpsTick	APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser
 #maser_ambientTemperature	APEX:MASER:HOUSING:temperature
