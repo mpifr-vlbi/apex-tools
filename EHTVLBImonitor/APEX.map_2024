@@ -3,6 +3,7 @@ telescope_apparentRaDec	derived:telescope:actualRaDec
 telescope_epochType	ABM:ANTMOUNT:JEpoch
 telescope_azimuthElevation	derived:telescope:actualAzEl
 telescope_sourceName	sourceName
+telescope_onSource	onSourceBool
 
 weather_temperature	APEX:WEATHERSTATION:temperature
 weather_airPressure	APEX:WEATHERSTATION:pressure

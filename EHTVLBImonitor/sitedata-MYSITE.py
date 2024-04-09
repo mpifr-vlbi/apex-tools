@@ -263,6 +263,10 @@ class Getter():
     def __getMisc(self):
 
         self.params['ABM:ANTMOUNT:mode'] = self.__getApexPoint('ABM[1,0]:ANTMOUNT:mode')
+        if len(self.params['ABM:ANTMOUNT:mode']) >= 2:
+            t = self.params['ABM:ANTMOUNT:mode'][0]
+            on_source = 'track' in self.params['ABM:ANTMOUNT:mode'][1].lower()
+            self.params['onSourceBool'] = [t, on_source]
 
         self.params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
         self.params['GPSMinusFMOUT_rescaled'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT')
