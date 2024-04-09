@@ -1,7 +1,8 @@
-telescope_observingMode	ABM[1,0]:ANTMOUNT:mode
+telescope_observingMode	ABM:ANTMOUNT:mode
 telescope_apparentRaDec	derived:telescope:actualRaDec
-telescope_epochType	ABM[1,0]:ANTMOUNT:JEpoch
+telescope_epochType	ABM:ANTMOUNT:JEpoch
 telescope_azimuthElevation	derived:telescope:actualAzEl
+telescope_sourceName	sourceName
 
 weather_temperature	APEX:WEATHERSTATION:temperature
 weather_airPressure	APEX:WEATHERSTATION:pressure
@@ -30,6 +31,11 @@ if_3_systemTemp	activeRx:2:tSys:X
 if_4_systemTemp	activeRx:2:tSys:Y
 
 maser_timeToGpsTick	APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser
+r2dbe_1_ppsOffset GPSMinusFMOUT_rescaled
+r2dbe_2_ppsOffset GPSMinusFMOUT_rescaled
+r2dbe_3_ppsOffset GPSMinusFMOUT_rescaled
+r2dbe_4_ppsOffset GPSMinusFMOUT_rescaled
+
 #maser_ambientTemperature	APEX:MASER:HOUSING:temperature
 maser_ambientTemperature maser_ambientTemperature
 maser_405kHzAmplitude maser_405kHzAmplitude

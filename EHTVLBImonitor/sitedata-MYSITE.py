@@ -8,6 +8,8 @@ import datetime
 from Acspy.Nc.Consumer import Consumer
 import apexCDS
 import apexObsUtils
+import apexObs
+import apexScan
 
 try:
     # assume module code
@@ -116,6 +118,7 @@ class Getter():
         self.q_apecs = Queue.Queue()
         self.eventConsumer = calibratorEventConsumer(self.q_apecs)
         self.eventConsumer.connect()
+        self.apecsEngine = apexObsUtils.getObsEngine('silent')
 
     def __del__(self):
         self.eventConsumer.disconnect()
@@ -229,6 +232,7 @@ class Getter():
         ra = self.__getApexPoint('ABM[1,0]:ANTMOUNT:actualRA')
         dec = self.__getApexPoint('ABM[1,0]:ANTMOUNT:actualDec')
         epoch = self.__getApexPoint('ABM[1,0]:ANTMOUNT:JEpoch')
+        t = None
 
         if az is not None  and  el is not None:
             ndec = max(list(map(ndecimal, (az[1], el[1]))))
@@ -247,15 +251,22 @@ class Getter():
             self.params['derived:telescope:actualRaDec'] = [t, radec]
 
         if epoch is not None:
-            self.params['ABM[1,0]:ANTMOUNT:JEpoch'] = [epoch[0], "J{:4d}".format(int(epoch[1]))]
+            self.params['ABM:ANTMOUNT:JEpoch'] = [epoch[0], "J{:4d}".format(int(epoch[1]))]
+
+        if t is not None:
+            pScan = self.apecsEngine.getScan()
+            scan = apexObsUtils.unpackScanObject(pScan)
+            source = scan.spatialSetup.sourceName
+            self.params['sourceName'] = [t, source]
 
 
     def __getMisc(self):
 
-        self.params['ABM[1,0]:ANTMOUNT:mode'] = self.__getApexPoint('ABM[1,0]:ANTMOUNT:mode')
+        self.params['ABM:ANTMOUNT:mode'] = self.__getApexPoint('ABM[1,0]:ANTMOUNT:mode')
 
         self.params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
-        # self.params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT') # no vlbimon parameter counterpart due to vlbimon being r2dbe-centric
+        self.params['GPSMinusFMOUT_rescaled'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT')
+        self.params['GPSMinusFMOUT_rescaled'][1] = self.params['GPSMinusFMOUT_rescaled'][1]*256  # from usec to 256 MHz ticks
 
         #self.params['APEX:MASER:HOUSING:temperature'] = self.__getApexPoint('APEX:MASER:HOUSING:temperature')  # 03/2021 : measurement point not working, no data
         #self.params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
