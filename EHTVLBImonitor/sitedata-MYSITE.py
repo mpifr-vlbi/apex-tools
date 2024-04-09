@@ -8,6 +8,8 @@ import datetime
 from Acspy.Nc.Consumer import Consumer
 import apexCDS
 import apexObsUtils
+import apexObs
+import apexScan
 
 try:
     # assume module code
@@ -109,11 +111,14 @@ class Getter():
         self.params = {}
         self.sitelist = sitelist
         self.nerrors = 0
+        self.latestFEBE = 'SEPIA345-FFTS1'
+        self.latestRX = self.__febeToRx(self.latestFEBE)
 
         self.calibrator = apexObsUtils.getApexCalibrator()
         self.q_apecs = Queue.Queue()
         self.eventConsumer = calibratorEventConsumer(self.q_apecs)
         self.eventConsumer.connect()
+        self.apecsEngine = apexObsUtils.getObsEngine('silent')
 
     def __del__(self):
         self.eventConsumer.disconnect()
@@ -155,14 +160,22 @@ class Getter():
         self.__getEHTEquivalentTunings()
         self.__getMisc()
 
+
     def __getApexPoint(self, par):
         """get measured points"""
         try:
             return convertApexPoint(apexObsUtils.getMCPointTS(par))
         except Exception as e:
-            print(self.nerrors, e)
+            print(par, self.nerrors, str(e))
             self.nerrors += 1
             return None
+
+
+    def __febeToRx(self, febename):
+        known_rx = ['NFLASH230', 'NFLASH460', 'SEPIA345']
+        for rx in known_rx:
+            if rx in febename: return rx
+        return known_rx[0]
 
 
     def __getMaserData(self):
@@ -219,6 +232,7 @@ class Getter():
         ra = self.__getApexPoint('ABM[1,0]:ANTMOUNT:actualRA')
         dec = self.__getApexPoint('ABM[1,0]:ANTMOUNT:actualDec')
         epoch = self.__getApexPoint('ABM[1,0]:ANTMOUNT:JEpoch')
+        t = None
 
         if az is not None  and  el is not None:
             ndec = max(list(map(ndecimal, (az[1], el[1]))))
@@ -237,15 +251,26 @@ class Getter():
             self.params['derived:telescope:actualRaDec'] = [t, radec]
 
         if epoch is not None:
-            self.params['ABM[1,0]:ANTMOUNT:JEpoch'] = [epoch[0], "J{:4d}".format(int(epoch[1]))]
+            self.params['ABM:ANTMOUNT:JEpoch'] = [epoch[0], "J{:4d}".format(int(epoch[1]))]
+
+        if t is not None:
+            pScan = self.apecsEngine.getScan()
+            scan = apexObsUtils.unpackScanObject(pScan)
+            source = scan.spatialSetup.sourceName
+            self.params['sourceName'] = [t, source]
 
 
     def __getMisc(self):
 
-        self.params['ABM[1,0]:ANTMOUNT:mode'] = self.__getApexPoint('ABM[1,0]:ANTMOUNT:mode')
+        self.params['ABM:ANTMOUNT:mode'] = self.__getApexPoint('ABM[1,0]:ANTMOUNT:mode')
+        if len(self.params['ABM:ANTMOUNT:mode']) >= 2:
+            t = self.params['ABM:ANTMOUNT:mode'][0]
+            on_source = 'track' in self.params['ABM:ANTMOUNT:mode'][1].lower()
+            self.params['onSourceBool'] = [t, on_source]
 
         self.params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
-        # self.params['APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT') # no vlbimon parameter counterpart due to vlbimon being r2dbe-centric
+        self.params['GPSMinusFMOUT_rescaled'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT')
+        self.params['GPSMinusFMOUT_rescaled'][1] = self.params['GPSMinusFMOUT_rescaled'][1]*256  # from usec to 256 MHz ticks
 
         #self.params['APEX:MASER:HOUSING:temperature'] = self.__getApexPoint('APEX:MASER:HOUSING:temperature')  # 03/2021 : measurement point not working, no data
         #self.params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
@@ -254,8 +279,27 @@ class Getter():
     def __getEHTEquivalentTunings(self):
         '''Get NFLASH sky frequency. Translate into EHT band1/2/3/4 frequencies'''
 
-        skyfreq_GHz = self.__getApexPoint('APEX:NFLASH230:skyFrequency')
-        lo1 = self.__getApexPoint('APEX:NFLASH230:LO1:frequency')
+        skyfreq_GHz_230 = self.__getApexPoint('APEX:NFLASH230:skyFrequency')
+        skyfreq_GHz_345 = self.__getApexPoint('APEX:SEPIA345:skyFrequency')
+        skyfreq_GHz_460 = self.__getApexPoint('APEX:NFLASH460:skyFrequency')
+        lo1_230 = self.__getApexPoint('APEX:NFLASH230:LO1:frequency')
+        lo1_345 = self.__getApexPoint('APEX:SEPIA345:LO1:frequency')
+        lo1_460 = self.__getApexPoint('APEX:NFLASH460:LO1:frequency')
+
+        #print("__getEHTEquivalentTunings(): sky 230G=%s 345G=%s 460G=%s, lo1 230G=%s 345G=%s 460G=%s" % (str(skyfreq_GHz_230),str(skyfreq_GHz_345),str(skyfreq_GHz_460),str(lo1_230),str(lo1_345),str(lo1_460)))
+
+        skyfreq_GHz = self.__getApexPoint('APEX:%s:skyFrequency' % self.latestRX)
+        if skyfreq_GHz is None: skyfreq_GHz = skyfreq_GHz_230
+        if skyfreq_GHz is None: skyfreq_GHz = skyfreq_GHz_345
+        if skyfreq_GHz is None: skyfreq_GHz = skyfreq_GHz_460
+
+        lo1 = self.__getApexPoint('APEX:%s:LO1:frequency' % self.latestRX)
+        if lo1 is None: lo1 = lo1_230
+        if lo1 is None: lo1 = lo1_345
+        if lo1 is None: lo1 = lo1_460
+
+        #print("__getEHTEquivalentTunings(): latestRX=%s, selected values skyFreq=%s lo1=%s" % (self.latestRX,str(skyfreq_GHz),str(lo1)))
+
         if lo1 is None or skyfreq_GHz is None:
             return
 
@@ -270,7 +314,7 @@ class Getter():
             lo1_GHz + bdc_LO2_GHz - subband_bw/2.0,
             lo1_GHz + bdc_LO2_GHz + subband_bw/2.0 ]
 
-        self.params['APEX:NFLASH230:SKYFREQUENCY'] = skyfreq_GHz
+        self.params['APEX:RECEIVER:SKYFREQUENCY'] = skyfreq_GHz
         self.params['APEX:EHT:LO1'] = lo1
         #self.params['APEX:EHT:BAND1_MID'] = [lo1_timestamp, eht_band_centers[0]]
         #self.params['APEX:EHT:BAND2_MID'] = [lo1_timestamp, eht_band_centers[1]]
@@ -297,7 +341,8 @@ class Getter():
         try:
             e = self.q_apecs.get(block=False)
         except Queue.Empty:
-            print(datetime.datetime.now(), 'No new APECS Calibrator data yet...')
+            #print(datetime.datetime.now(), 'No new APECS Calibrator data yet...')
+            pass
         else:
             if e.scanIntent == apexCDS.CALIBRATION and e.resultContent == apexCDS.INDIVIDUAL:
 
@@ -306,15 +351,18 @@ class Getter():
                     phaseNum = e.phaseNum
 
                 basebands = [1,2,3,4]
-                montargets = ['Calibrator:NFLASH230-FFTS1:1', 'Calibrator:NFLASH230-FFTS1:2', 'Calibrator:NFLASH230-FFTS1:3', 'Calibrator:NFLASH230-FFTS1:4']
-                print('__getTemperatures(): e.FEBE is ', e.FEBE)
+                montargets = ['activeRx:1', 'activeRx:2', 'activeRx:3', 'activeRx:4']
+
+                #print('__getTemperatures(): e.FEBE is ', e.FEBE)
+                self.latestFEBE = e.FEBE
+                self.latestRX = self.__febeToRx(self.latestFEBE)
 
                 for (baseband,target) in zip(basebands,montargets):
                     try:
-                        calResult = self.calibrator.getCalResult('NFLASH230-FFTS1', baseband, phaseNum)
+                        calResult = self.calibrator.getCalResult(str(e.FEBE), baseband, phaseNum)
                     except:
                         #-- instrument is not available, receiver is not currently in use
-                        print("Not available: FeBe'NFLASH230-FFTS1' baseband %d" % (baseband))
+                        print("Not available: FeBe '%s' baseband %d" % (e.FEBE, baseband))
                     else:
                         #print(baseband, target, calResult)
                         if baseband in [1,2]: ## currently limit to 1,2 - don't know in params.map where to stuff 'Calibrator:NFLASH230-FFTS1:3:tSys:X', 'Calibrator:NFLASH230-FFTS1:3:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:Y', 'Calibrator:NFLASH230-FFTS1:4:tSys:X'
@@ -323,6 +371,9 @@ class Getter():
                                 self.params[target + ':tSys:Y'] = convertApexPoint(calResult.tSys[1])
                         self.params[target + ':tHot'] = convertApexPoint(calResult.tHot)
                         self.params[target + ':tCold'] = convertApexPoint(calResult.tCold)
+                        # keep latest for global tHot,tCold:
+                        self.params['activeRx:tHot'] = self.params[target + ':tHot']
+                        self.params['activeRx:tCold'] = self.params[target + ':tCold']
                         # self.params[target + ':tAnt'] = convertApexPoint(calResult.tRx[polarization])  # no vlbimon server parameter counterpart
                         # self.params[target + ':tCal'] = convertApexPoint(calResult.tCal[polarization]) # -"-
                         # self.params[target + ':tSky'] = convertApexPoint(calResult.tSky[polarization]) # -"-
