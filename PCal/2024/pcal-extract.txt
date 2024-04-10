@@ -13,7 +13,7 @@ Extraction of tone at 423.0 MHz in baseband of Band 4 (recorder2) net-USB data:
   819200 DFT channels over 2048 MHz for 5 kHz wide bin across tone
 
 
-  === NFLASH 230G tuned to 230G - +15.022 Hz LO offset ===
+  === NFLASH tuned to 230G - +15.022 Hz LO offset ===
 
   ssh recorder2
   cd /mnt/fuse/
@@ -23,7 +23,7 @@ Extraction of tone at 423.0 MHz in baseband of Band 4 (recorder2) net-USB data:
   m5tone.py 34/<filename>.vdif VDIF_8192-8192-1-2 nflash230-<scanname>.rec2.s34.m5tone 1 1e-3 423e6 819200 0 -15.022
 
 
-  === NFLASH 230G tuned to 260G - +56.86 Hz LO offset ===
+  === NFLASH tuned to 260G - +56.86 Hz LO offset ===
 
   ssh recorder2
   cd /mnt/fuse/
