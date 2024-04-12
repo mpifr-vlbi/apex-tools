@@ -100,6 +100,11 @@ def vlbi_scan(t_mins=5,targetSource=''):
     # on(drift='no',time=30) # EHT2021: changed to 50% of t_mins from middle of e21b09 due to overheads (30%) that are greater than before
     on(drift='no',time=30)   # EHT2022, EHT2023: assume same high overhead of EHT2021. Worked out okay in e22b19 with 1-5min long scans.
 
+    # Alternate method attempted for e24e07: single very long on()-scan, perhaps no phase jumps them, but perhaps no contiguous sub-integration data either?
+    #on(drift='no',time=int(30*t_mins))
+    # [[ e24e07 till e24d10 : used single on(drift='no',time=int(30*t_mins)) ]]
+    # [[ e24g11: reverted back to the eht2023 known safe repeat(t_mins) x on(drift='no',time=30) ]]
+
     # Continue tracking for remainder of VLBI scan; ought to be less than auto-standby timeout time
     repeat(1)
     track()
