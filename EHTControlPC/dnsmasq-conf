@@ -239,35 +239,50 @@ dhcp-host=00:C0:B7:FD:3D:3A,pdu2   # entry for the future; currently PDU still 1
 
 # dhcp-host=78:24:af:85:3e:55,recorder4  # replaced 03-2023
 # dhcp-host=bc:5f:f4:97:0c:0b,recorder3  # replaced 03-2023
-dhcp-host=3c:ec:ef:74:8e:b6,recorder4 # mark6-4009
-dhcp-host=3c:ec:ef:73:ca:e2,recorder3 # mark6-4034
-dhcp-host=78:24:af:84:04:6d,recorder1
-dhcp-host=78:24:af:84:04:91,recorder2
+
+
+# EHT 2022/2023/2024
+#dhcp-host=78:24:af:84:04:6d,recorder1
+#dhcp-host=78:24:af:84:04:91,recorder2
+#dhcp-host=3c:ec:ef:73:ca:e2,recorder3 # mark6-4034
+#dhcp-host=3c:ec:ef:74:8e:b6,recorder4 # mark6-4009
+
+# Remapped at end of EHT 2024
+# ex. recorder1 = band3, recorder2 = band4, recorder3 = band1, recorder4 = band2
+dhcp-host=3c:ec:ef:73:ca:e2,recorder1
+dhcp-host=3c:ec:ef:73:ca:e1,recorder1-alt
+dhcp-host=3c:ec:ef:74:8e:b6,recorder2
+dhcp-host=3c:ec:ef:74:8e:b7,recorder2-alt
+dhcp-host=78:24:af:84:04:6d,recorder3
+dhcp-host=78:24:af:84:04:6c,recorder3-alt
+dhcp-host=78:24:af:84:04:90,recorder4
+dhcp-host=78:24:af:84:04:91,recorder4-alt
+
 
 #dhcp-host=02:44:01:02:11:1b,r2dbe4 ## this one died
-dhcp-host=02:44:01:02:11:0f,r2dbe4 # absent 2020, back for 2021
-dhcp-host=02:44:01:02:0a:31,r2dbe3 # absent 2020, back for 2021
-dhcp-host=02:44:01:02:0b:17,r2dbe1
-dhcp-host=02:44:01:02:0b:01,r2dbe2
-
-dhcp-host=ff:ff:ff:ff:ff:ff,bdc1
-dhcp-host=ff:ff:ff:ff:ff:ff,bdc2
-dhcp-host=ff:ff:ff:ff:ff:ff,dbe1
-dhcp-host=ff:ff:ff:ff:ff:ff,dbe2
-
-dhcp-host=ff:ff:ff:ff:ff:ff,powerstrip1
-dhcp-host=ff:ff:ff:ff:ff:ff,powerstrip2
-
-dhcp-host=ff:ff:ff:ff:ff:ff,netswitch1
-dhcp-host=ff:ff:ff:ff:ff:ff,netswitch2
-
-dhcp-host=ff:ff:ff:ff:ff:ff,noisesource1
-dhcp-host=ff:ff:ff:ff:ff:ff,raspberrypi
-
-dhcp-host=ff:ff:ff:ff:ff:ff,recorder1-ipmi
-dhcp-host=ff:ff:ff:ff:ff:ff,recorder2-ipmi
-dhcp-host=ff:ff:ff:ff:ff:ff,recorder3-ipmi
-dhcp-host=ff:ff:ff:ff:ff:ff,recorder4-ipmi
+#dhcp-host=02:44:01:02:11:0f,r2dbe4 # absent 2020, back for 2021
+#dhcp-host=02:44:01:02:0a:31,r2dbe3 # absent 2020, back for 2021
+#dhcp-host=02:44:01:02:0b:17,r2dbe1
+#dhcp-host=02:44:01:02:0b:01,r2dbe2
+#
+#dhcp-host=ff:ff:ff:ff:ff:ff,bdc1
+#dhcp-host=ff:ff:ff:ff:ff:ff,bdc2
+#dhcp-host=ff:ff:ff:ff:ff:ff,dbe1
+#dhcp-host=ff:ff:ff:ff:ff:ff,dbe2
+#
+#dhcp-host=ff:ff:ff:ff:ff:ff,powerstrip1
+#dhcp-host=ff:ff:ff:ff:ff:ff,powerstrip2
+#
+#dhcp-host=ff:ff:ff:ff:ff:ff,netswitch1
+#dhcp-host=ff:ff:ff:ff:ff:ff,netswitch2
+#
+#dhcp-host=ff:ff:ff:ff:ff:ff,noisesource1
+#dhcp-host=ff:ff:ff:ff:ff:ff,raspberrypi
+#
+#dhcp-host=ff:ff:ff:ff:ff:ff,recorder1-ipmi
+#dhcp-host=ff:ff:ff:ff:ff:ff,recorder2-ipmi
+dhcp-host=01:3c:ec:ef:73:cc:ca,recorder3-ipmi
+dhcp-host=01:3c:ec:ef:74:8f:b4,recorder4-ipmi
 
 # Always allocate the host with Ethernet address 11:22:33:44:55:66
 # The IP address 192.168.0.60
