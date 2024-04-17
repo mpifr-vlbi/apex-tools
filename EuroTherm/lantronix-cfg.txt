@@ -1,0 +1,53 @@
+
+Settings for the Lantronix Serial/Ethernet converter.
+For UDP, datagram type "01" important for getting replies from Lantronix.
+
+
+[oper@cc-apex EuroTherm]$ telnet 10.0.2.97 9999
+Trying 10.0.2.97...
+Connected to 10.0.2.97.
+Escape character is '^]'.
+*** Lantronix UDS1100 Device Server ***
+MAC address 00204AC13CF9
+Software version V6.11.0.7 (171229)
+
+Press Enter for Setup Mode
+
+
+*** basic parameters
+Hardware: Ethernet TPI
+IP addr 10.0.2.97, gateway 10.0.2.1,netmask 255.255.255.0
+DNS Server 10.0.6.19
+DHCP FQDN option: Disabled
+
+*** Security
+SNMP is              enabled
+SNMP Community Name: public
+Telnet Setup is      enabled
+TFTP Download is     enabled
+Port 77FEh is        enabled
+77FEh Access Mode is Read & Write
+Web Server is        enabled
+Web Setup is         enabled
+ECHO is              disabled
+Enhanced Password is disabled
+
+*** Channel 1
+Baudrate 9600, I/F Mode 4C, Flow 00
+Port 10001
+Connect Mode : CC
+Datagram Type 01
+Pack Cntrl:   00
+Remote IP Adr: --- none ---, Port 00000
+
+
+*** Expert
+TCP Keepalive    : 45s
+ARP cache timeout: 600s
+Monitor Mode @ bootup : enabled
+HTTP Port Number : 80
+MTU Size: 1400
+TCP Re-transmission timeout: 500 ms
+Alternate MAC: disabled
+Ethernet connection type: auto-negotiate
+
