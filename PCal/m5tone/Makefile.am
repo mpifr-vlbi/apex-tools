@@ -6,6 +6,7 @@ LDFLAGS = $(shell pkg-config --libs mark5access) -lm -lfftw3f -lmark5access
 bin_PROGRAMS = \
 	m5tone_Ax \
 	m5tone_Ax_2018_vdi \
+	m5tone_Ax_2022_vdi \
 	m5tone_Ax_2023_vdi \
 	m5tone_Ax_2024_vdi_260G \
 	m5tone_Ax_2018 \
@@ -16,6 +17,9 @@ m5tone_Ax_CFLAGS = -DSTATION_APEX
 
 m5tone_Ax_2018_vdi_SOURCES = m5tone_eht.c
 m5tone_Ax_2018_vdi_CFLAGS = -DSTATION_APEX_2018_VDI  # VDI synth for 1st LO with LO offset
+
+m5tone_Ax_2022_vdi_SOURCES = m5tone_eht.c
+m5tone_Ax_2022_vdi_CFLAGS = -DSTATION_APEX_2022_VDI  # VDI synth for 1st LO with LO offset, band 1 tone
 
 m5tone_Ax_2023_vdi_SOURCES = m5tone_eht.c
 m5tone_Ax_2023_vdi_CFLAGS = -DSTATION_APEX_2023_VDI  # VDI synth for 1st LO with LO offset
