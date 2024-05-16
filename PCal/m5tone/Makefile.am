@@ -20,7 +20,8 @@ bin_PROGRAMS = \
 	m5tone_threaded_Ax_2023_vdi \
 	m5tone_threaded_Ax_2024_vdi_260G \
 	m5tone_threaded_Ax_2018 \
-	m5tone_threaded_Kt
+	m5tone_threaded_Kt \
+	m5tone_mpi_Ax_2022_vdi
 
 ####################################################################################################################################################
 
@@ -57,6 +58,9 @@ m5tone_Ax_2022_vdi_CFLAGS = $(AM_CFLAGS) -DSTATION_APEX_2022_VDI
 
 m5tone_threaded_Ax_2022_vdi_SOURCES = m5tone_threaded_eht.c
 m5tone_threaded_Ax_2022_vdi_CFLAGS = $(AM_CFLAGS) -DSTATION_APEX_2022_VDI
+
+m5tone_mpi_Ax_2022_vdi_SOURCES = m5tone_mpi_eht.cpp
+m5tone_mpi_Ax_2022_vdi_CXXFLAGS = $(AM_CFLAGS) -DSTATION_APEX_2022_VDI
 
 ####################################################################################################################################################
 
