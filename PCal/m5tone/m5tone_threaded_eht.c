@@ -32,13 +32,6 @@ void usage()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** Fourier transform and averaging */
-#define DFT_LENGTH 409600     /* 204800 ch over 4096 Ms/s = 20 kHz/channel */
-#define DFT_AVG  4000         /* 400 msec == EHT 2018 visibility data AP of 0.4s */
-//#define DFT_AVG    1000     /* 1000 DFTs : 1000 blocks x 409600-point DFT / 4096Msps = 100 millisec */
-//#define DFT_AVG  100        /* 10 msec */
-//#define DFT_AVG  10         /* 1 msec */
-
 #define NUM_WORKER_THREADS 6
 
 /** Derived settings */
