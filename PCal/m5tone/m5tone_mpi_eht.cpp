@@ -74,6 +74,7 @@ typedef struct computeinput_tt {
 
     MPI_Request mpirequest;
     int mpirequestcount;
+    int eof;
 
 } computeinput_t;
 
@@ -149,7 +150,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
     }
     if (pathless_name[0] == '/') {
         pathless_name++;
-    }
+	    }
 
     logfilename = (char*)malloc(strlen(pathless_name) + strlen(".m5t") + 1);
     sprintf(logfilename, "%s.m5t", pathless_name);
@@ -184,11 +185,13 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
     for (int i = 0; i < computesize; i++) {
         computeblocks[i].channeldata = (float *)malloc(cfg.fftlen*(cfg.navg+1)*sizeof(float));
         computeblocks[i].mpirequestcount = 0;
+        computeblocks[i].eof = 0;
     }
 
     // Begin sending out data chunks to the compute processes
     int prev_target = 0;
-    while (!endoffile) {
+    int pending_results_count = 0;
+    while (!endoffile || (endoffile && pending_results_count > 0)) {
 
         float *dst;
         int recipient_rank = 0;
@@ -204,13 +207,15 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
                     target = candidate;
                     break;
                 }
-            } else {
+            } else if (!endoffile) {
                 target = candidate;
                 break;
+            } else {
             }
         }
 
         if (target < 0) {
+            prev_target = (prev_target + 1) % computesize;
             continue;
         }
         assert (target < computesize);
@@ -226,25 +231,36 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
             MPI_Recv(&pcalresult.phase, 1, MPI_DOUBLE, recipient_rank, tag, mpi, MPI_STATUS_IGNORE);
             MPI_Recv(&pcalresult.coherence, 1, MPI_DOUBLE, recipient_rank, tag, mpi, MPI_STATUS_IGNORE);
 
-            double datasec = 1e-3 * AP_len_msec * (computeblocks[target].sequencenumber + 0.5);
-            write_log_entry(fout, datasec, pcalresult);
+            if (computeblocks[target].channeldata_valid) {
+                double datasec = 1e-3 * AP_len_msec * (computeblocks[target].sequencenumber + 0.5);
+                write_log_entry(fout, datasec, pcalresult);
+                pending_results_count--;
+            }
 
             printf("samplestream_producer() rank=%d - collected results from compute process %d with rank %d\n", rank, target, recipient_rank);
+        }
+
+        // At EOF, get only outstanding results, do not attempt to send more data
+        if (computeblocks[target].eof) {
+            computeblocks[target].mpirequestcount = 0;
+            prev_target = target;
+            continue;
         }
 
         // Send new data block to the target node
         mark5_stream_get_frame_time(ms, &mjd, &sec, &ns);
         dst = computeblocks[target].channeldata;
-        for (size_t n = 0; n < cfg.navg; n++) {
+        for (size_t n = 0; n < cfg.navg && !endoffile; n++) {
             int rc = mark5_stream_decode(ms, cfg.fftlen, multichanneldata);
             if (rc < 0) {
                 endoffile = 1;
-                printf("Short read, %d bytes. EOF.\n", rc);
+                printf("samplestream_producer() rank=%d - input file EOF (rc=%d)\n", rank, rc);
                 break;
             }
             memcpy(dst, multichanneldata[VDIF_CHAN_IDX], sizeof(float) * cfg.fftlen);
             dst += cfg.fftlen;
         }
+        computeblocks[target].eof = endoffile;
         computeblocks[target].channeldata_valid = !endoffile;
         computeblocks[target].sequencenumber = sequencenumber;
         computeblocks[target].samplenumber = samplecount;
@@ -258,6 +274,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
         MPI_Irsend(&computeblocks[target].APmidMJD, 1, MPI_DOUBLE, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
         MPI_Irsend(computeblocks[target].channeldata, cfg.fftlen * cfg.navg, MPI_FLOAT, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
         computeblocks[target].mpirequestcount++;
+        pending_results_count++;
 
         printf("samplestream_producer() rank=%d - dispatched data block %d to compute process %d with rank %d\n", rank, sequencenumber, target, recipient_rank);
 
@@ -269,6 +286,8 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
     // Tidy up
     fclose(fout);
     free(logfilename);
+
+    printf("samplestream_producer() rank=%d - bye!\n", rank);
 
     return 0;
 }
