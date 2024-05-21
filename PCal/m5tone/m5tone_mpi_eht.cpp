@@ -197,6 +197,8 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
         int recipient_rank = 0;
         const int tag = 0;
 
+        // printf("samplestream_producer() rank=%d - prev target %d, endoffile=%d pending_results_count=%d, looking for next slot\n", rank, prev_target, endoffile, pending_results_count);
+
         int target = -1;
         for (int i = 0; i < computesize; i++) {
             int ready = 0;
@@ -210,12 +212,12 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
             } else if (!endoffile) {
                 target = candidate;
                 break;
-            } else {
             }
         }
 
         if (target < 0) {
             prev_target = (prev_target + 1) % computesize;
+            // printf("samplestream_producer() rank=%d - no slot found, upping prev_target by +1\n", rank);
             continue;
         }
         assert (target < computesize);
@@ -230,11 +232,11 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
             MPI_Recv(&pcalresult.amp, 1, MPI_DOUBLE, recipient_rank, tag, mpi, MPI_STATUS_IGNORE);
             MPI_Recv(&pcalresult.phase, 1, MPI_DOUBLE, recipient_rank, tag, mpi, MPI_STATUS_IGNORE);
             MPI_Recv(&pcalresult.coherence, 1, MPI_DOUBLE, recipient_rank, tag, mpi, MPI_STATUS_IGNORE);
+            pending_results_count--;
 
             if (computeblocks[target].channeldata_valid) {
                 double datasec = 1e-3 * AP_len_msec * (computeblocks[target].sequencenumber + 0.5);
                 write_log_entry(fout, datasec, pcalresult);
-                pending_results_count--;
             }
 
             printf("samplestream_producer() rank=%d - collected results from compute process %d with rank %d\n", rank, target, recipient_rank);
@@ -366,6 +368,14 @@ void process_sample_data(const computeinput_t& in, const computeconfig_t& cfg, c
         out->coherence = 0;
         return;
     }
+
+#if 0  // speed up MPI debug by omitting compute
+    out->APmidMJD = in.APmidMJD;
+    out->amp = 1.0;
+    out->phase = 23.0;
+    out->coherence = 0.45;
+    return;
+#endif
 
     for (size_t l = 0; l < cfg.navg; l++) {
 
