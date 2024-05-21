@@ -51,6 +51,8 @@ void usage()
     //#define DFT_AVG  10         /* 1 msec */
 #endif
 
+//#define RECODE_BEFORE_MPISEND
+
 /** Derived settings */
 #define VDIF_CHAN_FS_HZ ( (double)(2e6*VDIF_CHAN_BW_MHZ) )
 #define TONE_BIN        ( (size_t)(((double)TONE_FREQ_MHZ*DFT_LENGTH)/(2.0*VDIF_CHAN_BW_MHZ)) )
@@ -95,6 +97,9 @@ int observables_computor(MPI_Comm mpi);
 
 void process_sample_data(const computeinput_t& in, const computeconfig_t& cfg, computevars_t *out);
 void write_log_entry(FILE *out, double datasec, const computevars_t& data);
+
+void recode(float* data, size_t nsamples);
+void decode(unsigned char* input, float* output, size_t nsamples);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -262,6 +267,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
             memcpy(dst, multichanneldata[VDIF_CHAN_IDX], sizeof(float) * cfg.fftlen);
             dst += cfg.fftlen;
         }
+
         computeblocks[target].eof = endoffile;
         computeblocks[target].channeldata_valid = !endoffile;
         computeblocks[target].sequencenumber = sequencenumber;
@@ -274,7 +280,12 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
         MPI_Irsend(&computeblocks[target].sequencenumber, 1, MPI_INT, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
         MPI_Irsend(&computeblocks[target].samplenumber, 1, MPI_UINT64_T, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
         MPI_Irsend(&computeblocks[target].APmidMJD, 1, MPI_DOUBLE, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
+#ifndef RECODE_BEFORE_MPISEND
         MPI_Irsend(computeblocks[target].channeldata, cfg.fftlen * cfg.navg, MPI_FLOAT, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
+#else
+        recode(computeblocks[target].channeldata, cfg.fftlen * cfg.navg);
+        MPI_Irsend(computeblocks[target].channeldata, cfg.fftlen * cfg.navg, MPI_UNSIGNED_CHAR, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
+#endif
         computeblocks[target].mpirequestcount++;
         pending_results_count++;
 
@@ -299,6 +310,7 @@ int observables_computor(MPI_Comm mpi)
     computeconfig_t cfg;
     computeinput_t in;
     computevars_t out;
+    unsigned char* rawdata;
 
     const int datasource_rank = 0; // rank 0 is always the sample data producer in this program, ranks >= 1 are compute processes
     const int tag = 0;
@@ -317,6 +329,7 @@ int observables_computor(MPI_Comm mpi)
     out.dft_in = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * cfg.fftlen);
     out.dft_out = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * cfg.fftlen);
     out.pf = fftwf_plan_dft_1d(cfg.fftlen, out.dft_in, out.dft_out, FFTW_FORWARD, FFTW_ESTIMATE);
+    rawdata = (unsigned char*)malloc(cfg.fftlen * (cfg.navg+1));
 
     printf("observables_computor()  rank=%d - allocated for %lu x %lu\n", rank, cfg.fftlen, cfg.navg);
 
@@ -325,8 +338,13 @@ int observables_computor(MPI_Comm mpi)
         MPI_Recv(&in.sequencenumber, 1, MPI_INT, datasource_rank, tag, mpi, MPI_STATUS_IGNORE);
         MPI_Recv(&in.samplenumber, 1, MPI_UINT64_T, datasource_rank, tag, mpi, MPI_STATUS_IGNORE);
         MPI_Recv(&in.APmidMJD, 1, MPI_DOUBLE, datasource_rank, tag, mpi, MPI_STATUS_IGNORE);
+#ifndef RECODE_BEFORE_MPISEND
         MPI_Recv(in.channeldata, cfg.fftlen * cfg.navg, MPI_FLOAT, datasource_rank, tag, mpi, MPI_STATUS_IGNORE);
         // TODO: if network is a bottleneck: convert from float back to 2-bit for MPI_Send, then unpack again to 32-bit float after MPI_Recv, to save 16x of bandwidth
+#else
+        MPI_Recv(rawdata, cfg.fftlen * cfg.navg, MPI_UNSIGNED_CHAR, datasource_rank, tag, mpi, MPI_STATUS_IGNORE);
+        decode(rawdata, in.channeldata, cfg.fftlen * cfg.navg);
+#endif
 
         printf("observables_computor()  rank=%d - got data for seq %d MJD %.9lf for %lu x %lu\n", rank, in.sequencenumber, in.APmidMJD, cfg.fftlen, cfg.navg);
 
@@ -445,6 +463,33 @@ void write_log_entry(FILE *out, double datasec, const computevars_t& data)
     );
     fprintf(out, resultline);
     fflush(out);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void recode(float* data, size_t nsamples)
+{
+    // Inplace recode from 32-bit 4-value to 8-bit 5-value
+    unsigned char* out = (unsigned char*)data;
+    uint32_t* in = (uint32_t*)data;
+    for (size_t n=0; n<nsamples; n++) {
+        uint32_t v32 = in[n];
+        unsigned char v8 = 0;
+        if (v32 == 0xc0557f63) { v8=1; }
+        else if (v32 == 0x40557f63) { v8=2; }
+        else if (v32 == 0x3f800000) { v8=3; }
+        else if (v32 == 0xbf800000) { v8=4; }
+        out[n] = v8;
+    }
+}
+
+void decode(unsigned char* in, float* out, size_t nsamples)
+{
+    const uint32_t table[8] = {0, 0xc0557f63, 0x40557f63, 0x3f800000, 0xbf800000, 0, 0, 0};
+    uint32_t* out32 = (uint32_t*)out;
+    for (size_t n=0; n<nsamples; n++) {
+        out32[n] = table[in[n] & 0x07];
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
