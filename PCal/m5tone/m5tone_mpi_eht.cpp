@@ -28,6 +28,8 @@ rm -f m5tone_mpi_eht ; mpicxx -pthread -Wall -g -O3 -ffast-math -fno-math-errno 
 #include <stdint.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/param.h>
+#include <sys/time.h>
 
 #include <mark5access.h>
 #include <fftw3.h>
@@ -85,6 +87,7 @@ typedef struct computevars_tt {
     double APmidMJD;
     double amp, phase, coherence;
 
+    double computetime;
     fftwf_complex *dft_in, *dft_out;
     fftwf_plan pf;
 
@@ -116,10 +119,14 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
     size_t samplecount = 0;
     int sequencenumber = 0;
 
+    char local_hostname[MAXHOSTNAMELEN];
+
     // MPI layout
     int rank, mpisize, computesize, rankoffset;
     MPI_Comm_rank(mpi, &rank);
     MPI_Comm_size(mpi, &mpisize);
+    gethostname(local_hostname, MAXHOSTNAMELEN-1);
+
     rankoffset = 1; // rank 0: vdif sender, rank 1..n vdif recipients
     computesize = mpisize - rankoffset;
     assert(rank == 0);
@@ -129,7 +136,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
     computeconfig_t cfg;
     cfg.fftlen = DFT_LENGTH;
     cfg.navg = DFT_AVG;
-    printf("samplestream_producer() rank=%d - broadcast config for %lu x %lu\n", rank, cfg.fftlen, cfg.navg);
+    printf("samplestream_producer() rank=%d %s - broadcast config for %lu x %lu\n", rank, local_hostname, cfg.fftlen, cfg.navg);
     MPI_Bcast(&cfg.fftlen, 1, MPI_UINT64_T, 0, mpi);
     MPI_Bcast(&cfg.navg, 1, MPI_UINT64_T, 0, mpi);
     AP_len_msec = ((1e3*DFT_LENGTH)*(double)DFT_AVG) / VDIF_CHAN_FS_HZ;
@@ -244,7 +251,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
                 write_log_entry(fout, datasec, pcalresult);
             }
 
-            printf("samplestream_producer() rank=%d - collected results from compute process %d with rank %d\n", rank, target, recipient_rank);
+            printf("samplestream_producer() rank=%d %s - collected results from compute process %d with rank %d\n", rank, local_hostname, target, recipient_rank);
         }
 
         // At EOF, get only outstanding results, do not attempt to send more data
@@ -261,7 +268,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
             int rc = mark5_stream_decode(ms, cfg.fftlen, multichanneldata);
             if (rc < 0) {
                 endoffile = 1;
-                printf("samplestream_producer() rank=%d - input file EOF (rc=%d)\n", rank, rc);
+                printf("samplestream_producer() rank=%d %s - input file EOF (rc=%d)\n", rank, local_hostname, rc);
                 break;
             }
             memcpy(dst, multichanneldata[VDIF_CHAN_IDX], sizeof(float) * cfg.fftlen);
@@ -289,7 +296,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
         computeblocks[target].mpirequestcount++;
         pending_results_count++;
 
-        printf("samplestream_producer() rank=%d - dispatched data block %d to compute process %d with rank %d\n", rank, sequencenumber, target, recipient_rank);
+        printf("samplestream_producer() rank=%d %s - dispatched data block %d to compute process %d with rank %d\n", rank, local_hostname, sequencenumber, target, recipient_rank);
 
         prev_target = target;
         sequencenumber++;
@@ -300,7 +307,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
     fclose(fout);
     free(logfilename);
 
-    printf("samplestream_producer() rank=%d - bye!\n", rank);
+    printf("samplestream_producer() rank=%d %s - bye!\n", rank, local_hostname);
 
     return 0;
 }
@@ -316,14 +323,17 @@ int observables_computor(MPI_Comm mpi)
     const int tag = 0;
     int rank;
 
-    MPI_Comm_rank(mpi, &rank);
+    char local_hostname[MAXHOSTNAMELEN];
 
-    printf("observables_computor()  rank=%d - hi!\n", rank);
+    MPI_Comm_rank(mpi, &rank);
+    gethostname(local_hostname, MAXHOSTNAMELEN-1);
+
+    printf("observables_computor()  rank=%d %s - hi!\n", rank, local_hostname);
 
     MPI_Bcast(&cfg.fftlen, 1, MPI_UINT64_T, 0, mpi);
     MPI_Bcast(&cfg.navg, 1, MPI_UINT64_T, 0, mpi);
 
-    printf("observables_computor()  rank=%d - received config for %lu x %lu\n", rank, cfg.fftlen, cfg.navg);
+    printf("observables_computor()  rank=%d %s - received config for %lu x %lu\n", rank, local_hostname, cfg.fftlen, cfg.navg);
 
     in.channeldata = (float *)malloc(sizeof(float) * cfg.fftlen * (cfg.navg+1));
     out.dft_in = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * cfg.fftlen);
@@ -331,7 +341,7 @@ int observables_computor(MPI_Comm mpi)
     out.pf = fftwf_plan_dft_1d(cfg.fftlen, out.dft_in, out.dft_out, FFTW_FORWARD, FFTW_ESTIMATE);
     rawdata = (unsigned char*)malloc(cfg.fftlen * (cfg.navg+1));
 
-    printf("observables_computor()  rank=%d - allocated for %lu x %lu\n", rank, cfg.fftlen, cfg.navg);
+    printf("observables_computor()  rank=%d %s - allocated for %lu x %lu\n", rank, local_hostname, cfg.fftlen, cfg.navg);
 
     do {
         MPI_Recv(&in.channeldata_valid, 1, MPI_INT, datasource_rank, tag, mpi, MPI_STATUS_IGNORE);
@@ -346,11 +356,11 @@ int observables_computor(MPI_Comm mpi)
         decode(rawdata, in.channeldata, cfg.fftlen * cfg.navg);
 #endif
 
-        printf("observables_computor()  rank=%d - got data for seq %d MJD %.9lf for %lu x %lu\n", rank, in.sequencenumber, in.APmidMJD, cfg.fftlen, cfg.navg);
+        printf("observables_computor()  rank=%d %s - got data for seq %d MJD %.9lf for %lu x %lu\n", rank, local_hostname, in.sequencenumber, in.APmidMJD, cfg.fftlen, cfg.navg);
 
         process_sample_data(in, cfg, &out);
 
-        printf("observables_computor()  rank=%d - finished processing data chunk - seq %d MJD %.9lf amp %11.6e %+8.3lf deg %.3lf\n", rank, in.sequencenumber, out.APmidMJD, out.amp, out.phase, out.coherence);
+        printf("observables_computor()  rank=%d %s - finished processing data chunk in %.2f sec - seq %d MJD %.9lf amp %11.6e %+8.3lf deg %.3lf\n", rank, local_hostname, out.computetime, in.sequencenumber, out.APmidMJD, out.amp, out.phase, out.coherence);
 
         MPI_Send(&out.APmidMJD, 1, MPI_DOUBLE, datasource_rank, tag, mpi);
         MPI_Send(&out.amp, 1, MPI_DOUBLE, datasource_rank, tag, mpi);
@@ -364,7 +374,7 @@ int observables_computor(MPI_Comm mpi)
     fftwf_free(out.dft_in);
     fftwf_free(out.dft_out);
 
-    printf("observables_computor()  rank=%d - bye!\n", rank);
+    printf("observables_computor()  rank=%d %s - bye!\n", rank, local_hostname);
 
     return 0;
 }
@@ -394,6 +404,9 @@ void process_sample_data(const computeinput_t& in, const computeconfig_t& cfg, c
     out->coherence = 0.45;
     return;
 #endif
+
+    struct timeval tstart, tstop;
+    gettimeofday(&tstart, NULL);
 
     for (size_t l = 0; l < cfg.navg; l++) {
 
@@ -448,6 +461,9 @@ void process_sample_data(const computeinput_t& in, const computeconfig_t& cfg, c
     out->amp = cabsf(pcal);
     out->phase = cargf(pcal) * 180.0/M_PI;
     out->coherence = cabsf(pcal) / ampsum;
+
+    gettimeofday(&tstop, NULL);
+    out->computetime = (tstop.tv_sec - tstart.tv_sec) + 1e-6*(tstop.tv_usec - tstart.tv_usec);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
