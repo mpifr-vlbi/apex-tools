@@ -75,6 +75,7 @@ typedef struct computeinput_tt {
     uint64_t samplenumber;
     double APmidMJD;
     float *channeldata;
+    uint8_t *channeldata_8bit;
 
     MPI_Request mpirequest;
     int mpirequestcount;
@@ -101,8 +102,8 @@ int observables_computor(MPI_Comm mpi);
 void process_sample_data(const computeinput_t& in, const computeconfig_t& cfg, computevars_t *out);
 void write_log_entry(FILE *out, double datasec, const computevars_t& data);
 
-void recode(float* data, size_t nsamples);
-void decode(unsigned char* input, float* output, size_t nsamples);
+void recode(const float* input, unsigned char* output, size_t nsamples);
+void decode(const unsigned char* input, float* output, size_t nsamples);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -196,6 +197,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
     computeblocks = (computeinput_t*)calloc(computesize, sizeof(computeinput_t));
     for (int i = 0; i < computesize; i++) {
         computeblocks[i].channeldata = (float *)malloc(cfg.fftlen*(cfg.navg+1)*sizeof(float));
+        computeblocks[i].channeldata_8bit = (uint8_t *)malloc(cfg.fftlen*(cfg.navg+1)*sizeof(uint8_t));
         computeblocks[i].mpirequestcount = 0;
         computeblocks[i].eof = 0;
     }
@@ -290,8 +292,8 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
 #ifndef RECODE_BEFORE_MPISEND
         MPI_Irsend(computeblocks[target].channeldata, cfg.fftlen * cfg.navg, MPI_FLOAT, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
 #else
-        recode(computeblocks[target].channeldata, cfg.fftlen * cfg.navg);
-        MPI_Irsend(computeblocks[target].channeldata, cfg.fftlen * cfg.navg, MPI_UNSIGNED_CHAR, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
+        recode(computeblocks[target].channeldata, computeblocks[target].channeldata_8bit, cfg.fftlen * cfg.navg);
+        MPI_Irsend(computeblocks[target].channeldata_8bit, cfg.fftlen * cfg.navg, MPI_UNSIGNED_CHAR, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
 #endif
         computeblocks[target].mpirequestcount++;
         pending_results_count++;
@@ -483,9 +485,31 @@ void write_log_entry(FILE *out, double datasec, const computevars_t& data)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void recode(float* data, size_t nsamples)
+void recode(const float* data, unsigned char* out, size_t nsamples)
 {
-    // Inplace recode from 32-bit 4-value to 8-bit 5-value
+    // v2: Recode from 32-bit 4-value to 8-bit 5-value output array; also slow...
+    //uint32_t* in32 = (uint32_t*)data;
+    uint8_t* in8 = (uint8_t*)data;
+    for (size_t n=0; n<nsamples; n++) {
+        unsigned char v8 = 0;
+        //uint32_t v32 = in32[n];
+        //if (v32 == 0xc0557f63) { v8=1; }
+        //else if (v32 == 0x40557f63) { v8=2; }
+        //else if (v32 == 0x3f800000) { v8=3; }
+        //else if (v32 == 0xbf800000) { v8=4; }
+        uint8_t hi = in8[4*n + 3];
+        if (hi == 0xc0) { v8=1; }
+        else if (hi == 0x40) { v8=2; }
+        else if (hi == 0x3f) { v8=3; }
+        else if (hi == 0xbf) { v8=4; }
+        out[n] = v8;
+    }
+}
+
+void recode_v1(float* data, size_t nsamples)
+{
+    // v1: Inplace recode from 32-bit 4-value to 8-bit 5-value
+    // Performance turned out poor, maybe due to inplace ops self-dirtying cache line
     unsigned char* out = (unsigned char*)data;
     uint32_t* in = (uint32_t*)data;
     for (size_t n=0; n<nsamples; n++) {
@@ -499,7 +523,7 @@ void recode(float* data, size_t nsamples)
     }
 }
 
-void decode(unsigned char* in, float* out, size_t nsamples)
+void decode(const unsigned char* in, float* out, size_t nsamples)
 {
     const uint32_t table[8] = {0, 0xc0557f63, 0x40557f63, 0x3f800000, 0xbf800000, 0, 0, 0};
     uint32_t* out32 = (uint32_t*)out;
