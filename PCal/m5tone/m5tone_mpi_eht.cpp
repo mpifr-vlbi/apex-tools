@@ -102,8 +102,8 @@ int observables_computor(MPI_Comm mpi);
 void process_sample_data(const computeinput_t& in, const computeconfig_t& cfg, computevars_t *out);
 void write_log_entry(FILE *out, double datasec, const computevars_t& data);
 
-void recode(const float* input, unsigned char* output, size_t nsamples);
-void decode(const unsigned char* input, float* output, size_t nsamples);
+void encode(const float* __restrict input, unsigned char* __restrict output, size_t nsamples);
+void decode(const unsigned char* __restrict input, float* __restrict output, size_t nsamples);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -205,6 +205,9 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
     // Begin sending out data chunks to the compute processes
     int prev_target = 0;
     int pending_results_count = 0;
+    struct timeval tstart, tstop;
+    gettimeofday(&tstart, NULL);
+
     while (!endoffile || (endoffile && pending_results_count > 0)) {
 
         float *dst;
@@ -292,7 +295,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
 #ifndef RECODE_BEFORE_MPISEND
         MPI_Irsend(computeblocks[target].channeldata, cfg.fftlen * cfg.navg, MPI_FLOAT, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
 #else
-        recode(computeblocks[target].channeldata, computeblocks[target].channeldata_8bit, cfg.fftlen * cfg.navg);
+        encode(computeblocks[target].channeldata, computeblocks[target].channeldata_8bit, cfg.fftlen * cfg.navg);
         MPI_Irsend(computeblocks[target].channeldata_8bit, cfg.fftlen * cfg.navg, MPI_UNSIGNED_CHAR, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
 #endif
         computeblocks[target].mpirequestcount++;
@@ -308,8 +311,10 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
     // Tidy up
     fclose(fout);
     free(logfilename);
+    gettimeofday(&tstop, NULL);
 
-    printf("samplestream_producer() rank=%d %s - bye!\n", rank, local_hostname);
+    double runtime = (tstop.tv_sec - tstart.tv_sec) + 1e-6*(tstop.tv_usec - tstart.tv_usec);
+    printf("samplestream_producer() rank=%d %s - finished after %.2f seconds - bye!\n", rank, local_hostname, runtime);
 
     return 0;
 }
@@ -485,9 +490,23 @@ void write_log_entry(FILE *out, double datasec, const computevars_t& data)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void recode(const float* data, unsigned char* out, size_t nsamples)
+void encode(const float* __restrict data, unsigned char* __restrict out, size_t nsamples)
 {
-    // v2: Recode from 32-bit 4-value to 8-bit 5-value output array; also slow...
+    // v3: Recode from 32-bit 4-value to 8-bit 5-value output array, out of place
+    //     Avoid if() clauses
+    uint8_t* in8 = (uint8_t*)data;
+    for (size_t n=0; n<nsamples; n++) {
+        // 0xc0557f63 -> 0xC0   0x40557f63 -> 0x40  0x3f800000 -> 0x3F  0xbf800000 -> 0xBF
+        // shr 4 -> 0xC         0x4                 0x3                 0xB
+        //          0b1100      0b0100              0b0011              0b1011
+        // shr 6 -> 0x3         0x1                 0x0                 0x2
+        out[n] = in8[4*n + 3] >> 6;
+    }
+}
+
+void encode_v2(const float* data, unsigned char* out, size_t nsamples)
+{
+    // v2: Recode from 32-bit 4-value to 8-bit 5-value output array, out of place; also slow...
     //uint32_t* in32 = (uint32_t*)data;
     uint8_t* in8 = (uint8_t*)data;
     for (size_t n=0; n<nsamples; n++) {
@@ -506,7 +525,7 @@ void recode(const float* data, unsigned char* out, size_t nsamples)
     }
 }
 
-void recode_v1(float* data, size_t nsamples)
+void encode_v1(float* data, size_t nsamples)
 {
     // v1: Inplace recode from 32-bit 4-value to 8-bit 5-value
     // Performance turned out poor, maybe due to inplace ops self-dirtying cache line
@@ -523,12 +542,13 @@ void recode_v1(float* data, size_t nsamples)
     }
 }
 
-void decode(const unsigned char* in, float* out, size_t nsamples)
+void decode(const unsigned char* __restrict in, float* __restrict out, size_t nsamples)
 {
-    const uint32_t table[8] = {0, 0xc0557f63, 0x40557f63, 0x3f800000, 0xbf800000, 0, 0, 0};
+    // const uint32_t table[8] = {0, 0xc0557f63, 0x40557f63, 0x3f800000, 0xbf800000, 0, 0, 0}; // for encode_v1(), encode_v2()
+    const uint32_t table[4] = { 0x3f800000, 0x40557f63, 0xbf800000, 0xc0557f63  }; // for encode() v3
     uint32_t* out32 = (uint32_t*)out;
     for (size_t n=0; n<nsamples; n++) {
-        out32[n] = table[in[n] & 0x07];
+        out32[n] = table[in[n]];
     }
 }
 
