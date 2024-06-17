@@ -54,6 +54,7 @@ void usage()
 #endif
 
 //#define RECODE_BEFORE_MPISEND
+//#define ASYNCHRONOUS_MPISEND // send 32-bit float sample data asynchronously to compute nodes (at cost of high memory consumption)
 
 /** Derived settings */
 #define VDIF_CHAN_FS_HZ ( (double)(2e6*VDIF_CHAN_BW_MHZ) )
@@ -195,12 +196,26 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
         fprintf(stderr, "WARNING -- decoding a nonstandard number of samples.  Expect bogus results\n");
     }
     computeblocks = (computeinput_t*)calloc(computesize, sizeof(computeinput_t));
+#ifdef ASYNCHRONOUS_MPISEND
     for (int i = 0; i < computesize; i++) {
         computeblocks[i].channeldata = (float *)malloc(cfg.fftlen*(cfg.navg+1)*sizeof(float));
+        #ifdef RECODE_BEFORE_MPISEND
         computeblocks[i].channeldata_8bit = (uint8_t *)malloc(cfg.fftlen*(cfg.navg+1)*sizeof(uint8_t));
+        #else
+        computeblocks[i].channeldata_8bit = NULL;
+        #endif
         computeblocks[i].mpirequestcount = 0;
         computeblocks[i].eof = 0;
     }
+#else
+    float *singlechanneldata = (float *)malloc(cfg.fftlen*(cfg.navg+1)*sizeof(float));
+    for (int i = 0; i < computesize; i++) {
+        computeblocks[i].channeldata = singlechanneldata;
+        computeblocks[i].channeldata_8bit = NULL;
+        computeblocks[i].mpirequestcount = 0;
+        computeblocks[i].eof = 0;
+    }
+#endif
 
     // Begin sending out data chunks to the compute processes
     int prev_target = 0;
@@ -219,13 +234,18 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
         int target = -1;
         for (int i = 0; i < computesize; i++) {
             int ready = 0;
-            int candidate = (prev_target + i) % computesize;
+            int candidate = (prev_target + i + 1) % computesize;
             if (computeblocks[candidate].mpirequestcount > 0) {
+#ifdef ASYNCHRONOUS_MPISEND
                 MPI_Test(&computeblocks[candidate].mpirequest, &ready, MPI_STATUS_IGNORE);
                 if (ready) {
                     target = candidate;
                     break;
                 }
+#else
+                target = candidate;
+                break;
+#endif
             } else if (!endoffile) {
                 target = candidate;
                 break;
@@ -284,19 +304,27 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
         computeblocks[target].channeldata_valid = !endoffile;
         computeblocks[target].sequencenumber = sequencenumber;
         computeblocks[target].samplenumber = samplecount;
-        computeblocks[target].APmidMJD = mjd + (sec + 0.5e-3*AP_len_msec + ns/1e9) / 86400.0;
+        computeblocks[target].APmidMJD = mjd + (sec + 0.5e-3*AP_len_msec + ns*1e-9) / 86400.0;
         samplecount += cfg.fftlen * cfg.navg;
 
         recipient_rank = target + rankoffset;
+#ifdef ASYNCHRONOUS_MPISEND
         MPI_Irsend(&computeblocks[target].channeldata_valid, 1, MPI_INT, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
         MPI_Irsend(&computeblocks[target].sequencenumber, 1, MPI_INT, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
         MPI_Irsend(&computeblocks[target].samplenumber, 1, MPI_UINT64_T, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
         MPI_Irsend(&computeblocks[target].APmidMJD, 1, MPI_DOUBLE, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
-#ifndef RECODE_BEFORE_MPISEND
+    #ifndef RECODE_BEFORE_MPISEND
         MPI_Irsend(computeblocks[target].channeldata, cfg.fftlen * cfg.navg, MPI_FLOAT, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
-#else
+    #else
         encode(computeblocks[target].channeldata, computeblocks[target].channeldata_8bit, cfg.fftlen * cfg.navg);
         MPI_Irsend(computeblocks[target].channeldata_8bit, cfg.fftlen * cfg.navg, MPI_UNSIGNED_CHAR, recipient_rank, tag, mpi, &computeblocks[target].mpirequest);
+    #endif
+#else
+        MPI_Send(&computeblocks[target].channeldata_valid, 1, MPI_INT, recipient_rank, tag, mpi);
+        MPI_Send(&computeblocks[target].sequencenumber, 1, MPI_INT, recipient_rank, tag, mpi);
+        MPI_Send(&computeblocks[target].samplenumber, 1, MPI_UINT64_T, recipient_rank, tag, mpi);
+        MPI_Send(&computeblocks[target].APmidMJD, 1, MPI_DOUBLE, recipient_rank, tag, mpi);
+        MPI_Send(computeblocks[target].channeldata, cfg.fftlen * cfg.navg, MPI_FLOAT, recipient_rank, tag, mpi);
 #endif
         computeblocks[target].mpirequestcount++;
         pending_results_count++;
@@ -357,7 +385,6 @@ int observables_computor(MPI_Comm mpi)
         MPI_Recv(&in.APmidMJD, 1, MPI_DOUBLE, datasource_rank, tag, mpi, MPI_STATUS_IGNORE);
 #ifndef RECODE_BEFORE_MPISEND
         MPI_Recv(in.channeldata, cfg.fftlen * cfg.navg, MPI_FLOAT, datasource_rank, tag, mpi, MPI_STATUS_IGNORE);
-        // TODO: if network is a bottleneck: convert from float back to 2-bit for MPI_Send, then unpack again to 32-bit float after MPI_Recv, to save 16x of bandwidth
 #else
         MPI_Recv(rawdata, cfg.fftlen * cfg.navg, MPI_UNSIGNED_CHAR, datasource_rank, tag, mpi, MPI_STATUS_IGNORE);
         decode(rawdata, in.channeldata, cfg.fftlen * cfg.navg);
