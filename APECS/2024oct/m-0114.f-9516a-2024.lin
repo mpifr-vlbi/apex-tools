@@ -1,5 +1,7 @@
+! NB: symlinked to t-0114.f-9996a-2024.lin
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! GMVA VLBI 86 GHy
+! GMVA VLBI 86 GHz
 ! Nominal 4 Gbps mode covers 86012.0--86524.0 MHz with 4 ch x 128 MHz or 8 x 64 MHz
 ! Pico Veleta DBBC3 4 Gbps mode LO1 92100.0 MHz + Valons 9048.0 MHz
 ! Tuning TODO!
