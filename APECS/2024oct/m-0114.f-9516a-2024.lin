@@ -1,0 +1,53 @@
+! NB: symlinked to t-0114.f-9996a-2024.lin
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! GMVA VLBI 86 GHz
+! Nominal 4 Gbps mode covers 86012.0--86524.0 MHz with 4 ch x 128 MHz or 8 x 64 MHz
+! Pico Veleta DBBC3 4 Gbps mode LO1 92100.0 MHz + Valons 9048.0 MHz
+! Tuning TODO!
+!
+vlbifreq86   92.012 GHz USB
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! EHT VLBI 230 GHz - nominal EHT-wide 1st LO 221.100 GHz
+! NFLASH freq. as in 2018-04-16 with 1st LO = 221.103 GHz = 18 x VDI 12283.5 MHz
+! For virtual APECS "line freq" at 6 GHz in the IF, 221.103 GHz => "227.103 GHz"
+!
+vlbifreq230  227.103 GHz USB
+vlbifreq685  690.990 GHz USB
+! vlbifreq230 as just a different name for vlbifreq7
+! NB: SiO 215 GHz falls into EHT vlbifreq230, no separate line freq required
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! EHT 260 GHz VLBI 
+! From FrequencyStructure2024Apr-260GHz.xlsx, EHT LO1 259.50 GHz, IF 5-9G
+! Sky freq that corresponds to USB IF band centre at 6 GHz, alas offset by 6 MHz
+! due to VDI tuning numerology, compensated for at last LO within DBBC3:
+!
+vlbifreq260    265.506 GHz USB
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! EHT VLBI Test 345 GHz -- nominal EHT-wide 1st LO 342.600 GHz
+! Due to SEPIA LO system we end up with 400 kHz offset --> 342.6004 GHz
+! Due to available VLBI IF 5-9G, not EHTs 4-8G, we must tune +1 GHz --> 343.6004 GHz
+! Additionally virtual APECS "line freq" at 6 GHz 343.6004 => "349.6004 GHz"
+!
+vlbifreq345 348.600 GHz USB  ! 1st LO 342600.0 + 6 GHz
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! 460 GHz VLBI Tone Test
+!
+vlbifreq460    474.000 GHz USB
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! 690 GHz VLBI Test
+! Tuning TODO!
+!
+vlbifreq690    696.000 GHz USB
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
