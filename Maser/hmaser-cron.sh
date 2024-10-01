@@ -52,5 +52,5 @@ popd
 DCMD="SETDATE=`date -u +'%Y/%m/%d'`;"
 TCMD="SETTIME=`date -u +'%H:%M:%S'`;"
 echo "Sending date-time commands $DCMD $TCMD"
-echo -e "$DCMD;\r" | nc -c -u -w 1 maser.apex-telescope.org 14000
-echo -e "$TCMD;\r" | nc -c -u -w 1 maser.apex-telescope.org 14000
+echo -e "$DCMD\r" | nc -c -u -w 1 maser.apex-telescope.org 14000
+echo -e "$TCMD\r" | nc -c -u -w 1 maser.apex-telescope.org 14000
