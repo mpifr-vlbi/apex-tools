@@ -18,7 +18,7 @@ NFLASH230.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
 
 setup_nflash(
     fenames=['nflash230'],
-    linenames=['vlbifreq260eht'],
+    linenames=['vlbifreq_eht260'],
     sidebands=[''], mode='spec',
     sbwidths=[8], numchans=[65536],
     cats='all', doppler='off')
