@@ -26,9 +26,10 @@ vlbifreq685  690.990 GHz USB
 ! Sky freq that corresponds to USB IF band centre at 6 GHz, alas offset by 6 MHz
 ! due to VDI tuning numerology, compensated for at last LO within DBBC3:
 !
-! vlbifreq260    265.506 GHz USB
+vlbifreq260eht    265.506 GHz USB
 !
 ! Revised for October 2024 Frequency-Phase-Transfer Test (simultaneous 86G + 260G)
+! TODO: get copy of spreadsheet with the actual final freq setup!
 vlbifreq260      273.084 GHz USB
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
