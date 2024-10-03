@@ -9,7 +9,7 @@ exec_apecs_script('nflash_commands')
 
 execfile('/homes/software/apecs/startObsCommands.apecs')
 
-execfile('vlbi-N3AR90xNFLASH230_commands.py')
+execfile('vlbi-N3AR90xNFLASH260_commands.py')
 
 NFLASH230.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
                            [('prop', 'APEX:COUNTERS:GPSMINUSFMOUT.GPSMinusFMOUT', 1.0, '-'),
@@ -18,7 +18,7 @@ NFLASH230.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
 
 setup_nflash(
     fenames=['n3ar90', 'nflash230'],
-    linenames=['vlbifreq86', 'vlbifreq230'],
+    linenames=['vlbifreq86', 'vlbifreq260'],
     sidebands=['', ''], mode='spec',
     sbwidths=[8, 8], numchans=[65536, 65536],
     cats='all', doppler='off')
