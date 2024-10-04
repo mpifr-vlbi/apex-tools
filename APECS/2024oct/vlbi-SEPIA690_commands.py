@@ -18,13 +18,13 @@ def vlbi_tuning():
     in continuum rather than in line mode.
     '''
 
-    setup_sepia( fenames=['sepia345'],
+    setup_sepia( fenames=['sepia660'],
         linenames=['vlbifreq690'],
         sidebands=[''], mode='spec', numchans=[65536], sbwidths=[8],
         cats='all',
         doppler='off' )
 
-    sepia345.configure(doppler='off')  # prevent Doppler correction during VLBI scan on()
+    sepia660.configure(doppler='off')  # prevent Doppler correction during VLBI scan on()
     tp()                               # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
     use_ref('OFF')                     # avoid going off-source during VLBI scan on()
 
@@ -106,7 +106,7 @@ def vlbi_scan(t_mins=5,targetSource=''):
 
 def vlbi_wpoint(t=20,cal=1):
     '''Wobbler pointing for VLBI.'''
-    sepia345.configure(doppler='on')
+    sepia660.configure(doppler='on')
     if (cal):
         calibrate('cold')
     wob(amplitude=75, rate=1.5, mode='pos')
@@ -114,18 +114,18 @@ def vlbi_wpoint(t=20,cal=1):
     point(length=54, unit='arcsec', time=t, mode='ras', points=5, direction='x')
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    sepia345.configure(doppler='off')
+    sepia660.configure(doppler='off')
 
 
 def vlbi_focus(axis='Z',t=6):
     '''Focus scan for VLBI.'''
-    sepia345.configure(doppler='on')
+    sepia660.configure(doppler='on')
     vlbi_focus.func_defaults = (axis,)
     wob(amplitude=75, rate=1.5, mode='pos')
     focus(amplitude=1, points=5, axis=axis, time=t)
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    sepia345.configure(doppler='off')
+    sepia660.configure(doppler='off')
 
 
 def vlbi_get_calibration():
