@@ -1,0 +1,41 @@
+
+
+Extraction with
+
+  - m5tone.py script from DiFX 2.8.x, flexible
+  - m5tone binary with hardcoded settings
+   from https://github.com/mpifr-vlbi/apex-tools/tree/master/Correlation/m5tone
+
+
+=== For 86G GMVA Configuration ===
+
+DBBC3 must be running the DDC_U_v126 program ; 8 x 64 MHz x 2-pol
+No Python script -based reconfiguration necessary (unlike the FPT VLBI test)
+
+Tone at  86G lands at baseband   ??? MHz on recorder3  with LO offset ???
+
+Extraction:
+
+ !todo!
+
+
+=== For 86/260G FPT Configuration ===
+
+DBBC3 must be running the OCT_D_v120 program
+DBBC3 must've been configured with apex-cc:~/gmva/setupFPT_Oct24.py FPT setup script
+
+Tone at  86G lands at baseband   ??? MHz on recorder3  with LO offset ???
+Tone at 260G lands at baseband 249.0 MHz on recorder2  with LO offset approx -75.60
+
+Extraction of tone at 249.0 MHz in baseband with 5 millisec integration, with
+bin width of 100 / 10 / 1 kHz:
+
+  260G:
+  
+  m5tone.py <recording>.vdif VDIF_8192-4096-1-2 <recording>.100kHz.m5t 1 5e-3 249.0e6 20480 0 -75.60
+  m5tone.py <recording>.vdif VDIF_8192-4096-1-2 <recording>.10kHz.m5t 1 5e-3 249.0e6 204800 0 -75.60
+  m5tone.py <recording>.vdif VDIF_8192-4096-1-2 <recording>.1kHz.m5t 1 5e-3 249.0e6 2048000 0 -75.60
+
+  86G:
+  
+  !todo!
