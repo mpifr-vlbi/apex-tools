@@ -5,10 +5,6 @@ import subprocess
 import datetime
 import os
 
-# Simulatenous 86G+230G observing
-# cf. APEX-MPI-MAN-0011-R4_5-Draft2.pdf section 3.3.1.3,
-# where setup_nflash() can be used to set up non-NFlash frontends
-
 #############################################################################
 # VLBI Calibration and Scan/VLBI Recording Helpers
 #############################################################################
@@ -21,20 +17,19 @@ def vlbi_tuning():
     tuned to e.g. CO line instead of vlbi freq, or 2) backend for Tsys was left
     in continuum rather than in line mode.
 
-    Note: In 2022 we verified CO line pointing works fine while tuned to 'vlbifreq230',
+    Note: In 2022 we verified CO line pointing works fine while tuned to 'vlbifreq_eht260',
           nevertheless it remains prudent for the scripted schedule to hammer in the
           correct VLBI tuning at every opportunity.
     '''
 
     setup_nflash(
-       fenames=['n3ar90', 'nflash230'],
-       linenames=['vlbifreq86', 'vlbifreq230'],
-       sidebands=['', ''], mode='spec',
-       sbwidths=[8, 8], numchans=[65536, 65536],
+       fenames=['nflash230'],
+       linenames=['vlbifreq_eht260'],
+       sidebands=[''], mode='spec',
+       sbwidths=[8], numchans=[65536],
        cats='all', doppler='off')
 
-    n3ar90.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
-    nflash230.configure(doppler='off')
+    nflash230.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
     tp()                            # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
     use_ref('OFF')                  # avoid going off-source during VLBI scan on()
 
@@ -122,7 +117,6 @@ def vlbi_scan(t_mins=5,targetSource=''):
 
 def vlbi_wpoint(t=20,cal=1):
     '''Wobbler pointing for VLBI.'''
-    n3ar90.configure(doppler='on')
     nflash230.configure(doppler='on')
     if (cal):
         calibrate('cold')
@@ -131,32 +125,29 @@ def vlbi_wpoint(t=20,cal=1):
     point(length=54, unit='arcsec', time=t, mode='ras', points=5, direction='x')
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    n3ar90.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
-    nflash230.configure(doppler='off')
+    nflash230.configure(doppler='off') # This brings back the VLBI frequency for the next source (velocity=0)
 
 
 def vlbi_focus(axis='Z',t=6):
     '''Focus scan for VLBI.'''
-    n3ar90.configure(doppler='on')
     vlbi_focus.func_defaults = (axis,)
     wob(amplitude=75, rate=1.5, mode='pos')
     focus(amplitude=1, points=5, axis=axis, time=t)
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    n3ar90.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
-    nflash230.configure(doppler='off')
+    nflash230.configure(doppler='off') # This brings back the VLBI frequency for the next source (velocity=0)
 
 
 def vlbi_get_calibration():
     '''Collect calibration results'''
     onlineCal = apexObsUtils.getApexCalibrator()
     try:
-        calResult = onlineCal.getCalResult('PI230-PBE_C',1,0) # FIXME: would N3AR90-PBE_C be correct?
+        calResult = onlineCal.getCalResult('PI230-PBE_C',1,0)
     except:
         print 'No calibration result available.'
 
 
-def vwcpoint(t=24., l=[], cal=1, line='vlbifreq230', dopp='OFF', ptRun=False, dbpcorr=False):
+def vwcpoint(t=24., l=[], cal=1, line='vlbifreq_eht260', dopp='OFF', ptRun=False, dbpcorr=False):
     '''
 
     Continuum pointing cross scan in beam switching (wob) mode using pseudocontinumm.
@@ -165,7 +156,7 @@ def vwcpoint(t=24., l=[], cal=1, line='vlbifreq230', dopp='OFF', ptRun=False, db
                   l: Length of the arms of the cross
                      [] = use default value for current FE.
                 cal: 1 = calibrate before the pointing
-               line: 'vlbifreq230' = do pointing at vlbifreq230
+               line: 'vlbifreq_eht260' = do pointing at vlbifreq_eht260
                      '' = do pointing at current frequency
                      '*' = use standard line for current FE.
                dopp: 'ON' apply Doppler correction in the tuning frequency.

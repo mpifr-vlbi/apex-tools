@@ -1,0 +1,18 @@
+core3_init
+core3_mode pfb
+regwrite core3 0 0x25252525
+regwrite core3 1 0xBFBFBFBF
+regwrite core3 9 1
+reboot
+inputselect vsi1
+vsi_samplerate 128000000 2
+splitmode off
+vsi_bitmask 0xFFFFFFFF
+reset
+vdif_frame 2 16 8192 ct=off
+tengbcfg eth0 ip=192.168.1.17 gateway=192.168.1.1 nm=27
+tengbarp eth0 2 00:60:dd:42:f9:80
+destination 0 192.168.1.2:46224
+timesync
+start vdif
+sysstat
