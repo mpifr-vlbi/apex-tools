@@ -1,0 +1,73 @@
+
+
+=== Tone Synthesizer - Web Access ===
+
+
+Web GUI of NFLASH-only tone synthesizer:
+  http://10.0.2.173/display
+Command entry:
+  not supported
+
+Web GUI of synthesizer for multi-receiver tone injection through N3EAR 86G receiver:
+  http://10.0.6.209/display
+Command entry:
+  http://10.0.6.209/scpi
+
+  FREQ <mhz>
+  POW <nn.n> dBm
+  OUTPUT [on|off]
+
+Spectrometer view (XFFTS) on VNC:
+
+  NFLASH & SEPIA
+    vnc server:  ffts1:2
+    passwd:      ... ask staff...
+
+  New N3AR 86G receiver:
+    vnc server:  ffts3:2
+    passwd:      ... same as ffts1
+
+
+Harmonic mixer (HM) used for NFLASH and SEPIA
+has 3+10 dB (13 dB) worth of attenuators attached.
+
+This prevents inadvertently frying the HM when
+the synthesizer level gets accidentally set too high.
+
+Synthesizer power should be ramped up/down in
+small steps to be delicate on the HM!
+
+
+=== 86 GHz GMVA VLBI ===
+
+Synthesizer GUI at  http://10.0.6.209/display
+
+!todo!
+
+
+=== 260G NFLASH-only test ===
+
+Synthesizer GUI at  http://10.0.2.173/display
+
+The SCPI interface doesn't seem to work (some Windows web DLL tries to get installed, fails).
+
+Power      -20 dBm
+Frequency  17219 MHz
+RF On
+Power, ramp up with up/down arrows in slow e.g. 0.05 dBm steps to   +19.15 dBm
+
+Tone should be visible on   XFFTS screen #5   at ~3700 MHz
+
+Switch off tone:
+  Power ramp down with up/down arrows in e.g. 1 dBm steps down to -20 dBm
+  Finally, RF Off
+
+
+
+=== 86 + 260 GHz ===
+
+Synthesizer GUI at  http://10.0.6.209/display
+
+!todo!
+
+
