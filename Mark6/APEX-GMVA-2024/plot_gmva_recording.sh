@@ -3,7 +3,9 @@
 if [ "$1" == "" ]; then
 
 	echo
-	echo "plot_gmva_recording.sh <name of VDIF file without path>"
+	echo "Plots Mark6 recordings of DBBC3 DDC_U mode of 8-ch x 64 MHz"
+	echo
+	echo "Usage: plot_gmva_recording.sh <name of VDIF file without path>"
 	echo
 	exit
 fi
@@ -37,14 +39,15 @@ m5spec -nopol  /mark6-?_fuse/2/$vdifname VDIF_8192-2048-8-2 1280 10000 vpol.m5sp
 
 # generate gnuplot config file
 outfile=data.gnu
-echo "set term 'wxt'" > $outfile
-echo "set multiplot layout 2,1 title 'DBBC3 DDC (8x64GHz): $now'" >> $outfile
+echo "set term 'x11'" > $outfile
+echo "set multiplot layout 2,1 title 'DBBC3 DDC (8 x 64 MHz): $now'" >> $outfile
 echo "set style data line" >> $outfile
 echo "set grid x" >> $outfile
 echo "set xtics 3024,64" >> $outfile
-echo "set xlabel 'frequency [MHz]'" >> $outfile
-echo "set ylabel 'amplitude'">> $outfile
+echo "set xlabel 'Frequency [MHz]'" >> $outfile
+echo "set ylabel 'Amplitude'">> $outfile
 echo "unset key" >> $outfile
+echo "set logscale y" >> $outfile
 #echo "set title 'DBBC3 DDC: $now'" >> $outfile
 #echo "set term 'png'"  >> $outfile
 #echo "set out 'data.png'"  >> $outfile
@@ -71,4 +74,3 @@ echo "'vpol.m5spec' u (\$1+6*64+3024):8 " >> $outfile
 echo "unset multiplot" >> $outfile
 
 gnuplot --persist data.gnu
-
