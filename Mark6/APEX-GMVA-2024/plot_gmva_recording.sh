@@ -10,6 +10,15 @@ fi
 
 vdifname=$1
 
+cd /mark*_fuse/
+mkdir -p 1 2
+./unmount.eht
+./unmount.gmva
+
+./mount.gmva
+rm -f hpol.m5spec
+rm -f vpol.m5spec
+
 if ! [ -f /mark6-?_fuse/1/$vdifname ]; then
 	echo
 	echo "Error: specified file '$vdifname' not found under /mark6-?_fuse/1/"
@@ -23,14 +32,6 @@ if ! [ -f /mark6-?_fuse/2/$vdifname ]; then
 	exit
 fi
 
-cd /mark*_fuse/
-mkdir -p 1 2
-./unmount.eht
-./unmount.gmva
-
-./mount.gmva
-rm -f hpol.m5spec
-rm -f vpol.m5spec
 m5spec -nopol  /mark6-?_fuse/1/$vdifname VDIF_8192-2048-8-2 1280 10000 hpol.m5spec
 m5spec -nopol  /mark6-?_fuse/2/$vdifname VDIF_8192-2048-8-2 1280 10000 vpol.m5spec
 
