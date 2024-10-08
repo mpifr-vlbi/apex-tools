@@ -1,5 +1,4 @@
 core3_init
-vdif_station A4
 core3_mode pfb
 regwrite core3 0 0x10101010
 regwrite core3 1 0xBFBFBFBF
@@ -10,6 +9,7 @@ vsi_samplerate 128000000 2
 splitmode on
 vsi_bitmask 0x0000FFFF 0x0000FFFF 0x0000FFFF 0x0000FFFF
 reset
+vdif_station A4
 vdif_frame 2 8 8192 ct=off
 tengbcfg eth0 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:d0 nm=24
 tengbcfg eth1 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:d1 nm=24
