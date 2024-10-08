@@ -1,6 +1,7 @@
 core3h=2,reboot
 core3h=2,core3_init
 core3h=2,vsi_bitmask 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333
+core3h=2,reset
 core3h=2,vdif_station A2
 core3h=2,tengbcfg eth0 ip=172.16.4.254 gateway=172.16.4.1 mac=ba:dc:af:e4:be:b0 nm=24
 core3h=2,tengbcfg eth1 ip=172.16.3.254 gateway=172.16.3.1 mac=ba:dc:af:e4:be:b1 nm=24

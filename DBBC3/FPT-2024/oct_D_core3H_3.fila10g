@@ -1,6 +1,7 @@
 reboot
 core3_init
 vsi_bitmask 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333
+reset
 vdif_station A3
 tengbcfg eth0 ip=172.16.3.254 gateway=172.16.3.1 mac=ba:dc:af:e4:be:c0 nm=24
 tengbcfg eth1 ip=172.16.3.254 gateway=172.16.3.1 mac=ba:dc:af:e4:be:c1 nm=24

@@ -8,8 +8,8 @@ reboot
 inputselect vsi1-2-3-4
 vsi_samplerate 128000000 2
 splitmode on
-reset
 vsi_bitmask 0x0000FFFF 0x0000FFFF 0x0000FFFF 0x0000FFFF
+reset
 vdif_frame 2 8 8192 ct=off
 tengbcfg eth0 ip=172.16.2.254 gateway=172.16.2.1 mac=ba:dc:af:e4:be:a0 nm=24
 tengbcfg eth1 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:a1 nm=24
