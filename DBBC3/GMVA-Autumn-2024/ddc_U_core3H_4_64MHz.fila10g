@@ -15,11 +15,11 @@ tengbcfg eth0 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:d0 nm=24
 tengbcfg eth1 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:d1 nm=24
 tengbcfg eth2 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:d2 nm=24
 tengbcfg eth3 ip=172.16.3.254 gateway=172.16.3.1 mac=ba:dc:af:e4:be:d3 nm=24
-tengbarp eth0 8 00:60:dd:44:46:c1
+tengbarp eth0 9 00:60:dd:44:46:c1
 tengbarp eth1 16 00:60:dd:44:a6:da
 tengbarp eth2 9 00:60:dd:44:46:43
 tengbarp eth3 16 00:60:dd:44:a6:f4
-destination 0 172.16.5.8:46240
+destination 0 172.16.5.9:46240
 destination 1 172.16.5.16:46241
 destination 2 172.16.5.9:46242
 destination 3 172.16.3.16:46243
