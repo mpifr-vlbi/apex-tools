@@ -1,5 +1,4 @@
 core3_init
-vdif_station A4
 core3_mode pfb
 regwrite core3 0 0x10101010
 regwrite core3 1 0xBFBFBFBF
@@ -8,18 +7,19 @@ reboot
 inputselect vsi1-2-3-4
 vsi_samplerate 128000000 2
 splitmode on
-reset
 vsi_bitmask 0x0000FFFF 0x0000FFFF 0x0000FFFF 0x0000FFFF
+reset
+vdif_station A4
 vdif_frame 2 8 8192 ct=off
 tengbcfg eth0 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:d0 nm=24
 tengbcfg eth1 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:d1 nm=24
 tengbcfg eth2 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:d2 nm=24
 tengbcfg eth3 ip=172.16.3.254 gateway=172.16.3.1 mac=ba:dc:af:e4:be:d3 nm=24
-tengbarp eth0 8 00:60:dd:44:46:c1
+tengbarp eth0 9 00:60:dd:44:46:c1
 tengbarp eth1 16 00:60:dd:44:a6:da
 tengbarp eth2 9 00:60:dd:44:46:43
 tengbarp eth3 16 00:60:dd:44:a6:f4
-destination 0 172.16.5.8:46240
+destination 0 172.16.5.9:46240
 destination 1 172.16.5.16:46241
 destination 2 172.16.5.9:46242
 destination 3 172.16.3.16:46243

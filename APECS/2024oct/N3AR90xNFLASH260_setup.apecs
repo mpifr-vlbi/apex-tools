@@ -20,7 +20,7 @@ NFLASH230.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
 # best to choose a high freq receiver / 86 GHz last
 setup_nflash(
     fenames=['nflash230', 'n3ar90'],
-    linenames=['vlbifreq260', 'vlbifreq86'],
+    linenames=['vlbifreq260', 'vlbifreqfpt86'],
     sidebands=['', ''], mode='spec',
     sbwidths=[8, 8], numchans=[65536, 65536],
     cats='all', doppler='off')
