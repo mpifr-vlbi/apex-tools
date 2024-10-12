@@ -1,0 +1,58 @@
+#
+# APEX observing script for station Ax from file vexfiles/staging/f242a.apex.vex
+# File created on 2024.281.21:39:03 UT
+#
+# Columns: 1) Start time 2) Duration in seconds 3) APECS command 
+# Details on the columns:
+#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+#    2) estimated duration of the command in seconds
+#    3) APECS command and parameters to execute. If the command includes whitespace.
+#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+#
+# At time              Duration   Command
+@always                2          execfile('vlbi-N3AR90_commands.py')
+
+# ### Block for 1156+295 scan 1 'No0013' at 2024.284.15:00:00 in 200s ###########
+2024.284.14:56:40      20         source('1156+295',cats='user'); go(); track()
+2024.284.14:57:05      80         vlbi_tsys()
+2024.284.14:58:30      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2024.284.15:00:00      300        vlbi_scan(t_mins=5,targetSource='1156+295')
+#     scan ends at 2024.284.15:05:00
+
+# ### Block for 1156+295 scan 2 'No0014' at 2024.284.15:15:00 in 600s ###########
+# 
+# OPERATOR free 8 min 00 sec until VLBI calibrations to start at 2024.284.15:12:50
+# 
+2024.284.15:05:00      1          print('You have 8 min 00 sec until the next VLBI calibration scan at 2024.284.15:12:50.')
+2024.284.15:12:50      80         vlbi_tsys()
+2024.284.15:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2024.284.15:15:00      300        vlbi_scan(t_mins=5,targetSource='1156+295')
+#     scan ends at 2024.284.15:20:00
+
+# ### Block for 1156+295 scan 3 'No0015' at 2024.284.15:30:00 in 600s ###########
+# 
+# OPERATOR free 8 min 00 sec until VLBI calibrations to start at 2024.284.15:27:50
+# 
+2024.284.15:20:00      1          print('You have 8 min 00 sec until the next VLBI calibration scan at 2024.284.15:27:50.')
+2024.284.15:27:50      80         vlbi_tsys()
+2024.284.15:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2024.284.15:30:00      300        vlbi_scan(t_mins=5,targetSource='1156+295')
+#     scan ends at 2024.284.15:35:00
+
+# ### Block for 1156+295 scan 4 'No0016' at 2024.284.15:45:00 in 200s ###########
+2024.284.15:35:00      80         vlbi_tsys()
+2024.284.15:36:25      30         vlbi_reference_scan()
+#                      gap        max ~8 min 00 sec
+2024.284.15:45:00      300        vlbi_scan(t_mins=5,targetSource='1156+295')
+#     scan ends at 2024.284.15:50:00
+
+
+# Finished VLBI schedule
+2024.284.15:50:30      1          remote_control('off')
+################################################################################
+### end of schedule
+################################################################################

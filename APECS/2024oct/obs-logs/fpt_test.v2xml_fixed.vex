@@ -1,0 +1,400 @@
+VEX_rev = 1.5;
+*    pySCHED version: 1.26.4
+*    SCHED version:   Release 11.6; Feburary 2020
+*    VEX/SCHED:       1.5.5
+*    Other versions: Sched:  11.6 JPL-ephem: 1.01
+*    Catalog versions:
+*       Frequency: 2024May13-14:31:41
+*       Station:   2024Mar14-14:00:00
+*       Location:  2020Jan12
+*------------------------------------------------------------------------------
+$GLOBAL;
+     ref $EXPER = fpt_test;
+*                                                      +------------+
+*                         PI revision number:          |    3.0000  |
+*                                                      +------------+
+*    mode:       R2DBE
+*------------------------------------------------------------------------------
+$EXPER;
+*
+def fpt_test;
+     exper_name = fpt_test;
+     exper_description = "APEX-PV 86/260 GHz FPT test";
+     PI_name = Zhao/Roy;
+     PI_email = gyzhao@mpifr-bonn.mpg.de;
+*    address:   VLBI Division
+*               Max-Planck-Institute for Radio Astronomy
+*               Auf dem Huegel 69,
+*               D-53121 Bonn, Germany
+*    phone:     +49 228 525 473
+*    during obs:
+*    fax:       
+*    Setups are place holders for the actual experiment
+*
+*    year, doy: 2024, 287
+*    date     : Sun 13 Oct 2024
+*    MJD      : 60596
+     exper_nominal_start=2024y287d23h00m00s;
+     exper_nominal_stop=2024y288d02h57m00s;
+*
+     target_correlator = BONN;
+*
+*    integr_time    : 0.5 s
+*    number_channels: 128
+*    number_antenna : 2
+*    cross_polarize : Yes
+*    weight_func    : UNIFORM
+*    distrib_medium : NONE
+*    distrib_format : FITS
+*    source_pos_cat : STANDARD
+*    distribute_to  :
+*                     H. Rottmann
+*                     Max-Planck-Institute for Radio Astronomy
+*                     Auf dem Huegel 69
+*                     D-53121 Bonn, Germany
+*    FPT test from 86 to 260 GHz
+*
+enddef;
+*------------------------------------------------------------------------------
+$MODE;
+*
+def w1mm_512mhz;
+     ref $PROCEDURES = Procedure:Ax:Pv;
+     ref $IF = LO@93012MHzDPolNoTone:Ax:Pv;
+     ref $BBC = 4BBCs:Ax:Pv;
+     ref $PHASE_CAL_DETECT = NoDetect:Ax:Pv;
+     ref $FREQ = 86012MHz8x512MHz:Ax:Pv;
+     ref $TRACKS = VDIF5032.8Ch2bit1to1:Ax:Pv;
+     ref $ROLL = NoRoll:Ax:Pv;
+enddef;
+*------------------------------------------------------------------------------
+$IF;
+*
+def LO@93012MHzDPolNoTone;
+* w1mm_512mhz: Ax, Pv
+     if_def = &IF_A1 : A1 : R :  93012.00 MHz : L;
+     if_def = &IF_B4 : B4 : L :  93012.00 MHz : L;
+enddef;
+*------------------------------------------------------------------------------
+$BBC;
+*
+def 4BBCs;
+* w1mm_512mhz: Ax, Pv
+     BBC_assign = &BBC01 : 1 : &IF_A1;
+     BBC_assign = &BBC02 : 2 : &IF_A1;
+     BBC_assign = &BBC03 : 3 : &IF_B4;
+     BBC_assign = &BBC04 : 4 : &IF_B4;
+enddef;
+*------------------------------------------------------------------------------
+$PHASE_CAL_DETECT;
+*
+def NoDetect;
+* w1mm_512mhz: Ax, Pv
+     phase_cal_detect = &NoCal;
+enddef;
+*------------------------------------------------------------------------------
+$FREQ;
+*
+def 86012MHz8x512MHz;
+* w1mm_512mhz: Ax, Pv
+     chan_def =  :  86012 MHz : U :  512.00 MHz : &CH01 : &BBC01 : &NoCal; * RCP
+     chan_def =  :  86524 MHz : U :  512.00 MHz : &CH02 : &BBC01 : &NoCal; * RCP
+     chan_def =  : 258036 MHz : U :  512.00 MHz : &CH03 : &BBC02 : &NoCal; * RCP
+     chan_def =  : 258548 MHz : U :  512.00 MHz : &CH04 : &BBC02 : &NoCal; * RCP
+     chan_def =  :  86012 MHz : U :  512.00 MHz : &CH05 : &BBC03 : &NoCal; * LCP
+     chan_def =  :  86524 MHz : U :  512.00 MHz : &CH06 : &BBC03 : &NoCal; * LCP
+     chan_def =  : 258036 MHz : U :  512.00 MHz : &CH07 : &BBC04 : &NoCal; * LCP
+     chan_def =  : 258548 MHz : U :  512.00 MHz : &CH08 : &BBC04 : &NoCal; * LCP
+     sample_rate = 1024.000 Ms/sec;
+enddef;
+*------------------------------------------------------------------------------
+$TRACKS;
+*
+def VDIF5032.8Ch2bit1to1;
+* w1mm_512mhz: Ax, Pv
+     track_frame_format = VDIF5032;
+     fanout_def =  : &CH01 : sign : 1 : 1;
+     fanout_def =  : &CH01 :  mag : 1 : 1;
+     fanout_def =  : &CH02 : sign : 1 : 2;
+     fanout_def =  : &CH02 :  mag : 1 : 2;
+     fanout_def =  : &CH03 : sign : 1 : 3;
+     fanout_def =  : &CH03 :  mag : 1 : 3;
+     fanout_def =  : &CH04 : sign : 1 : 4;
+     fanout_def =  : &CH04 :  mag : 1 : 4;
+     fanout_def =  : &CH05 : sign : 1 : 5;
+     fanout_def =  : &CH05 :  mag : 1 : 5;
+     fanout_def =  : &CH06 : sign : 1 : 6;
+     fanout_def =  : &CH06 :  mag : 1 : 6;
+     fanout_def =  : &CH07 : sign : 1 : 7;
+     fanout_def =  : &CH07 :  mag : 1 : 7;
+     fanout_def =  : &CH08 : sign : 1 : 8;
+     fanout_def =  : &CH08 :  mag : 1 : 8;
+enddef;
+*------------------------------------------------------------------------------
+$ROLL;
+*
+def NoRoll;
+* w1mm_512mhz: Ax, Pv
+     roll = off;
+enddef;
+*------------------------------------------------------------------------------
+$STATION;
+*
+def Ax;
+     ref $ANTENNA = APEX;
+     ref $DAS = none+Mark5C;
+     ref $SITE = APEX;
+enddef;
+*
+def Pv;
+     ref $ANTENNA = PICOVEL;
+     ref $DAS = none+Mark5C;
+     ref $SITE = PICOVEL;
+enddef;
+*------------------------------------------------------------------------------
+$ANTENNA;
+*
+def APEX;
+     axis_type = az : el;
+     antenna_motion = az :   60.0 deg/min : 30 sec;
+     antenna_motion = el :   60.0 deg/min : 30 sec;
+     pointing_sector = &ccw : az : -270.0 deg : -90.0 deg : el : 3.0 deg : 89.0 deg;
+     pointing_sector =   &n : az :  -90.0 deg :  90.0 deg : el : 3.0 deg : 89.0 deg;
+     pointing_sector =  &cw : az :   90.0 deg : 270.0 deg : el : 3.0 deg : 89.0 deg;
+     axis_offset =        0.0 m;
+enddef;
+*
+def PICOVEL;
+     axis_type = az : el;
+     antenna_motion = az :   30.0 deg/min : 30 sec;
+     antenna_motion = el :   30.0 deg/min : 30 sec;
+     pointing_sector = &ccw : az :  60.0 deg : 100.0 deg : el : 9.0 deg : 88.0 deg;
+     pointing_sector =   &n : az : 100.0 deg : 420.0 deg : el : 9.0 deg : 88.0 deg;
+     pointing_sector =  &cw : az : 420.0 deg : 460.0 deg : el : 9.0 deg : 88.0 deg;
+     axis_offset =        0.0 m;
+enddef;
+*------------------------------------------------------------------------------
+$DAS;
+*
+def none+Mark5C;
+     record_transport_type = Mark5C;
+     electronics_rack_type = none;
+     number_drives = 2;
+     headstack = 1 :  : 0;
+     headstack = 2 :  : 1;
+     tape_motion = adaptive : 0 min : 0 min : 10 sec;
+enddef;
+*------------------------------------------------------------------------------
+$SITE;
+*
+def APEX;
+     site_type = fixed;
+     site_name = APEX;
+     site_ID = Ax;
+     site_position =  2225039.52970 m : -5441197.62920 m : -2479303.35970 m;
+     site_velocity =   0.000000 m/yr :   0.000000 m/yr :   0.000000 m/yr;
+     site_position_epoch = 1997y001d;
+     horizon_map_az = 1.0 deg : 39.0 : 40.0 : 68.0 : 78.0 : 86.0 : 94.5 : 103.0 : 360.0;
+     horizon_map_el = 3.0 deg : 15.0 : 15.0 : 9.600000381469727 : 3.0 : 3.0 : 5.199999809265137 : 3.0 : 3.0;
+enddef;
+*
+def PICOVEL;
+     site_type = fixed;
+     site_name = PICOVEL;
+     site_ID = Pv;
+     site_position =  5088967.74544 m :  -301681.18586 m :  3825012.20561 m;
+     site_velocity =   0.000000 m/yr :   0.000000 m/yr :   0.000000 m/yr;
+     site_position_epoch = 1997y001d;
+enddef;
+*------------------------------------------------------------------------------
+$PROCEDURES;
+*
+def Procedure;
+     procedure_name_prefix =  "01";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec: preob;
+     midob_cal  = on :  15 sec: midob;
+     postob_cal = on :   0 sec: postob;
+enddef;
+*------------------------------------------------------------------------------
+$SOURCE;
+def 0420-014;
+     source_name = 0420-014;
+     ra = 04h23m15.8007270s; dec = -01d20'33.065550"; ref_coord_frame = J2000;
+enddef;
+def BLLAC;
+     source_name = BLLAC;
+     ra = 22h02m43.2913710s; dec =  42d16'39.979870"; ref_coord_frame = J2000;
+enddef;
+def 2201+315;
+     source_name = 2201+315;
+     ra = 22h03m14.9757890s; dec =  31d45'38.269980"; ref_coord_frame = J2000;
+enddef;
+def 2201+171;
+     source_name = 2201+171;
+     ra = 22h03m26.8936820s; dec =  17d25'48.247640"; ref_coord_frame = J2000;
+enddef;
+def 2215+150;
+     source_name = 2215+150;
+     ra = 22h18m10.9139040s; dec =  15d20'35.717400"; ref_coord_frame = J2000;
+enddef;
+def CTA102;
+     source_name = CTA102;
+     ra = 22h32m36.4089050s; dec =  11d43'50.903940"; ref_coord_frame = J2000;
+enddef;
+def 3C454.3;
+     source_name = 3C454.3;
+     ra = 22h53m57.7479370s; dec =  16d08'53.560930"; ref_coord_frame = J2000;
+enddef;
+*------------------------------------------------------------------------------
+$SCHED;
+*
+scan No0001;
+     start=2024y287d23h00m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax: 0 sec: 330 sec:     0.000 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:     0.000 GB :  : &n : 1;
+endscan;
+*
+scan No0002;
+     start=2024y287d23h07m30s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax: 0 sec: 330 sec:   680.165 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:   680.165 GB :  : &n : 1;
+endscan;
+*
+scan No0003;
+     start=2024y287d23h15m00s; mode=w1mm_512mhz; source=2201+171;
+     station=Ax: 0 sec: 330 sec:  1360.331 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  1360.331 GB :  : &n : 1;
+endscan;
+*
+scan No0004;
+     start=2024y287d23h30m00s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax: 0 sec: 300 sec:  2040.496 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec:  2040.496 GB :  : &n : 1;
+endscan;
+*
+scan No0005;
+     start=2024y287d23h37m30s; mode=w1mm_512mhz; source=2201+315;
+     station=Ax: 0 sec: 300 sec:  2658.828 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec:  2658.828 GB :  : &n : 1;
+endscan;
+*
+scan No0006;
+     start=2024y287d23h45m00s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax: 0 sec: 300 sec:  3277.161 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec:  3277.161 GB :  : &n : 1;
+endscan;
+*
+scan No0007;
+     start=2024y288d00h00m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax: 0 sec: 330 sec:  3895.493 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  3895.493 GB :  : &n : 1;
+endscan;
+*
+scan No0008;
+     start=2024y288d00h07m30s; mode=w1mm_512mhz; source=2215+150;
+     station=Ax: 0 sec: 330 sec:  4575.658 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  4575.658 GB :  : &n : 1;
+endscan;
+*
+scan No0009;
+     start=2024y288d00h15m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax: 0 sec: 330 sec:  5255.824 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  5255.824 GB :  : &n : 1;
+endscan;
+*
+scan No0010;
+     start=2024y288d00h30m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax: 0 sec: 330 sec:  5935.989 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  5935.989 GB :  : &n : 1;
+endscan;
+*
+scan No0011;
+     start=2024y288d00h37m30s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax: 0 sec: 330 sec:  6616.155 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  6616.155 GB :  : &n : 1;
+endscan;
+*
+scan No0012;
+     start=2024y288d00h45m00s; mode=w1mm_512mhz; source=2215+150;
+     station=Ax: 0 sec: 330 sec:  7296.320 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  7296.320 GB :  : &n : 1;
+endscan;
+*
+scan No0013;
+     start=2024y288d01h00m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax: 0 sec: 330 sec:  7976.486 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  7976.486 GB :  : &n : 1;
+endscan;
+*
+scan No0014;
+     start=2024y288d01h07m30s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax: 0 sec: 330 sec:  8656.651 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  8656.651 GB :  : &n : 1;
+endscan;
+*
+scan No0015;
+     start=2024y288d01h15m00s; mode=w1mm_512mhz; source=2201+171;
+     station=Ax: 0 sec: 330 sec:  9336.816 GB :  : &n : 1;
+     station=Pv: 0 sec: 330 sec:  9336.816 GB :  : &n : 1;
+endscan;
+*
+scan No0016;
+     start=2024y288d01h30m00s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax: 0 sec: 300 sec: 10016.981 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec: 10016.981 GB :  : &n : 1;
+endscan;
+*
+scan No0017;
+     start=2024y288d01h37m30s; mode=w1mm_512mhz; source=2201+315;
+     station=Ax: 0 sec: 300 sec: 10635.313 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec: 10635.313 GB :  : &n : 1;
+endscan;
+*
+scan No0018;
+     start=2024y288d01h45m00s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax: 0 sec: 300 sec: 11253.646 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec: 11253.646 GB :  : &n : 1;
+endscan;
+*
+scan No0019;
+     start=2024y288d01h52m30s; mode=w1mm_512mhz; source=2201+315;
+     station=Ax: 0 sec: 300 sec: 11871.978 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec: 11871.978 GB :  : &n : 1;
+endscan;
+*
+scan No0020;
+     start=2024y288d02h00m00s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax: 0 sec: 300 sec: 12490.310 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec: 12490.310 GB :  : &n : 1;
+endscan;
+*
+scan No0021;
+     start=2024y288d02h07m30s; mode=w1mm_512mhz; source=2201+315;
+     station=Ax: 0 sec: 300 sec: 13108.642 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec: 13108.642 GB :  : &n : 1;
+endscan;
+*
+scan No0022;
+     start=2024y288d02h15m00s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax: 0 sec: 300 sec: 13726.974 GB :  : &n : 1;
+     station=Pv: 0 sec: 300 sec: 13726.974 GB :  : &n : 1;
+endscan;
+*
+scan No0023;
+     start=2024y288d02h30m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax: 0 sec: 420 sec: 14345.306 GB :  : &n : 1;
+     station=Pv: 0 sec: 420 sec: 14345.306 GB :  : &n : 1;
+endscan;
+*
+scan No0024;
+     start=2024y288d02h50m00s; mode=w1mm_512mhz; source=0420-014;
+     station=Ax: 0 sec: 420 sec: 15210.971 GB :  : &n : 1;
+     station=Pv: 0 sec: 420 sec: 15210.971 GB :  : &n : 1;
+endscan;

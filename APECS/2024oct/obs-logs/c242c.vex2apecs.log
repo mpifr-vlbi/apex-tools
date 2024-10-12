@@ -1,0 +1,49 @@
+NGC6251               EQ  2000   16:32:31.9698870   82:32:16.399870   LSR 0.0
+NGC1218               EQ  2000   03:08:26.2238001   04:06:39.300781   LSR 0.0
+UGC2783               EQ  2000   03:34:18.4150040   39:21:24.406370   LSR 0.0
+3C218                 EQ  2000   09:18:05.6684860  -12:05:43.806082   LSR 0.0
+NGC3894               EQ  2000   11:48:50.3581766   59:24:56.382242   LSR 0.0
+ICRF1521              EQ  2000   15:21:22.5435976   04:20:30.136786   LSR 0.0
+NGC6061               EQ  2000   16:06:16.0278112   18:14:59.819929   LSR 0.0
+3C84                  EQ  2000   03:19:48.1601120   41:30:42.103636   LSR 0.0
+0420-014              EQ  2000   04:23:15.8007222  -01:20:33.065607   LSR 0.0
+0723-008              EQ  2000   07:25:50.6399126  -00:54:56.543051   LSR 0.0
+0954+658              EQ  2000   09:58:47.2451133   65:33:54.818038   LSR 0.0
+1055+018              EQ  2000   10:58:29.6052081   01:33:58.823745   LSR 0.0
+1156+295              EQ  2000   11:59:31.8339138   29:14:43.826822   LSR 0.0
+1502+106              EQ  2000   15:04:24.9797839   10:29:39.198531   LSR 0.0
+3C345                 EQ  2000   16:42:58.8099704   39:48:36.993955   LSR 0.0
+BLLAC                 EQ  2000   22:02:43.2913695   42:16:39.979896   LSR 0.0
+P-IRC+10011           EQ  2000   01:06:25.9888000   12:35:52.729400   LSR 0.0
+P-IKTAU               EQ  2000   03:53:28.9367000   11:24:21.345400   LSR 0.0
+P-TXCAM               EQ  2000   05:00:50.3900000   56:10:52.600000   LSR 0.0
+P-ORINEW2             EQ  2000   05:35:14.5000000  -05:22:29.600000   LSR 0.0
+P-UORI                EQ  2000   05:55:49.1900000   20:10:30.720000   LSR 0.0
+P-BXCAM               EQ  2000   05:46:44.2900000   69:58:24.200000   LSR 0.0
+P-RLMI                EQ  2000   09:45:34.2700000   34:30:42.840000   LSR 0.0
+P-RLEO                EQ  2000   09:47:33.5000000   11:25:43.680000   LSR 0.0
+P-SCRB                EQ  2000   15:21:24.1200000   31:22:02.640000   LSR 0.0
+P-UXCYG               EQ  2000   20:55:05.5300000   30:24:52.100000   LSR 0.0
+DR21                  EQ  2000   20:39:01.0200000   42:22:48.800000   LSR 0.0
+Warning: pre-scan cals for No0137 (UGC2783) must omit reference scan, time margin is only 10 sec, need >30 sec
+Warning: pre-scan cals for No0144 (NGC1218) must omit reference scan, time margin is only 0 sec, need >30 sec
+Warning: pre-scan cals for No0158 (NGC1218) must omit reference scan, time margin is only 0 sec, need >30 sec
+Warning: pre-scan cals for No0234 (0420-014) must omit reference scan, time margin is only 30 sec, need >30 sec
+Warning: pre-scan cals for No0235 (NGC1218) must omit reference scan, time margin is only 23 sec, need >30 sec
+Warning: pre-scan cals for No0239 (NGC1218) must omit reference scan, time margin is only 23 sec, need >30 sec
+Warning: pre-scan cals for No0246 (NGC1218) must omit reference scan, time margin is only 23 sec, need >30 sec
+Warning: pre-scan cals for No0250 (NGC1218) must omit reference scan, time margin is only 23 sec, need >30 sec
+Warning: pre-scan cals for No0257 (NGC1218) must omit reference scan, time margin is only 23 sec, need >30 sec
+Warning: pre-scan cals for No0264 (NGC1218) must omit reference scan, time margin is only 23 sec, need >30 sec
+Warning: pre-scan cals for No0268 (NGC1218) must omit reference scan, time margin is only 23 sec, need >30 sec
+Warning: pre-scan cals for No0305 (1156+295) must omit reference scan, time margin is only 30 sec, need >30 sec
+Warning: pre-scan cals for No0319 (3C218) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0328 (3C218) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0336 (3C218) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0346 (3C218) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0352 (ICRF1521) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0366 (ICRF1521) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0376 (ICRF1521) must omit reference scan, time margin is only 5 sec, need >30 sec
+
+Done. Created APECS observing file c242c.apecs.obs with 56 scans.
+

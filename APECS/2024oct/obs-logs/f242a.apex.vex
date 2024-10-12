@@ -1,0 +1,670 @@
+VEX_rev = 1.5;
+*    SCHED vers: Release 11.8; April 2023
+*    VEX/SCHED:  1.5.88
+*    Other versions: Sched:  11.8  Plot: 1.06  JPL-ephem: 1.01
+*------------------------------------------------------------------------------
+$GLOBAL;
+     ref $EXPER = f242a;
+*                                                      +------------+
+*                         PI revision number:          |    2.0000  |
+*                                                      +------------+
+*    mode:       4096-8-2
+*------------------------------------------------------------------------------
+$EXPER;
+*
+def f242a;
+     exper_name = f242a;
+     exper_description = "GMVA Oct. 2024";
+     PI_name = "Global mm-VLBI Array (GMVA)";
+     PI_email = tkrichbaum@mpifr-bonn.mpg.de;
+*    address:   Max-Planck-Institut fuer Radioastronomie
+*               Auf dem Huegel 69
+*               53121 Bonn
+*               Germany
+*    phone:     0049-228-525-295
+*    during obs:0049-2257-301-155
+*    fax:       0049-2257-301-106
+*    notes:     using Sched 11.8
+*
+*    year, doy: 2024, 284
+*    date     : Thu 10 Oct 2024
+*    MJD      : 60593
+     exper_nominal_start=2024y284d12h00m00s;
+     exper_nominal_stop=2024y284d15h50m00s;
+*
+     target_correlator = BONN;
+*
+*    integr_time    :     0.500 s
+*    number_channels:   256
+*    number_antenna : 20
+*    cross_polarize : Yes
+*    weight_func    : UNIFORM
+*    distrib_medium : FTP
+*    distrib_format : FITS
+*    source_pos_cat : STANDARD
+*    distribute_to  : 
+*                     H. Rottmann
+*                     Max-Planck-Institut fuer Radioastronomie
+*                     Auf dem Huegel 69
+*                     D-53121 Bonn, Germany
+*    corr_notes : 
+*               dual polarisation setup using 64/128 MHz channels
+*               VLBA at 86 GHz and 43 GHz
+*               please use latest station coordinates
+*
+enddef;
+*------------------------------------------------------------------------------
+$MODE;
+*
+def 86ghz;
+     ref $PROCEDURES = Mode_01;
+     ref $FREQ = 86076.00MHz16x64MHz:Ef:On:Pv;
+     ref $FREQ = 86076.00MHz16x64MHz#02:Ys:Mh;
+     ref $FREQ = 86012.00MHz2x512MHz:Nn;
+     ref $IF = LO@85500MHzDPolNoTone:Ef:On:Nn;
+     ref $IF = LO@85500MHzDPolNoTone#03:Ys;
+     ref $IF = LO@85500MHzDPolNoTone#02:Pv;
+     ref $IF = LO@85500MHzDPolNoTone#04:Mh;
+     ref $BBC = 16BBCs:Ef:On;
+     ref $BBC = 16BBCs#03:Ys;
+     ref $BBC = 16BBCs#02:Pv;
+     ref $BBC = 2BBCs:Nn;
+     ref $BBC = 16BBCs#04:Mh;
+     ref $TRACKS = VDIF.16Ch2bit1to1:Ef:On:Ys:Pv:Mh;
+     ref $TRACKS = VDIF.2Ch2bit1to1:Nn;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ef:On:Ys:Pv:Nn:Mh;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Ef:On:Ys:Pv:Mh;
+     ref $PHASE_CAL_DETECT = NoDetect#02:Nn;
+enddef;
+*------------------------------------------------------------------------------
+$STATION;
+*
+def Ef;
+     ref $SITE = EFLSBERG;
+     ref $ANTENNA = EFLSBERG;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def On;
+     ref $SITE = ONSALA60;
+     ref $ANTENNA = ONSALA60;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def Ys;
+     ref $SITE = YEBES40M;
+     ref $ANTENNA = YEBES40M;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def Pv;
+     ref $SITE = PICOVEL;
+     ref $ANTENNA = PICOVEL;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def Nn;
+     ref $SITE = NOEMA;
+     ref $ANTENNA = NOEMA;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def Mh;
+     ref $SITE = METSAHOV;
+     ref $ANTENNA = METSAHOV;
+     ref $DAS = 2NONE<;
+enddef;
+*------------------------------------------------------------------------------
+$PROCEDURES;
+*
+def Mode_01;
+     procedure_name_prefix =  "01";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*------------------------------------------------------------------------------
+$SITE;
+*
+def EFLSBERG;
+     site_type = fixed;
+     site_name = EFLSBERG;
+     site_ID = Ef;
+*    elev=  416.71 long=-006:53:01. lat= 50:31:29.4
+     site_position = 4033947.15250 m:  486990.89610 m: 4900431.06040 m;
+     site_velocity = -0.014310   m/yr:  0.016750   m/yr:  0.010770  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+     horizon_map_az =  0.0 deg: 10.0: 20.0: 30.0: 40.0: 50.0: 60.0: 70.0: 80.0:
+                                90.0:100.0:110.0:120.0:130.0:140.0:150.0:160.0:
+                               170.0:180.0:190.0:200.0:210.0:220.0:230.0:240.0:
+                               250.0:260.0:270.0:280.0:290.0:300.0:310.0:320.0:
+                               330.0:340.0:350.0:360.0;
+     horizon_map_el = 11.0 deg: 13.0: 16.0: 19.0: 21.0: 21.0: 21.0: 20.0: 18.0:
+                                15.0: 16.0: 16.0: 15.0: 15.0: 13.0:  8.0:  7.0:
+                                 7.0:  7.0:  7.0:  9.0: 11.0: 11.0: 11.0: 10.0:
+                                 9.0:  8.0: 12.0: 14.0: 14.0: 14.0: 14.0: 13.0:
+                                 8.0:  7.0:  8.0: 11.0;
+enddef;
+*
+def ONSALA60;
+     site_type = fixed;
+     site_name = ONSALA60;
+     site_ID = On;
+*    elev=   59.34 long=-011:55:34. lat= 57:23:45.0
+     site_position = 3370605.70350 m:  711917.81460 m: 5349830.98520 m;
+     site_velocity = -0.014230   m/yr:  0.014510   m/yr:  0.010890  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+enddef;
+*
+def YEBES40M;
+     site_type = fixed;
+     site_name = YEBES40M;
+     site_ID = Ys;
+*    elev=  988.96 long= 003:05:12. lat= 40:31:28.8
+     site_position = 4848761.75790 m: -261484.05700 m: 4123085.13430 m;
+     site_velocity = -0.008150   m/yr:  0.019290   m/yr:  0.014080  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+enddef;
+*
+def PICOVEL;
+     site_type = fixed;
+     site_name = PICOVEL;
+     site_ID = Pv;
+*    elev= 2919.41 long= 003:23:33. lat= 37:03:58.1
+     site_position = 5088967.74544 m: -301681.18586 m: 3825012.20561 m;
+     site_velocity = -0.008200   m/yr:  0.019790   m/yr:  0.012480  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2013y001d;
+     site_position_epoch =   56293;
+enddef;
+*
+def NOEMA;
+     site_type = fixed;
+     site_name = NOEMA;
+     site_ID = Nn;
+*    elev= 2617.59 long=-005:54:24. lat= 44:38:01.2
+     site_position = 4524000.43000 m:  468042.14000 m: 4460309.76000 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 1858y322d;
+     site_position_epoch =       0;
+enddef;
+*
+def METSAHOV;
+     site_type = fixed;
+     site_name = METSAHOV;
+     site_ID = Mh;
+*    elev=   80.01 long=-024:23:35. lat= 60:13:04.1
+     site_position = 2892584.73390 m: 1311715.69180 m: 5512640.23350 m;
+     site_velocity = -0.016620   m/yr:  0.014360   m/yr:  0.010050  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+enddef;
+*------------------------------------------------------------------------------
+$ANTENNA;
+*
+def EFLSBERG;
+     axis_type = az : el;
+     antenna_motion = el :  15.0 deg/min : 20 sec;  *    0.018 deg/sec/sec
+     antenna_motion = az :  25.0 deg/min : 20 sec;  *    0.018 deg/sec/sec
+     axis_offset =    0.01310 m;
+enddef;
+*
+def ONSALA60;
+     axis_type = az : el;
+     antenna_motion = el :  57.0 deg/min : 20 sec;  *    0.400 deg/sec/sec
+     antenna_motion = az : 180.0 deg/min : 20 sec;  *    0.300 deg/sec/sec
+     axis_offset =   -0.00220 m;
+enddef;
+*
+def YEBES40M;
+     axis_type = az : el;
+     antenna_motion = el :  60.0 deg/min : 20 sec;  * 1000.000 deg/sec/sec
+     antenna_motion = az :  60.0 deg/min : 20 sec;  * 1000.000 deg/sec/sec
+     axis_offset =    1.99600 m;
+enddef;
+*
+def PICOVEL;
+     axis_type = az : el;
+     antenna_motion = el :  30.0 deg/min : 20 sec;  * 1000.000 deg/sec/sec
+     antenna_motion = az :  30.0 deg/min : 20 sec;  * 1000.000 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*
+def NOEMA;
+     axis_type = az : el;
+     antenna_motion = el :  30.0 deg/min : 20 sec;  * 1000.000 deg/sec/sec
+     antenna_motion = az :  60.0 deg/min : 20 sec;  * 1000.000 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*
+def METSAHOV;
+     axis_type = az : el;
+     antenna_motion = el :  60.0 deg/min : 20 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  60.0 deg/min : 20 sec;  *    0.250 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*------------------------------------------------------------------------------
+$DAS;
+*
+def 2NONE<;
+     record_transport_type = Mark5C;
+     electronics_rack_type = none;
+     number_drives = 2;
+     headstack = 1 :            : 0 ;
+     headstack = 2 :            : 1 ;
+     tape_motion = adaptive : 0 min: 0 min: 10 sec;
+enddef;
+*------------------------------------------------------------------------------
+$SOURCE;
+*
+def 1156+295;
+     source_name = 1156+295;
+*    this source had calibrator code: V
+*    alternate source name: J1159+2914
+*    alternate source name: J115931.8+29
+*    ICRF3 X/S astro solution,  94219 observations.
+     ra = 11h59m31.8339138s; dec =  29d14'43.826822"; ref_coord_frame = J2000;
+*    ra = 11h56m57.7862132s; dec =  29d31'25.738724"; ref_coord_frame = B1950;
+*    ra = 12h00m46.8281268s; dec =  29d06'31.942422"; ref_coord_frame = Date;
+enddef;
+*
+def 3C345;
+     source_name = 3C345;
+*    this source had calibrator code: V
+*    alternate source name: J1642+3948
+*    alternate source name: 1641+399
+*    alternate source name: J164258.8+39
+*    ICRF3 X/S astro solution,  49912 observations.
+     ra = 16h42m58.8099704s; dec =  39d48'36.993955"; ref_coord_frame = J2000;
+*    ra = 16h41m17.6062330s; dec =  39d54'10.814893"; ref_coord_frame = B1950;
+*    ra = 16h43m47.9737579s; dec =  39d46'00.921818"; ref_coord_frame = Date;
+enddef;
+*------------------------------------------------------------------------------
+$FREQ;
+*
+def 86076.00MHz16x64MHz;
+* mode =  1    stations =Ef:On:Pv
+     sample_rate =   128.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 86076.00 MHz : U :  64.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 86204.00 MHz : U :  64.00 MHz : &CH02 : &BBC02 : &NoCal; *Rcp
+     chan_def = : 86332.00 MHz : U :  64.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 86460.00 MHz : U :  64.00 MHz : &CH04 : &BBC04 : &NoCal; *Rcp
+     chan_def = : 86076.00 MHz : U :  64.00 MHz : &CH05 : &BBC05 : &NoCal; *Lcp
+     chan_def = : 86204.00 MHz : U :  64.00 MHz : &CH06 : &BBC06 : &NoCal; *Lcp
+     chan_def = : 86332.00 MHz : U :  64.00 MHz : &CH07 : &BBC07 : &NoCal; *Lcp
+     chan_def = : 86460.00 MHz : U :  64.00 MHz : &CH08 : &BBC08 : &NoCal; *Lcp
+     chan_def = : 86076.00 MHz : L :  64.00 MHz : &CH09 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 86204.00 MHz : L :  64.00 MHz : &CH10 : &BBC02 : &NoCal; *Rcp
+     chan_def = : 86332.00 MHz : L :  64.00 MHz : &CH11 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 86460.00 MHz : L :  64.00 MHz : &CH12 : &BBC04 : &NoCal; *Rcp
+     chan_def = : 86076.00 MHz : L :  64.00 MHz : &CH13 : &BBC05 : &NoCal; *Lcp
+     chan_def = : 86204.00 MHz : L :  64.00 MHz : &CH14 : &BBC06 : &NoCal; *Lcp
+     chan_def = : 86332.00 MHz : L :  64.00 MHz : &CH15 : &BBC07 : &NoCal; *Lcp
+     chan_def = : 86460.00 MHz : L :  64.00 MHz : &CH16 : &BBC08 : &NoCal; *Lcp
+enddef;
+*
+def 86076.00MHz16x64MHz#02;
+* mode =  1    stations =Ys:Mh
+     sample_rate =   128.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 86076.00 MHz : U :  64.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 86204.00 MHz : U :  64.00 MHz : &CH02 : &BBC02 : &NoCal; *Rcp
+     chan_def = : 86332.00 MHz : U :  64.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 86460.00 MHz : U :  64.00 MHz : &CH04 : &BBC04 : &NoCal; *Rcp
+     chan_def = : 86076.00 MHz : U :  64.00 MHz : &CH05 : &BBC09 : &NoCal; *Lcp
+     chan_def = : 86204.00 MHz : U :  64.00 MHz : &CH06 : &BBC10 : &NoCal; *Lcp
+     chan_def = : 86332.00 MHz : U :  64.00 MHz : &CH07 : &BBC11 : &NoCal; *Lcp
+     chan_def = : 86460.00 MHz : U :  64.00 MHz : &CH08 : &BBC12 : &NoCal; *Lcp
+     chan_def = : 86076.00 MHz : L :  64.00 MHz : &CH09 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 86204.00 MHz : L :  64.00 MHz : &CH10 : &BBC02 : &NoCal; *Rcp
+     chan_def = : 86332.00 MHz : L :  64.00 MHz : &CH11 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 86460.00 MHz : L :  64.00 MHz : &CH12 : &BBC04 : &NoCal; *Rcp
+     chan_def = : 86076.00 MHz : L :  64.00 MHz : &CH13 : &BBC09 : &NoCal; *Lcp
+     chan_def = : 86204.00 MHz : L :  64.00 MHz : &CH14 : &BBC10 : &NoCal; *Lcp
+     chan_def = : 86332.00 MHz : L :  64.00 MHz : &CH15 : &BBC11 : &NoCal; *Lcp
+     chan_def = : 86460.00 MHz : L :  64.00 MHz : &CH16 : &BBC12 : &NoCal; *Lcp
+enddef;
+*
+def 86012.00MHz2x512MHz;
+* mode =  1    stations =Nn
+     sample_rate =  1024.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 86012.00 MHz : U : 512.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 86012.00 MHz : U : 512.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+enddef;
+*------------------------------------------------------------------------------
+$IF;
+*
+def LO@85500MHzDPolNoTone;
+* mode =  1    stations =Ef:On:Nn
+     if_def = &IF_A1 : A1 : R : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+     if_def = &IF_B3 : B3 : L : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+enddef;
+*
+def LO@85500MHzDPolNoTone#02;
+* mode =  1    stations =Pv
+     if_def = &IF_A1 : A1 : R : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+     if_def = &IF_B4 : B4 : L : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+enddef;
+*
+def LO@85500MHzDPolNoTone#03;
+* mode =  1    stations =Ys
+     if_def = &IF_A1 : A1 : R : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+     if_def = &IF_C1 : C1 : L : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+enddef;
+*
+def LO@85500MHzDPolNoTone#04;
+* mode =  1    stations =Mh
+     if_def = &IF_A1 : A1 : R : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+     if_def = &IF_B1 : B1 : L : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+enddef;
+*------------------------------------------------------------------------------
+$BBC;
+*
+def 16BBCs;
+* mode =  1    stations =Ef:On
+     BBC_assign = &BBC01 :  1 : &IF_A1;
+     BBC_assign = &BBC02 :  2 : &IF_A1;
+     BBC_assign = &BBC03 :  3 : &IF_A1;
+     BBC_assign = &BBC04 :  4 : &IF_A1;
+     BBC_assign = &BBC05 :  5 : &IF_B3;
+     BBC_assign = &BBC06 :  6 : &IF_B3;
+     BBC_assign = &BBC07 :  7 : &IF_B3;
+     BBC_assign = &BBC08 :  8 : &IF_B3;
+enddef;
+*
+def 16BBCs#02;
+* mode =  1    stations =Pv
+     BBC_assign = &BBC01 :  1 : &IF_A1;
+     BBC_assign = &BBC02 :  2 : &IF_A1;
+     BBC_assign = &BBC03 :  3 : &IF_A1;
+     BBC_assign = &BBC04 :  4 : &IF_A1;
+     BBC_assign = &BBC05 :  5 : &IF_B4;
+     BBC_assign = &BBC06 :  6 : &IF_B4;
+     BBC_assign = &BBC07 :  7 : &IF_B4;
+     BBC_assign = &BBC08 :  8 : &IF_B4;
+enddef;
+*
+def 16BBCs#03;
+* mode =  1    stations =Ys
+     BBC_assign = &BBC01 :  1 : &IF_A1;
+     BBC_assign = &BBC02 :  2 : &IF_A1;
+     BBC_assign = &BBC03 :  3 : &IF_A1;
+     BBC_assign = &BBC04 :  4 : &IF_A1;
+     BBC_assign = &BBC09 :  9 : &IF_C1;
+     BBC_assign = &BBC10 : 10 : &IF_C1;
+     BBC_assign = &BBC11 : 11 : &IF_C1;
+     BBC_assign = &BBC12 : 12 : &IF_C1;
+enddef;
+*
+def 16BBCs#04;
+* mode =  1    stations =Mh
+     BBC_assign = &BBC01 :  1 : &IF_A1;
+     BBC_assign = &BBC02 :  2 : &IF_A1;
+     BBC_assign = &BBC03 :  3 : &IF_A1;
+     BBC_assign = &BBC04 :  4 : &IF_A1;
+     BBC_assign = &BBC09 :  9 : &IF_B1;
+     BBC_assign = &BBC10 : 10 : &IF_B1;
+     BBC_assign = &BBC11 : 11 : &IF_B1;
+     BBC_assign = &BBC12 : 12 : &IF_B1;
+enddef;
+*
+def 2BBCs;
+* mode =  1    stations =Nn
+     BBC_assign = &BBC01 :  1 : &IF_A1;
+     BBC_assign = &BBC02 :  2 : &IF_B3;
+enddef;
+*------------------------------------------------------------------------------
+$PHASE_CAL_DETECT;
+*
+def NoDetect;
+* mode =  1    stations =Ef:On:Ys:Pv:Mh
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#02;
+* mode =  1    stations =Nn
+     phase_cal_detect = &NoCal;
+enddef;
+*------------------------------------------------------------------------------
+$TRACKS;
+*
+def VDIF.16Ch2bit1to1;
+* mode =  1    stations =Ef:On:Ys:Pv:Mh
+*    format = VDIF, and fan-out = 1
+*    mode requires 128.00Mb/s/tr; stations using disks
+     track_frame_format = VDIF5032;
+     fanout_def =   : &CH01 : sign : 1:  1;
+     fanout_def =   : &CH01 :  mag : 1:  1;
+     fanout_def =   : &CH02 : sign : 1:  2;
+     fanout_def =   : &CH02 :  mag : 1:  2;
+     fanout_def =   : &CH03 : sign : 1:  3;
+     fanout_def =   : &CH03 :  mag : 1:  3;
+     fanout_def =   : &CH04 : sign : 1:  4;
+     fanout_def =   : &CH04 :  mag : 1:  4;
+     fanout_def =   : &CH05 : sign : 1:  5;
+     fanout_def =   : &CH05 :  mag : 1:  5;
+     fanout_def =   : &CH06 : sign : 1:  6;
+     fanout_def =   : &CH06 :  mag : 1:  6;
+     fanout_def =   : &CH07 : sign : 1:  7;
+     fanout_def =   : &CH07 :  mag : 1:  7;
+     fanout_def =   : &CH08 : sign : 1:  8;
+     fanout_def =   : &CH08 :  mag : 1:  8;
+     fanout_def =   : &CH09 : sign : 1:  9;
+     fanout_def =   : &CH09 :  mag : 1:  9;
+     fanout_def =   : &CH10 : sign : 1: 10;
+     fanout_def =   : &CH10 :  mag : 1: 10;
+     fanout_def =   : &CH11 : sign : 1: 11;
+     fanout_def =   : &CH11 :  mag : 1: 11;
+     fanout_def =   : &CH12 : sign : 1: 12;
+     fanout_def =   : &CH12 :  mag : 1: 12;
+     fanout_def =   : &CH13 : sign : 1: 13;
+     fanout_def =   : &CH13 :  mag : 1: 13;
+     fanout_def =   : &CH14 : sign : 1: 14;
+     fanout_def =   : &CH14 :  mag : 1: 14;
+     fanout_def =   : &CH15 : sign : 1: 15;
+     fanout_def =   : &CH15 :  mag : 1: 15;
+     fanout_def =   : &CH16 : sign : 1: 16;
+     fanout_def =   : &CH16 :  mag : 1: 16;
+enddef;
+*
+def VDIF.2Ch2bit1to1;
+* mode =  1    stations =Nn
+*    format = VDIF, and fan-out = 1
+*    mode requires ******Mb/s/tr; stations using disks
+     track_frame_format = VDIF5032;
+     fanout_def =   : &CH01 : sign : 1:  1;
+     fanout_def =   : &CH01 :  mag : 1:  1;
+     fanout_def =   : &CH02 : sign : 1:  2;
+     fanout_def =   : &CH02 :  mag : 1:  2;
+enddef;
+*------------------------------------------------------------------------------
+$HEAD_POS;
+def DiskVoid;
+* mode =  1    stations =Ef:On:Ys:Pv:Nn:Mh
+*     Head positions irrelevant for Disk: empty def
+enddef;
+*------------------------------------------------------------------------------
+$PASS_ORDER;
+*
+def DiskVoid;
+* mode =  1    stations =Ef:On:Ys:Pv:Nn:Mh
+*     Pass orders irrelevant for Disk: empty def
+enddef;
+*------------------------------------------------------------------------------
+$ROLL;
+*
+def NoRoll;
+* mode =  1    stations =Ef:On:Ys:Pv:Nn:Mh
+*    barrel-roll set to 'roll_off', so reverse-roll by  0 (1 head)
+     roll = off;
+enddef;
+*------------------------------------------------------------------------------
+$SCHED;
+* schedule section for experiment f242a   
+* GMVA Oct. 2024                                                          
+scan No0001;
+     start=2024y284d12h00m00s; mode=86ghz; source=3C345;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Ef:    0 sec:  300 sec:    0.000 GB:   :       : 1;
+     station=On:    0 sec:  300 sec:    0.000 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec:    0.000 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec:    0.000 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec:    0.000 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec:    0.000 GB:   :       : 1;
+endscan;
+scan No0002;
+     start=2024y284d12h15m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec:  154.583 GB:   :       : 1;
+     station=On:    0 sec:  300 sec:  154.583 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec:  154.583 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec:  154.583 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec:  154.583 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec:  154.583 GB:   :       : 1;
+endscan;
+scan No0003;
+     start=2024y284d12h30m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec:  309.166 GB:   :       : 1;
+     station=On:    0 sec:  300 sec:  309.166 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec:  309.166 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec:  309.166 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec:  309.166 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec:  309.166 GB:   :       : 1;
+endscan;
+scan No0004;
+     start=2024y284d12h45m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec:  463.749 GB:   :       : 1;
+     station=On:    0 sec:  300 sec:  463.749 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec:  463.749 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec:  463.749 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec:  463.749 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec:  463.749 GB:   :       : 1;
+endscan;
+scan No0005;
+     start=2024y284d13h00m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec:  618.332 GB:   :       : 1;
+     station=On:    0 sec:  300 sec:  618.332 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec:  618.332 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec:  618.332 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec:  618.332 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec:  618.332 GB:   :       : 1;
+endscan;
+scan No0006;
+     start=2024y284d13h15m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec:  772.915 GB:   :       : 1;
+     station=On:    0 sec:  300 sec:  772.915 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec:  772.915 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec:  772.915 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec:  772.915 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec:  772.915 GB:   :       : 1;
+endscan;
+scan No0007;
+     start=2024y284d13h30m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec:  927.498 GB:   :       : 1;
+     station=On:    0 sec:  300 sec:  927.498 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec:  927.498 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec:  927.498 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec:  927.498 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec:  927.498 GB:   :       : 1;
+endscan;
+scan No0008;
+     start=2024y284d13h45m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec: 1082.081 GB:   :       : 1;
+     station=On:    0 sec:  300 sec: 1082.081 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec: 1082.081 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec: 1082.081 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec: 1082.081 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec: 1082.081 GB:   :       : 1;
+endscan;
+scan No0009;
+     start=2024y284d14h00m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec: 1236.664 GB:   :       : 1;
+     station=On:    0 sec:  300 sec: 1236.664 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec: 1236.664 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec: 1236.664 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec: 1236.664 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec: 1236.664 GB:   :       : 1;
+endscan;
+scan No0010;
+     start=2024y284d14h15m00s; mode=86ghz; source=3C345;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Ef:    0 sec:  300 sec: 1391.247 GB:   :       : 1;
+     station=On:    0 sec:  300 sec: 1391.247 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec: 1391.247 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec: 1391.247 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec: 1391.247 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec: 1391.247 GB:   :       : 1;
+endscan;
+scan No0011;
+     start=2024y284d14h30m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec: 1545.830 GB:   :       : 1;
+     station=On:    0 sec:  300 sec: 1545.830 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec: 1545.830 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec: 1545.830 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec: 1545.830 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec: 1545.830 GB:   :       : 1;
+endscan;
+scan No0012;
+     start=2024y284d14h45m00s; mode=86ghz; source=3C345;
+     station=Ef:    0 sec:  300 sec: 1700.413 GB:   :       : 1;
+     station=On:    0 sec:  300 sec: 1700.413 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec: 1700.413 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec: 1700.413 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec: 1700.413 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec: 1700.413 GB:   :       : 1;
+endscan;
+scan No0013;
+     start=2024y284d15h00m00s; mode=86ghz; source=1156+295;
+     station=Ef:    0 sec:  300 sec: 1854.996 GB:   :       : 1;
+     station=On:    0 sec:  300 sec: 1854.996 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec: 1854.996 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec: 1854.996 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec: 1854.996 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec: 1854.996 GB:   :       : 1;
+     station=Ax:    0 sec:  300 sec:        0 GB:   :       : 1;
+endscan;
+scan No0014;
+     start=2024y284d15h15m00s; mode=86ghz; source=1156+295;
+     station=Ef:    0 sec:  300 sec: 2009.579 GB:   :       : 1;
+     station=On:    0 sec:  300 sec: 2009.579 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec: 2009.579 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec: 2009.579 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec: 2009.579 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec: 2009.579 GB:   :       : 1;
+     station=Ax:    0 sec:  300 sec:        0 GB:   :       : 1;
+endscan;
+scan No0015;
+     start=2024y284d15h30m00s; mode=86ghz; source=1156+295;
+     station=Ef:    0 sec:  300 sec: 2164.162 GB:   :       : 1;
+     station=On:    0 sec:  300 sec: 2164.162 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec: 2164.162 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec: 2164.162 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec: 2164.162 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec: 2164.162 GB:   :       : 1;
+     station=Ax:    0 sec:  300 sec:        0 GB:   :       : 1;
+endscan;
+scan No0016;
+     start=2024y284d15h45m00s; mode=86ghz; source=1156+295;
+     station=Ef:    0 sec:  300 sec: 2318.745 GB:   :       : 1;
+     station=On:    0 sec:  300 sec: 2318.745 GB:   :       : 1;
+     station=Ys:    0 sec:  300 sec: 2318.745 GB:   :       : 1;
+     station=Pv:    0 sec:  300 sec: 2318.745 GB:   :       : 1;
+     station=Nn:    0 sec:  300 sec: 2318.745 GB:   :       : 1;
+     station=Mh:    0 sec:  300 sec: 2318.745 GB:   :       : 1;
+     station=Ax:    0 sec:  300 sec:        0 GB:   :       : 1;
+endscan;
