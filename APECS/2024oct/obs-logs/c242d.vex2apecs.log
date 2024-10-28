@@ -1,0 +1,41 @@
+0622-088              EQ  2000   06:22:37.9995000  -08:46:18.263000   LSR 0.0
+0622-069              EQ  2000   06:22:58.0459000  -06:56:51.970000   LSR 0.0
+0215+015              EQ  2000   02:17:48.9547510   01:44:49.699027   LSR 0.0
+0235+164              EQ  2000   02:38:38.9301045   16:36:59.274553   LSR 0.0
+3C84                  EQ  2000   03:19:48.1601120   41:30:42.103636   LSR 0.0
+0420-014              EQ  2000   04:23:15.8007222  -01:20:33.065607   LSR 0.0
+0446+112              EQ  2000   04:49:07.6711019   11:21:28.596362   LSR 0.0
+0506+056              EQ  2000   05:09:25.9644628   05:41:35.333421   LSR 0.0
+0723-008              EQ  2000   07:25:50.6399126  -00:54:56.543051   LSR 0.0
+0735+178              EQ  2000   07:38:07.3937531   17:42:18.998151   LSR 0.0
+OJ287                 EQ  2000   08:54:48.8749297   20:06:30.640824   LSR 0.0
+0954+658              EQ  2000   09:58:47.2451133   65:33:54.818038   LSR 0.0
+1502+106              EQ  2000   15:04:24.9797839   10:29:39.198531   LSR 0.0
+1741-038              EQ  2000   17:43:58.8561354  -03:50:04.616733   LSR 0.0
+1749+096              EQ  2000   17:51:32.8185733   09:39:00.728407   LSR 0.0
+P-IRC+10011           EQ  2000   01:06:25.9888000   12:35:52.729400   LSR 0.0
+P-IKTAU               EQ  2000   03:53:28.9367000   11:24:21.345400   LSR 0.0
+P-ORINEW2             EQ  2000   05:35:14.5000000  -05:22:29.600000   LSR 0.0
+P-UORI                EQ  2000   05:55:49.1900000   20:10:30.720000   LSR 0.0
+P-BXCAM               EQ  2000   05:46:44.2900000   69:58:24.200000   LSR 0.0
+P-GXMON               EQ  2000   06:52:46.9200000   08:25:18.980000   LSR 0.0
+P-RCNC                EQ  2000   08:16:33.8260000   11:43:34.320000   LSR 0.0
+P-RLMI                EQ  2000   09:45:34.2700000   34:30:42.840000   LSR 0.0
+P-RLEO                EQ  2000   09:47:33.5000000   11:25:43.680000   LSR 0.0
+P-WHYA                EQ  2000   13:49:01.9200000  -28:22:03.360000   LSR 0.0
+P-SCRB                EQ  2000   15:21:24.1200000   31:22:02.640000   LSR 0.0
+P-VXSGR               EQ  2000   18:08:04.0465000  -22:13:26.624600   LSR 0.0
+P-GYAQL               EQ  2000   19:50:06.3600000  -07:36:52.450000   LSR 0.0
+P-RRAQL               EQ  2000   19:57:36.0314000  -01:53:12.401200   LSR 0.0
+DR21                  EQ  2000   20:39:01.0200000   42:22:48.800000   LSR 0.0
+Warning: pre-scan cals for No0492 (0215+015) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0519 (0215+015) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0526 (0506+056) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0637 (0622-069) must omit reference scan, time margin is only 25 sec, need >30 sec
+Warning: pre-scan cals for No0638 (0622-088) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0655 (0622-069) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0656 (0622-088) must omit reference scan, time margin is only 25 sec, need >30 sec
+Warning: pre-scan cals for No0703 (0735+178) must omit reference scan, time margin is only 5 sec, need >30 sec
+
+Done. Created APECS observing file c242d.apecs.obs with 84 scans.
+

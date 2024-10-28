@@ -1,0 +1,65 @@
+3C84                  EQ  2000   03:19:48.1601120   41:30:42.103636   LSR 0.0
+0420-014              EQ  2000   04:23:15.8007222  -01:20:33.065607   LSR 0.0
+3C120                 EQ  2000   04:33:11.0955307   05:21:15.619266   LSR 0.0
+OJ287                 EQ  2000   08:54:48.8749297   20:06:30.640824   LSR 0.0
+1156+295              EQ  2000   11:59:31.8339138   29:14:43.826822   LSR 0.0
+1633+382              EQ  2000   16:35:15.4929781   38:08:04.500600   LSR 0.0
+1633+38               EQ  2000   16:35:15.4929781   38:08:04.500600   LSR 0.0
+3C345                 EQ  2000   16:42:58.8099704   39:48:36.993955   LSR 0.0
+CTA102                EQ  2000   22:32:36.4089009   11:43:50.904059   LSR 0.0
+3C454.3               EQ  2000   22:53:57.7479401   16:08:53.560881   LSR 0.0
+3C111                 EQ  2000   04:18:21.2772325   38:01:35.800201   LSR 0.0
+M87                   EQ  2000   12:30:49.4233826   12:23:28.043742   LSR 0.0
+P-IRC+10011           EQ  2000   01:06:25.9888000   12:35:52.729400   LSR 0.0
+P-IKTAU               EQ  2000   03:53:28.9367000   11:24:21.345400   LSR 0.0
+P-TXCAM               EQ  2000   05:00:50.3900000   56:10:52.600000   LSR 0.0
+P-ORINEW2             EQ  2000   05:35:14.5000000  -05:22:29.600000   LSR 0.0
+P-UORI                EQ  2000   05:55:49.1900000   20:10:30.720000   LSR 0.0
+P-RLMI                EQ  2000   09:45:34.2700000   34:30:42.840000   LSR 0.0
+P-RLEO                EQ  2000   09:47:33.5000000   11:25:43.680000   LSR 0.0
+P-WHYA                EQ  2000   13:49:01.9200000  -28:22:03.360000   LSR 0.0
+P-SCRB                EQ  2000   15:21:24.1200000   31:22:02.640000   LSR 0.0
+P-AHSCO               EQ  2000   17:11:17.1600000  -32:19:30.720000   LSR 0.0
+P-VXSGR               EQ  2000   18:08:04.0465000  -22:13:26.624600   LSR 0.0
+P-GYAQL               EQ  2000   19:50:06.3600000  -07:36:52.450000   LSR 0.0
+P-RRAQL               EQ  2000   19:57:36.0314000  -01:53:12.401200   LSR 0.0
+P-UXCYG               EQ  2000   20:55:05.5300000   30:24:52.100000   LSR 0.0
+P-RAQR                EQ  2000   23:43:49.4600000  -15:17:04.140000   LSR 0.0
+P-RCAS                EQ  2000   23:58:25.0653000   51:23:20.102200   LSR 0.0
+DR21                  EQ  2000   20:39:01.0200000   42:22:48.800000   LSR 0.0
+Warning: pre-scan cals for No0325 (3C111) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0343 (3C111) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0350 (3C120) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0359 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0369 (3C120) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0379 (3C111) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0386 (0420-014) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0395 (3C111) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0418 (3C111) must omit reference scan, time margin is only 25 sec, need >30 sec
+Warning: pre-scan cals for No0427 (3C120) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0433 (3C111) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0441 (3C120) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0442 (0420-014) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0443 (3C120) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0453 (3C120) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0468 (3C120) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0486 (3C120) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0494 (3C120) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0502 (3C120) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0510 (3C120) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0518 (3C120) must omit reference scan, time margin is only 3 sec, need >30 sec
+Warning: pre-scan cals for No0617 (1633+38) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0627 (1633+38) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0749 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0759 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0766 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0776 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0820 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0830 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0840 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0850 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0860 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+Warning: pre-scan cals for No0864 (CTA102) must omit reference scan, time margin is only 5 sec, need >30 sec
+
+Done. Created APECS observing file c242b.apecs.obs with 126 scans.
+
