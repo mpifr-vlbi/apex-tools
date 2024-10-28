@@ -13,7 +13,7 @@ vlbifreq86   98.100 GHz USB
 ! FPT Test 86+260 GHz USB
 ! Observed with 1 ch x 1024 MHz at 86 GHz and simultaneously at 260 GHz
 ! Line freq 99012 MHz per FrequencyStructure2024Oct_GMVA-86GHz_FPT-86-258GHz.xlsx
-vlbifreqfpt86 99.102 USB
+vlbifreqfpt86 99.102 GHz USB
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
