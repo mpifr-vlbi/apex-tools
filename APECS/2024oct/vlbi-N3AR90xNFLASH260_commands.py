@@ -29,6 +29,8 @@ def vlbi_tuning():
     setup_nflash(
        fenames=['nflash230', 'n3ar90'], # NB: always the first receiver is used for the apointing model
        linenames=['vlbifreq260', 'vlbifreqfpt86'],
+       #fenames=['n3ar90', 'nflash230'],
+       #linenames=['vlbifreqfpt86', 'vlbifreq260'],
        sidebands=['', ''], mode='spec',
        sbwidths=[8, 8], numchans=[65536, 65536],
        cats='all', doppler='off')
