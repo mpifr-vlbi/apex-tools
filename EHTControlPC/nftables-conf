@@ -104,11 +104,15 @@ table inet filter {
 
 		meta l4proto {tcp, udp} th dport {2620-2631, 9000-9003} ip saddr @ipv4_whitelist counter accept comment "jive5ab and UDR Rsync evlbi (EHT DR2021)"
 
-		tcp dport {http, https} accept comment "VLBImonitor server"
+		tcp dport {http, https} ip saddr @ipv4_whitelist_local accept comment "VLBImonitor server"
 
 		tcp dport {3000, 8086} ip saddr @ipv4_whitelist_local accept comment "TIG stack"
 
-		# pkttype { broadcast,multicast} accept
+		udp dport {3478, 5349} accept comment "STUN UDP plus TLS"
+		tcp dport {3478, 5349} accept comment "STUN TCP plus TLS"
+		udp dport 32768-65535 accept comment "Globus ephemeral UDP"
+
+		pkttype { broadcast,multicast} accept
 
 		# everything else
 		counter reject with icmpx type port-unreachable
