@@ -140,10 +140,11 @@ devices:
 
         # groupa = eth2, groupb = eth3, groupc = eth4, groupd = eth5
 
-        mark6.unused1:
+        mark6.band1:
                 layout: mark6
                 hostname: recorder1
                 modules: {groupa: [mod1, mod2], groupc: [mod3, mod4]}
+                # 690G VLBI Test November 2024: recorder1 is filling in for dead recorder2, rec1 has the 2 x 10G fibers of rec2
         mark6.band2:
                 layout: mark6
                 hostname: recorder2
@@ -152,7 +153,7 @@ devices:
                 layout: mark6
                 hostname: recorder3
                 modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}
-        mark6.unused4:
+        mark6.band4:
                 layout: mark6
                 hostname: recorder4
                 modules: {groupb: [mod1, mod2], groupc: [mod3, mod4]}
@@ -165,25 +166,38 @@ delim_port: ":"
 delim_link: "  "
 links:
         # level 1-2
+
+        # Nov 2024 690G setup; IF-A/B = SEPIA @ 690G 2-pol LSB + IF-C/D = SEPIA @ 690G 2-pol USB, 2 GHz bw
+
         - rx.230:lsb_L  dbbc3.all:boardA   # 260G
         - rx.230:lsb_R  dbbc3.all:boardB   # 260G
         - rx.230:usb_L  dbbc3.all:boardC   # 86G
         - rx.230:usb_R  dbbc3.all:boardD   # 86G
 
-        # Recorder1 - unused1
-        - dbbc3.all:A_e2  mark6.unused1:eth2
-        - dbbc3.all:B_e2  mark6.unused1:eth4
+        # Recorder1 - 690 GHz b2 (or 230 GHz b2)
+        # Normally:
+        # - dbbc3.all:A_e2  mark6.band1:eth2
+        # - dbbc3.all:B_e2  mark6.band1:eth4
+        # Nov 2024 : workaround to replace dead recorder2,
+        # moved rec2 10G fibers into rec1 ("swapped" rec1/rec2)
+        - dbbc3.all:A_e0  mark6.band1:eth2
+        - dbbc3.all:B_e0  mark6.band1:eth4
 
-        # Recorder2 - 690 GHz b2 (or 230 GHz b2)
-        - dbbc3.all:A_e0  mark6.band2:eth2
-        - dbbc3.all:B_e0  mark6.band2:eth4
+        # Recorder2 - band2 - however, recorder2 very unstable in Apr & Nov 2024 (freezes, reboots)
+        # Normally:
+        # - dbbc3.all:A_e0  mark6.band2:eth2
+        # - dbbc3.all:B_e0  mark6.band2:eth4
+        # Nov 2024 : workaround to replace dead recorder2,
+        # moved rec2 10G fibers into rec1 ("swapped" rec1/rec2)
+        - dbbc3.all:A_e2  mark6.band2:eth2
+        - dbbc3.all:B_e2  mark6.band2:eth4
 
-        # Recorder3 - 690 GHz b3 (or 230 GHz b3)
+        # Recorder3 - band3 - 690 GHz b3 / EHT 230 GHz b3 / FPT 86 GHz
         - dbbc3.all:C_e0  mark6.band3:eth3
         - dbbc3.all:D_e0  mark6.band3:eth5
 
-        # Recorder4 - unused4
-        - dbbc3.all:C_e2  mark6.unused4:eth3
-        - dbbc3.all:D_e2  mark6.unused4:eth4
+        # Recorder4 - band44
+        - dbbc3.all:C_e2  mark6.band4:eth3
+        - dbbc3.all:D_e2  mark6.band4:eth4
 
 # vim: ft=yaml:ts=8:sts=8:sw=8:expandtab:tw=80 foldmethod=indent
