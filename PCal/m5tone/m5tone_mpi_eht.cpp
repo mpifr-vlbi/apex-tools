@@ -178,7 +178,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
 
     // Summary of settings
     printf("Starting MJD: %.9lf\n", scanStartMJD);
-    printf("Hardcoded settings: %d-point FFT, tone at %.1f MHz, LO offset %.3f Hz that %s to be removed\n",
+    printf("Hardcoded settings: %d-point FFT, tone at %.1f MHz, LO offset %.6f Hz that %s to be removed\n",
         DFT_LENGTH, (float)TONE_FREQ_MHZ, (float)LO_OFFSET_HZ,
         (HAVE_LO_OFFSET==1) ? "is" : "is NOT"
     );

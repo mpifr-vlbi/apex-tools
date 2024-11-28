@@ -12,6 +12,8 @@ bin_PROGRAMS = \
 	m5tone_Ax_2022_vdi \
 	m5tone_Ax_2023_vdi \
 	m5tone_Ax_2024_vdi_260G \
+	m5tone_Ax_nov2024_86G \
+	m5tone_Ax_nov2024_260G \
 	m5tone_Ax_2018 \
 	m5tone_Kt \
 	m5tone_threaded_Ax \
@@ -23,7 +25,8 @@ bin_PROGRAMS = \
 	m5tone_threaded_Kt \
 	m5tone_mpi_Ax_2022_vdi \
 	m5tone_mpi_Ax_2023_vdi \
-	m5tone_mpi_Ax_2024_vdi_260G
+	m5tone_mpi_Ax_2024_vdi_260G \
+	m5tone_mpi_Ax_2024_86G
 
 ####################################################################################################################################################
 
@@ -84,11 +87,23 @@ m5tone_mpi_Ax_2023_vdi_CXXFLAGS = $(AM_CFLAGS) -DSTATION_APEX_2023_VDI
 m5tone_Ax_2024_vdi_260G_SOURCES = m5tone_eht.c
 m5tone_Ax_2024_vdi_260G_CFLAGS = $(AM_CFLAGS) -DSTATION_APEX_2024_VDI_260G
 
+m5tone_Ax_nov2024_86G_SOURCES = m5tone_eht.c
+m5tone_Ax_nov2024_86G_CFLAGS =  $(AM_CFLAGS) -DSTATION_APEX_NOV24_260G
+
+m5tone_Ax_nov2024_260G_SOURCES = m5tone_eht.c
+m5tone_Ax_nov2024_260G_CFLAGS =  $(AM_CFLAGS) -DSTATION_APEX_NOV24_260G
+
 m5tone_threaded_Ax_2024_vdi_260G_SOURCES = m5tone_threaded_eht.c
 m5tone_threaded_Ax_2024_vdi_260G_CFLAGS = $(AM_CFLAGS) -DSTATION_APEX_2024_VDI_260G
 
 m5tone_mpi_Ax_2024_vdi_260G_SOURCES = m5tone_mpi_eht.cpp
 m5tone_mpi_Ax_2024_vdi_260G_CXXFLAGS = $(AM_CFLAGS) -DSTATION_APEX_2024_VDI_260G
+
+# 2024 GMVA with benchtop synthesizer for 86G N3AR receiver 1st LO, 8-ch DDC_U firmware,
+# tone at 19.0 MHz in vdif ch1 or ch2
+
+m5tone_mpi_Ax_2024_86G_SOURCES = m5tone_mpi_eht.cpp
+m5tone_mpi_Ax_2024_86G_CXXFLAGS = $(AM_CFLAGS) -DSTATION_APEX_2024_RS_86G
 
 ####################################################################################################################################################
 
