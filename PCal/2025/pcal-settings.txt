@@ -1,0 +1,119 @@
+
+
+=== Tone Synthesizer - Web Access ===
+
+Web GUI of tone synthesizer:
+  http://10.0.6.220/display
+
+Command entry:
+  http://10.0.6.220/scpi
+
+  FREQ <mhz>
+  POW <nn.n> dBm
+  OUTPUT [on|off]
+
+Spectrometer view (XFFTS) on VNC:
+  vnc server:  ffts1:2
+  passwd:      ... ask staff...
+
+Two harmonic mixers (HM) for tone generation:
+ - HM for NFLASH (230G/260G VLBI)
+ - HM for SEPIA (345G VLBI)
+ - future: Schottky mixer for 86 GHz VLBI tone
+
+Both HM have attached 3+10 dB (13 dB) of attenuation.
+This prevents frying the HMs when inadvertently
+setting the synthesizer to maximum output power.
+
+Synthesizer power should be ramped up/down in
+small steps to be delicate to the HMs.
+
+The settings below all produce a tone at
+  ~423.0 MHz  in recorded EHT Band 4 of 230/260/345G VLBI
+provided that the DBBC3 Valon synth is tuned accordingly,
+  cf. DBBC3-Valon-Tuning.txt
+
+
+=== 230G VLBI ===
+
+Command sequence for http://10.0.6.220/scpi to enable tone in band 4:
+
+pow -20 dbm
+freq 15315.0 mhz
+output on
+pow 0 dbm
+pow 10 dbm
+pow 15 dbm
+pow 19 dbm
+pow 21 dbm
+
+  Tone should be visible on XFFTS screen #5 at ~3500 MHz
+
+Disable tone:
+
+pow 20 dbm
+pow 15 dbm
+pow 0 dbm
+pow -20 dbm
+output off
+
+Alternate pcal tuning (from 2024 track e24a08) to place tone in band 3:
+
+pow -20 dbm
+freq 15315.0 mhz
+output on
+pow 0 dbm
+pow 15 dbm
+pow 22 dbm
+pow 22.5 dbm
+pow 22.30 dbm
+
+  Tone should be visible on XFFTS screen #6 at ~2500 MHz
+
+
+=== 260G VLBI ===
+
+Command sequence for http://10.0.6.220/scpi to enable tone in band 4:
+
+pow -20 dbm
+freq 17875.0 mhz
+output on
+pow 0 dbm
+pow 15 dbm
+pow 18 dbm
+pow 20.9 dbm
+pow 21.2 dbm
+
+  Tone should be visible on XFFTS screen #5 at ~3500 MHz
+
+Disable tone:
+
+pow 15 dbm
+pow 0 dbm
+pow -20 dbm
+output off
+
+
+=== 345G VLBI ===
+
+Command sequence for http://10.0.6.220/scpi to enable tone in band 4:
+
+pow -20 dbm
+freq 14009.0 mhz
+output on
+pow 0 dbm
+pow 15 dbm
+pow 18 dbm
+pow 22 dbm
+pow 23.6 dbm
+
+  Tone should be visible on XFFTS screen #8 at ~550 MHz
+  (was: Tone should be visible on XFFTS screen #5 at ~3500 MHz)
+
+Disable tone:
+
+pow 15 dbm
+pow 0 dbm
+pow -20 dbm
+output off
+
