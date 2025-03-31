@@ -5,7 +5,7 @@ exec_apecs_script('sepia_commands')
 
 execfile('/homes/software/apecs/startObsCommands.apecs')
 
-execfile('vlbi-SEPIA690_commands.py')
+execfile('vlbi-SEPIA660_commands.py')
 
 SEPIA660.monPoints.append(['GPS_COUNTERS_FMOUT_MASER', 
                            [('prop', 'APEX:COUNTERS:GPSMINUSFMOUT.GPSMinusFMOUT', 1.0, '-'), 
@@ -13,7 +13,9 @@ SEPIA660.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
                            5])
 
 # Need to setup the line frequency <HERE> for SEPIA
-setup_sepia(fenames=['sepia660'], linenames=['vlbifreq690'], sidebands=[''], mode='spec', cats='all', doppler='off', numchans=[65536], sbwidths=[8])
+setup_sepia(
+    fenames=['sepia660'], linenames=['vlbifreq690'], sidebands=[''],
+    mode='spec', cats='all', doppler='off', numchans=[65536], sbwidths=[8])
 
 use_linear_sensors('on')
 use_tiltmeters('on','on')
