@@ -1,0 +1,58 @@
+
+
+Extraction with
+
+  - m5tone.py script from DiFX 2.8.x, flexible
+  - m5tone binary with hardcoded settings
+   from https://github.com/mpifr-vlbi/apex-tools/tree/master/Correlation/m5tone
+
+
+Extraction of tone at 423.0 MHz in baseband of Band 4 (recorder2) net-LSB data:
+
+  1 millisec averaging
+  819200 DFT channels over 2048 MHz for 5 kHz wide bin across tone
+
+
+  === NFLASH tuned to 230G - +15.022 Hz LO offset ===
+
+  ssh recorder2
+  cd /mnt/fuse/
+  ./mount.eht
+
+  m5tone.py 12/<filename>.vdif VDIF_8192-8192-1-2 nflash230-<scanname>.rec2.s12.m5tone 1 1e-3 423e6 819200 0 -15.022
+  m5tone.py 34/<filename>.vdif VDIF_8192-8192-1-2 nflash230-<scanname>.rec2.s34.m5tone 1 1e-3 423e6 819200 0 -15.022
+
+
+  === NFLASH tuned to 260G - +56.86 Hz LO offset ===
+
+  ssh recorder2
+  cd /mnt/fuse/
+  ./mount.eht
+
+  m5tone.py 12/<filename>.vdif VDIF_8192-8192-1-2 nflash260-<scanname>.rec2.s12.m5tone 1 1e-3 423e6 819200 0 -56.86
+  m5tone.py 34/<filename>.vdif VDIF_8192-8192-1-2 nflash260-<scanname>.rec2.s34.m5tone 1 1e-3 423e6 819200 0 -56.86
+
+
+  === SEPIA 345G - 0 Hz LO offset ===
+
+  ssh recorder2
+  cd /mnt/fuse/
+  ./mount.eht
+
+  m5tone.py 12/<filename>.vdif VDIF_8192-8192-1-2 sepia345-<scanname>.rec2.s12.m5tone 1 1e-3 423e6 819200 0
+  m5tone.py 34/<filename>.vdif VDIF_8192-8192-1-2 sepia345-<scanname>.rec2.s34.m5tone 1 1e-3 423e6 819200 0
+
+
+Extraction of tone at 748.0 MHz in baseband of Band 3 (recorder1) net-USB data:
+
+  1 millisec averaging
+  819200 DFT channels over 2048 MHz for 5 kHz wide bin across tone
+
+
+  === NFLASH 230G tuned to 230G - +15.022 Hz LO offset ===
+
+  Note: spectral counter-shift by +15.022 Hz offset for net-USB Band 3,
+        the opposite of the -15.022 Hz as for the net-LSB Band 4.
+
+  m5tone.py 12/<filename>.vdif VDIF_8192-8192-1-2 nflash230-<scanname>.rec2.s12.m5tone 1 1e-3 748e6 819200 0 +15.022
+

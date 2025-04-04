@@ -147,6 +147,7 @@ class Getter():
                 continue
             filtered_params[k] = [v]
         self.params = filtered_params
+        print("Updated values at %s" % (str(datetime.datetime.utcnow())))
         return self.params
 
 
@@ -172,7 +173,7 @@ class Getter():
 
 
     def __febeToRx(self, febename):
-        known_rx = ['NFLASH230', 'NFLASH460', 'SEPIA345']
+        known_rx = ['NFLASH230', 'NFLASH460', 'SEPIA345', 'N3AR90']
         for rx in known_rx:
             if rx in febename: return rx
         return known_rx[0]
@@ -255,18 +256,15 @@ class Getter():
 
         if t is not None:
             pScan = self.apecsEngine.getScan()
-            scan = apexObsUtils.unpackScanObject(pScan)
-            source = scan.spatialSetup.sourceName
+            if pScan:
+                scan = apexObsUtils.unpackScanObject(pScan)
+                source = scan.spatialSetup.sourceName
+            else:
+                source = '(no data)'
             self.params['sourceName'] = [t, source]
 
 
     def __getMisc(self):
-
-        self.params['ABM:ANTMOUNT:mode'] = self.__getApexPoint('ABM[1,0]:ANTMOUNT:mode')
-        if len(self.params['ABM:ANTMOUNT:mode']) >= 2:
-            t = self.params['ABM:ANTMOUNT:mode'][0]
-            on_source = 'track' in self.params['ABM:ANTMOUNT:mode'][1].lower()
-            self.params['onSourceBool'] = [t, on_source]
 
         self.params['APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSMASER:GPSMinusMaser')
         self.params['GPSMinusFMOUT_rescaled'] = self.__getApexPoint('APEX:COUNTERS:GPSMINUSFMOUT:GPSMinusFMOUT')
@@ -274,10 +272,21 @@ class Getter():
         if dbbc_offset_nsec >= 500000000:
             dbbc_offset_nsec = dbbc_offset_nsec - 1000000000
             r2dbe_offset_ticks = dbbc_offset_nsec * 256e-3 # from nanosec to 256 MHz ticks
+        elif dbbc_offset_nsec <= -500000000:
+            dbbc_offset_nsec = dbbc_offset_nsec + 1000000000
+            r2dbe_offset_ticks = dbbc_offset_nsec * 256e-3 # from nanosec to 256 MHz ticks
+        else:
+            r2dbe_offset_ticks = dbbc_offset_nsec * 256e-3
         self.params['GPSMinusFMOUT_rescaled'][1] = int(r2dbe_offset_ticks)
 
         #self.params['APEX:MASER:HOUSING:temperature'] = self.__getApexPoint('APEX:MASER:HOUSING:temperature')  # 03/2021 : measurement point not working, no data
         #self.params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
+
+        self.params['ABM:ANTMOUNT:mode'] = self.__getApexPoint('ABM[1,0]:ANTMOUNT:mode')
+        if self.params['ABM:ANTMOUNT:mode'] and len(self.params['ABM:ANTMOUNT:mode']) >= 2:
+            t = self.params['ABM:ANTMOUNT:mode'][0]
+            on_source = 'track' in self.params['ABM:ANTMOUNT:mode'][1].lower()
+            self.params['onSourceBool'] = [t, on_source]
 
 
     def __getEHTEquivalentTunings(self):

@@ -11,21 +11,25 @@ import os
 
 def vlbi_tuning():
     '''
-    (Re)Configure nflash460.
+    (Re)Configure nflash230.
 
     This needs to be invoked regulary in case 1) operator interaction left apecs
     tuned to e.g. CO line instead of vlbi freq, or 2) backend for Tsys was left
     in continuum rather than in line mode.
+
+    Note: In 2022 we verified CO line pointing works fine while tuned to 'vlbifreq230',
+          nevertheless it remains prudent for the scripted schedule to hammer in the
+          correct VLBI tuning at every opportunity.
     '''
 
-    setup_nflash( fenames=['nflash460'],
-        linenames=['vlbifreq460'],
-        sidebands=[''], mode='spec', sbwidths=[8], numchan=65536,
+    setup_nflash( fenames=['nflash230'],
+        linenames=['vlbifreq230'],
+        sidebands=[''], mode='spec', sbwidths=[8], numchans=[65536],
         cats='all',
         doppler='off' )
 
-    nflash460.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
-    tp()                               # cancel any wob() wobbler config persisting from operator line pointing
+    nflash230.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
+    tp()                               # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
     use_ref('OFF')                     # avoid going off-source during VLBI scan on()
 
 
@@ -96,6 +100,11 @@ def vlbi_scan(t_mins=5,targetSource=''):
     # on(drift='no',time=30) # EHT2021: changed to 50% of t_mins from middle of e21b09 due to overheads (30%) that are greater than before
     on(drift='no',time=30)   # EHT2022, EHT2023: assume same high overhead of EHT2021. Worked out okay in e22b19 with 1-5min long scans.
 
+    # Alternate method attempted for e24e07: single very long on()-scan, perhaps no phase jumps them, but perhaps no contiguous sub-integration data either?
+    #on(drift='no',time=int(30*t_mins))
+    # [[ e24e07 till e24d10 : used single on(drift='no',time=int(30*t_mins)) ]]
+    # [[ e24g11: reverted back to the eht2023 known safe repeat(t_mins) x on(drift='no',time=30) ]]
+
     # Continue tracking for remainder of VLBI scan; ought to be less than auto-standby timeout time
     repeat(1)
     track()
@@ -107,7 +116,7 @@ def vlbi_scan(t_mins=5,targetSource=''):
 
 def vlbi_wpoint(t=20,cal=1):
     '''Wobbler pointing for VLBI.'''
-    nflash460.configure(doppler='on')  # should be OFF
+    nflash230.configure(doppler='on')  # should be OFF
     if (cal):
         calibrate('cold')
     wob(amplitude=75, rate=1.5, mode='pos')
@@ -115,18 +124,18 @@ def vlbi_wpoint(t=20,cal=1):
     point(length=54, unit='arcsec', time=t, mode='ras', points=5, direction='x')
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    nflash460.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
+    nflash230.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
 
 
 def vlbi_focus(axis='Z',t=6):
     '''Focus scan for VLBI.'''
-    nflash460.configure(doppler='on')
+    nflash230.configure(doppler='on')
     vlbi_focus.func_defaults = (axis,)
     wob(amplitude=75, rate=1.5, mode='pos')
     focus(amplitude=1, points=5, axis=axis, time=t)
     wob(amplitude=75, rate=1, mode='sym')
     tp()
-    nflash460.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
+    nflash230.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
 
 
 def vlbi_get_calibration():
@@ -138,7 +147,7 @@ def vlbi_get_calibration():
         print 'No calibration result available.'
 
 
-def vwcpoint(t=24., l=[], cal=1, line='vlbifreq460', dopp='OFF', ptRun=False, dbpcorr=False):
+def vwcpoint(t=24., l=[], cal=1, line='vlbifreq230', dopp='OFF', ptRun=False, dbpcorr=False):
     '''
 
     Continuum pointing cross scan in beam switching (wob) mode using pseudocontinumm.
@@ -147,7 +156,7 @@ def vwcpoint(t=24., l=[], cal=1, line='vlbifreq460', dopp='OFF', ptRun=False, db
                   l: Length of the arms of the cross
                      [] = use default value for current FE.
                 cal: 1 = calibrate before the pointing
-               line: 'vlbifreq460' = do pointing at vlbifreq460
+               line: 'vlbifreq230' = do pointing at vlbifreq230
                      '' = do pointing at current frequency
                      '*' = use standard line for current FE.
                dopp: 'ON' apply Doppler correction in the tuning frequency.

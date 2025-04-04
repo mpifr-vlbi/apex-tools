@@ -1,0 +1,39 @@
+# Simulatenous 86G+230G observing
+# cf. APEX-MPI-MAN-0011-R4_5-Draft2.pdf section 3.3.1.3,
+# where setup_nflash() can be used to set up non-NFlash frontends
+
+exec_apecs_script('nflash_commands')
+
+execfile('/homes/software/apecs/startObsCommands.apecs')
+   
+sourcecats('t-0115.f-9996a-2025.cat')
+linecats('t-0115.f-9996a-2025.lin')
+    
+execfile('vlbi-N3AR90xNFLASH260_commands.py')
+
+NFLASH230.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
+                           [('prop', 'APEX:COUNTERS:GPSMINUSFMOUT.GPSMinusFMOUT', 1.0, '-'),
+                            ('prop', 'APEX:COUNTERS:GPSMINUSMASER.GPSMinusMaser', 1.0, '-')],
+                           5])
+
+# Note: APECS takes the pointing model from the first receiver in the setup_nflash() list,
+# best to choose a high freq receiver / 86 GHz last
+setup_nflash(
+    fenames=['nflash230', 'n3ar90'],
+    linenames=['vlbifreqfpt260', 'vlbifreqfpt86'],
+    #fenames=['n3ar90', 'nflash230'],
+    #linenames=['vlbifreqfpt86', 'vlbifreqfpt260'],
+    sidebands=['', ''], mode='spec',
+    sbwidths=[8, 8], numchans=[65536, 65536],
+    cats='all', doppler='off')
+
+use_ref('on')
+continuous_data('off')
+skip_hardware_setup('off')
+use_tiltmeters('on', 'on')
+use_foc_temp_corr('off')  # 'off' used in e24a08 to try avoid phase and amplitude jumps, 'on' in other track
+nflash230.configure(doppler='off')
+n3ar90.configure(doppler='off')
+tp() # Added to be extra sure we disable the wobbler after line pointings
+
+################################################################

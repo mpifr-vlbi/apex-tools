@@ -1,5 +1,5 @@
-sourcecats('t-0113.f-9996a-2024.cat')
-linecats('t-0113.f-9996a-2024.lin')
+sourcecats('t-0115.f-9996a-2025.cat')
+linecats('t-0115.f-9996a-2025.lin')
 
 exec_apecs_script('nflash_commands')
 
@@ -18,6 +18,7 @@ use_ref('on')
 continuous_data('off')
 skip_hardware_setup('off')
 use_tiltmeters('on','on')
+use_foc_temp_corr('ON')     # 'off' in e24a08 for Testing for phase and amplitude jumps, 'on' in other track
 nflash230.configure(doppler='off')
 tp() # Added to be extra sure we disable the wobbler after line pointings (JPE: 2021-04-13)
 
