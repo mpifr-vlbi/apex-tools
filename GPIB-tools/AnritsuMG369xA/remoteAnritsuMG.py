@@ -1,18 +1,28 @@
 #!/usr/bin/python
-'''
-Basic control of an Anritsu MG369xA series synthesizer
-over GPIB - assuming the Anritsu is connected to the LAN
-through a Prologix GPIB-Ethernet converter.
+#
+# Basic control of an Anritsu MG369xA series synthesizer
+# over GPIB - assuming the Anritsu is connected to the LAN
 
+# through a Prologix GPIB-Ethernet converter.
+#
+# The Prologix GPIB-Ethernet converter that needs to be attached to the Anritsu
+# is a commercial product, see https://prologix.biz/, and allows remote
+# access to the GPIB bus. One handy Python package is https://github.com/nelsond/prologix-gpib-ethernet
+#
+# Documentation of the GPIB commands of the Anritsu MG369xA can be found in 
+# "Series MG369XA Synthesized Signal Generator GPIB Programming Manual, P/N: 10370-10354"
+# currently available at
+# https://dl.cdn-anritsu.com/en-us/test-measurement/files/Manuals/Programming-Manual/10370-10354.pdf
+#
+'''
 The remoteAnritsuMG.py <commands> supported commands are
 "freq <xxx.x> mhz", "pow <xxx.x> dbm", "output on|off".
 '''
 
-# External prologix-gpib-ethernet Python package:
+import argparse
+
 # $  pip install git+git://github.com/nelsond/prologix-gpib-ethernet.git
 from plx_gpib_ethernet import PrologixGPIBEthernetDevice
-
-import argparse
 
 class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 
