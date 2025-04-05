@@ -4,18 +4,15 @@ Basic control of an Anritsu MG369xA series synthesizer
 over GPIB - assuming the Anritsu is connected to the LAN
 through a Prologix GPIB-Ethernet converter.
 
-todo:
- - add support for user args to set freq & level, and RF On-Off
- - add support for predefined config loaded from a specified config file
- - ...
+The remoteAnritsuMG.py <commands> supported commands are
+"freq <xxx.x> mhz", "pow <xxx.x> dbm", "output on|off".
 '''
 
 # External prologix-gpib-ethernet Python package:
 # $  pip install git+git://github.com/nelsond/prologix-gpib-ethernet.git
 from plx_gpib_ethernet import PrologixGPIBEthernetDevice
 
-converter_ip = '10.0.2.94'
-gpib_addr = 5
+import argparse
 
 class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 
@@ -75,15 +72,38 @@ class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 		rfstate = '??' # todo
 		return "%.9f MHz / %.2f dBm / RF %s" % (f,p,rfstate)
 
-anritsu = AnritsuMG369xA(host=converter_ip, address=gpib_addr)
+
+parser = argparse.ArgumentParser(description="Anritsu MG369xA basic GPIB remote control via an attached Prologix GPIB-LAN converter", epilog=__doc__)
+parser.add_argument('-H', '--host', dest='host', default='10.0.2.94', help='hostname of the Prologix GPIB-LAN (default %(default)s)')
+parser.add_argument('-a', '--gpib-addr', dest='gpib_addr', default='5', help='address of the MG369xA on the GPIB bus (default %(default)s)')
+parser.add_argument('cmds', nargs='*', help='commands to send')
+args = parser.parse_args()
+
+anritsu = AnritsuMG369xA(host=args.host, address=int(args.gpib_addr))
 anritsu.open(verbose=False)
-
-f0_MHz = 422.990015
 print('Current settings: ', anritsu.getActiveSettings())
 
-print('Setting CW freq to %.9f' % (f0_MHz))
-anritsu.setFrequency(f0_MHz) 
+while len(args.cmds) > 0:
+	cmd = args.cmds.pop(0).lower()
+	if cmd == 'freq':
+		f = args.cmds.pop(0).lower()
+		f_units = args.cmds.pop(0).lower()
+		if f_units == 'ghz':
+			f = '%.9f' % (float(f) * 1e3)
+		elif f_units == 'hz':
+			f = '%.9f' % (float(f) * 1e-6)
+		anritsu.setFrequency(float(f))
+	elif cmd == 'pow':
+		p = args.cmds.pop(0).lower()
+		p_units = args.cmds.pop(0).lower()
+		if p_units in ['dbm','db']:
+			anritsu.setPower(float(p))
+	elif cmd == 'output':
+		on = args.cmds.pop(0).lower() == 'on'
+		anritsu.enableRF(on)
+	else:
+		print("Unsupported command '%s'" % (cmd))
 
-print('Current settings: ', anritsu.getActiveSettings())
+print('Updated settings: ', anritsu.getActiveSettings())
 
 anritsu.close()
