@@ -28,13 +28,11 @@ class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 			print("Connected to %s gpib addr %d device ID %s" % (self.gpib.host, self.address, self.devname))
 
 	def setFrequency(self, f_MHz):
-		# PDF p. 104
-		# return self.query("F5 %d MH ACW" % (f_MHz))
-		# PDF p. 119
-		cmd = "CF0 %.6f MH" % (f_MHz)
+		cmd = "CF0 %.6f MH" % (f_MHz) # PDF p. 119 - 'Sets CW mode at F0 and opens the F0 parameter.'
 		if self.verbose:
 			print("Sending cmd: %s" % (cmd))
-		return self.write(cmd)
+		self.write(cmd)
+		self.write("CLO")
 
 	def getFrequency(self):
 		qry = "OF0"
@@ -44,6 +42,7 @@ class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 		return float(fq) # TODO: any units to parse? scale?
 
 	def getPower(self):
+		self.write("LOG")
 		qry = "OL0"
 		if self.verbose:
 			print("Sending query: %s" % (qry))
@@ -53,13 +52,28 @@ class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 	def setPower(self, dbm):
 		# PDF p.156
 		if dbm <= 10:
-			self.write("L0<value><unit>") # todo
+			self.write("LOG") # 
+			self.write("PU0") # PDF p.208 - 'Selects logarithmic power level operation in dBm.'
+			self.write("L0 %.2f DM" % (dbm))
+			self.write("CLO")
+
+	def rfOff(self):
+		return self.write("RF0") # PDF p.260 - 'Turns off the RF output.'
+
+	def rfOn(self):
+		return self.write("RF1") # PDF p.260 - 'Turns on the RF output.'
+
+	def enableRF(self, ena=False):
+		if not ena:
+			self.rfOff()
+		else:
+			self.rfOn()
 
 	def getActiveSettings(self):
 		f = self.getFrequency()
 		p = self.getPower()
-		rfstate = 'Off' # todo
-		return "%.9f MHz %.2f dBm RF %s" % (f,p,rfstate)
+		rfstate = '??' # todo
+		return "%.9f MHz / %.2f dBm / RF %s" % (f,p,rfstate)
 
 anritsu = AnritsuMG369xA(host=converter_ip, address=gpib_addr)
 anritsu.open(verbose=False)
