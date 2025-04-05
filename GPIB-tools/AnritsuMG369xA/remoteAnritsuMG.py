@@ -21,8 +21,8 @@ class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 		self.connect()
 		self.reset()
 		self.devname = self.idn()
-		if self.verbose:
-			print("Connected to %s gpib addr %d device ID %s" % (self.gpib.host, self.address, self.devname))
+		#if self.verbose:
+		print("Connected to %s gpib addr %d device ID %s" % (self.gpib.host, self.address, str(self.devname).strip()))
 
 	def setFrequency(self, f_MHz):
 		cmd = "CF0 %.6f MH" % (f_MHz) # PDF p. 119 - 'Sets CW mode at F0 and opens the F0 parameter.'
