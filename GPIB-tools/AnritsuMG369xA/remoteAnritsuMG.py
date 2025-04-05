@@ -40,20 +40,36 @@ class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 		qry = "OF0"
 		if self.verbose:
 			print("Sending query: %s" % (qry))
-		return self.query(qry)
+		fq = self.query(qry)
+		return float(fq) # TODO: any units to parse? scale?
+
+	def getPower(self):
+		qry = "OL0"
+		if self.verbose:
+			print("Sending query: %s" % (qry))
+		pwr = self.query(qry)
+		return float(pwr) # TODO: any units to parse? scale?
 
 	def setPower(self, dbm):
 		# PDF p.156
 		if dbm <= 10:
 			self.write("L0<value><unit>") # todo
 
+	def getActiveSettings(self):
+		f = self.getFrequency()
+		p = self.getPower()
+		rfstate = 'Off' # todo
+		return "%.9f MHz %.2f dBm RF %s" % (f,p,rfstate)
+
 anritsu = AnritsuMG369xA(host=converter_ip, address=gpib_addr)
 anritsu.open(verbose=False)
 
 f0_MHz = 422.990015
-print('Current CW freq: ', anritsu.getFrequency()) 
+print('Current settings: ', anritsu.getActiveSettings())
+
 print('Setting CW freq to %.9f' % (f0_MHz))
 anritsu.setFrequency(f0_MHz) 
-print('Current CW freq: ', anritsu.getFrequency()) 
+
+print('Current settings: ', anritsu.getActiveSettings())
 
 anritsu.close()
