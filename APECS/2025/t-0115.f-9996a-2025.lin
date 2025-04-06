@@ -22,6 +22,7 @@ vlbifreqfpt260	273.084 GHz USB
 ! GMVA VLBI 110 GHz - Daewon Kim Autumn 2025
 ! Various undecided alternative tunings:
 vlbifreq104      104.100 GHz LSB
+vlbifreq104USB   104.436 GHz USB
 vlbifreq114LSB   114.100 GHz LSB
 vlbifreq114USB   114.436 GHz USB
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
