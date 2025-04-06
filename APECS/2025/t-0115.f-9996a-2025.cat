@@ -2,6 +2,7 @@
 ! EHT 2025 - 230/345 GHz
 !
 ! observer t-0115.f-9996a-2025:~/vlbisystem > cd vexfiles/staging ; ./get.sh ; cd ../..
+! observer t-0115.f-9996a-2025:~/vlbisystem > cd vexfiles/triggered ; ./get.sh ; cd ../..
 ! observer t-0115.f-9996a-2025:~/vlbisystem > ./vexGetSources2cat.py vexfiles/staging/e25[a-e]??.vex | sort | uniq
 !
 3C120                 EQ  2000   04:33:11.0955307   05:21:15.619266   LSR 0.0
