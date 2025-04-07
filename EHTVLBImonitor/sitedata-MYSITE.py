@@ -277,7 +277,8 @@ class Getter():
             r2dbe_offset_ticks = dbbc_offset_nsec * 256e-3 # from nanosec to 256 MHz ticks
         else:
             r2dbe_offset_ticks = dbbc_offset_nsec * 256e-3
-        self.params['GPSMinusFMOUT_rescaled'][1] = int(r2dbe_offset_ticks)
+        if r2dbe_offset_ticks > -9999 and r2dbe_offset_ticks < 9999:
+            self.params['GPSMinusFMOUT_rescaled'][1] = int(r2dbe_offset_ticks)
 
         #self.params['APEX:MASER:HOUSING:temperature'] = self.__getApexPoint('APEX:MASER:HOUSING:temperature')  # 03/2021 : measurement point not working, no data
         #self.params['APEX:MASER:HOUSING:temperature'] = [currentUTC(), -123.4]
