@@ -25,19 +25,19 @@ def usage():
 #### Globals
 ###########################################################################################################
 
-# Process that should be running (if local host is observer3/observer) if the schedule is actually executing
+# Process that should be running (if local host is observer3) if the schedule is actually executing
 dispatcherProcess = 'apecsVLBI.py'
 
-# APECS system (observer3/observer) runs from abm.apex-telesc .IRIG. that is running TAI
+# APECS system (observer3) runs from abm.apex-telesc .IRIG. that is running TAI
 # VLBI is using UTC; need to correct for http://www.leapsecond.com/java/gpsclock.htm
 is_observer3 = ('observer' in platform.node()) or ('10.0.2.209' in platform.node())
 if not is_observer3:
 	offsetUTC = 0
-	print ('\nINFO: Apparently not running on observer.apex-telescope.org. Not applying TAI/UTC leap seconds correction!\n')
+	print ('\nINFO: Apparently not running on Observer3. Not applying TAI/UTC leap seconds correction!\n')
 else:
 	# The TAI time leads UTC by 37 seconds as of February 2020, likely to change June/July 2020
 	offsetUTC = 37
-	print ('\nINFO: Apparently running on observer.apex-telescope.org. Correction computer time (TAI) by %d leap seconds to have UTC!\n' % (offsetUTC))
+	print ('\nINFO: Apparently running on Observer3. Correction computer time (TAI) by %d leap seconds to have UTC!\n' % (offsetUTC))
 
 # Ctrl-C
 gotCtrlC = False
@@ -59,7 +59,7 @@ def signal_handler(signal, frame):
 def utc_now():
 	'''
 	Return current UTC.
-	On observer3/observer that runs on TAI, account for TAI leading UTC by some nr of leap seconds.
+	On observer3 that runs on TAI, account for TAI leading UTC by some nr of leap seconds.
 	'''
 	T = datetime.datetime.utcnow()
 	T += datetime.timedelta(seconds=-offsetUTC)
