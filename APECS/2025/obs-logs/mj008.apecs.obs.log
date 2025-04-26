@@ -1,0 +1,819 @@
+2025.115.07:58:26;"----------| START OF mj008.apecs.obs |----------
+2025.115.07:58:26;"Using TAI-UTC offset of +37 seconds
+2025.115.07:58:26;"#
+2025.115.07:58:26;"# APEX observing script for station Ax from file vexfiles/triggered/mj008.vex
+2025.115.07:58:26;"# File created on 2025.106.15:10:54 UT
+2025.115.07:58:26;"#
+2025.115.07:58:26;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2025.115.07:58:26;"# Details on the columns:
+2025.115.07:58:26;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2025.115.07:58:26;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2025.115.07:58:26;"#    2) estimated duration of the command in seconds
+2025.115.07:58:26;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2025.115.07:58:26;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2025.115.07:58:26;"#
+2025.115.07:58:26;"# At time              Duration   Command
+2025.115.07:58:26;"execfile('vlbi-N3AR90_commands.py')
+2025.115.07:58:26;"reply from APECS: OK
+2025.115.07:58:27;"reply from APECS: (timeout)
+2025.115.07:58:29;"
+2025.115.07:58:29;"# ### Block for 1741-038 scan 1 'No0072' at 2025.115.08:00:00 in 200s ###########
+2025.115.07:58:29;"missed time 2025.115.07:56:40 : source('1741-038',cats='user'); go(); track()
+2025.115.07:58:29;"missed time 2025.115.07:57:05 : vlbi_tsys()
+2025.115.07:58:30;"vlbi_reference_scan()
+2025.115.07:58:31;"reply from APECS: (timeout)
+2025.115.07:58:31;"#                      gap        max ~0 min 55 sec
+2025.115.08:00:00;"vlbi_scan(t_mins=5,targetSource='1741-038')
+2025.115.08:00:00;"reply from APECS: OK
+2025.115.08:00:01;"reply from APECS: (timeout)
+2025.115.08:00:01;"#     scan ends at 2025.115.08:05:00
+2025.115.08:00:01;"
+2025.115.08:00:01;"# ### Block for P-HALF scan 2 'No0075' at 2025.115.08:11:00 in 360s #############
+2025.115.08:08:25;"source('P-HALF',cats='user'); go(); track()
+2025.115.08:08:25;"reply from APECS: OK
+2025.115.08:08:26;"reply from APECS: (timeout)
+2025.115.08:08:50;"vlbi_tsys()
+2025.115.08:08:51;"reply from APECS: (timeout)
+2025.115.08:10:15;"vlbi_reference_scan()
+2025.115.08:10:15;"reply from APECS: OK
+2025.115.08:10:15;"reply from APECS: OK
+2025.115.08:10:16;"reply from APECS: (timeout)
+2025.115.08:10:16;"#                      gap        max ~0 min 10 sec
+2025.115.08:11:00;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.08:11:00;"reply from APECS: OK
+2025.115.08:11:01;"reply from APECS: (timeout)
+2025.115.08:11:01;"#     scan ends at 2025.115.08:16:00
+2025.115.08:11:01;"
+2025.115.08:11:01;"# ### Block for P-HALF scan 3 'No0078' at 2025.115.08:19:20 in 200s #############
+2025.115.08:16:00;"source('P-HALF',cats='user'); go(); track()
+2025.115.08:16:00;"reply from APECS: OK
+2025.115.08:16:01;"reply from APECS: (timeout)
+2025.115.08:16:25;"vlbi_tsys()
+2025.115.08:16:25;"reply from APECS: OK
+2025.115.08:16:25;"reply from APECS: OK
+2025.115.08:16:26;"reply from APECS: (timeout)
+2025.115.08:17:50;"vlbi_reference_scan()
+2025.115.08:17:51;"reply from APECS: (timeout)
+2025.115.08:17:51;"#                      gap        max ~0 min 55 sec
+2025.115.08:19:20;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.08:19:20;"reply from APECS: OK
+2025.115.08:19:21;"reply from APECS: (timeout)
+2025.115.08:19:21;"#     scan ends at 2025.115.08:24:20
+2025.115.08:19:21;"
+2025.115.08:19:21;"# ### Block for P-HALF scan 4 'No0084' at 2025.115.08:32:00 in 460s #############
+2025.115.08:29:25;"source('P-HALF',cats='user'); go(); track()
+2025.115.08:29:25;"reply from APECS: OK
+2025.115.08:29:26;"reply from APECS: (timeout)
+2025.115.08:29:50;"vlbi_tsys()
+2025.115.08:29:50;"reply from APECS: OK
+2025.115.08:29:50;"reply from APECS: OK
+2025.115.08:29:51;"reply from APECS: (timeout)
+2025.115.08:31:15;"vlbi_reference_scan()
+2025.115.08:31:16;"reply from APECS: (timeout)
+2025.115.08:31:16;"#                      gap        max ~0 min 10 sec
+2025.115.08:32:00;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.08:32:00;"reply from APECS: OK
+2025.115.08:32:01;"reply from APECS: (timeout)
+2025.115.08:32:01;"#     scan ends at 2025.115.08:37:00
+2025.115.08:32:01;"
+2025.115.08:32:01;"# ### Block for P-HALF scan 5 'No0088' at 2025.115.08:40:20 in 200s #############
+2025.115.08:37:00;"source('P-HALF',cats='user'); go(); track()
+2025.115.08:37:00;"reply from APECS: OK
+2025.115.08:37:01;"reply from APECS: (timeout)
+2025.115.08:37:25;"vlbi_tsys()
+2025.115.08:37:25;"reply from APECS: OK
+2025.115.08:37:25;"reply from APECS: OK
+2025.115.08:37:26;"reply from APECS: (timeout)
+2025.115.08:38:50;"vlbi_reference_scan()
+2025.115.08:38:51;"reply from APECS: (timeout)
+2025.115.08:38:51;"#                      gap        max ~0 min 55 sec
+2025.115.08:40:20;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.08:40:20;"reply from APECS: OK
+2025.115.08:40:21;"reply from APECS: (timeout)
+2025.115.08:40:21;"#     scan ends at 2025.115.08:45:20
+2025.115.08:40:21;"
+2025.115.08:40:21;"# ### Block for P-HALF scan 6 'No0094' at 2025.115.08:53:00 in 460s #############
+2025.115.08:50:25;"source('P-HALF',cats='user'); go(); track()
+2025.115.08:50:25;"reply from APECS: OK
+2025.115.08:50:26;"reply from APECS: (timeout)
+2025.115.08:50:50;"vlbi_tsys()
+2025.115.08:50:50;"reply from APECS: OK
+2025.115.08:50:50;"reply from APECS: OK
+2025.115.08:50:51;"reply from APECS: (timeout)
+2025.115.08:52:15;"vlbi_reference_scan()
+2025.115.08:52:16;"reply from APECS: (timeout)
+2025.115.08:52:16;"#                      gap        max ~0 min 10 sec
+2025.115.08:53:00;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.08:53:00;"reply from APECS: OK
+2025.115.08:53:01;"reply from APECS: (timeout)
+2025.115.08:53:01;"#     scan ends at 2025.115.08:58:00
+2025.115.08:53:01;"
+2025.115.08:53:01;"# ### Block for P-HALF scan 7 'No0098' at 2025.115.09:01:20 in 200s #############
+2025.115.08:58:00;"source('P-HALF',cats='user'); go(); track()
+2025.115.08:58:00;"reply from APECS: OK
+2025.115.08:58:01;"reply from APECS: (timeout)
+2025.115.08:58:25;"vlbi_tsys()
+2025.115.08:58:25;"reply from APECS: OK
+2025.115.08:58:25;"reply from APECS: OK
+2025.115.08:58:26;"reply from APECS: (timeout)
+2025.115.08:59:50;"vlbi_reference_scan()
+2025.115.08:59:51;"reply from APECS: (timeout)
+2025.115.08:59:51;"#                      gap        max ~0 min 55 sec
+2025.115.09:01:20;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.09:01:20;"reply from APECS: OK
+2025.115.09:01:21;"reply from APECS: (timeout)
+2025.115.09:01:21;"#     scan ends at 2025.115.09:06:20
+2025.115.09:01:21;"
+2025.115.09:01:21;"# ### Block for 1921-293 scan 8 'No0105' at 2025.115.09:17:40 in 680s ###########
+2025.115.09:01:21;"#
+2025.115.09:01:21;"# OPERATOR free 8 min 55 sec until VLBI calibrations to start at 2025.115.09:15:05
+2025.115.09:01:21;"#
+2025.115.09:06:20;"print('You have 8 min 55 sec until the next VLBI calibration scan at 2025.115.09:15:05.')
+2025.115.09:06:20;"reply from APECS: OK
+2025.115.09:06:20;"reply from APECS: OK
+2025.115.09:06:21;"reply from APECS: (timeout)
+2025.115.09:15:05;"source('1921-293',cats='user'); go(); track()
+2025.115.09:15:06;"reply from APECS: (timeout)
+2025.115.09:15:30;"vlbi_tsys()
+2025.115.09:15:30;"reply from APECS: OK
+2025.115.09:15:31;"reply from APECS: (timeout)
+2025.115.09:16:55;"vlbi_reference_scan()
+2025.115.09:16:55;"reply from APECS: OK
+2025.115.09:16:56;"reply from APECS: (timeout)
+2025.115.09:16:56;"#                      gap        max ~0 min 10 sec
+2025.115.09:17:40;"vlbi_scan(t_mins=3,targetSource='1921-293')
+2025.115.09:17:40;"reply from APECS: OK
+2025.115.09:17:41;"reply from APECS: (timeout)
+2025.115.09:17:41;"#     scan ends at 2025.115.09:20:40
+2025.115.09:17:41;"
+2025.115.09:17:41;"# ### Block for P-HALF scan 9 'No0106' at 2025.115.09:22:50 in 130s #############
+2025.115.09:20:40;"source('P-HALF',cats='user'); go(); track()
+2025.115.09:20:40;"reply from APECS: OK
+2025.115.09:20:41;"reply from APECS: (timeout)
+2025.115.09:21:05;"vlbi_tsys()
+2025.115.09:21:05;"reply from APECS: OK
+2025.115.09:21:06;"reply from APECS: (timeout)
+2025.115.09:21:06;"#                      gap        max ~0 min 20 sec
+2025.115.09:22:50;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.09:22:50;"reply from APECS: OK
+2025.115.09:22:51;"reply from APECS: (timeout)
+2025.115.09:22:51;"#     scan ends at 2025.115.09:27:50
+2025.115.09:22:51;"
+2025.115.09:22:51;"# ### Block for P-HALF scan 10 'No0110' at 2025.115.09:31:10 in 200s ############
+2025.115.09:27:50;"source('P-HALF',cats='user'); go(); track()
+2025.115.09:27:50;"reply from APECS: OK
+2025.115.09:27:51;"reply from APECS: (timeout)
+2025.115.09:28:15;"vlbi_tsys()
+2025.115.09:28:15;"reply from APECS: OK
+2025.115.09:28:15;"reply from APECS: OK
+2025.115.09:28:16;"reply from APECS: (timeout)
+2025.115.09:29:40;"vlbi_reference_scan()
+2025.115.09:29:41;"reply from APECS: (timeout)
+2025.115.09:29:41;"#                      gap        max ~0 min 55 sec
+2025.115.09:31:10;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.09:31:10;"reply from APECS: OK
+2025.115.09:31:11;"reply from APECS: (timeout)
+2025.115.09:31:11;"#     scan ends at 2025.115.09:36:10
+2025.115.09:31:11;"
+2025.115.09:31:11;"# ### Block for P-HALF scan 11 'No0114' at 2025.115.09:40:50 in 280s ############
+2025.115.09:38:15;"source('P-HALF',cats='user'); go(); track()
+2025.115.09:38:15;"reply from APECS: OK
+2025.115.09:38:16;"reply from APECS: (timeout)
+2025.115.09:38:40;"vlbi_tsys()
+2025.115.09:38:40;"reply from APECS: OK
+2025.115.09:38:40;"reply from APECS: OK
+2025.115.09:38:41;"reply from APECS: (timeout)
+2025.115.09:40:05;"vlbi_reference_scan()
+2025.115.09:40:06;"reply from APECS: (timeout)
+2025.115.09:40:06;"#                      gap        max ~0 min 10 sec
+2025.115.09:40:50;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.09:40:50;"reply from APECS: OK
+2025.115.09:40:51;"reply from APECS: (timeout)
+2025.115.09:40:51;"#     scan ends at 2025.115.09:45:50
+2025.115.09:40:51;"
+2025.115.09:40:51;"# ### Block for P-HALF scan 12 'No0118' at 2025.115.09:49:10 in 200s ############
+2025.115.09:45:50;"source('P-HALF',cats='user'); go(); track()
+2025.115.09:45:50;"reply from APECS: OK
+2025.115.09:45:51;"reply from APECS: (timeout)
+2025.115.09:46:15;"vlbi_tsys()
+2025.115.09:46:15;"reply from APECS: OK
+2025.115.09:46:15;"reply from APECS: OK
+2025.115.09:46:16;"reply from APECS: (timeout)
+2025.115.09:47:40;"vlbi_reference_scan()
+2025.115.09:47:41;"reply from APECS: (timeout)
+2025.115.09:47:41;"#                      gap        max ~0 min 55 sec
+2025.115.09:49:10;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.09:49:10;"reply from APECS: OK
+2025.115.09:49:11;"reply from APECS: (timeout)
+2025.115.09:49:11;"#     scan ends at 2025.115.09:54:10
+2025.115.09:49:11;"
+2025.115.09:49:11;"# ### Block for REALSGRA scan 13 'No0125' at 2025.115.10:05:10 in 660s ##########
+2025.115.09:49:11;"#
+2025.115.09:49:11;"# OPERATOR free 8 min 35 sec until VLBI calibrations to start at 2025.115.10:02:35
+2025.115.09:49:11;"#
+2025.115.09:54:10;"print('You have 8 min 35 sec until the next VLBI calibration scan at 2025.115.10:02:35.')
+2025.115.09:54:10;"reply from APECS: OK
+2025.115.09:54:10;"reply from APECS: OK
+2025.115.09:54:11;"reply from APECS: (timeout)
+2025.115.10:02:35;"source('REALSGRA',cats='user'); go(); track()
+2025.115.10:02:36;"reply from APECS: (timeout)
+2025.115.10:03:00;"vlbi_tsys()
+2025.115.10:03:00;"reply from APECS: OK
+2025.115.10:03:00;"reply from APECS: OK
+2025.115.10:03:01;"reply from APECS: (timeout)
+2025.115.10:04:25;"vlbi_reference_scan()
+2025.115.10:04:26;"reply from APECS: (timeout)
+2025.115.10:04:26;"#                      gap        max ~0 min 10 sec
+2025.115.10:05:10;"vlbi_scan(t_mins=5,targetSource='REALSGRA')
+2025.115.10:05:10;"reply from APECS: OK
+2025.115.10:05:11;"reply from APECS: (timeout)
+2025.115.10:05:11;"#     scan ends at 2025.115.10:10:10
+2025.115.10:05:11;"
+2025.115.10:05:11;"# ### Block for REALIRS7 scan 14 'No0128' at 2025.115.10:13:30 in 200s ##########
+2025.115.10:10:10;"source('REALIRS7',cats='user'); go(); track()
+2025.115.10:10:10;"reply from APECS: OK
+2025.115.10:10:11;"reply from APECS: (timeout)
+2025.115.10:10:35;"vlbi_tsys()
+2025.115.10:10:35;"reply from APECS: OK
+2025.115.10:10:35;"reply from APECS: OK
+2025.115.10:10:36;"reply from APECS: (timeout)
+2025.115.10:12:00;"vlbi_reference_scan()
+2025.115.10:12:01;"reply from APECS: (timeout)
+2025.115.10:12:01;"#                      gap        max ~0 min 55 sec
+2025.115.10:13:30;"vlbi_scan(t_mins=5,targetSource='REALIRS7')
+2025.115.10:13:30;"reply from APECS: OK
+2025.115.10:13:31;"reply from APECS: (timeout)
+2025.115.10:13:31;"#     scan ends at 2025.115.10:18:30
+2025.115.10:13:31;"
+2025.115.10:13:31;"# ### Block for P-HALF scan 15 'No0132' at 2025.115.10:23:10 in 280s ############
+2025.115.10:20:35;"source('P-HALF',cats='user'); go(); track()
+2025.115.10:20:35;"reply from APECS: OK
+2025.115.10:20:36;"reply from APECS: (timeout)
+2025.115.10:21:00;"vlbi_tsys()
+2025.115.10:21:00;"reply from APECS: OK
+2025.115.10:21:00;"reply from APECS: OK
+2025.115.10:21:01;"reply from APECS: (timeout)
+2025.115.10:22:25;"vlbi_reference_scan()
+2025.115.10:22:26;"reply from APECS: (timeout)
+2025.115.10:22:26;"#                      gap        max ~0 min 10 sec
+2025.115.10:23:10;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.10:23:10;"reply from APECS: OK
+2025.115.10:23:11;"reply from APECS: (timeout)
+2025.115.10:23:11;"#     scan ends at 2025.115.10:28:10
+2025.115.10:23:11;"
+2025.115.10:23:11;"# ### Block for P-HALF scan 16 'No0135' at 2025.115.10:31:30 in 200s ############
+2025.115.10:28:10;"source('P-HALF',cats='user'); go(); track()
+2025.115.10:28:10;"reply from APECS: OK
+2025.115.10:28:11;"reply from APECS: (timeout)
+2025.115.10:28:35;"vlbi_tsys()
+2025.115.10:28:35;"reply from APECS: OK
+2025.115.10:28:35;"reply from APECS: OK
+2025.115.10:28:36;"reply from APECS: (timeout)
+2025.115.10:30:00;"vlbi_reference_scan()
+2025.115.10:30:01;"reply from APECS: (timeout)
+2025.115.10:30:01;"#                      gap        max ~0 min 55 sec
+2025.115.10:31:30;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.10:31:30;"reply from APECS: OK
+2025.115.10:31:31;"reply from APECS: (timeout)
+2025.115.10:31:31;"#     scan ends at 2025.115.10:36:30
+2025.115.10:31:31;"
+2025.115.10:31:31;"# ### Block for 1921-293 scan 17 'No0142' at 2025.115.10:47:05 in 635s ##########
+2025.115.10:31:31;"#
+2025.115.10:31:31;"# OPERATOR free 8 min 10 sec until VLBI calibrations to start at 2025.115.10:44:30
+2025.115.10:31:31;"#
+2025.115.10:36:30;"print('You have 8 min 10 sec until the next VLBI calibration scan at 2025.115.10:44:30.')
+2025.115.10:36:30;"reply from APECS: OK
+2025.115.10:36:30;"reply from APECS: OK
+2025.115.10:36:31;"reply from APECS: (timeout)
+2025.115.10:44:30;"source('1921-293',cats='user'); go(); track()
+2025.115.10:44:31;"reply from APECS: (timeout)
+2025.115.10:44:55;"vlbi_tsys()
+2025.115.10:44:55;"reply from APECS: OK
+2025.115.10:44:55;"reply from APECS: OK
+2025.115.10:44:56;"reply from APECS: (timeout)
+2025.115.10:46:20;"vlbi_reference_scan()
+2025.115.10:46:21;"reply from APECS: (timeout)
+2025.115.10:46:21;"#                      gap        max ~0 min 10 sec
+2025.115.10:47:05;"vlbi_scan(t_mins=3,targetSource='1921-293')
+2025.115.10:47:05;"reply from APECS: OK
+2025.115.10:47:06;"reply from APECS: (timeout)
+2025.115.10:47:06;"#     scan ends at 2025.115.10:50:05
+2025.115.10:47:06;"
+2025.115.10:47:06;"# ### Block for P-HALF scan 18 'No0143' at 2025.115.10:52:15 in 130s ############
+2025.115.10:50:05;"source('P-HALF',cats='user'); go(); track()
+2025.115.10:50:05;"reply from APECS: OK
+2025.115.10:50:06;"reply from APECS: (timeout)
+2025.115.10:50:30;"vlbi_tsys()
+2025.115.10:50:30;"reply from APECS: OK
+2025.115.10:50:30;"reply from APECS: OK
+2025.115.10:50:31;"reply from APECS: (timeout)
+2025.115.10:50:31;"#                      gap        max ~0 min 20 sec
+2025.115.10:52:15;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.10:52:16;"reply from APECS: (timeout)
+2025.115.10:52:16;"#     scan ends at 2025.115.10:57:15
+2025.115.10:52:16;"
+2025.115.10:52:16;"# ### Block for P-HALF scan 19 'No0145' at 2025.115.11:00:35 in 200s ############
+2025.115.10:57:15;"source('P-HALF',cats='user'); go(); track()
+2025.115.10:57:15;"reply from APECS: OK
+2025.115.10:57:16;"reply from APECS: (timeout)
+2025.115.10:57:40;"vlbi_tsys()
+2025.115.10:57:40;"reply from APECS: OK
+2025.115.10:57:40;"reply from APECS: OK
+2025.115.10:57:41;"reply from APECS: (timeout)
+2025.115.10:59:05;"vlbi_reference_scan()
+2025.115.10:59:06;"reply from APECS: (timeout)
+2025.115.10:59:06;"#                      gap        max ~0 min 55 sec
+2025.115.11:00:35;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.11:00:35;"reply from APECS: OK
+2025.115.11:00:36;"reply from APECS: (timeout)
+2025.115.11:00:36;"#     scan ends at 2025.115.11:05:35
+2025.115.11:00:36;"
+2025.115.11:00:36;"# ### Block for P-HALF scan 20 'No0149' at 2025.115.11:10:15 in 280s ############
+2025.115.11:07:40;"source('P-HALF',cats='user'); go(); track()
+2025.115.11:07:40;"reply from APECS: OK
+2025.115.11:07:41;"reply from APECS: (timeout)
+2025.115.11:08:05;"vlbi_tsys()
+2025.115.11:08:05;"reply from APECS: OK
+2025.115.11:08:05;"reply from APECS: OK
+2025.115.11:08:06;"reply from APECS: (timeout)
+2025.115.11:09:30;"vlbi_reference_scan()
+2025.115.11:09:31;"reply from APECS: (timeout)
+2025.115.11:09:31;"#                      gap        max ~0 min 10 sec
+2025.115.11:10:15;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.11:10:15;"reply from APECS: OK
+2025.115.11:10:16;"reply from APECS: (timeout)
+2025.115.11:10:16;"#     scan ends at 2025.115.11:15:15
+2025.115.11:10:16;"
+2025.115.11:10:16;"# ### Block for P-HALF scan 21 'No0151' at 2025.115.11:18:35 in 200s ############
+2025.115.11:15:15;"source('P-HALF',cats='user'); go(); track()
+2025.115.11:15:15;"reply from APECS: OK
+2025.115.11:15:16;"reply from APECS: (timeout)
+2025.115.11:15:40;"vlbi_tsys()
+2025.115.11:15:40;"reply from APECS: OK
+2025.115.11:15:40;"reply from APECS: OK
+2025.115.11:15:41;"reply from APECS: (timeout)
+2025.115.11:17:05;"vlbi_reference_scan()
+2025.115.11:17:06;"reply from APECS: (timeout)
+2025.115.11:17:06;"#                      gap        max ~0 min 55 sec
+2025.115.11:18:35;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.11:18:35;"reply from APECS: OK
+2025.115.11:18:36;"reply from APECS: (timeout)
+2025.115.11:18:36;"#     scan ends at 2025.115.11:23:35
+2025.115.11:18:36;"
+2025.115.11:18:36;"# ### Block for 1921-293 scan 22 'No0158' at 2025.115.11:33:05 in 570s ##########
+2025.115.11:18:36;"#
+2025.115.11:18:36;"# OPERATOR free 7 min 05 sec until VLBI calibrations to start at 2025.115.11:30:30
+2025.115.11:18:36;"#
+2025.115.11:23:35;"print('You have 7 min 05 sec until the next VLBI calibration scan at 2025.115.11:30:30.')
+2025.115.11:23:35;"reply from APECS: OK
+2025.115.11:23:35;"reply from APECS: OK
+2025.115.11:23:36;"reply from APECS: (timeout)
+2025.115.11:30:30;"source('1921-293',cats='user'); go(); track()
+2025.115.11:30:31;"reply from APECS: (timeout)
+2025.115.11:30:55;"vlbi_tsys()
+2025.115.11:30:55;"reply from APECS: OK
+2025.115.11:30:55;"reply from APECS: OK
+2025.115.11:30:56;"reply from APECS: (timeout)
+2025.115.11:32:20;"vlbi_reference_scan()
+2025.115.11:32:21;"reply from APECS: (timeout)
+2025.115.11:32:21;"#                      gap        max ~0 min 10 sec
+2025.115.11:33:05;"vlbi_scan(t_mins=3,targetSource='1921-293')
+2025.115.11:33:05;"reply from APECS: OK
+2025.115.11:33:06;"reply from APECS: (timeout)
+2025.115.11:33:06;"#     scan ends at 2025.115.11:36:05
+2025.115.11:33:06;"
+2025.115.11:33:06;"# ### Block for P-HALF scan 23 'No0161' at 2025.115.11:40:15 in 250s ############
+2025.115.11:37:40;"source('P-HALF',cats='user'); go(); track()
+2025.115.11:37:40;"reply from APECS: OK
+2025.115.11:37:41;"reply from APECS: (timeout)
+2025.115.11:38:05;"vlbi_tsys()
+2025.115.11:38:05;"reply from APECS: OK
+2025.115.11:38:05;"reply from APECS: OK
+2025.115.11:38:06;"reply from APECS: (timeout)
+2025.115.11:39:30;"vlbi_reference_scan()
+2025.115.11:39:31;"reply from APECS: (timeout)
+2025.115.11:39:31;"#                      gap        max ~0 min 10 sec
+2025.115.11:40:15;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.11:40:15;"reply from APECS: OK
+2025.115.11:40:16;"reply from APECS: (timeout)
+2025.115.11:40:16;"#     scan ends at 2025.115.11:45:15
+2025.115.11:40:16;"
+2025.115.11:40:16;"# ### Block for P-HALF scan 24 'No0163' at 2025.115.11:48:35 in 200s ############
+2025.115.11:45:15;"source('P-HALF',cats='user'); go(); track()
+2025.115.11:45:15;"reply from APECS: OK
+2025.115.11:45:16;"reply from APECS: (timeout)
+2025.115.11:45:40;"vlbi_tsys()
+2025.115.11:45:40;"reply from APECS: OK
+2025.115.11:45:40;"reply from APECS: OK
+2025.115.11:45:41;"reply from APECS: (timeout)
+2025.115.11:47:05;"vlbi_reference_scan()
+2025.115.11:47:06;"reply from APECS: (timeout)
+2025.115.11:47:06;"#                      gap        max ~0 min 55 sec
+2025.115.11:48:35;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.11:48:35;"reply from APECS: OK
+2025.115.11:48:36;"reply from APECS: (timeout)
+2025.115.11:48:36;"#     scan ends at 2025.115.11:53:35
+2025.115.11:48:36;"
+2025.115.11:48:36;"# ### Block for P-HALF scan 25 'No0167' at 2025.115.11:58:15 in 280s ############
+2025.115.11:55:40;"source('P-HALF',cats='user'); go(); track()
+2025.115.11:55:40;"reply from APECS: OK
+2025.115.11:55:41;"reply from APECS: (timeout)
+2025.115.11:56:05;"vlbi_tsys()
+2025.115.11:56:05;"reply from APECS: OK
+2025.115.11:56:05;"reply from APECS: OK
+2025.115.11:56:06;"reply from APECS: (timeout)
+2025.115.11:57:30;"vlbi_reference_scan()
+2025.115.11:57:31;"reply from APECS: (timeout)
+2025.115.11:57:31;"#                      gap        max ~0 min 10 sec
+2025.115.11:58:15;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.11:58:15;"reply from APECS: OK
+2025.115.11:58:16;"reply from APECS: (timeout)
+2025.115.11:58:16;"#     scan ends at 2025.115.12:03:15
+2025.115.11:58:16;"
+2025.115.11:58:16;"# ### Block for P-HALF scan 26 'No0169' at 2025.115.12:06:35 in 200s ############
+2025.115.12:03:15;"source('P-HALF',cats='user'); go(); track()
+2025.115.12:03:15;"reply from APECS: OK
+2025.115.12:03:16;"reply from APECS: (timeout)
+2025.115.12:03:40;"vlbi_tsys()
+2025.115.12:03:40;"reply from APECS: OK
+2025.115.12:03:40;"reply from APECS: OK
+2025.115.12:03:41;"reply from APECS: (timeout)
+2025.115.12:05:05;"vlbi_reference_scan()
+2025.115.12:05:06;"reply from APECS: (timeout)
+2025.115.12:05:06;"#                      gap        max ~0 min 55 sec
+2025.115.12:06:35;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.12:06:36;"reply from APECS: (timeout)
+2025.115.12:06:36;"#     scan ends at 2025.115.12:11:35
+2025.115.12:06:36;"
+2025.115.12:06:36;"# ### Block for 1921-293 scan 27 'No0175' at 2025.115.12:20:25 in 530s ##########
+2025.115.12:06:36;"#
+2025.115.12:06:36;"# OPERATOR free 6 min 25 sec until VLBI calibrations to start at 2025.115.12:17:50
+2025.115.12:06:36;"#
+2025.115.12:08:50;"----------| USER-REQUESTED STOP OF  mj008.apecs.obs |----------
+2025.115.13:33:20;"----------| START OF mj008.apecs.obs |----------
+2025.115.13:33:20;"Using TAI-UTC offset of +37 seconds
+2025.115.13:33:20;"#
+2025.115.13:33:20;"# APEX observing script for station Ax from file vexfiles/triggered/mj008.vex
+2025.115.13:33:20;"# File created on 2025.106.15:10:54 UT
+2025.115.13:33:20;"#
+2025.115.13:33:20;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2025.115.13:33:20;"# Details on the columns:
+2025.115.13:33:20;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2025.115.13:33:20;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2025.115.13:33:20;"#    2) estimated duration of the command in seconds
+2025.115.13:33:20;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2025.115.13:33:20;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2025.115.13:33:20;"#
+2025.115.13:33:20;"# At time              Duration   Command
+2025.115.13:33:20;"execfile('vlbi-N3AR90_commands.py')
+2025.115.13:33:20;"reply from APECS: OK
+2025.115.13:33:21;"reply from APECS: (timeout)
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for 1741-038 scan 1 'No0072' at 2025.115.08:00:00 in 200s ###########
+2025.115.13:33:23;"missed time 2025.115.07:56:40 : source('1741-038',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.07:57:05 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.07:58:30 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.08:00:00 : vlbi_scan(t_mins=5,targetSource='1741-038')
+2025.115.13:33:23;"#     scan ends at 2025.115.08:05:00
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 2 'No0075' at 2025.115.08:11:00 in 360s #############
+2025.115.13:33:23;"missed time 2025.115.08:08:25 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.08:08:50 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.08:10:15 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.08:11:00 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.08:16:00
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 3 'No0078' at 2025.115.08:19:20 in 200s #############
+2025.115.13:33:23;"missed time 2025.115.08:16:00 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.08:16:25 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.08:17:50 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.08:19:20 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.08:24:20
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 4 'No0084' at 2025.115.08:32:00 in 460s #############
+2025.115.13:33:23;"missed time 2025.115.08:29:25 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.08:29:50 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.08:31:15 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.08:32:00 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.08:37:00
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 5 'No0088' at 2025.115.08:40:20 in 200s #############
+2025.115.13:33:23;"missed time 2025.115.08:37:00 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.08:37:25 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.08:38:50 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.08:40:20 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.08:45:20
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 6 'No0094' at 2025.115.08:53:00 in 460s #############
+2025.115.13:33:23;"missed time 2025.115.08:50:25 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.08:50:50 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.08:52:15 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.08:53:00 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.08:58:00
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 7 'No0098' at 2025.115.09:01:20 in 200s #############
+2025.115.13:33:23;"missed time 2025.115.08:58:00 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.08:58:25 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.08:59:50 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.09:01:20 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.09:06:20
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for 1921-293 scan 8 'No0105' at 2025.115.09:17:40 in 680s ###########
+2025.115.13:33:23;"#
+2025.115.13:33:23;"# OPERATOR free 8 min 55 sec until VLBI calibrations to start at 2025.115.09:15:05
+2025.115.13:33:23;"#
+2025.115.13:33:23;"missed time 2025.115.09:06:20 : print('You have 8 min 55 sec until the next VLBI calibration scan at 2025.115.09:15:05.')
+2025.115.13:33:23;"missed time 2025.115.09:15:05 : source('1921-293',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.09:15:30 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.09:16:55 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.09:17:40 : vlbi_scan(t_mins=3,targetSource='1921-293')
+2025.115.13:33:23;"#     scan ends at 2025.115.09:20:40
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 9 'No0106' at 2025.115.09:22:50 in 130s #############
+2025.115.13:33:23;"missed time 2025.115.09:20:40 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.09:21:05 : vlbi_tsys()
+2025.115.13:33:23;"#                      gap        max ~0 min 20 sec
+2025.115.13:33:23;"missed time 2025.115.09:22:50 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.09:27:50
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 10 'No0110' at 2025.115.09:31:10 in 200s ############
+2025.115.13:33:23;"missed time 2025.115.09:27:50 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.09:28:15 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.09:29:40 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.09:31:10 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.09:36:10
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 11 'No0114' at 2025.115.09:40:50 in 280s ############
+2025.115.13:33:23;"missed time 2025.115.09:38:15 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.09:38:40 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.09:40:05 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.09:40:50 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.09:45:50
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 12 'No0118' at 2025.115.09:49:10 in 200s ############
+2025.115.13:33:23;"missed time 2025.115.09:45:50 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.09:46:15 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.09:47:40 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.09:49:10 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.09:54:10
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for REALSGRA scan 13 'No0125' at 2025.115.10:05:10 in 660s ##########
+2025.115.13:33:23;"#
+2025.115.13:33:23;"# OPERATOR free 8 min 35 sec until VLBI calibrations to start at 2025.115.10:02:35
+2025.115.13:33:23;"#
+2025.115.13:33:23;"missed time 2025.115.09:54:10 : print('You have 8 min 35 sec until the next VLBI calibration scan at 2025.115.10:02:35.')
+2025.115.13:33:23;"missed time 2025.115.10:02:35 : source('REALSGRA',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.10:03:00 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.10:04:25 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.10:05:10 : vlbi_scan(t_mins=5,targetSource='REALSGRA')
+2025.115.13:33:23;"#     scan ends at 2025.115.10:10:10
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for REALIRS7 scan 14 'No0128' at 2025.115.10:13:30 in 200s ##########
+2025.115.13:33:23;"missed time 2025.115.10:10:10 : source('REALIRS7',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.10:10:35 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.10:12:00 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.10:13:30 : vlbi_scan(t_mins=5,targetSource='REALIRS7')
+2025.115.13:33:23;"#     scan ends at 2025.115.10:18:30
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 15 'No0132' at 2025.115.10:23:10 in 280s ############
+2025.115.13:33:23;"missed time 2025.115.10:20:35 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.10:21:00 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.10:22:25 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.10:23:10 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.10:28:10
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 16 'No0135' at 2025.115.10:31:30 in 200s ############
+2025.115.13:33:23;"missed time 2025.115.10:28:10 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.10:28:35 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.10:30:00 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.10:31:30 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.10:36:30
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for 1921-293 scan 17 'No0142' at 2025.115.10:47:05 in 635s ##########
+2025.115.13:33:23;"#
+2025.115.13:33:23;"# OPERATOR free 8 min 10 sec until VLBI calibrations to start at 2025.115.10:44:30
+2025.115.13:33:23;"#
+2025.115.13:33:23;"missed time 2025.115.10:36:30 : print('You have 8 min 10 sec until the next VLBI calibration scan at 2025.115.10:44:30.')
+2025.115.13:33:23;"missed time 2025.115.10:44:30 : source('1921-293',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.10:44:55 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.10:46:20 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.10:47:05 : vlbi_scan(t_mins=3,targetSource='1921-293')
+2025.115.13:33:23;"#     scan ends at 2025.115.10:50:05
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 18 'No0143' at 2025.115.10:52:15 in 130s ############
+2025.115.13:33:23;"missed time 2025.115.10:50:05 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.10:50:30 : vlbi_tsys()
+2025.115.13:33:23;"#                      gap        max ~0 min 20 sec
+2025.115.13:33:23;"missed time 2025.115.10:52:15 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.10:57:15
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 19 'No0145' at 2025.115.11:00:35 in 200s ############
+2025.115.13:33:23;"missed time 2025.115.10:57:15 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.10:57:40 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.10:59:05 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.11:00:35 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.11:05:35
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 20 'No0149' at 2025.115.11:10:15 in 280s ############
+2025.115.13:33:23;"missed time 2025.115.11:07:40 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.11:08:05 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.11:09:30 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.11:10:15 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.11:15:15
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 21 'No0151' at 2025.115.11:18:35 in 200s ############
+2025.115.13:33:23;"missed time 2025.115.11:15:15 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.11:15:40 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.11:17:05 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.11:18:35 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.11:23:35
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for 1921-293 scan 22 'No0158' at 2025.115.11:33:05 in 570s ##########
+2025.115.13:33:23;"#
+2025.115.13:33:23;"# OPERATOR free 7 min 05 sec until VLBI calibrations to start at 2025.115.11:30:30
+2025.115.13:33:23;"#
+2025.115.13:33:23;"missed time 2025.115.11:23:35 : print('You have 7 min 05 sec until the next VLBI calibration scan at 2025.115.11:30:30.')
+2025.115.13:33:23;"missed time 2025.115.11:30:30 : source('1921-293',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.11:30:55 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.11:32:20 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.11:33:05 : vlbi_scan(t_mins=3,targetSource='1921-293')
+2025.115.13:33:23;"#     scan ends at 2025.115.11:36:05
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 23 'No0161' at 2025.115.11:40:15 in 250s ############
+2025.115.13:33:23;"missed time 2025.115.11:37:40 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.11:38:05 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.11:39:30 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.11:40:15 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.11:45:15
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 24 'No0163' at 2025.115.11:48:35 in 200s ############
+2025.115.13:33:23;"missed time 2025.115.11:45:15 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.11:45:40 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.11:47:05 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.11:48:35 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.11:53:35
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 25 'No0167' at 2025.115.11:58:15 in 280s ############
+2025.115.13:33:23;"missed time 2025.115.11:55:40 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.11:56:05 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.11:57:30 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.11:58:15 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.12:03:15
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 26 'No0169' at 2025.115.12:06:35 in 200s ############
+2025.115.13:33:23;"missed time 2025.115.12:03:15 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.12:03:40 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.12:05:05 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.12:06:35 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.12:11:35
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for 1921-293 scan 27 'No0175' at 2025.115.12:20:25 in 530s ##########
+2025.115.13:33:23;"#
+2025.115.13:33:23;"# OPERATOR free 6 min 25 sec until VLBI calibrations to start at 2025.115.12:17:50
+2025.115.13:33:23;"#
+2025.115.13:33:23;"missed time 2025.115.12:11:35 : print('You have 6 min 25 sec until the next VLBI calibration scan at 2025.115.12:17:50.')
+2025.115.13:33:23;"missed time 2025.115.12:17:50 : source('1921-293',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.12:18:15 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.12:19:40 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.12:20:25 : vlbi_scan(t_mins=3,targetSource='1921-293')
+2025.115.13:33:23;"#     scan ends at 2025.115.12:23:25
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 28 'No0178' at 2025.115.12:27:05 in 220s ############
+2025.115.13:33:23;"missed time 2025.115.12:23:25 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.12:23:50 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.12:25:15 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~1 min 15 sec
+2025.115.13:33:23;"missed time 2025.115.12:27:05 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.12:32:05
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 29 'No0180' at 2025.115.12:35:25 in 200s ############
+2025.115.13:33:23;"missed time 2025.115.12:32:05 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.12:32:30 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.12:33:55 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 55 sec
+2025.115.13:33:23;"missed time 2025.115.12:35:25 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.12:40:25
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 30 'No0183' at 2025.115.12:43:55 in 210s ############
+2025.115.13:33:23;"missed time 2025.115.12:40:25 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.12:40:50 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.12:42:15 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~1 min 05 sec
+2025.115.13:33:23;"missed time 2025.115.12:43:55 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.12:48:55
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for 1921-293 scan 31 'No0187' at 2025.115.12:55:35 in 400s ##########
+2025.115.13:33:23;"missed time 2025.115.12:53:00 : source('1921-293',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.12:53:25 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.12:54:50 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.12:55:35 : vlbi_scan(t_mins=5,targetSource='1921-293')
+2025.115.13:33:23;"#     scan ends at 2025.115.13:00:35
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 32 'No0190' at 2025.115.13:06:35 in 360s ############
+2025.115.13:33:23;"missed time 2025.115.13:04:00 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.13:04:25 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.13:05:50 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.13:06:35 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.13:11:35
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 33 'No0191' at 2025.115.13:12:25 in 50s #############
+2025.115.13:33:23;"missed time 2025.115.13:11:35 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"#                      gap        max ~0 min 25 sec
+2025.115.13:33:23;"missed time 2025.115.13:12:25 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.13:17:25
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 34 'No0194' at 2025.115.13:22:35 in 310s ############
+2025.115.13:33:23;"missed time 2025.115.13:20:00 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"missed time 2025.115.13:20:25 : vlbi_tsys()
+2025.115.13:33:23;"missed time 2025.115.13:21:50 : vlbi_reference_scan()
+2025.115.13:33:23;"#                      gap        max ~0 min 10 sec
+2025.115.13:33:23;"missed time 2025.115.13:22:35 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.13:27:35
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 35 'No0195' at 2025.115.13:28:25 in 50s #############
+2025.115.13:33:23;"missed time 2025.115.13:27:35 : source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:23;"#                      gap        max ~0 min 25 sec
+2025.115.13:33:23;"missed time 2025.115.13:28:25 : vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:33:23;"#     scan ends at 2025.115.13:33:25
+2025.115.13:33:23;"
+2025.115.13:33:23;"# ### Block for P-HALF scan 36 'No0196' at 2025.115.13:34:15 in 50s #############
+2025.115.13:33:25;"source('P-HALF',cats='user'); go(); track()
+2025.115.13:33:26;"reply from APECS: (timeout)
+2025.115.13:33:26;"#                      gap        max ~0 min 25 sec
+2025.115.13:34:15;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:34:15;"reply from APECS: OK
+2025.115.13:34:16;"reply from APECS: (timeout)
+2025.115.13:34:16;"#     scan ends at 2025.115.13:39:15
+2025.115.13:34:16;"
+2025.115.13:34:16;"# ### Block for P-HALF scan 37 'No0197' at 2025.115.13:40:05 in 50s #############
+2025.115.13:39:15;"source('P-HALF',cats='user'); go(); track()
+2025.115.13:39:15;"reply from APECS: OK
+2025.115.13:39:16;"reply from APECS: (timeout)
+2025.115.13:39:16;"#                      gap        max ~0 min 25 sec
+2025.115.13:40:05;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:40:05;"reply from APECS: OK
+2025.115.13:40:06;"reply from APECS: (timeout)
+2025.115.13:40:06;"#     scan ends at 2025.115.13:45:05
+2025.115.13:40:06;"
+2025.115.13:40:06;"# ### Block for P-HALF scan 38 'No0198' at 2025.115.13:45:55 in 50s #############
+2025.115.13:45:05;"source('P-HALF',cats='user'); go(); track()
+2025.115.13:45:05;"reply from APECS: OK
+2025.115.13:45:06;"reply from APECS: (timeout)
+2025.115.13:45:06;"#                      gap        max ~0 min 25 sec
+2025.115.13:45:55;"vlbi_scan(t_mins=5,targetSource='P-HALF')
+2025.115.13:45:55;"reply from APECS: OK
+2025.115.13:45:56;"reply from APECS: (timeout)
+2025.115.13:45:56;"#     scan ends at 2025.115.13:50:55
+2025.115.13:45:56;"
+2025.115.13:45:56;"# ### Block for 3C454.3 scan 39 'No0201' at 2025.115.13:57:50 in 200s ###########
+2025.115.13:50:55;"source('3C454.3',cats='user'); go(); track()
+2025.115.13:50:55;"reply from APECS: OK
+2025.115.13:50:56;"reply from APECS: (timeout)
+2025.115.13:51:20;"vlbi_tsys()
+2025.115.13:51:21;"reply from APECS: (timeout)
+2025.115.13:52:45;"vlbi_reference_scan()
+2025.115.13:52:45;"reply from APECS: OK
+2025.115.13:52:45;"reply from APECS: OK
+2025.115.13:52:46;"reply from APECS: (timeout)
+2025.115.13:52:46;"#                      gap        max ~4 min 30 sec
+2025.115.13:57:50;"vlbi_scan(t_mins=3,targetSource='3C454.3')
+2025.115.13:57:50;"reply from APECS: OK
+2025.115.13:57:51;"reply from APECS: (timeout)
+2025.115.13:57:51;"#     scan ends at 2025.115.14:00:50
+2025.115.13:57:51;"
+2025.115.13:57:51;"
+2025.115.13:57:51;"# Finished VLBI schedule
+2025.115.14:01:20;"remote_control('off')
+2025.115.14:01:20;"reply from APECS: OK
+2025.115.14:01:20;"reply from APECS: OK
+2025.115.14:01:21;"reply from APECS: (timeout)
+2025.115.14:01:21;"################################################################################
+2025.115.14:01:21;"### end of schedule
+2025.115.14:01:21;"################################################################################

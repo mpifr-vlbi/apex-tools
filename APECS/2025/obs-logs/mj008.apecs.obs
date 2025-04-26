@@ -1,0 +1,341 @@
+#
+# APEX observing script for station Ax from file vexfiles/triggered/mj008.vex
+# File created on 2025.106.15:10:54 UT
+#
+# Columns: 1) Start time 2) Duration in seconds 3) APECS command 
+# Details on the columns:
+#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+#    2) estimated duration of the command in seconds
+#    3) APECS command and parameters to execute. If the command includes whitespace.
+#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+#
+# At time              Duration   Command
+@always                2          execfile('vlbi-N3AR90_commands.py')
+
+# ### Block for 1741-038 scan 1 'No0072' at 2025.115.08:00:00 in 200s ###########
+2025.115.07:56:40      20         source('1741-038',cats='user'); go(); track()
+2025.115.07:57:05      80         vlbi_tsys()
+2025.115.07:58:30      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.08:00:00      300        vlbi_scan(t_mins=5,targetSource='1741-038')
+#     scan ends at 2025.115.08:05:00
+
+# ### Block for P-HALF scan 2 'No0075' at 2025.115.08:11:00 in 360s #############
+2025.115.08:08:25      20         source('P-HALF',cats='user'); go(); track()
+2025.115.08:08:50      80         vlbi_tsys()
+2025.115.08:10:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.08:11:00      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.08:16:00
+
+# ### Block for P-HALF scan 3 'No0078' at 2025.115.08:19:20 in 200s #############
+2025.115.08:16:00      20         source('P-HALF',cats='user'); go(); track()
+2025.115.08:16:25      80         vlbi_tsys()
+2025.115.08:17:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.08:19:20      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.08:24:20
+
+# ### Block for P-HALF scan 4 'No0084' at 2025.115.08:32:00 in 460s #############
+2025.115.08:29:25      20         source('P-HALF',cats='user'); go(); track()
+2025.115.08:29:50      80         vlbi_tsys()
+2025.115.08:31:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.08:32:00      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.08:37:00
+
+# ### Block for P-HALF scan 5 'No0088' at 2025.115.08:40:20 in 200s #############
+2025.115.08:37:00      20         source('P-HALF',cats='user'); go(); track()
+2025.115.08:37:25      80         vlbi_tsys()
+2025.115.08:38:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.08:40:20      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.08:45:20
+
+# ### Block for P-HALF scan 6 'No0094' at 2025.115.08:53:00 in 460s #############
+2025.115.08:50:25      20         source('P-HALF',cats='user'); go(); track()
+2025.115.08:50:50      80         vlbi_tsys()
+2025.115.08:52:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.08:53:00      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.08:58:00
+
+# ### Block for P-HALF scan 7 'No0098' at 2025.115.09:01:20 in 200s #############
+2025.115.08:58:00      20         source('P-HALF',cats='user'); go(); track()
+2025.115.08:58:25      80         vlbi_tsys()
+2025.115.08:59:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.09:01:20      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.09:06:20
+
+# ### Block for 1921-293 scan 8 'No0105' at 2025.115.09:17:40 in 680s ###########
+# 
+# OPERATOR free 8 min 55 sec until VLBI calibrations to start at 2025.115.09:15:05
+# 
+2025.115.09:06:20      1          print('You have 8 min 55 sec until the next VLBI calibration scan at 2025.115.09:15:05.')
+2025.115.09:15:05      20         source('1921-293',cats='user'); go(); track()
+2025.115.09:15:30      80         vlbi_tsys()
+2025.115.09:16:55      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.09:17:40      180        vlbi_scan(t_mins=3,targetSource='1921-293')
+#     scan ends at 2025.115.09:20:40
+
+# ### Block for P-HALF scan 9 'No0106' at 2025.115.09:22:50 in 130s #############
+2025.115.09:20:40      20         source('P-HALF',cats='user'); go(); track()
+2025.115.09:21:05      80         vlbi_tsys()
+#                      gap        max ~0 min 20 sec
+2025.115.09:22:50      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.09:27:50
+
+# ### Block for P-HALF scan 10 'No0110' at 2025.115.09:31:10 in 200s ############
+2025.115.09:27:50      20         source('P-HALF',cats='user'); go(); track()
+2025.115.09:28:15      80         vlbi_tsys()
+2025.115.09:29:40      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.09:31:10      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.09:36:10
+
+# ### Block for P-HALF scan 11 'No0114' at 2025.115.09:40:50 in 280s ############
+2025.115.09:38:15      20         source('P-HALF',cats='user'); go(); track()
+2025.115.09:38:40      80         vlbi_tsys()
+2025.115.09:40:05      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.09:40:50      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.09:45:50
+
+# ### Block for P-HALF scan 12 'No0118' at 2025.115.09:49:10 in 200s ############
+2025.115.09:45:50      20         source('P-HALF',cats='user'); go(); track()
+2025.115.09:46:15      80         vlbi_tsys()
+2025.115.09:47:40      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.09:49:10      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.09:54:10
+
+# ### Block for REALSGRA scan 13 'No0125' at 2025.115.10:05:10 in 660s ##########
+# 
+# OPERATOR free 8 min 35 sec until VLBI calibrations to start at 2025.115.10:02:35
+# 
+2025.115.09:54:10      1          print('You have 8 min 35 sec until the next VLBI calibration scan at 2025.115.10:02:35.')
+2025.115.10:02:35      20         source('REALSGRA',cats='user'); go(); track()
+2025.115.10:03:00      80         vlbi_tsys()
+2025.115.10:04:25      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.10:05:10      300        vlbi_scan(t_mins=5,targetSource='REALSGRA')
+#     scan ends at 2025.115.10:10:10
+
+# ### Block for REALIRS7 scan 14 'No0128' at 2025.115.10:13:30 in 200s ##########
+2025.115.10:10:10      20         source('REALIRS7',cats='user'); go(); track()
+2025.115.10:10:35      80         vlbi_tsys()
+2025.115.10:12:00      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.10:13:30      300        vlbi_scan(t_mins=5,targetSource='REALIRS7')
+#     scan ends at 2025.115.10:18:30
+
+# ### Block for P-HALF scan 15 'No0132' at 2025.115.10:23:10 in 280s ############
+2025.115.10:20:35      20         source('P-HALF',cats='user'); go(); track()
+2025.115.10:21:00      80         vlbi_tsys()
+2025.115.10:22:25      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.10:23:10      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.10:28:10
+
+# ### Block for P-HALF scan 16 'No0135' at 2025.115.10:31:30 in 200s ############
+2025.115.10:28:10      20         source('P-HALF',cats='user'); go(); track()
+2025.115.10:28:35      80         vlbi_tsys()
+2025.115.10:30:00      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.10:31:30      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.10:36:30
+
+# ### Block for 1921-293 scan 17 'No0142' at 2025.115.10:47:05 in 635s ##########
+# 
+# OPERATOR free 8 min 10 sec until VLBI calibrations to start at 2025.115.10:44:30
+# 
+2025.115.10:36:30      1          print('You have 8 min 10 sec until the next VLBI calibration scan at 2025.115.10:44:30.')
+2025.115.10:44:30      20         source('1921-293',cats='user'); go(); track()
+2025.115.10:44:55      80         vlbi_tsys()
+2025.115.10:46:20      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.10:47:05      180        vlbi_scan(t_mins=3,targetSource='1921-293')
+#     scan ends at 2025.115.10:50:05
+
+# ### Block for P-HALF scan 18 'No0143' at 2025.115.10:52:15 in 130s ############
+2025.115.10:50:05      20         source('P-HALF',cats='user'); go(); track()
+2025.115.10:50:30      80         vlbi_tsys()
+#                      gap        max ~0 min 20 sec
+2025.115.10:52:15      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.10:57:15
+
+# ### Block for P-HALF scan 19 'No0145' at 2025.115.11:00:35 in 200s ############
+2025.115.10:57:15      20         source('P-HALF',cats='user'); go(); track()
+2025.115.10:57:40      80         vlbi_tsys()
+2025.115.10:59:05      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.11:00:35      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.11:05:35
+
+# ### Block for P-HALF scan 20 'No0149' at 2025.115.11:10:15 in 280s ############
+2025.115.11:07:40      20         source('P-HALF',cats='user'); go(); track()
+2025.115.11:08:05      80         vlbi_tsys()
+2025.115.11:09:30      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.11:10:15      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.11:15:15
+
+# ### Block for P-HALF scan 21 'No0151' at 2025.115.11:18:35 in 200s ############
+2025.115.11:15:15      20         source('P-HALF',cats='user'); go(); track()
+2025.115.11:15:40      80         vlbi_tsys()
+2025.115.11:17:05      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.11:18:35      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.11:23:35
+
+# ### Block for 1921-293 scan 22 'No0158' at 2025.115.11:33:05 in 570s ##########
+# 
+# OPERATOR free 7 min 05 sec until VLBI calibrations to start at 2025.115.11:30:30
+# 
+2025.115.11:23:35      1          print('You have 7 min 05 sec until the next VLBI calibration scan at 2025.115.11:30:30.')
+2025.115.11:30:30      20         source('1921-293',cats='user'); go(); track()
+2025.115.11:30:55      80         vlbi_tsys()
+2025.115.11:32:20      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.11:33:05      180        vlbi_scan(t_mins=3,targetSource='1921-293')
+#     scan ends at 2025.115.11:36:05
+
+# ### Block for P-HALF scan 23 'No0161' at 2025.115.11:40:15 in 250s ############
+2025.115.11:37:40      20         source('P-HALF',cats='user'); go(); track()
+2025.115.11:38:05      80         vlbi_tsys()
+2025.115.11:39:30      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.11:40:15      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.11:45:15
+
+# ### Block for P-HALF scan 24 'No0163' at 2025.115.11:48:35 in 200s ############
+2025.115.11:45:15      20         source('P-HALF',cats='user'); go(); track()
+2025.115.11:45:40      80         vlbi_tsys()
+2025.115.11:47:05      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.11:48:35      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.11:53:35
+
+# ### Block for P-HALF scan 25 'No0167' at 2025.115.11:58:15 in 280s ############
+2025.115.11:55:40      20         source('P-HALF',cats='user'); go(); track()
+2025.115.11:56:05      80         vlbi_tsys()
+2025.115.11:57:30      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.11:58:15      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.12:03:15
+
+# ### Block for P-HALF scan 26 'No0169' at 2025.115.12:06:35 in 200s ############
+2025.115.12:03:15      20         source('P-HALF',cats='user'); go(); track()
+2025.115.12:03:40      80         vlbi_tsys()
+2025.115.12:05:05      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.12:06:35      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.12:11:35
+
+# ### Block for 1921-293 scan 27 'No0175' at 2025.115.12:20:25 in 530s ##########
+# 
+# OPERATOR free 6 min 25 sec until VLBI calibrations to start at 2025.115.12:17:50
+# 
+2025.115.12:11:35      1          print('You have 6 min 25 sec until the next VLBI calibration scan at 2025.115.12:17:50.')
+2025.115.12:17:50      20         source('1921-293',cats='user'); go(); track()
+2025.115.12:18:15      80         vlbi_tsys()
+2025.115.12:19:40      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.12:20:25      180        vlbi_scan(t_mins=3,targetSource='1921-293')
+#     scan ends at 2025.115.12:23:25
+
+# ### Block for P-HALF scan 28 'No0178' at 2025.115.12:27:05 in 220s ############
+2025.115.12:23:25      20         source('P-HALF',cats='user'); go(); track()
+2025.115.12:23:50      80         vlbi_tsys()
+2025.115.12:25:15      30         vlbi_reference_scan()
+#                      gap        max ~1 min 15 sec
+2025.115.12:27:05      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.12:32:05
+
+# ### Block for P-HALF scan 29 'No0180' at 2025.115.12:35:25 in 200s ############
+2025.115.12:32:05      20         source('P-HALF',cats='user'); go(); track()
+2025.115.12:32:30      80         vlbi_tsys()
+2025.115.12:33:55      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.115.12:35:25      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.12:40:25
+
+# ### Block for P-HALF scan 30 'No0183' at 2025.115.12:43:55 in 210s ############
+2025.115.12:40:25      20         source('P-HALF',cats='user'); go(); track()
+2025.115.12:40:50      80         vlbi_tsys()
+2025.115.12:42:15      30         vlbi_reference_scan()
+#                      gap        max ~1 min 05 sec
+2025.115.12:43:55      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.12:48:55
+
+# ### Block for 1921-293 scan 31 'No0187' at 2025.115.12:55:35 in 400s ##########
+2025.115.12:53:00      20         source('1921-293',cats='user'); go(); track()
+2025.115.12:53:25      80         vlbi_tsys()
+2025.115.12:54:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.12:55:35      300        vlbi_scan(t_mins=5,targetSource='1921-293')
+#     scan ends at 2025.115.13:00:35
+
+# ### Block for P-HALF scan 32 'No0190' at 2025.115.13:06:35 in 360s ############
+2025.115.13:04:00      20         source('P-HALF',cats='user'); go(); track()
+2025.115.13:04:25      80         vlbi_tsys()
+2025.115.13:05:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.13:06:35      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.13:11:35
+
+# ### Block for P-HALF scan 33 'No0191' at 2025.115.13:12:25 in 50s #############
+2025.115.13:11:35      20         source('P-HALF',cats='user'); go(); track()
+#                      gap        max ~0 min 25 sec
+2025.115.13:12:25      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.13:17:25
+
+# ### Block for P-HALF scan 34 'No0194' at 2025.115.13:22:35 in 310s ############
+2025.115.13:20:00      20         source('P-HALF',cats='user'); go(); track()
+2025.115.13:20:25      80         vlbi_tsys()
+2025.115.13:21:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.115.13:22:35      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.13:27:35
+
+# ### Block for P-HALF scan 35 'No0195' at 2025.115.13:28:25 in 50s #############
+2025.115.13:27:35      20         source('P-HALF',cats='user'); go(); track()
+#                      gap        max ~0 min 25 sec
+2025.115.13:28:25      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.13:33:25
+
+# ### Block for P-HALF scan 36 'No0196' at 2025.115.13:34:15 in 50s #############
+2025.115.13:33:25      20         source('P-HALF',cats='user'); go(); track()
+#                      gap        max ~0 min 25 sec
+2025.115.13:34:15      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.13:39:15
+
+# ### Block for P-HALF scan 37 'No0197' at 2025.115.13:40:05 in 50s #############
+2025.115.13:39:15      20         source('P-HALF',cats='user'); go(); track()
+#                      gap        max ~0 min 25 sec
+2025.115.13:40:05      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.13:45:05
+
+# ### Block for P-HALF scan 38 'No0198' at 2025.115.13:45:55 in 50s #############
+2025.115.13:45:05      20         source('P-HALF',cats='user'); go(); track()
+#                      gap        max ~0 min 25 sec
+2025.115.13:45:55      300        vlbi_scan(t_mins=5,targetSource='P-HALF')
+#     scan ends at 2025.115.13:50:55
+
+# ### Block for 3C454.3 scan 39 'No0201' at 2025.115.13:57:50 in 200s ###########
+2025.115.13:50:55      20         source('3C454.3',cats='user'); go(); track()
+2025.115.13:51:20      80         vlbi_tsys()
+2025.115.13:52:45      30         vlbi_reference_scan()
+#                      gap        max ~4 min 30 sec
+2025.115.13:57:50      180        vlbi_scan(t_mins=3,targetSource='3C454.3')
+#     scan ends at 2025.115.14:00:50
+
+
+# Finished VLBI schedule
+2025.115.14:01:20      1          remote_control('off')
+################################################################################
+### end of schedule
+################################################################################
