@@ -13,8 +13,13 @@ def usage():
 	print ('')
 	print ('The .obs file can be generated from a VEX file using vex2apecs.py,')
 	print ('or from the vex2xml output XML file using xml2apecs.py.')
-	print ('The .obs file has to contain three columns, the starting UT time,')
-	print ('duration and the APECS command to execute at the given time.')
+	print ('')
+	print ('The .obs file contains timed commands that get sent into APECS')
+	print ('at specific UT times. The file may contain comment lines (#).')
+	print ('Timed commands have three columns: the starting UT time,')
+	print ('a guesstimate duration in seconds, and the APECS command ')
+	print ('to execute at that start time.')
+	print ('')
 	print ('Note that APECS must be in remote_control(\'on\') mode.')
 	print ('')
 
@@ -26,20 +31,21 @@ logfile = None
 
 # APECS remote mode
 use_remote_mode = True
+# APECS_host = "10.0.2.170"   # IP of observer3.apex-telescope.org
 APECS_host = "10.0.2.209"   # IP of observer.apex-telescope.org
 APECS_port = 22122          # UDP port on which APECS accepts commands (APECS: remote_control('on'))
 REPLY_port = 22127          # local UDP port on which to wait for a reply
 sock = None
 
-# APECS system (observer.apex-telescope.org) runs from abm.apex-telesc .IRIG. that is running TAI
+# APECS system (observer3) runs from abm.apex-telesc .IRIG. that is running TAI
 # VLBI is using UTC; need to correct for http://www.leapsecond.com/java/gpsclock.htm
 if ('observer' not in platform.node()) and ('10.0.2.209' not in platform.node()):
 	offsetUTC = 0
-	print ('\nINFO: Apparently not running on observer.apex-telescope.org. Not applying TAI/UTC leap seconds correction!\n')
+	print ('\nINFO: Apparently not running on Observer3. Not applying TAI/UTC leap seconds correction!\n')
 else:
 	# The TAI time leads UTC by 37 seconds as of April 2024
 	offsetUTC = 37
-	print ('\nINFO: Apparently running on observer.apex-telescope.org. Correcting computer time (TAI) by %d leap seconds to have UTC!\n' % (offsetUTC))
+	print ('\nINFO: Apparently running on Observer3. Correcting computer time (TAI) by %d leap seconds to have UTC!\n' % (offsetUTC))
 
 # Ctrl-C
 gotCtrlC = False
@@ -57,6 +63,8 @@ def waitUntil(T,Tsnp='',msg=''):
 	'''Waits until UTC datetime T, corrected for local clock offset (e.g. TAI time)'''
 	global offsetUTC, gotCtrlC
 	iter = 0
+	if len(msg) > 100:
+		msg = msg[0:96] + ' ...'
 	while True:
 		Tcurr_obs3 = datetime.datetime.utcnow()
 		Tcurr = Tcurr_obs3 + datetime.timedelta(seconds=-offsetUTC)
@@ -68,7 +76,8 @@ def waitUntil(T,Tsnp='',msg=''):
 		# print (dT)
 		iter = iter + 1
 		sys.stdout.write('\r')
-		sys.stdout.write('Still %ds from now (%s) to start (%s) of %s' % (int(dT),datetime2SNP(Tcurr),Tsnp,msg))
+		#sys.stdout.write('Still %ds from now (%s) to start (%s) of %s' % (int(dT),datetime2SNP(Tcurr),Tsnp,msg))
+		sys.stdout.write('Still %ds till dispatch @ %s of cmd "%s"' % (int(dT),Tsnp,msg))
 		sys.stdout.flush()
 		time.sleep(0.25)
 
