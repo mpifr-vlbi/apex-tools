@@ -69,7 +69,9 @@ double processRecordingByDFT(const char *infilename, int chan, int fftlen, int n
 
     // Open VDIF file
     mark5_library_init();
-    if (VDIF_CHAN_BW_MHZ == 1024) {
+    if (VDIF_CHAN_BW_MHZ == 64) {
+        fmt = new_mark5_format_vdif(2048, 8, 2, 1, 8192, 32, 0);
+    } else if (VDIF_CHAN_BW_MHZ == 1024) {
         fmt = new_mark5_format_vdif(4096, 1, 2, 1, 8192, 32, 0);
     } else {
         fmt = new_mark5_format_vdif(8192, 1, 2, 1, 8192, 32, 0);
