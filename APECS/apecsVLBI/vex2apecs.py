@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 '''
-Usage: vex2apecs.py <vexfile>
-
 Produces an .obs file that contains timed APECS commands for the VLBI observation.
 The .obs file can later be run with apecsVLBI.py. Does not yet support frequency
 changes during an observation (different MODEs in VEX).
 '''
 
+import argparse
 import sys
 import datetime
 import ntpath
+import glob
 ## from VexLib import vex # had to give up on this, uses ply.lex, outdated, now ugly manual parsing
-
-rx_name = 'NFLASH230'
 
 always_send_source = False  # set to True to always send source() go() track() for every scan, rather than only at each source change
 
@@ -46,6 +44,16 @@ def timedelta2MinsSecs_str(dt):
 	'''Convert timedelta into a string'''
 	mins, secs = divmod(dt.total_seconds(), 60)
 	return "%d min %02d sec" % (mins,secs)
+
+
+def getLegitSetups(obspath="/homes/t-01??.f-9996a-20??/Observation/"):
+	# glob.glob("*_setup.apecs", root_dir=obspath) # too new for observer.apex-telescope.org Python
+	setups = []
+	for fpath in glob.iglob(obspath + "/*_setup.apecs"):
+		fname = ntpath.basename(fpath)
+		fname = fname.replace('_setup.apecs','')
+		setups += [fname]
+	return sorted(setups)
 
 
 # ===========================================================================================
@@ -170,10 +178,10 @@ def obs_writeLine(fd, time, dur,cmd):
 	fd.write('%-22s %-10s %s\n' % (time,str(dur),cmd))
 
 
-def obs_writeStandardsetup(fd, rxName='NFLASH230'):
-	rx_setup = '%s_setup.apecs' % (rxName)
-	rx_commands = 'vlbi-%s_commands.py' % (rxName)
-	obs_writeLine(fd, '@always', 10, 'execfile(\'%s\')' % (rx_setup))
+def obs_writeStandardsetup(fd, setupName='NFLASH230'):
+	rx_setup = '%s_setup.apecs' % (setupName)
+	rx_commands = 'vlbi-%s_commands.py' % (setupName)
+	# obs_writeLine(fd, '@always', 10, 'execfile(\'%s\')' % (rx_setup)) # commented due to a user interaction -requiring cmd in SEPIA*/NFLASH*.apecs added in e24b07
 	obs_writeLine(fd, '@always', 2, 'execfile(\'%s\')' % (rx_commands))
 	fd.write('\n')
 
@@ -311,7 +319,7 @@ def obs_writeScans(fd,scans,sources):
 			## When not doing the auto-off, we do not risk forgetting to turn remote ON again.
 			note = 'You have %s until the next VLBI calibration scan at %s.' % (timedelta2MinsSecs_str(Loperatorgap),datetimeToSNP_str(T_cal_start))
 			obs_writeLine(fd, datetimeToSNP_str(Tprev_end), 1, 'print(\'%s\')' % (note))
-	
+
 		for calEntry in calBlock:
 			calT = T_cal_start + datetime.timedelta(seconds=calEntry['offset'])
 			obs_writeLine(fd, datetimeToSNP_str(calT), calEntry['dur'], calEntry['cmd'])
@@ -342,32 +350,37 @@ def obs_writeScans(fd,scans,sources):
 
 def run(args):
 
-	if (len(args) != 2) or (args[1] == '--help' or args[1]=='-h'):
-		print(__doc__)
+	legit_setups = getLegitSetups()
+	legit_setup_names = " ".join(legit_setups)
+
+	parser = argparse.ArgumentParser(description=__doc__)
+	parser.add_argument("-s", "--setup", default='NFLASH230', type=str, help="the APECS setup in ~/Observation/ to use (options: %s)" % (legit_setup_names))
+	parser.add_argument('vexfile',  help="name of VEX file to convert")
+	args = parser.parse_args()
+
+	if args.setup not in legit_setups:
+		print("Unknown setup '%s': use one of %s found under ~/Observation/" % (args.setup,legit_setup_names))
 		sys.exit(-1)
 
 	site = 'Ax'
-	rxName = 'NFLASH230'
 
-	vexfile = args[1]
-
-	sources = getAllSources(vexfile)
-	scans = getAllScans(vexfile, site)
+	sources = getAllSources(args.vexfile)
+	scans = getAllScans(args.vexfile, site)
 	if len(scans) < 1:
-		print ('\nError: no scans found for %s in %s!\n' % (site,vexfile))
+		print ('\nError: no scans found for %s in %s!\n' % (site,args.vexfile))
 		return
 
-	obsfile = ntpath.basename(vexfile)
+	obsfile = ntpath.basename(args.vexfile)
 	obsfile = obsfile.replace('.vex', '.apecs.obs')
 
 	fd = open(obsfile, 'w')
-	obs_writeHeader(fd,site,vexfile)
-	obs_writeStandardsetup(fd,rxName)
+	obs_writeHeader(fd, site,args.vexfile)
+	obs_writeStandardsetup(fd,args.setup)
 	obs_writeScans(fd,scans,sources)
 	obs_writeFooter(fd)
 	fd.close()
 
-	print ('\nDone. Created APECS observing file %s with %d scans.\n' % (obsfile,len(scans)))
+	print ('\nDone. Created APECS observing file %s with %d scans for %s.\n' % (obsfile,len(scans),args.setup))
 
 
 run(sys.argv)

@@ -1,0 +1,121 @@
+#
+# APEX observing script for station Ax from file vexfiles/triggered/c251z114.vex
+# File created on 2025.106.15:10:54 UT
+#
+# Columns: 1) Start time 2) Duration in seconds 3) APECS command 
+# Details on the columns:
+#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+#    2) estimated duration of the command in seconds
+#    3) APECS command and parameters to execute. If the command includes whitespace.
+#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+#
+# At time              Duration   Command
+@always                2          execfile('vlbi-N3AR90_DWKim114_commands.py')
+
+# ### Block for 1308+326 scan 1 'No0013' at 2025.118.03:15:00 in 200s ###########
+2025.118.03:11:40      20         source('1308+326',cats='user'); go(); track()
+2025.118.03:12:05      80         vlbi_tsys()
+2025.118.03:13:30      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.118.03:15:00      300        vlbi_scan(t_mins=5,targetSource='1308+326')
+#     scan ends at 2025.118.03:20:00
+
+# ### Block for 1308+326 scan 2 'No0014' at 2025.118.03:21:30 in 90s ############
+2025.118.03:20:00      20         source('1308+326',cats='user'); go(); track()
+2025.118.03:20:25      22         vlbi_tsys(mode_='HOT',time_s=5)
+2025.118.03:20:52      30         vlbi_reference_scan()
+#                      gap        max ~0 min 03 sec
+2025.118.03:21:30      300        vlbi_scan(t_mins=5,targetSource='1308+326')
+#     scan ends at 2025.118.03:26:30
+
+# ### Block for 1308+326 scan 3 'No0015' at 2025.118.03:28:00 in 90s ############
+2025.118.03:26:30      20         source('1308+326',cats='user'); go(); track()
+2025.118.03:26:55      22         vlbi_tsys(mode_='HOT',time_s=5)
+2025.118.03:27:22      30         vlbi_reference_scan()
+#                      gap        max ~0 min 03 sec
+2025.118.03:28:00      300        vlbi_scan(t_mins=5,targetSource='1308+326')
+#     scan ends at 2025.118.03:33:00
+
+# ### Block for 1308+326 scan 4 'No0016' at 2025.118.03:39:20 in 380s ###########
+2025.118.03:36:45      20         source('1308+326',cats='user'); go(); track()
+2025.118.03:37:10      80         vlbi_tsys()
+2025.118.03:38:35      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.118.03:39:20      300        vlbi_scan(t_mins=5,targetSource='1308+326')
+#     scan ends at 2025.118.03:44:20
+
+# ### Block for 1308+326 scan 5 'No0017' at 2025.118.03:45:50 in 90s ############
+2025.118.03:44:20      20         source('1308+326',cats='user'); go(); track()
+2025.118.03:44:45      22         vlbi_tsys(mode_='HOT',time_s=5)
+2025.118.03:45:12      30         vlbi_reference_scan()
+#                      gap        max ~0 min 03 sec
+2025.118.03:45:50      300        vlbi_scan(t_mins=5,targetSource='1308+326')
+#     scan ends at 2025.118.03:50:50
+
+# ### Block for 1308+326 scan 6 'No0018' at 2025.118.03:52:20 in 90s ############
+2025.118.03:50:50      20         source('1308+326',cats='user'); go(); track()
+2025.118.03:51:15      22         vlbi_tsys(mode_='HOT',time_s=5)
+2025.118.03:51:42      30         vlbi_reference_scan()
+#                      gap        max ~0 min 03 sec
+2025.118.03:52:20      300        vlbi_scan(t_mins=5,targetSource='1308+326')
+#     scan ends at 2025.118.03:57:20
+
+# ### Block for 1741-038 scan 7 'No0019' at 2025.118.04:07:30 in 610s ###########
+# 
+# OPERATOR free 7 min 45 sec until VLBI calibrations to start at 2025.118.04:04:55
+# 
+2025.118.03:57:20      1          print('You have 7 min 45 sec until the next VLBI calibration scan at 2025.118.04:04:55.')
+2025.118.04:04:55      20         source('1741-038',cats='user'); go(); track()
+2025.118.04:05:20      80         vlbi_tsys()
+2025.118.04:06:45      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.118.04:07:30      300        vlbi_scan(t_mins=5,targetSource='1741-038')
+#     scan ends at 2025.118.04:12:30
+
+# ### Block for 1741-038 scan 8 'No0020' at 2025.118.04:14:00 in 90s ############
+2025.118.04:12:30      20         source('1741-038',cats='user'); go(); track()
+2025.118.04:12:55      22         vlbi_tsys(mode_='HOT',time_s=5)
+2025.118.04:13:22      30         vlbi_reference_scan()
+#                      gap        max ~0 min 03 sec
+2025.118.04:14:00      300        vlbi_scan(t_mins=5,targetSource='1741-038')
+#     scan ends at 2025.118.04:19:00
+
+# ### Block for 1741-038 scan 9 'No0021' at 2025.118.04:20:30 in 90s ############
+2025.118.04:19:00      20         source('1741-038',cats='user'); go(); track()
+2025.118.04:19:25      22         vlbi_tsys(mode_='HOT',time_s=5)
+2025.118.04:19:52      30         vlbi_reference_scan()
+#                      gap        max ~0 min 03 sec
+2025.118.04:20:30      300        vlbi_scan(t_mins=5,targetSource='1741-038')
+#     scan ends at 2025.118.04:25:30
+
+# ### Block for 1741-038 scan 10 'No0022' at 2025.118.04:31:50 in 380s ##########
+2025.118.04:29:15      20         source('1741-038',cats='user'); go(); track()
+2025.118.04:29:40      80         vlbi_tsys()
+2025.118.04:31:05      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.118.04:31:50      300        vlbi_scan(t_mins=5,targetSource='1741-038')
+#     scan ends at 2025.118.04:36:50
+
+# ### Block for 1741-038 scan 11 'No0023' at 2025.118.04:38:20 in 90s ###########
+2025.118.04:36:50      20         source('1741-038',cats='user'); go(); track()
+2025.118.04:37:15      22         vlbi_tsys(mode_='HOT',time_s=5)
+2025.118.04:37:42      30         vlbi_reference_scan()
+#                      gap        max ~0 min 03 sec
+2025.118.04:38:20      300        vlbi_scan(t_mins=5,targetSource='1741-038')
+#     scan ends at 2025.118.04:43:20
+
+# ### Block for 1741-038 scan 12 'No0024' at 2025.118.04:44:50 in 200s ##########
+2025.118.04:43:20      20         source('1741-038',cats='user'); go(); track()
+2025.118.04:43:45      80         vlbi_tsys()
+2025.118.04:45:10      30         vlbi_reference_scan()
+#                      TIME       ran short, ~-1 min 05 sec "gap"
+2025.118.04:44:50      300        vlbi_scan(t_mins=5,targetSource='1741-038')
+#     scan ends at 2025.118.04:49:50
+
+
+# Finished VLBI schedule
+2025.118.04:50:20      1          remote_control('off')
+################################################################################
+### end of schedule
+################################################################################

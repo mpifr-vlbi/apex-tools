@@ -11,7 +11,7 @@ import os
 
 def vlbi_tuning():
     '''
-    (Re)Configure nflash230.
+    (Re)Configure n3ar90.
 
     This needs to be invoked regulary in case 1) operator interaction left apecs
     tuned to e.g. CO line instead of vlbi freq, or 2) backend for Tsys was left
@@ -22,15 +22,14 @@ def vlbi_tuning():
           correct VLBI tuning at every opportunity.
     '''
 
-    setup_nflash( fenames=['nflash230'],
-        linenames=['vlbifreq230'],
-        sidebands=[''], mode='spec', sbwidths=[8], numchans=[65536],
+    setup_n3ar90(
+        linename='vlbifreq104',
+        sideband='', mode='spec', sbwidth=8, numchan=65536,
         cats='all',
         doppler='off' )
-
-    nflash230.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
-    tp()                               # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
-    use_ref('OFF')                     # avoid going off-source during VLBI scan on()
+    n3ar90.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
+    tp()                            # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
+    use_ref('OFF')                  # avoid going off-source during VLBI scan on()
 
 
 def vlbi_tsys(mode_='COLD',time_s=10):
@@ -100,65 +99,12 @@ def vlbi_scan(t_mins=5,targetSource=''):
     # on(drift='no',time=30) # EHT2021: changed to 50% of t_mins from middle of e21b09 due to overheads (30%) that are greater than before
     on(drift='no',time=30)   # EHT2022, EHT2023: assume same high overhead of EHT2021. Worked out okay in e22b19 with 1-5min long scans.
 
+    # Alternate method attempted for e24e07: single very long on()-scan, perhaps no phase jumps them, but perhaps no contiguous sub-integration data either?
+    #on(drift='no',time=int(30*t_mins))
+    # [[ e24e07 till e24d10 : used single on(drift='no',time=int(30*t_mins)) ]]
+    # [[ e24g11: reverted back to the eht2023 known safe repeat(t_mins) x on(drift='no',time=30) ]]
+
     # Continue tracking for remainder of VLBI scan; ought to be less than auto-standby timeout time
     repeat(1)
     track()
 
-
-#############################################################################
-# probably unused functions
-#############################################################################
-
-def vlbi_wpoint(t=20,cal=1):
-    '''Wobbler pointing for VLBI.'''
-    nflash230.configure(doppler='on')  # should be OFF
-    if (cal):
-        calibrate('cold')
-    wob(amplitude=75, rate=1.5, mode='pos')
-    #point(150, time=t)
-    point(length=54, unit='arcsec', time=t, mode='ras', points=5, direction='x')
-    wob(amplitude=75, rate=1, mode='sym')
-    tp()
-    nflash230.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
-
-
-def vlbi_focus(axis='Z',t=6):
-    '''Focus scan for VLBI.'''
-    nflash230.configure(doppler='on')
-    vlbi_focus.func_defaults = (axis,)
-    wob(amplitude=75, rate=1.5, mode='pos')
-    focus(amplitude=1, points=5, axis=axis, time=t)
-    wob(amplitude=75, rate=1, mode='sym')
-    tp()
-    nflash230.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
-
-
-def vlbi_get_calibration():
-    '''Collect calibration results'''
-    onlineCal = apexObsUtils.getApexCalibrator()
-    try:
-        calResult = onlineCal.getCalResult('PI230-PBE_C',1,0)
-    except:
-        print 'No calibration result available.'
-
-
-def vwcpoint(t=24., l=[], cal=1, line='vlbifreq230', dopp='OFF', ptRun=False, dbpcorr=False):
-    '''
-
-    Continuum pointing cross scan in beam switching (wob) mode using pseudocontinumm.
-
-    Parameters:   t: Integration time per subscan. Must be given.
-                  l: Length of the arms of the cross
-                     [] = use default value for current FE.
-                cal: 1 = calibrate before the pointing
-               line: 'vlbifreq230' = do pointing at vlbifreq230
-                     '' = do pointing at current frequency
-                     '*' = use standard line for current FE.
-               dopp: 'ON' apply Doppler correction in the tuning frequency.
-              ptRun: True = add "POINTING RUN" to the log comments.
-            dbpcorr: True = apply pointing corrections from database.
-
-    '''
-    ask = 0
-    doPoint(t, l, ask, cal, line, dopp, ptRun,
-            dbpcorr, obsmode='wob', mode='otf')

@@ -60,10 +60,10 @@ if __name__ == "__main__":
                 dbbc3.tap(0,2, "2000-4000_64taps.flt")
                 dbbc3.tap(1,1, "2000-4000_64taps.flt")
                 dbbc3.tap(1,2, "2000-4000_64taps.flt")
-                dbbc3.tap(2,1, "2000-3000_64taps.flt")
-                dbbc3.tap(2,2, "2000-3000_64taps.flt")
-                dbbc3.tap(3,1, "2000-3000_64taps.flt")
-                dbbc3.tap(3,2, "2000-3000_64taps.flt")
+                dbbc3.tap(2,1, "2000-4000_64taps.flt")
+                dbbc3.tap(2,2, "2000-4000_64taps.flt")
+                dbbc3.tap(3,1, "2000-4000_64taps.flt")
+                dbbc3.tap(3,2, "2000-4000_64taps.flt")
 
                 # setting 2nd LO freq
                 # board A&B (690 GHz) LO = 8038 = 2*4019 MHz

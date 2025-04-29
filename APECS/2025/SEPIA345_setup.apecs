@@ -1,5 +1,5 @@
-sourcecats('t-0113.f-9996a-2024.cat')
-linecats('t-0113.f-9996a-2024.lin')
+sourcecats('t-0115.f-9996a-2025.cat')
+linecats('t-0115.f-9996a-2025.lin')
 
 exec_apecs_script('sepia_commands')
 
@@ -24,7 +24,9 @@ use_foc_temp_corr('on')
 use_ref('on')
 continuous_data('off')
 skip_hardware_setup('off')
+use_tiltmeters('on','on')
 sepia345.configure(doppler='off')
+use_foc_temp_corr('on')     # 'off' in e24a08 for Testing for phase and amplitude jumps, 'on' in other track
 tp() # Added to be extra sure we disable the wobbler after line pointings (JPE: 2021-04-13)
 
 ################################################################

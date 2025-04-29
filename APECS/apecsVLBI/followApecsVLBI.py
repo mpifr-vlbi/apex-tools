@@ -30,7 +30,7 @@ dispatcherProcess = 'apecsVLBI.py'
 
 # APECS system (observer3) runs from abm.apex-telesc .IRIG. that is running TAI
 # VLBI is using UTC; need to correct for http://www.leapsecond.com/java/gpsclock.htm
-is_observer3 = ('observer3' in platform.node()) or ('10.0.2.170' in platform.node())
+is_observer3 = ('observer' in platform.node()) or ('10.0.2.209' in platform.node())
 if not is_observer3:
 	offsetUTC = 0
 	print ('\nINFO: Apparently not running on Observer3. Not applying TAI/UTC leap seconds correction!\n')

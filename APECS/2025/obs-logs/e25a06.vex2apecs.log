@@ -1,0 +1,8 @@
+$ ./vex2apecs.py vexfiles/triggered/e25a06.vex
+OJ287                 EQ  2000   08:54:48.8749297   20:06:30.640824   LSR 0.0
+3C273                 EQ  2000   12:29:06.6997419   02:03:08.598116   LSR 0.0
+M87                   EQ  2000   12:30:49.4233841   12:23:28.043686   LSR 0.0
+3C279                 EQ  2000   12:56:11.1665796  -05:47:21.525151   LSR 0.0
+
+Done. Created APECS observing file e25a06.apecs.obs with 77 scans for NFLASH230.
+
