@@ -58,7 +58,7 @@
     #define HAVE_LO_OFFSET   0       /* 1: LO offset present and should be removed, 0: disable removal of LO offset */
     #define USE_FAST_LO_OFFSET 0     /* 1: use approximation, de-rotate tone in bin after DFT, faster, 0: no approximation, de-rotate the entire sample stream */
 #endif
-#ifdef STATION_APEX_2024_RS_86G // GMVA tone in VDIF ch 1 (of 8-channel) with benchtop 1st LO synth having no LO offset */
+#ifdef STATION_APEX_2024_RS_86G      /* GMVA 2024 tone in VDIF ch 1 (of 8-channel) with benchtop 1st LO synth having no LO offset */
     #define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
     #define VDIF_CHAN_BW_MHZ 64      /* Baseband signal bandwidth in MHz */
     #define TONE_FREQ_MHZ    19      /* Baseband tone freq in MHz */
@@ -66,13 +66,13 @@
     #define HAVE_LO_OFFSET   0
     #define USE_FAST_LO_OFFSET 0
 #endif
-#ifdef STATION_APEX_NOV24_86G
+#ifdef STATION_APEX_NOV24_86G        /* FPT Test */
     #define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
     #define VDIF_CHAN_BW_MHZ 1024    /* Baseband signal bandwidth in MHz */
     #define TONE_FREQ_MHZ    83      /* Baseband tone freq in MHz */
     #define LO_OFFSET_HZ     0
 #endif
-#ifdef STATION_APEX_NOV24_260G
+#ifdef STATION_APEX_NOV24_260G       /* FPT Test */
     #define VDIF_CHAN_IDX    0       /* VDIF channel that has the tone; 0-based indexing */
     #define VDIF_CHAN_BW_MHZ 1024    /* Baseband signal bandwidth in MHz */
     #define TONE_FREQ_MHZ    249     /* Baseband tone freq in MHz */
@@ -91,11 +91,16 @@
 #endif
 
 /** Fourier transform and averaging */
-#define DFT_LENGTH 409600     /* 204800 ch over 4096 Ms/s = 20 kHz/channel */
-#define DFT_AVG  4000         /* 400 msec == EHT 2018 visibility data AP of 0.4s */
-//#define DFT_AVG    1000     /* 1000 DFTs : 1000 blocks x 409600-point DFT / 4096Msps = 100 millisec */
-//#define DFT_AVG  100        /* 10 msec */
-//#define DFT_AVG  10         /* 1 msec */
+#ifdef STATION_APEX_2024_RS_86G
+    #define DFT_LENGTH 12800      /* 12800 ch over 128 Ms/s = 10 kHz/channel, 0.1 msec per DFT */
+    #define DFT_AVG  5120         /* 512 msec == GMVA 2024 visibility data AP of 0.512s */
+#else
+    #define DFT_LENGTH 409600     /* 204800 ch over 4096 Ms/s = 20 kHz/channel */
+    #define DFT_AVG  4000         /* 400 msec == EHT 2018 visibility data AP of 0.4s */
+    //#define DFT_AVG    1000     /* 1000 DFTs : 1000 blocks x 409600-point DFT / 4096Msps = 100 millisec */
+    //#define DFT_AVG  100        /* 10 msec */
+    //#define DFT_AVG  10         /* 1 msec */
+#endif
 
 #endif // M5TONE_HARDCODED_CONFS_H
 
