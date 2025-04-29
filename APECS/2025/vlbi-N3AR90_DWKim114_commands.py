@@ -24,7 +24,7 @@ def vlbi_tuning():
 
     setup_n3ar90(
         linename='vlbifreq114USB',
-        sideband='', mode='spec', sbwidth=8, numchan=65536,
+        sideband='', mode='spec', sbwidth=4, numchan=65536,
         cats='all',
         doppler='off' )
     n3ar90.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
