@@ -35,7 +35,7 @@ class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 		print("Connected to %s gpib addr %d device ID %s" % (self.gpib.host, self.address, str(self.devname).strip()))
 
 	def setFrequency(self, f_MHz):
-		cmd = "CF0 %.6f MH" % (f_MHz) # PDF p. 119 - 'Sets CW mode at F0 and opens the F0 parameter.'
+		cmd = "CF0 %.12f MH" % (f_MHz) # PDF p. 119 - 'Sets CW mode at F0 and opens the F0 parameter.'
 		if self.verbose:
 			print("Sending cmd: %s" % (cmd))
 		self.write(cmd)
@@ -80,7 +80,7 @@ class AnritsuMG369xA(PrologixGPIBEthernetDevice):
 		f = self.getFrequency()
 		p = self.getPower()
 		rfstate = '??' # todo
-		return "%.9f MHz / %.2f dBm / RF %s" % (f,p,rfstate)
+		return "%.12f MHz / %.2f dBm / RF %s" % (f,p,rfstate)
 
 
 parser = argparse.ArgumentParser(description="Anritsu MG369xA basic GPIB remote control via an attached Prologix GPIB-LAN converter", epilog=__doc__)
