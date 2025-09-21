@@ -6,10 +6,16 @@
 !
 ! GMVA Oct 2024:  overridden by using manual 1st LO synth
 ! vlbifreq86   98.100 GHz USB 
+!
 ! GMVA Apr 2024: bugfixed line setting (N3AR LO1 = 92.1 GHz LSB --> -6G = 86.1G LSB)
 ! vlbifreq86   86.100 GHz LSB
+!
 ! GMVA Apr 2025: flipped to USB to accomodate DWKims 30mins-post-GMVA 104G/114G obs
-vlbifreq86  86.436 GHz USB
+! vlbifreq86  86.436 GHz USB
+!
+! GMVA Autumn 2025: C252A C252B at 86G, C252C at 94G
+vlbifreq86   86.100 GHz LSB
+vlbifreq94   94.100 GHz LSB
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
