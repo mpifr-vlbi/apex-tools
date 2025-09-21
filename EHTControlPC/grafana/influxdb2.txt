@@ -1,0 +1,27 @@
+
+
+l: apex
+p: grafana4op
+
+Explore via  http://10.0.2.102:8086/
+
+Bucket
+  eht    retention 30d
+
+Measurements
+  cc_apex_ipmi_sensor
+  cc_apex_upsd
+  recorder1_*
+  recorder2_*
+  recorder3_*
+  recorder4_*
+
+Measurement cc_apex_upsd fields
+   real_power
+   ups_power
+   battery_charge_percent
+   input_voltage
+   output_current
+   output_voltage
+   output_frequency
+
