@@ -1,0 +1,31 @@
+###############################################################################
+# Telegraf config: Rec Room Temps
+# Lee JSON desde ESP8266 por USB y envía a InfluxDB
+#
+# File: /etc/telegraf/telegraf.d/recroomtemps.conf
+#
+###############################################################################
+
+# --- INPUT: serial vía comando exec ---
+[[inputs.exec]]
+## Ejecuta comando para leer el puerto serial
+commands = ["python /home/oper/src/apex-tools/EHTControlPC/telegraf/esp8266_DS18B20.py"]
+
+## Timeout de ejecución
+timeout = "5s"
+interval = "20s"
+
+## Indicamos que los datos son JSON
+# data_format = "json"
+data_format = "influx"
+
+## Campos que deben ser interpretados como strings
+# json_string_fields = ["devIDs"]
+
+
+[[outputs.influxdb_v2]]
+urls = ["http://localhost:8086"]
+token = "16GPmHAXsutcsNbZQZ9ON541gfMKMEVd2KU9Kezw6TdTHyc2ZWkAEuhY8CJUUlcW-3M_P28VzJDOspp0Ofdg8A=="
+organization = "APEX"
+bucket = "eht"
+
