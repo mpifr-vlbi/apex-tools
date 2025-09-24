@@ -20,6 +20,7 @@ The remoteAnritsuMG.py <commands> supported commands are
 '''
 
 import argparse
+import time
 
 # $  pip install git+git://github.com/nelsond/prologix-gpib-ethernet.git
 from plx_gpib_ethernet import PrologixGPIBEthernetDevice
@@ -93,27 +94,22 @@ anritsu = AnritsuMG369xA(host=args.host, address=int(args.gpib_addr))
 anritsu.open(verbose=False)
 print('Current settings: ', anritsu.getActiveSettings())
 
-while len(args.cmds) > 0:
-	cmd = args.cmds.pop(0).lower()
-	if cmd == 'freq':
-		f = args.cmds.pop(0).lower()
-		f_units = args.cmds.pop(0).lower()
-		if f_units == 'ghz':
-			f = '%.9f' % (float(f) * 1e3)
-		elif f_units == 'hz':
-			f = '%.9f' % (float(f) * 1e-6)
-		anritsu.setFrequency(float(f))
-	elif cmd == 'pow':
-		p = args.cmds.pop(0).lower()
-		p_units = args.cmds.pop(0).lower()
-		if p_units in ['dbm','db']:
-			anritsu.setPower(float(p))
-	elif cmd == 'output':
-		on = args.cmds.pop(0).lower() == 'on'
-		anritsu.enableRF(on)
-	else:
-		print("Unsupported command '%s'" % (cmd))
+f0 = 3042.9900
+# f0 = 1042.9900
+# f0 = 4433.9900
+# f0 = 2978.99
+# f0 = 530.99
 
-print('Updated settings: ', anritsu.getActiveSettings())
+frange = 0.00004
+fstart = f0 - frange
+fstop =  f0 + frange
+
+f = fstart
+fstep = 1e-6  # 1 Hz as MHz
+while f <= fstop:
+	anritsu.setFrequency(float(f))
+	print('Updated settings: ', anritsu.getActiveSettings(), '- LO offset %.2f ' % ((f-f0)*1e6))
+	f += fstep
+	time.sleep(0.2)
 
 anritsu.close()

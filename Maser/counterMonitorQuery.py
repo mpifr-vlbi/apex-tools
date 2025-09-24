@@ -1,4 +1,5 @@
-#!/alma/ACS-2020JUN/pyenv/versions/2.7.16/bin/python
+#!/usr/bin/env python
+# e.g. /alma/ACS-2020JUN/pyenv/versions/2.7.16/bin/python
 #
 # VLBI maserMonitorQuery derived from APEX MonitorQuery.
 #

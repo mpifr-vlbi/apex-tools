@@ -1,4 +1,6 @@
 
+# File: /etc/telegraf/telegraf.conf
+
 [global_tags]
 
 [agent]

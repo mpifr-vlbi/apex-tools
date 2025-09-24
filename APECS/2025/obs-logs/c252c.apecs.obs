@@ -1,0 +1,229 @@
+#
+# APEX observing script for station Ax from file vexfiles/triggered/c252c.vex
+# File created on 2025.262.15:30:34 UT
+#
+# Columns: 1) Start time 2) Duration in seconds 3) APECS command 
+# Details on the columns:
+#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+#    2) estimated duration of the command in seconds
+#    3) APECS command and parameters to execute. If the command includes whitespace.
+#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+#
+# At time              Duration   Command
+@always                2          execfile('vlbi-N3AR90_GMVA94_commands.py')
+
+# ### Block for 2013+370 scan 1 'No0135' at 2025.270.23:00:00 in 200s ###########
+2025.270.22:56:40      20         source('2013+370',cats='user'); go(); track()
+2025.270.22:57:05      80         vlbi_tsys()
+2025.270.22:58:30      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2025.270.23:00:00      420        vlbi_scan(t_mins=7,targetSource='2013+370')
+#     scan ends at 2025.270.23:07:00
+
+# ### Block for BLLAC scan 2 'No0140' at 2025.270.23:15:00 in 480s ##############
+2025.270.23:12:25      20         source('BLLAC',cats='user'); go(); track()
+2025.270.23:12:50      80         vlbi_tsys()
+2025.270.23:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.270.23:15:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.270.23:22:00
+
+# ### Block for BLLAC scan 3 'No0145' at 2025.270.23:30:00 in 480s ##############
+2025.270.23:27:25      20         source('BLLAC',cats='user'); go(); track()
+2025.270.23:27:50      80         vlbi_tsys()
+2025.270.23:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.270.23:30:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.270.23:37:00
+
+# ### Block for BLLAC scan 4 'No0150' at 2025.270.23:45:00 in 480s ##############
+2025.270.23:42:25      20         source('BLLAC',cats='user'); go(); track()
+2025.270.23:42:50      80         vlbi_tsys()
+2025.270.23:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.270.23:45:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.270.23:52:00
+
+# ### Block for BLLAC scan 5 'No0155' at 2025.271.00:00:01 in 481s ##############
+2025.270.23:57:26      20         source('BLLAC',cats='user'); go(); track()
+2025.270.23:57:51      80         vlbi_tsys()
+2025.270.23:59:16      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.00:00:01      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.00:07:01
+
+# ### Block for BLLAC scan 6 'No0160' at 2025.271.00:15:00 in 479s ##############
+2025.271.00:12:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.00:12:50      80         vlbi_tsys()
+2025.271.00:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.00:15:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.00:22:00
+
+# ### Block for 2013+370 scan 7 'No0165' at 2025.271.00:30:00 in 480s ###########
+2025.271.00:27:25      20         source('2013+370',cats='user'); go(); track()
+2025.271.00:27:50      80         vlbi_tsys()
+2025.271.00:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.00:30:00      420        vlbi_scan(t_mins=7,targetSource='2013+370')
+#     scan ends at 2025.271.00:37:00
+
+# ### Block for BLLAC scan 8 'No0170' at 2025.271.00:45:00 in 480s ##############
+2025.271.00:42:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.00:42:50      80         vlbi_tsys()
+2025.271.00:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.00:45:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.00:52:00
+
+# ### Block for BLLAC scan 9 'No0175' at 2025.271.01:00:00 in 480s ##############
+2025.271.00:57:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.00:57:50      80         vlbi_tsys()
+2025.271.00:59:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.01:00:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.01:07:00
+
+# ### Block for BLLAC scan 10 'No0180' at 2025.271.01:15:00 in 480s #############
+2025.271.01:12:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.01:12:50      80         vlbi_tsys()
+2025.271.01:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.01:15:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.01:22:00
+
+# ### Block for BLLAC scan 11 'No0185' at 2025.271.01:30:00 in 480s #############
+2025.271.01:27:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.01:27:50      80         vlbi_tsys()
+2025.271.01:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.01:30:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.01:37:00
+
+# ### Block for BLLAC scan 12 'No0190' at 2025.271.01:45:00 in 480s #############
+2025.271.01:42:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.01:42:50      80         vlbi_tsys()
+2025.271.01:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.01:45:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.01:52:00
+
+# ### Block for 3C454.3 scan 13 'No0195' at 2025.271.02:00:00 in 480s ###########
+2025.271.01:57:25      20         source('3C454.3',cats='user'); go(); track()
+2025.271.01:57:50      80         vlbi_tsys()
+2025.271.01:59:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.02:00:00      420        vlbi_scan(t_mins=7,targetSource='3C454.3')
+#     scan ends at 2025.271.02:07:00
+
+# ### Block for 2013+370 scan 14 'No0199' at 2025.271.02:15:00 in 480s ##########
+2025.271.02:12:25      20         source('2013+370',cats='user'); go(); track()
+2025.271.02:12:50      80         vlbi_tsys()
+2025.271.02:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.02:15:00      420        vlbi_scan(t_mins=7,targetSource='2013+370')
+#     scan ends at 2025.271.02:22:00
+
+# ### Block for BLLAC scan 15 'No0203' at 2025.271.02:30:00 in 480s #############
+2025.271.02:27:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.02:27:50      80         vlbi_tsys()
+2025.271.02:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.02:30:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.02:37:00
+
+# ### Block for BLLAC scan 16 'No0208' at 2025.271.02:45:00 in 480s #############
+2025.271.02:42:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.02:42:50      80         vlbi_tsys()
+2025.271.02:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.02:45:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.02:52:00
+
+# ### Block for BLLAC scan 17 'No0213' at 2025.271.03:00:00 in 480s #############
+2025.271.02:57:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.02:57:50      80         vlbi_tsys()
+2025.271.02:59:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.03:00:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.03:07:00
+
+# ### Block for BLLAC scan 18 'No0218' at 2025.271.03:15:00 in 480s #############
+2025.271.03:12:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.03:12:50      80         vlbi_tsys()
+2025.271.03:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.03:15:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.03:22:00
+
+# ### Block for 2013+370 scan 19 'No0222' at 2025.271.03:30:00 in 480s ##########
+2025.271.03:27:25      20         source('2013+370',cats='user'); go(); track()
+2025.271.03:27:50      80         vlbi_tsys()
+2025.271.03:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.03:30:00      420        vlbi_scan(t_mins=7,targetSource='2013+370')
+#     scan ends at 2025.271.03:37:00
+
+# ### Block for BLLAC scan 20 'No0228' at 2025.271.03:45:00 in 480s #############
+2025.271.03:42:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.03:42:50      80         vlbi_tsys()
+2025.271.03:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.03:45:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.03:52:00
+
+# ### Block for BLLAC scan 21 'No0232' at 2025.271.04:00:00 in 480s #############
+2025.271.03:57:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.03:57:50      80         vlbi_tsys()
+2025.271.03:59:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.04:00:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.04:07:00
+
+# ### Block for BLLAC scan 22 'No0237' at 2025.271.04:15:00 in 480s #############
+2025.271.04:12:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.04:12:50      80         vlbi_tsys()
+2025.271.04:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.04:15:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.04:22:00
+
+# ### Block for BLLAC scan 23 'No0242' at 2025.271.04:30:00 in 480s #############
+2025.271.04:27:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.04:27:50      80         vlbi_tsys()
+2025.271.04:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.04:30:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.04:37:00
+
+# ### Block for BLLAC scan 24 'No0247' at 2025.271.04:45:00 in 480s #############
+2025.271.04:42:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.04:42:50      80         vlbi_tsys()
+2025.271.04:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.04:45:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.04:52:00
+
+# ### Block for BLLAC scan 25 'No0252' at 2025.271.05:00:00 in 480s #############
+2025.271.04:57:25      20         source('BLLAC',cats='user'); go(); track()
+2025.271.04:57:50      80         vlbi_tsys()
+2025.271.04:59:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2025.271.05:00:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.05:07:00
+
+# ### Block for BLLAC scan 26 'No0257' at 2025.271.05:15:00 in 200s #############
+2025.271.05:07:00      20         source('BLLAC',cats='user'); go(); track()
+2025.271.05:07:25      80         vlbi_tsys()
+2025.271.05:08:50      30         vlbi_reference_scan()
+#                      gap        max ~5 min 35 sec
+2025.271.05:15:00      420        vlbi_scan(t_mins=7,targetSource='BLLAC')
+#     scan ends at 2025.271.05:22:00
+
+
+# Finished VLBI schedule
+2025.271.05:22:30      1          remote_control('off')
+################################################################################
+### end of schedule
+################################################################################

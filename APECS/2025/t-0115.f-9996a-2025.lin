@@ -6,18 +6,30 @@
 !
 ! GMVA Oct 2024:  overridden by using manual 1st LO synth
 ! vlbifreq86   98.100 GHz USB 
+!
 ! GMVA Apr 2024: bugfixed line setting (N3AR LO1 = 92.1 GHz LSB --> -6G = 86.1G LSB)
 ! vlbifreq86   86.100 GHz LSB
+!
 ! GMVA Apr 2025: flipped to USB to accomodate DWKims 30mins-post-GMVA 104G/114G obs
-vlbifreq86  86.436 GHz USB
+! vlbifreq86  86.436 GHz USB
+!
+! GMVA Autumn 2025: C252A C252B at 86G, C252C at 94G
+vlbifreq86   86.100 GHz LSB
+vlbifreq94   94.100 GHz LSB
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! FPT Test 86+260 GHz USB
 ! Observed with 1 ch x 1024 MHz at 86 GHz and simultaneously at 260 GHz
-! Line freq 99012 MHz per FrequencyStructure2024Oct_GMVA-86GHz_FPT-86-258GHz.xlsx
-vlbifreqfpt86    99.012 GHz USB 
-vlbifreqfpt260	273.084 GHz USB
+!
+! FPT Autumn 2024 - all USB - FrequencyStructure2024Oct_GMVA-86GHz_FPT-86-258GHz.xlsx
+! vlbifreqfpt86   99.012 GHz USB
+! vlbifreqfpt260 273.084 GHz USB
+!
+! FPT Autumn 2025 - this time all-LSB - FrequencyStructure2025Sep_GMVA-86+94+104+114GHz.xlsx
+vlbifreqfpt86     87.012 GHz LSB
+vlbifreqfpt260   261.084 GHz LSB
+!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
