@@ -26,6 +26,147 @@
   "liveNow": false,
   "panels": [
     {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 30,
+            "axisSoftMin": 15,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value {host=\"cc-apex\", sensor=\"Top_Rack\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Top Rack"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value {host=\"cc-apex\", sensor=\"Hanging_Mid_Rack\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Mid Rack"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value {host=\"cc-apex\", sensor=\"Bottom_Rack\"}"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Bottom Rack"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 18,
+        "x": 0,
+        "y": 0
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "SchNJUxIz"
+          },
+          "hide": false,
+          "query": " from(bucket: \"eht\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"rec-room_temperature\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"cc-apex\")\r\n  |> filter(fn: (r) => r[\"sensor\"] == \"Top_Rack\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "SchNJUxIz"
+          },
+          "hide": false,
+          "query": " from(bucket: \"eht\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"rec-room_temperature\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"cc-apex\")\r\n  |> filter(fn: (r) => r[\"sensor\"] == \"Hanging_Mid_Rack\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "SchNJUxIz"
+          },
+          "hide": false,
+          "query": " from(bucket: \"eht\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"rec-room_temperature\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"cc-apex\")\r\n  |> filter(fn: (r) => r[\"sensor\"] == \"Bottom_Rack\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "refId": "C"
+        }
+      ],
+      "title": "Recorder Room Temperatures",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -82,7 +223,7 @@
         "h": 5,
         "w": 18,
         "x": 0,
-        "y": 0
+        "y": 7
       },
       "id": 2,
       "options": {
@@ -190,7 +331,7 @@
         "h": 6,
         "w": 18,
         "x": 0,
-        "y": 5
+        "y": 12
       },
       "id": 4,
       "interval": "10s",
@@ -286,7 +427,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "recorder1"
+                "value": "recorder1 EPYC 7282"
               }
             ]
           },
@@ -298,7 +439,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "recorder2"
+                "value": "recorder2 Core i7 ALMA"
               }
             ]
           },
@@ -310,7 +451,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "recorder3"
+                "value": "recorder3 Core i7"
               }
             ]
           },
@@ -322,7 +463,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "recorder4"
+                "value": "recorder4 Core i7"
               }
             ]
           }
@@ -332,7 +473,7 @@
         "h": 6,
         "w": 18,
         "x": 0,
-        "y": 11
+        "y": 18
       },
       "id": 12,
       "interval": "10s",
@@ -362,7 +503,7 @@
             "uid": "SchNJUxIz"
           },
           "hide": false,
-          "query": "from(bucket: \"eht\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"recorder2_ipmi_sensor\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"recorder2\")\r\n  |> filter(fn: (r) => r[\"name\"] == \"cpu_temp\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")\r\n  ",
+          "query": "from(bucket: \"eht\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"recorder2_sensors\")\r\n  |> filter(fn: (r) => r[\"chip\"] == \"nct6776-isa-0290\")\r\n  |> filter(fn: (r) => r[\"feature\"] == \"systin\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_input\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")\r\n  ",
           "refId": "rec2CPU"
         },
         {
@@ -446,7 +587,7 @@
         "h": 8,
         "w": 9,
         "x": 0,
-        "y": 17
+        "y": 24
       },
       "id": 7,
       "interval": "10s",
@@ -567,7 +708,7 @@
         "h": 8,
         "w": 9,
         "x": 9,
-        "y": 17
+        "y": 24
       },
       "id": 9,
       "interval": "10s",
@@ -688,7 +829,7 @@
         "h": 8,
         "w": 9,
         "x": 0,
-        "y": 25
+        "y": 32
       },
       "id": 8,
       "interval": "10s",
@@ -808,7 +949,7 @@
         "h": 8,
         "w": 9,
         "x": 9,
-        "y": 25
+        "y": 32
       },
       "id": 6,
       "interval": "10s",
@@ -861,6 +1002,6 @@
   "timezone": "utc",
   "title": "VLBI Hardware",
   "uid": "DuRJbUxSk",
-  "version": 31,
+  "version": 50,
   "weekStart": "monday"
 }
