@@ -1,11 +1,14 @@
 #!/alma/ACS-2021DEC/pyenv/shims/python
+'''
+Shows an info feed from the APEX Weather Station (wx)
+together with APEX Radiometer readings (pwv).
+'''
 import apexObsUtils
 import datetime
 import time
 import apexOnlineWV
 
 # apexWV = apexOnlineWV.onlineWV()
-
 
 def getMCPoint_nx(name, defaultVal):
 
@@ -41,12 +44,11 @@ def readMeters(logfile, verbose=False):
 		calStr = 'tsys/nodata'
 
 	try:
-		temperature = apexObsUtils.getMCPoint('APEX:WEATHERSTATION:temperature')
 		timestamp = apexObsUtils.getMCPointTS('APEX:WEATHERSTATION:temperature')
 	except:
-		temperature = -273
 		timestamp = (-1, -1)
 
+	temperature = getMCPoint_nx('APEX:WEATHERSTATION:temperature', -273)
 	dewPoint = getMCPoint_nx('APEX:WEATHERSTATION:dewPoint', -273)
 	humidity = getMCPoint_nx('APEX:WEATHERSTATION:humidity', -1)
 	pressure = getMCPoint_nx('APEX:WEATHERSTATION:pressure', -1)
@@ -57,16 +59,19 @@ def readMeters(logfile, verbose=False):
 	# pwvCalc = apexWV.getCurrentWaterVapour()
 	# print(pwv, pwvCalc)
 
-	wxStr = 'wx/temp/%.2f,dew/%.2f,hum/%.1f,p/%.2f,windspeed/%.2f,winddir/%.1f,pwv/%.2f' % (temperature,  dewPoint,  humidity, pressure, windspeed, winddir, pwv)
+	wxStr = 'wx/%.2f,%.1f,%.1f,%.2f,%.0f,%.2f' % (temperature, pressure, humidity, windspeed, winddir, pwv)
+	wxStr_alt = 'temp %.1f C, dew %.1f C, hum %.1f %%, p %.1f mbar, wind %.2f m/s, wind dir %.1f deg, pwv %.2f mm' % (temperature,  dewPoint,  humidity, pressure, windspeed, winddir, pwv)
 
 	T = datetime.datetime.utcnow() + datetime.timedelta(seconds=-offsetUTC)
         T_snp = T.strftime('%Y.%j.%H:%M:%S')
 
-	logfile.write('%s;%s\n' % (T_snp,calStr))
-	logfile.write('%s;%s\n' % (T_snp,wxStr))
+	logfile.write('%s/%s\n' % (T_snp,calStr))
+	logfile.write('%s/%s\n' % (T_snp,wxStr))
+	logfile.write('%s;%s\n' % (T_snp,wxStr_alt))
 	if verbose:
-		print('%s;%s' % (T_snp,calStr))
-		print('%s;%s' % (T_snp,wxStr))
+		print('%s/%s' % (T_snp,calStr))
+		print('%s/%s' % (T_snp,wxStr))
+		print('%s;%s' % (T_snp,wxStr_alt))
 
 logfile = open('vlbi-cals.log', 'a')
 while True:
