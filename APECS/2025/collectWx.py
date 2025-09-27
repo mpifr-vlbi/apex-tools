@@ -240,6 +240,7 @@ if __name__ == "__main__":
 			pylab.plot(unixdateconv(output_times), pwv.ivals, 'o-', color='#333399')
 			pylab.title('PWV Data of %s' % (vexname))
 			pylab.ylabel('pwv (mm)')
+			pylab.ylim([0, 1.25*np.amax(pwv.vals)])
 			pylab.gca().get_xaxis().set_ticklabels([])
 
 			fig.add_subplot(2,1,2)
