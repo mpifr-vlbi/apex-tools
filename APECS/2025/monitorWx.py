@@ -25,22 +25,22 @@ def readMeters(logfile, verbose=False):
 
 	onlineCal = apexObsUtils.getApexCalibrator()
 	offsetUTC = 37  # TODO: update automatically to most recent TAI (APECS computer) vs UTC time offset
-	rxName = "N3AR"
 
 	try:
-		calResult = onlineCal.getCalResult('%s-PBE_A' % (rxName),1,0)
-		# this data has no timestamp?
-		calStr = 'tsys/%f,trx/%f,gainimage/%f,tausig/%f,tauima/%f,wvr/%f,wvrrm/%f,thot/%f,tcold/%f' % ( \
-			calResult.tSys[0], \
-			calResult.tRx[0], \
-			calResult.gainImage[0], \
-			calResult.tauSig[0], \
-			calResult.tauIma[0], \
-			calResult.water[0], \
-			calResult.waterRM[0], \
-			calResult.tHot[0], \
-			calResult.tCold[0] )
-	except:
+		#calResult = onlineCal.getCalResult('NFLASH230-PBE_A',1,0)
+		calResult = onlineCal.getCalResult('N3AR90-FFTS3',1,0)
+		#print(calResult)
+		tstr = str(calResult.date) + "_" + str(calResult.time)
+		tline = str(calResult.lineName)
+		if len(tstr) < 4: tstr = '<none>'
+		if len(tline) < 2: tline = '<none>'
+		calStr = 'datetime/%s,fe/%s,line/%s,freq/%.6f%s,tsys/%.1f,trx/%.1f,tausig/%.3f,tauima/%.3f,thot/%.1f,tcold/%.1f' % (
+			tstr, calResult.FEBE, tline, calResult.restFreq, calResult.sideBand,
+			calResult.tSys[0], calResult.tRx[0],
+			calResult.tauSig[0], calResult.tauIma[0],
+			calResult.tHot,	calResult.tCold)
+	except Exception as e:
+		print(e)
 		calStr = 'tsys/nodata'
 
 	try:
