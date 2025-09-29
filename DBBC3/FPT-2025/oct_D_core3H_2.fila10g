@@ -1,0 +1,20 @@
+reboot
+core3_init
+vsi_bitmask 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333
+reset
+vdif_station A2
+tengbcfg eth0 ip=172.16.4.254 gateway=172.16.4.1 mac=ba:dc:af:e4:be:b0 nm=24
+tengbcfg eth1 ip=172.16.3.254 gateway=172.16.3.1 mac=ba:dc:af:e4:be:b1 nm=24
+tengbcfg eth2 ip=172.16.4.254 gateway=172.16.4.1 mac=ba:dc:af:e4:be:b2 nm=24
+tengbcfg eth3 ip=172.16.2.254 gateway=172.16.2.1 mac=ba:dc:af:e4:be:b3 nm=24
+tengbarp eth0 10 40:a6:b7:a8:fe:54
+tengbarp eth1 24 00:60:dd:44:0b:75
+tengbarp eth2 11 40:a6:b7:a8:ff:74
+tengbarp eth3 25 00:60:dd:44:46:38
+destination 0 172.16.4.10:46220
+destination 1 172.16.3.24:46221
+destination 2 172.16.4.11:46222
+destination 3 172.16.2.25:46223
+timesync
+start vdif
+sysstat

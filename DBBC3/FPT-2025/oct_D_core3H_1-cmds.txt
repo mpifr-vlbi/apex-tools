@@ -1,0 +1,20 @@
+core3h=1,reboot
+core3h=1,core3_init
+core3h=1,vsi_bitmask 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333 0x33333333
+core3h=1,reset
+core3h=1,vdif_station A1
+core3h=1,tengbcfg eth0 ip=172.16.2.254 gateway=172.16.2.1 mac=ba:dc:af:e4:be:a0 nm=24
+core3h=1,tengbcfg eth1 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:a1 nm=24
+core3h=1,tengbcfg eth2 ip=172.16.2.254 gateway=172.16.2.1 mac=ba:dc:af:e4:be:a2 nm=24
+core3h=1,tengbcfg eth3 ip=172.16.5.254 gateway=172.16.5.1 mac=ba:dc:af:e4:be:a3 nm=24
+core3h=1,tengbarp eth0 10 40:a6:b7:a8:fe:f8
+core3h=1,tengbarp eth1 24 00:60:dd:44:46:c0
+core3h=1,tengbarp eth2 11 40:a6:b7:a8:fe:fc
+core3h=1,tengbarp eth3 25 00:60:dd:44:46:42
+core3h=1,destination 0 172.16.2.10:46210
+core3h=1,destination 1 172.16.5.24:46211
+core3h=1,destination 2 172.16.2.11:46212
+core3h=1,destination 3 172.16.5.25:46213
+core3h=1,timesync
+core3h=1,start vdif
+core3h=1,sysstat
