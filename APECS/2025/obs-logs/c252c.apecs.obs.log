@@ -1,0 +1,463 @@
+2025.270.22:26:55;"----------| START OF c252c.apecs.obs |----------
+2025.270.22:26:55;"Using TAI-UTC offset of +37 seconds
+2025.270.22:26:55;"#
+2025.270.22:26:55;"# APEX observing script for station Ax from file vexfiles/triggered/c252c.vex
+2025.270.22:26:55;"# File created on 2025.262.15:30:34 UT
+2025.270.22:26:55;"#
+2025.270.22:26:55;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2025.270.22:26:55;"# Details on the columns:
+2025.270.22:26:55;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2025.270.22:26:55;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2025.270.22:26:55;"#    2) estimated duration of the command in seconds
+2025.270.22:26:55;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2025.270.22:26:55;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2025.270.22:26:55;"#
+2025.270.22:26:55;"# At time              Duration   Command
+2025.270.22:26:55;"execfile('vlbi-N3AR90_GMVA94_commands.py')
+2025.270.22:26:56;"reply from APECS: (timeout)
+2025.270.22:26:58;"
+2025.270.22:26:58;"# ### Block for 2013+370 scan 1 'No0135' at 2025.270.23:00:00 in 200s ###########
+2025.270.22:27:19;"----------| USER-REQUESTED STOP OF  c252c.apecs.obs |----------
+2025.270.22:52:03;"----------| START OF c252c.apecs.obs |----------
+2025.270.22:52:03;"Using TAI-UTC offset of +37 seconds
+2025.270.22:52:03;"#
+2025.270.22:52:03;"# APEX observing script for station Ax from file vexfiles/triggered/c252c.vex
+2025.270.22:52:03;"# File created on 2025.262.15:30:34 UT
+2025.270.22:52:03;"#
+2025.270.22:52:03;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2025.270.22:52:03;"# Details on the columns:
+2025.270.22:52:03;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2025.270.22:52:03;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2025.270.22:52:03;"#    2) estimated duration of the command in seconds
+2025.270.22:52:03;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2025.270.22:52:03;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2025.270.22:52:03;"#
+2025.270.22:52:03;"# At time              Duration   Command
+2025.270.22:52:03;"execfile('vlbi-N3AR90_GMVA94_commands.py')
+2025.270.22:52:03;"reply from APECS: OK
+2025.270.22:52:04;"reply from APECS: (timeout)
+2025.270.22:52:06;"
+2025.270.22:52:06;"# ### Block for 2013+370 scan 1 'No0135' at 2025.270.23:00:00 in 200s ###########
+2025.270.22:56:40;"source('2013+370',cats='user'); go(); track()
+2025.270.22:56:41;"reply from APECS: (timeout)
+2025.270.22:57:05;"vlbi_tsys()
+2025.270.22:57:05;"reply from APECS: OK
+2025.270.22:57:05;"reply from APECS: OK
+2025.270.22:57:06;"reply from APECS: (timeout)
+2025.270.22:58:30;"vlbi_reference_scan()
+2025.270.22:58:31;"reply from APECS: (timeout)
+2025.270.22:58:31;"#                      gap        max ~0 min 55 sec
+2025.270.23:00:00;"vlbi_scan(t_mins=7,targetSource='2013+370')
+2025.270.23:00:00;"reply from APECS: OK
+2025.270.23:00:01;"reply from APECS: (timeout)
+2025.270.23:00:01;"#     scan ends at 2025.270.23:07:00
+2025.270.23:00:01;"
+2025.270.23:00:01;"# ### Block for BLLAC scan 2 'No0140' at 2025.270.23:15:00 in 480s ##############
+2025.270.23:12:25;"source('BLLAC',cats='user'); go(); track()
+2025.270.23:12:25;"reply from APECS: OK
+2025.270.23:12:26;"reply from APECS: (timeout)
+2025.270.23:12:50;"vlbi_tsys()
+2025.270.23:12:50;"reply from APECS: OK
+2025.270.23:12:50;"reply from APECS: OK
+2025.270.23:12:51;"reply from APECS: (timeout)
+2025.270.23:14:15;"vlbi_reference_scan()
+2025.270.23:14:16;"reply from APECS: (timeout)
+2025.270.23:14:16;"#                      gap        max ~0 min 10 sec
+2025.270.23:15:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.270.23:15:00;"reply from APECS: OK
+2025.270.23:15:01;"reply from APECS: (timeout)
+2025.270.23:15:01;"#     scan ends at 2025.270.23:22:00
+2025.270.23:15:01;"
+2025.270.23:15:01;"# ### Block for BLLAC scan 3 'No0145' at 2025.270.23:30:00 in 480s ##############
+2025.270.23:27:25;"source('BLLAC',cats='user'); go(); track()
+2025.270.23:27:25;"reply from APECS: OK
+2025.270.23:27:26;"reply from APECS: (timeout)
+2025.270.23:27:50;"vlbi_tsys()
+2025.270.23:27:50;"reply from APECS: OK
+2025.270.23:27:50;"reply from APECS: OK
+2025.270.23:27:51;"reply from APECS: (timeout)
+2025.270.23:29:15;"vlbi_reference_scan()
+2025.270.23:29:16;"reply from APECS: (timeout)
+2025.270.23:29:16;"#                      gap        max ~0 min 10 sec
+2025.270.23:30:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.270.23:30:00;"reply from APECS: OK
+2025.270.23:30:01;"reply from APECS: (timeout)
+2025.270.23:30:01;"#     scan ends at 2025.270.23:37:00
+2025.270.23:30:01;"
+2025.270.23:30:01;"# ### Block for BLLAC scan 4 'No0150' at 2025.270.23:45:00 in 480s ##############
+2025.270.23:42:25;"source('BLLAC',cats='user'); go(); track()
+2025.270.23:42:25;"reply from APECS: OK
+2025.270.23:42:26;"reply from APECS: (timeout)
+2025.270.23:42:50;"vlbi_tsys()
+2025.270.23:42:50;"reply from APECS: OK
+2025.270.23:42:50;"reply from APECS: OK
+2025.270.23:42:51;"reply from APECS: (timeout)
+2025.270.23:44:15;"vlbi_reference_scan()
+2025.270.23:44:16;"reply from APECS: (timeout)
+2025.270.23:44:16;"#                      gap        max ~0 min 10 sec
+2025.270.23:45:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.270.23:45:00;"reply from APECS: OK
+2025.270.23:45:01;"reply from APECS: (timeout)
+2025.270.23:45:01;"#     scan ends at 2025.270.23:52:00
+2025.270.23:45:01;"
+2025.270.23:45:01;"# ### Block for BLLAC scan 5 'No0155' at 2025.271.00:00:01 in 481s ##############
+2025.270.23:57:26;"source('BLLAC',cats='user'); go(); track()
+2025.270.23:57:26;"reply from APECS: OK
+2025.270.23:57:27;"reply from APECS: (timeout)
+2025.270.23:57:51;"vlbi_tsys()
+2025.270.23:57:51;"reply from APECS: OK
+2025.270.23:57:51;"reply from APECS: OK
+2025.270.23:57:52;"reply from APECS: (timeout)
+2025.270.23:59:16;"vlbi_reference_scan()
+2025.270.23:59:17;"reply from APECS: (timeout)
+2025.270.23:59:17;"#                      gap        max ~0 min 10 sec
+2025.271.00:00:01;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.00:00:01;"reply from APECS: OK
+2025.271.00:00:02;"reply from APECS: (timeout)
+2025.271.00:00:02;"#     scan ends at 2025.271.00:07:01
+2025.271.00:00:02;"
+2025.271.00:00:02;"# ### Block for BLLAC scan 6 'No0160' at 2025.271.00:15:00 in 479s ##############
+2025.271.00:12:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.00:12:25;"reply from APECS: OK
+2025.271.00:12:26;"reply from APECS: (timeout)
+2025.271.00:12:50;"vlbi_tsys()
+2025.271.00:12:50;"reply from APECS: OK
+2025.271.00:12:50;"reply from APECS: OK
+2025.271.00:12:51;"reply from APECS: (timeout)
+2025.271.00:14:15;"vlbi_reference_scan()
+2025.271.00:14:16;"reply from APECS: (timeout)
+2025.271.00:14:16;"#                      gap        max ~0 min 10 sec
+2025.271.00:15:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.00:15:00;"reply from APECS: OK
+2025.271.00:15:01;"reply from APECS: (timeout)
+2025.271.00:15:01;"#     scan ends at 2025.271.00:22:00
+2025.271.00:15:01;"
+2025.271.00:15:01;"# ### Block for 2013+370 scan 7 'No0165' at 2025.271.00:30:00 in 480s ###########
+2025.271.00:27:25;"source('2013+370',cats='user'); go(); track()
+2025.271.00:27:25;"reply from APECS: OK
+2025.271.00:27:26;"reply from APECS: (timeout)
+2025.271.00:27:50;"vlbi_tsys()
+2025.271.00:27:50;"reply from APECS: OK
+2025.271.00:27:50;"reply from APECS: OK
+2025.271.00:27:51;"reply from APECS: (timeout)
+2025.271.00:29:15;"vlbi_reference_scan()
+2025.271.00:29:16;"reply from APECS: (timeout)
+2025.271.00:29:16;"#                      gap        max ~0 min 10 sec
+2025.271.00:30:00;"vlbi_scan(t_mins=7,targetSource='2013+370')
+2025.271.00:30:00;"reply from APECS: OK
+2025.271.00:30:01;"reply from APECS: (timeout)
+2025.271.00:30:01;"#     scan ends at 2025.271.00:37:00
+2025.271.00:30:01;"
+2025.271.00:30:01;"# ### Block for BLLAC scan 8 'No0170' at 2025.271.00:45:00 in 480s ##############
+2025.271.00:42:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.00:42:25;"reply from APECS: OK
+2025.271.00:42:26;"reply from APECS: (timeout)
+2025.271.00:42:50;"vlbi_tsys()
+2025.271.00:42:50;"reply from APECS: OK
+2025.271.00:42:50;"reply from APECS: OK
+2025.271.00:42:51;"reply from APECS: (timeout)
+2025.271.00:44:15;"vlbi_reference_scan()
+2025.271.00:44:16;"reply from APECS: (timeout)
+2025.271.00:44:16;"#                      gap        max ~0 min 10 sec
+2025.271.00:45:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.00:45:00;"reply from APECS: OK
+2025.271.00:45:01;"reply from APECS: (timeout)
+2025.271.00:45:01;"#     scan ends at 2025.271.00:52:00
+2025.271.00:45:01;"
+2025.271.00:45:01;"# ### Block for BLLAC scan 9 'No0175' at 2025.271.01:00:00 in 480s ##############
+2025.271.00:57:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.00:57:25;"reply from APECS: OK
+2025.271.00:57:26;"reply from APECS: (timeout)
+2025.271.00:57:50;"vlbi_tsys()
+2025.271.00:57:50;"reply from APECS: OK
+2025.271.00:57:50;"reply from APECS: OK
+2025.271.00:57:51;"reply from APECS: (timeout)
+2025.271.00:59:15;"vlbi_reference_scan()
+2025.271.00:59:16;"reply from APECS: (timeout)
+2025.271.00:59:16;"#                      gap        max ~0 min 10 sec
+2025.271.01:00:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.01:00:00;"reply from APECS: OK
+2025.271.01:00:01;"reply from APECS: (timeout)
+2025.271.01:00:01;"#     scan ends at 2025.271.01:07:00
+2025.271.01:00:01;"
+2025.271.01:00:01;"# ### Block for BLLAC scan 10 'No0180' at 2025.271.01:15:00 in 480s #############
+2025.271.01:12:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.01:12:25;"reply from APECS: OK
+2025.271.01:12:26;"reply from APECS: (timeout)
+2025.271.01:12:50;"vlbi_tsys()
+2025.271.01:12:50;"reply from APECS: OK
+2025.271.01:12:50;"reply from APECS: OK
+2025.271.01:12:51;"reply from APECS: (timeout)
+2025.271.01:14:15;"vlbi_reference_scan()
+2025.271.01:14:16;"reply from APECS: (timeout)
+2025.271.01:14:16;"#                      gap        max ~0 min 10 sec
+2025.271.01:15:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.01:15:00;"reply from APECS: OK
+2025.271.01:15:01;"reply from APECS: (timeout)
+2025.271.01:15:01;"#     scan ends at 2025.271.01:22:00
+2025.271.01:15:01;"
+2025.271.01:15:01;"# ### Block for BLLAC scan 11 'No0185' at 2025.271.01:30:00 in 480s #############
+2025.271.01:27:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.01:27:25;"reply from APECS: OK
+2025.271.01:27:26;"reply from APECS: (timeout)
+2025.271.01:27:50;"vlbi_tsys()
+2025.271.01:27:50;"reply from APECS: OK
+2025.271.01:27:50;"reply from APECS: OK
+2025.271.01:27:51;"reply from APECS: (timeout)
+2025.271.01:29:15;"vlbi_reference_scan()
+2025.271.01:29:16;"reply from APECS: (timeout)
+2025.271.01:29:16;"#                      gap        max ~0 min 10 sec
+2025.271.01:30:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.01:30:00;"reply from APECS: OK
+2025.271.01:30:01;"reply from APECS: (timeout)
+2025.271.01:30:01;"#     scan ends at 2025.271.01:37:00
+2025.271.01:30:01;"
+2025.271.01:30:01;"# ### Block for BLLAC scan 12 'No0190' at 2025.271.01:45:00 in 480s #############
+2025.271.01:42:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.01:42:25;"reply from APECS: OK
+2025.271.01:42:26;"reply from APECS: (timeout)
+2025.271.01:42:50;"vlbi_tsys()
+2025.271.01:42:50;"reply from APECS: OK
+2025.271.01:42:50;"reply from APECS: OK
+2025.271.01:42:51;"reply from APECS: (timeout)
+2025.271.01:44:15;"vlbi_reference_scan()
+2025.271.01:44:16;"reply from APECS: (timeout)
+2025.271.01:44:16;"#                      gap        max ~0 min 10 sec
+2025.271.01:45:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.01:45:00;"reply from APECS: OK
+2025.271.01:45:01;"reply from APECS: (timeout)
+2025.271.01:45:01;"#     scan ends at 2025.271.01:52:00
+2025.271.01:45:01;"
+2025.271.01:45:01;"# ### Block for 3C454.3 scan 13 'No0195' at 2025.271.02:00:00 in 480s ###########
+2025.271.01:57:25;"source('3C454.3',cats='user'); go(); track()
+2025.271.01:57:25;"reply from APECS: OK
+2025.271.01:57:26;"reply from APECS: (timeout)
+2025.271.01:57:50;"vlbi_tsys()
+2025.271.01:57:50;"reply from APECS: OK
+2025.271.01:57:50;"reply from APECS: OK
+2025.271.01:57:51;"reply from APECS: (timeout)
+2025.271.01:59:15;"vlbi_reference_scan()
+2025.271.01:59:16;"reply from APECS: (timeout)
+2025.271.01:59:16;"#                      gap        max ~0 min 10 sec
+2025.271.02:00:00;"vlbi_scan(t_mins=7,targetSource='3C454.3')
+2025.271.02:00:00;"reply from APECS: OK
+2025.271.02:00:01;"reply from APECS: (timeout)
+2025.271.02:00:01;"#     scan ends at 2025.271.02:07:00
+2025.271.02:00:01;"
+2025.271.02:00:01;"# ### Block for 2013+370 scan 14 'No0199' at 2025.271.02:15:00 in 480s ##########
+2025.271.02:12:25;"source('2013+370',cats='user'); go(); track()
+2025.271.02:12:25;"reply from APECS: OK
+2025.271.02:12:26;"reply from APECS: (timeout)
+2025.271.02:12:50;"vlbi_tsys()
+2025.271.02:12:50;"reply from APECS: OK
+2025.271.02:12:50;"reply from APECS: OK
+2025.271.02:12:51;"reply from APECS: (timeout)
+2025.271.02:14:15;"vlbi_reference_scan()
+2025.271.02:14:16;"reply from APECS: (timeout)
+2025.271.02:14:16;"#                      gap        max ~0 min 10 sec
+2025.271.02:15:00;"vlbi_scan(t_mins=7,targetSource='2013+370')
+2025.271.02:15:00;"reply from APECS: OK
+2025.271.02:15:01;"reply from APECS: (timeout)
+2025.271.02:15:01;"#     scan ends at 2025.271.02:22:00
+2025.271.02:15:01;"
+2025.271.02:15:01;"# ### Block for BLLAC scan 15 'No0203' at 2025.271.02:30:00 in 480s #############
+2025.271.02:27:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.02:27:25;"reply from APECS: OK
+2025.271.02:27:26;"reply from APECS: (timeout)
+2025.271.02:27:50;"vlbi_tsys()
+2025.271.02:27:50;"reply from APECS: OK
+2025.271.02:27:50;"reply from APECS: OK
+2025.271.02:27:51;"reply from APECS: (timeout)
+2025.271.02:29:15;"vlbi_reference_scan()
+2025.271.02:29:16;"reply from APECS: (timeout)
+2025.271.02:29:16;"#                      gap        max ~0 min 10 sec
+2025.271.02:30:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.02:30:00;"reply from APECS: OK
+2025.271.02:30:01;"reply from APECS: (timeout)
+2025.271.02:30:01;"#     scan ends at 2025.271.02:37:00
+2025.271.02:30:01;"
+2025.271.02:30:01;"# ### Block for BLLAC scan 16 'No0208' at 2025.271.02:45:00 in 480s #############
+2025.271.02:42:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.02:42:25;"reply from APECS: OK
+2025.271.02:42:26;"reply from APECS: (timeout)
+2025.271.02:42:50;"vlbi_tsys()
+2025.271.02:42:50;"reply from APECS: OK
+2025.271.02:42:50;"reply from APECS: OK
+2025.271.02:42:51;"reply from APECS: (timeout)
+2025.271.02:44:15;"vlbi_reference_scan()
+2025.271.02:44:16;"reply from APECS: (timeout)
+2025.271.02:44:16;"#                      gap        max ~0 min 10 sec
+2025.271.02:45:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.02:45:00;"reply from APECS: OK
+2025.271.02:45:01;"reply from APECS: (timeout)
+2025.271.02:45:01;"#     scan ends at 2025.271.02:52:00
+2025.271.02:45:01;"
+2025.271.02:45:01;"# ### Block for BLLAC scan 17 'No0213' at 2025.271.03:00:00 in 480s #############
+2025.271.02:57:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.02:57:25;"reply from APECS: OK
+2025.271.02:57:26;"reply from APECS: (timeout)
+2025.271.02:57:50;"vlbi_tsys()
+2025.271.02:57:50;"reply from APECS: OK
+2025.271.02:57:50;"reply from APECS: OK
+2025.271.02:57:51;"reply from APECS: (timeout)
+2025.271.02:59:15;"vlbi_reference_scan()
+2025.271.02:59:16;"reply from APECS: (timeout)
+2025.271.02:59:16;"#                      gap        max ~0 min 10 sec
+2025.271.03:00:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.03:00:00;"reply from APECS: OK
+2025.271.03:00:01;"reply from APECS: (timeout)
+2025.271.03:00:01;"#     scan ends at 2025.271.03:07:00
+2025.271.03:00:01;"
+2025.271.03:00:01;"# ### Block for BLLAC scan 18 'No0218' at 2025.271.03:15:00 in 480s #############
+2025.271.03:12:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.03:12:25;"reply from APECS: OK
+2025.271.03:12:26;"reply from APECS: (timeout)
+2025.271.03:12:50;"vlbi_tsys()
+2025.271.03:12:50;"reply from APECS: OK
+2025.271.03:12:50;"reply from APECS: OK
+2025.271.03:12:51;"reply from APECS: (timeout)
+2025.271.03:14:15;"vlbi_reference_scan()
+2025.271.03:14:16;"reply from APECS: (timeout)
+2025.271.03:14:16;"#                      gap        max ~0 min 10 sec
+2025.271.03:15:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.03:15:00;"reply from APECS: OK
+2025.271.03:15:01;"reply from APECS: (timeout)
+2025.271.03:15:01;"#     scan ends at 2025.271.03:22:00
+2025.271.03:15:01;"
+2025.271.03:15:01;"# ### Block for 2013+370 scan 19 'No0222' at 2025.271.03:30:00 in 480s ##########
+2025.271.03:27:25;"source('2013+370',cats='user'); go(); track()
+2025.271.03:27:25;"reply from APECS: OK
+2025.271.03:27:26;"reply from APECS: (timeout)
+2025.271.03:27:50;"vlbi_tsys()
+2025.271.03:27:50;"reply from APECS: OK
+2025.271.03:27:50;"reply from APECS: OK
+2025.271.03:27:51;"reply from APECS: (timeout)
+2025.271.03:29:15;"vlbi_reference_scan()
+2025.271.03:29:16;"reply from APECS: (timeout)
+2025.271.03:29:16;"#                      gap        max ~0 min 10 sec
+2025.271.03:30:00;"vlbi_scan(t_mins=7,targetSource='2013+370')
+2025.271.03:30:00;"reply from APECS: OK
+2025.271.03:30:01;"reply from APECS: (timeout)
+2025.271.03:30:01;"#     scan ends at 2025.271.03:37:00
+2025.271.03:30:01;"
+2025.271.03:30:01;"# ### Block for BLLAC scan 20 'No0228' at 2025.271.03:45:00 in 480s #############
+2025.271.03:42:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.03:42:25;"reply from APECS: OK
+2025.271.03:42:26;"reply from APECS: (timeout)
+2025.271.03:42:50;"vlbi_tsys()
+2025.271.03:42:50;"reply from APECS: OK
+2025.271.03:42:50;"reply from APECS: OK
+2025.271.03:42:51;"reply from APECS: (timeout)
+2025.271.03:44:15;"vlbi_reference_scan()
+2025.271.03:44:16;"reply from APECS: (timeout)
+2025.271.03:44:16;"#                      gap        max ~0 min 10 sec
+2025.271.03:45:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.03:45:00;"reply from APECS: OK
+2025.271.03:45:01;"reply from APECS: (timeout)
+2025.271.03:45:01;"#     scan ends at 2025.271.03:52:00
+2025.271.03:45:01;"
+2025.271.03:45:01;"# ### Block for BLLAC scan 21 'No0232' at 2025.271.04:00:00 in 480s #############
+2025.271.03:57:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.03:57:25;"reply from APECS: OK
+2025.271.03:57:26;"reply from APECS: (timeout)
+2025.271.03:57:50;"vlbi_tsys()
+2025.271.03:57:50;"reply from APECS: OK
+2025.271.03:57:50;"reply from APECS: OK
+2025.271.03:57:51;"reply from APECS: (timeout)
+2025.271.03:59:15;"vlbi_reference_scan()
+2025.271.03:59:16;"reply from APECS: (timeout)
+2025.271.03:59:16;"#                      gap        max ~0 min 10 sec
+2025.271.04:00:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.04:00:00;"reply from APECS: OK
+2025.271.04:00:01;"reply from APECS: (timeout)
+2025.271.04:00:01;"#     scan ends at 2025.271.04:07:00
+2025.271.04:00:01;"
+2025.271.04:00:01;"# ### Block for BLLAC scan 22 'No0237' at 2025.271.04:15:00 in 480s #############
+2025.271.04:12:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.04:12:25;"reply from APECS: OK
+2025.271.04:12:26;"reply from APECS: (timeout)
+2025.271.04:12:50;"vlbi_tsys()
+2025.271.04:12:50;"reply from APECS: OK
+2025.271.04:12:50;"reply from APECS: OK
+2025.271.04:12:51;"reply from APECS: (timeout)
+2025.271.04:14:15;"vlbi_reference_scan()
+2025.271.04:14:16;"reply from APECS: (timeout)
+2025.271.04:14:16;"#                      gap        max ~0 min 10 sec
+2025.271.04:15:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.04:15:00;"reply from APECS: OK
+2025.271.04:15:01;"reply from APECS: (timeout)
+2025.271.04:15:01;"#     scan ends at 2025.271.04:22:00
+2025.271.04:15:01;"
+2025.271.04:15:01;"# ### Block for BLLAC scan 23 'No0242' at 2025.271.04:30:00 in 480s #############
+2025.271.04:27:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.04:27:25;"reply from APECS: OK
+2025.271.04:27:26;"reply from APECS: (timeout)
+2025.271.04:27:50;"vlbi_tsys()
+2025.271.04:27:50;"reply from APECS: OK
+2025.271.04:27:50;"reply from APECS: OK
+2025.271.04:27:51;"reply from APECS: (timeout)
+2025.271.04:29:15;"vlbi_reference_scan()
+2025.271.04:29:16;"reply from APECS: (timeout)
+2025.271.04:29:16;"#                      gap        max ~0 min 10 sec
+2025.271.04:30:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.04:30:00;"reply from APECS: OK
+2025.271.04:30:01;"reply from APECS: (timeout)
+2025.271.04:30:01;"#     scan ends at 2025.271.04:37:00
+2025.271.04:30:01;"
+2025.271.04:30:01;"# ### Block for BLLAC scan 24 'No0247' at 2025.271.04:45:00 in 480s #############
+2025.271.04:42:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.04:42:25;"reply from APECS: OK
+2025.271.04:42:26;"reply from APECS: (timeout)
+2025.271.04:42:50;"vlbi_tsys()
+2025.271.04:42:50;"reply from APECS: OK
+2025.271.04:42:50;"reply from APECS: OK
+2025.271.04:42:51;"reply from APECS: (timeout)
+2025.271.04:44:15;"vlbi_reference_scan()
+2025.271.04:44:16;"reply from APECS: (timeout)
+2025.271.04:44:16;"#                      gap        max ~0 min 10 sec
+2025.271.04:45:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.04:45:00;"reply from APECS: OK
+2025.271.04:45:01;"reply from APECS: (timeout)
+2025.271.04:45:01;"#     scan ends at 2025.271.04:52:00
+2025.271.04:45:01;"
+2025.271.04:45:01;"# ### Block for BLLAC scan 25 'No0252' at 2025.271.05:00:00 in 480s #############
+2025.271.04:57:25;"source('BLLAC',cats='user'); go(); track()
+2025.271.04:57:25;"reply from APECS: OK
+2025.271.04:57:26;"reply from APECS: (timeout)
+2025.271.04:57:50;"vlbi_tsys()
+2025.271.04:57:50;"reply from APECS: OK
+2025.271.04:57:50;"reply from APECS: OK
+2025.271.04:57:51;"reply from APECS: (timeout)
+2025.271.04:59:15;"vlbi_reference_scan()
+2025.271.04:59:16;"reply from APECS: (timeout)
+2025.271.04:59:16;"#                      gap        max ~0 min 10 sec
+2025.271.05:00:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.05:00:00;"reply from APECS: OK
+2025.271.05:00:01;"reply from APECS: (timeout)
+2025.271.05:00:01;"#     scan ends at 2025.271.05:07:00
+2025.271.05:00:01;"
+2025.271.05:00:01;"# ### Block for BLLAC scan 26 'No0257' at 2025.271.05:15:00 in 200s #############
+2025.271.05:07:00;"source('BLLAC',cats='user'); go(); track()
+2025.271.05:07:00;"reply from APECS: OK
+2025.271.05:07:01;"reply from APECS: (timeout)
+2025.271.05:07:25;"vlbi_tsys()
+2025.271.05:07:25;"reply from APECS: OK
+2025.271.05:07:25;"reply from APECS: OK
+2025.271.05:07:26;"reply from APECS: (timeout)
+2025.271.05:08:50;"vlbi_reference_scan()
+2025.271.05:08:51;"reply from APECS: (timeout)
+2025.271.05:08:51;"#                      gap        max ~5 min 35 sec
+2025.271.05:15:00;"vlbi_scan(t_mins=7,targetSource='BLLAC')
+2025.271.05:15:00;"reply from APECS: OK
+2025.271.05:15:01;"reply from APECS: (timeout)
+2025.271.05:15:01;"#     scan ends at 2025.271.05:22:00
+2025.271.05:15:01;"
+2025.271.05:15:01;"
+2025.271.05:15:01;"# Finished VLBI schedule
+2025.271.05:22:30;"remote_control('off')
+2025.271.05:22:30;"reply from APECS: OK
+2025.271.05:22:30;"reply from APECS: OK
+2025.271.05:22:31;"reply from APECS: (timeout)
+2025.271.05:22:31;"################################################################################
+2025.271.05:22:31;"### end of schedule
+2025.271.05:22:31;"################################################################################

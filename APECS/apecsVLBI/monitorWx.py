@@ -65,11 +65,11 @@ def readMeters(logfile, verbose=False):
 	T = datetime.datetime.utcnow() + datetime.timedelta(seconds=-offsetUTC)
         T_snp = T.strftime('%Y.%j.%H:%M:%S')
 
-	logfile.write('%s/%s\n' % (T_snp,calStr))
+	logfile.write('%s;%s\n' % (T_snp,calStr))
 	logfile.write('%s/%s\n' % (T_snp,wxStr))
 	logfile.write('%s;%s\n' % (T_snp,wxStr_alt))
 	if verbose:
-		print('%s/%s' % (T_snp,calStr))
+		print('%s;%s' % (T_snp,calStr))
 		print('%s/%s' % (T_snp,wxStr))
 		print('%s;%s' % (T_snp,wxStr_alt))
 
