@@ -3,10 +3,10 @@
 === Tone Synthesizer - Web Access ===
 
 Web GUI of tone synthesizer:
-  http://10.0.6.220/display
+  http://10.0.6.249/display
 
 Command entry:
-  http://10.0.6.220/scpi
+  http://10.0.6.249/scpi
 
   FREQ <mhz>
   POW <nn.n> dBm
@@ -28,15 +28,19 @@ setting the synthesizer to maximum output power.
 Synthesizer power should be ramped up/down in
 small steps to be delicate to the HMs.
 
-The settings below all produce a tone at
+The EHT settings below all produce a tone at
   ~423.0 MHz  in recorded EHT Band 4 of 230/260/345G VLBI
 provided that the DBBC3 Valon synth is tuned accordingly,
   cf. DBBC3-Valon-Tuning.txt
+The GMVA settings produce a tone at 19 MHz in VDIF channel 0,
+and FPT (86/260 GHz) settings dual tones one at 249 MHz and
+a secondary tone at 252 MHz.
 
+=== 230G EHT VLBI ===
 
-=== 230G VLBI ===
+The HM must have 10+3 dB attenuators for the settings below.
 
-Command sequence for http://10.0.6.220/scpi to enable tone in band 4:
+Command sequence for http://10.0.6.249/scpi to enable tone in band 4:
 
 pow -20 dbm
 freq 15315.0 mhz
@@ -71,9 +75,11 @@ pow 22.30 dbm
   Tone should be visible on XFFTS screen #6 at ~2500 MHz
 
 
-=== 260G VLBI ===
+=== 260G EHT VLBI ===
 
-Command sequence for http://10.0.6.220/scpi to enable tone in band 4:
+The HM must have 10+3 dB attenuators for the settings below.
+
+Command sequence for http://10.0.6.249/scpi to enable tone in band 4:
 
 pow -20 dbm
 freq 17875.0 mhz
@@ -94,9 +100,11 @@ pow -20 dbm
 output off
 
 
-=== 345G VLBI ===
+=== 345G EHT VLBI ===
 
-Command sequence for http://10.0.6.220/scpi to enable tone in band 4:
+The HM must have 10+3 dB attenuators for the settings below.
+
+Command sequence for http://10.0.6.249/scpi to enable tone in band 4:
 
 pow -20 dbm
 freq 14009.0 mhz
@@ -110,6 +118,8 @@ pow 23.6 dbm
   Tone should be visible on XFFTS screen #8 at ~550 MHz
   (was: Tone should be visible on XFFTS screen #5 at ~3500 MHz)
 
+  Power into the HM is effectively 10.6 dBm after attenuators.
+
 Disable tone:
 
 pow 15 dbm
@@ -117,3 +127,142 @@ pow 0 dbm
 pow -20 dbm
 output off
 
+For analog coherence tests the reference tone can be configured with:
+
+[oper@cc-apex ~]$ remoteAnritsuMG.py freq 422.9900 mhz pow 9.0 dbm output on
+
+In digital coherence tests (Mark6 recording) the tone can be checked with:
+
+oper@recorder4:~> m5tone.py /mark6-4_fuse/12/<scan name>.vdif VDIF_8192-8192-1-2 tmp.m5tone 1 1e-3 423e6 819200 0
+
+
+
+=== 86G GMVA VLBI ===
+
+The HM is a tone generator assembly with built-in amplifier.
+The synthesizer driving it is separate from the EHT tone synth.
+
+Command sequence for http://10.0.6.230/scpi to enable tone:
+
+pow -20 dbm
+freq 17219 MHz
+output on
+pow -10 dbm
+pow -5 dbm
+pow 0 dbm
+pow 4.5 dbm
+
+Disable tone:
+
+pow 0 dbm
+pow -10 dbm
+pow -20 dbm
+output off
+
+   Tone in ffts3:2  screen #8  near 2100 MHz
+
+For analog coherence tests the reference tone needs to account for
+an LO offset of  -8.80 Hz  and can be configured with:
+
+[oper@cc-apex ~]$ remoteAnritsuMG.py freq 3042.98999120 mhz pow 9.0 dbm output on
+
+In digital coherence tests (Mark6 recording) the tone can be checked with:
+
+oper@recorder3:~> m5tone.py /mark6-3_fuse/1/<scan name>.vdif VDIF_8192-2048-8-2 tmp 1 50e-3 19e6 102400 0 +8.80
+
+
+=== 94G GMVA VLBI ===
+
+The HM is a tone generator assembly with built-in amplifier.
+The synthesizer driving it is separate from the EHT tone synth.
+
+Command sequence for http://10.0.6.230/scpi to enable tone:
+
+pow -20 dbm
+freq 11761.875 MHz
+output on
+pow -10 dbm
+pow -5 dbm
+pow -2 dbm
+pow 1 dbm
+
+Disable tone:
+
+pow -5 dbm
+pow -10 dbm
+pow -20 dbm
+output off
+
+   Tone in ffts3:2  screen #8  near 2100 MHz
+
+For analog coherence tests the reference tone needs to account for
+an LO offset of  -24 Hz  and can be configured with:
+
+[oper@cc-apex ~]$ remoteAnritsuMG.py freq 3042.9899760 mhz pow 9.0 dbm output on
+
+In digital coherence tests (Mark6 recording) the tone can be checked with:
+
+oper@recorder3:~> m5tone.py /mark6-3_fuse/1/<scan name>.vdif VDIF_8192-2048-8-2 tmp 1 50e-3 19e6 102400 0 +24
+
+
+=== 86G + 260G dual freq VLBI ===
+
+The HMs are 
+ - N3AR HM tone generator assembly with built-in amplifier (spans N3AR & NFLASH freqs, >60 GHz)
+ - Pavelyev "230G" WR-3 HM for offsetted 2nd tone at 260G (only NFLASH freqs, >100 GHz),
+   Note, 10+3 dB attenuators of HM removed! The needed ~4m long LMR400 coax has 6 dB measured
+   cable loss. The HM needs ca 2 dBm. With 13 dB attenuators the Agilent synth setting would be >=21 dBm
+   which leads to "output unleveled" in our particular synth.
+
+Careful with power levels!
+
+Command sequence for http://10.0.6.230/scpi to enable dual band tones on N3AR HM:
+
+pow -20 dbm
+freq 17218 mhz
+output on
+pow -10 dbm
+pow -5 dbm
+pow -2 dbm
+pow 0 dbm
+
+Disable tone:
+
+pow -5 dbm
+pow -10 dbm
+pow -20 dbm
+output off
+
+
+For analog coherence tests the reference tone needs to account for LO offsets of 24.3 Hz (86G) and 75.60 Hz (260G):
+
+[oper@cc-apex ~]$ remoteAnritsuMG.py freq 2130.98997570 mhz pow 9.0 dbm output on  # N3AR/86G
+[oper@cc-apex ~]$ remoteAnritsuMG.py freq 2130.98992440 mhz pow 9.0 dbm output on  # NFLASH/260G
+
+In digital coherence tests (Mark6 recording) the tones can be checked with:
+
+oper@recorder3> m5tone.py /mark6-3_fuse/1/<scan name>.vdif VDIF_8192-4096-1-2 tmp 1 50e-3 249e6 819200 0 -24.30  # N3AR/86G
+oper@recorder2> m5tone.py /mark6-2_fuse/1/<scan name>.vdif VDIF_8192-4096-1-2 tmp 1 50e-3 249e6 819200 0 -75.60  # NFLASH/260G
+
+
+Command sequence for http://10.0.6.249/scpi to enable secondary tone of 230G WR-3 HM,
+note, removed(!) the 10+3 dB attenuators:
+
+pow -20 dbm
+freq 17219.20 mhz
+output on
+pow -10 dbm
+pow 0 dbm
+pow 4 dbm
+pow 8 dbm
+
+Disable tone:
+
+pow -5 dbm
+pow -10 dbm
+pow -20 dbm
+output off
+
+In digital coherence tests (Mark6 recording) this 2nd nflash tone can be checked with:
+
+oper@recorder2> m5tone.py /mark6-2_fuse/1/<scan name>.vdif VDIF_8192-4096-1-2 tmp 1 50e-3 252e6 819200 0 -75.60
