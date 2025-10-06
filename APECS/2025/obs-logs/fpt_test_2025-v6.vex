@@ -1,0 +1,541 @@
+VEX_rev = 1.5;
+*    SCHED vers: Release 12.0; April 2023
+*    VEX/SCHED:  1.5.88
+*    Other versions: Sched:  12.0  Plot: 1.06  JPL-ephem: 1.01
+*------------------------------------------------------------------------------
+$GLOBAL;
+     ref $EXPER = fpt_test_2025;
+*                                                      +------------+
+*                         PI revision number:          |    6.0000  |
+*                                                      +------------+
+*    mode:       R2DBE
+*------------------------------------------------------------------------------
+$EXPER;
+*
+def fpt_test_2025;
+     exper_name = fpt_test_2025;
+     exper_description = "APEX-PV 86/258 GHz FPT test 2025";
+     PI_name = Zhao/Roy;
+     PI_email = gyzhao@mpifr-bonn.mpg.de;
+*    address:   VLBI Division
+*               Max-Planck-Institute for Radio Astronomy
+*               Auf dem Huegel 69,
+*               D-53121 Bonn, Germany
+*    phone:     +49 228 525 473
+*    during obs: 
+*    fax:        
+*    notes:     Setups are place holders for the actual experiment
+*
+*    year, doy: 2025, 274
+*    date     : Wed  1 Oct 2025
+*    MJD      : 60949
+     exper_nominal_start=2025y274d00h30m00s;
+     exper_nominal_stop=2025y274d05h28m10s;
+*
+     target_correlator = BONN;
+*
+*    integr_time    :     0.500 s
+*    number_channels:   128
+*    number_antenna :  2
+*    cross_polarize : Yes
+*    weight_func    : UNIFORM
+*    distrib_medium : NONE
+*    distrib_format : FITS
+*    source_pos_cat : STANDARD
+*    distribute_to  : 
+*                     H. Rottmann
+*                     Max-Planck-Institute for Radio Astronomy
+*                     Auf dem Huegel 69
+*                     D-53121 Bonn, Germany
+*    corr_notes : 
+*               FPT test from 86 to 258 GHz
+*
+enddef;
+*------------------------------------------------------------------------------
+$MODE;
+*
+def w1mm_512mhz;
+     ref $PROCEDURES = Mode_01;
+     ref $FREQ = DualFreq8x512MHz:Ax:Pv:On;
+     ref $IF = DualFreqDPolNoTone:Ax:Pv:On;
+     ref $BBC = 8BBCs:Ax:Pv:On;
+     ref $TRACKS = VDIF.8Ch2bit1to1:Ax:Pv:On;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ax:Pv:On;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Ax:Pv:On;
+enddef;
+*------------------------------------------------------------------------------
+$STATION;
+*
+def Ax;
+     ref $SITE = APEX;
+     ref $ANTENNA = APEX;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def Pv;
+     ref $SITE = PICOVEL;
+     ref $ANTENNA = PICOVEL;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def On;
+     ref $SITE = ONSALA60;
+     ref $ANTENNA = ONSALA60;
+     ref $DAS = 2NONE<;
+enddef;
+*------------------------------------------------------------------------------
+$PROCEDURES;
+*
+def Mode_01;
+     procedure_name_prefix =  "01";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*------------------------------------------------------------------------------
+$SITE;
+*
+def APEX;
+     site_type = fixed;
+     site_name = APEX;
+     site_ID = Ax;
+*    elev= 5104.47 long= 067:45:32. lat=-23:00:20.8
+     site_position = 2225039.52970 m:-5441197.62920 m:-2479303.35970 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 1997y001d;
+     site_position_epoch =   50449;
+     horizon_map_az =  1.0 deg: 39.0: 40.0: 68.0: 78.0: 86.0: 94.5:103.0:360.0;
+     horizon_map_el =  3.0 deg: 15.0: 15.0:  9.6:  3.0:  3.0:  5.2:  3.0:  3.0;
+enddef;
+*
+def PICOVEL;
+     site_type = fixed;
+     site_name = PICOVEL;
+     site_ID = Pv;
+*    elev= 2919.41 long= 003:23:33. lat= 37:03:58.1
+     site_position = 5088967.74544 m: -301681.18586 m: 3825012.20561 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 1997y001d;
+     site_position_epoch =   50449;
+enddef;
+*
+def ONSALA60;
+     site_type = fixed;
+     site_name = ONSALA60;
+     site_ID = On;
+*    elev=   59.34 long=-011:55:34. lat= 57:23:45.0
+     site_position = 3370605.70350 m:  711917.81460 m: 5349830.98520 m;
+     site_velocity = -0.014230   m/yr:  0.014510   m/yr:  0.010890  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+enddef;
+*------------------------------------------------------------------------------
+$ANTENNA;
+*
+def APEX;
+     axis_type = az : el;
+     antenna_motion = el :  60.0 deg/min : 30 sec;  * 1000.000 deg/sec/sec
+     antenna_motion = az :  60.0 deg/min : 30 sec;  * 1000.000 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*
+def PICOVEL;
+     axis_type = az : el;
+     antenna_motion = el :  30.0 deg/min : 30 sec;  * 1000.000 deg/sec/sec
+     antenna_motion = az :  30.0 deg/min : 30 sec;  * 1000.000 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*
+def ONSALA60;
+     axis_type = az : el;
+     antenna_motion = el :  57.0 deg/min : 20 sec;  *    0.400 deg/sec/sec
+     antenna_motion = az : 180.0 deg/min : 20 sec;  *    0.300 deg/sec/sec
+     axis_offset =   -0.00220 m;
+enddef;
+*------------------------------------------------------------------------------
+$DAS;
+*
+def 2NONE<;
+     record_transport_type = Mark5C;
+     electronics_rack_type = none;
+     number_drives = 2;
+     headstack = 1 :            : 0 ;
+     headstack = 2 :            : 1 ;
+     tape_motion = adaptive : 0 min: 0 min: 10 sec;
+enddef;
+*------------------------------------------------------------------------------
+$SOURCE;
+*
+def 0420-014;
+     source_name = 0420-014;
+*    this source had calibrator code: V
+*    alternate source name: J0423-0120
+*    alternate source name: J042315.8-01
+*    ICRF3 X/S astro solution,  79013 observations.
+     ra = 04h23m15.8007222s; dec = -01d20'33.065607"; ref_coord_frame = J2000;
+*    ra = 04h20m43.5398453s; dec = -01d27'28.700312"; ref_coord_frame = B1950;
+*    ra = 04h24m35.1578387s; dec = -01d16'45.557151"; ref_coord_frame = Date;
+enddef;
+*
+def 3C120;
+     source_name = 3C120;
+*    this source had calibrator code: V
+*    alternate source name: J0433+0521
+*    alternate source name: 0430+052
+*    alternate source name: J043311.0+05
+*    ICRF3 X/S astro solution,   9151 observations.
+     ra = 04h33m11.0955307s; dec =  05d21'15.619266"; ref_coord_frame = J2000;
+*    ra = 04h30m31.6020619s; dec =  05d14'59.616481"; ref_coord_frame = B1950;
+*    ra = 04h34m34.1260153s; dec =  05d24'40.670415"; ref_coord_frame = Date;
+enddef;
+*
+def BLLAC;
+     source_name = BLLAC;
+*    this source had calibrator code: V
+*    alternate source name: J2202+4216
+*    alternate source name: 2200+420
+*    alternate source name: J220243.2+42
+*    ICRF3 X/S astro solution,  52368 observations.
+     ra = 22h02m43.2913695s; dec =  42d16'39.979896"; ref_coord_frame = J2000;
+*    ra = 22h00m39.3625028s; dec =  42d02'08.590761"; ref_coord_frame = B1950;
+*    ra = 22h03m48.1688504s; dec =  42d24'20.991362"; ref_coord_frame = Date;
+enddef;
+*
+def CTA102;
+     source_name = CTA102;
+*    this source had calibrator code: V
+*    alternate source name: J2232+1143
+*    alternate source name: 2230+114
+*    alternate source name: J223236.4+11
+*    ICRF3 X/S astro solution,   9867 observations.
+     ra = 22h32m36.4089009s; dec =  11d43'50.904059"; ref_coord_frame = J2000;
+*    ra = 22h30m07.8039430s; dec =  11d28'22.810777"; ref_coord_frame = B1950;
+*    ra = 22h33m54.0969882s; dec =  11d51'58.056813"; ref_coord_frame = Date;
+enddef;
+*
+def 3C454.3;
+     source_name = 3C454.3;
+*    this source had calibrator code: V
+*    alternate source name: J2253+1608
+*    alternate source name: 2251+158
+*    alternate source name: J225357.7+16
+*    ICRF3 X/S astro solution,  37263 observations.
+     ra = 22h53m57.7479401s; dec =  16d08'53.560881"; ref_coord_frame = J2000;
+*    ra = 22h51m29.5197407s; dec =  15d52'54.348052"; ref_coord_frame = B1950;
+*    ra = 22h55m15.3012371s; dec =  16d17'17.390670"; ref_coord_frame = Date;
+enddef;
+*------------------------------------------------------------------------------
+$FREQ;
+*
+def DualFreq8x512MHz;
+* mode =  1    stations =Ax:Pv:On
+     sample_rate =  1024.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 86012.00 MHz : U : 512.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 86524.00 MHz : U : 512.00 MHz : &CH02 : &BBC01 : &NoCal; *Rcp
+     chan_def = :258036.00 MHz : U : 512.00 MHz : &CH03 : &BBC02 : &NoCal; *Rcp
+     chan_def = :258548.00 MHz : U : 512.00 MHz : &CH04 : &BBC02 : &NoCal; *Rcp
+     chan_def = : 86012.00 MHz : U : 512.00 MHz : &CH05 : &BBC03 : &NoCal; *Lcp
+     chan_def = : 86524.00 MHz : U : 512.00 MHz : &CH06 : &BBC03 : &NoCal; *Lcp
+     chan_def = :258036.00 MHz : U : 512.00 MHz : &CH07 : &BBC04 : &NoCal; *Lcp
+     chan_def = :258548.00 MHz : U : 512.00 MHz : &CH08 : &BBC04 : &NoCal; *Lcp
+enddef;
+*------------------------------------------------------------------------------
+$IF;
+*
+def DualFreqDPolNoTone;
+* mode =  1    stations =Ax:Pv:On
+     if_def = &IF_A1 : A1 : R : 93012.00 MHz : L ; * PCall off!   0.0   0.0  NA     0 NA
+     if_def = &IF_B4 : B4 : L : 93012.00 MHz : L ; * PCall off!   0.0   0.0  NA     0 NA
+enddef;
+*------------------------------------------------------------------------------
+$BBC;
+*
+def 8BBCs;
+* mode =  1    stations =Ax:Pv:On
+     BBC_assign = &BBC01 :  1 : &IF_A1;
+     BBC_assign = &BBC02 :  2 : &IF_A1;
+     BBC_assign = &BBC03 :  3 : &IF_B4;
+     BBC_assign = &BBC04 :  4 : &IF_B4;
+enddef;
+*------------------------------------------------------------------------------
+$PHASE_CAL_DETECT;
+*
+def NoDetect;
+* mode =  1    stations =Ax:Pv:On
+     phase_cal_detect = &NoCal;
+enddef;
+*------------------------------------------------------------------------------
+$TRACKS;
+*
+def VDIF.8Ch2bit1to1;
+* mode =  1    stations =Ax:Pv:On
+*    format = VDIF, and fan-out = 1
+*    mode requires ******Mb/s/tr; stations using disks
+     track_frame_format = VDIF5032;
+     fanout_def =   : &CH01 : sign : 1:  1;
+     fanout_def =   : &CH01 :  mag : 1:  1;
+     fanout_def =   : &CH02 : sign : 1:  2;
+     fanout_def =   : &CH02 :  mag : 1:  2;
+     fanout_def =   : &CH03 : sign : 1:  3;
+     fanout_def =   : &CH03 :  mag : 1:  3;
+     fanout_def =   : &CH04 : sign : 1:  4;
+     fanout_def =   : &CH04 :  mag : 1:  4;
+     fanout_def =   : &CH05 : sign : 1:  5;
+     fanout_def =   : &CH05 :  mag : 1:  5;
+     fanout_def =   : &CH06 : sign : 1:  6;
+     fanout_def =   : &CH06 :  mag : 1:  6;
+     fanout_def =   : &CH07 : sign : 1:  7;
+     fanout_def =   : &CH07 :  mag : 1:  7;
+     fanout_def =   : &CH08 : sign : 1:  8;
+     fanout_def =   : &CH08 :  mag : 1:  8;
+enddef;
+*------------------------------------------------------------------------------
+$HEAD_POS;
+def DiskVoid;
+* mode =  1    stations =Ax:Pv:On
+*     Head positions irrelevant for Disk: empty def
+enddef;
+*------------------------------------------------------------------------------
+$PASS_ORDER;
+*
+def DiskVoid;
+* mode =  1    stations =Ax:Pv:On
+*     Pass orders irrelevant for Disk: empty def
+enddef;
+*------------------------------------------------------------------------------
+$ROLL;
+*
+def NoRoll;
+* mode =  1    stations =Ax:Pv:On
+*    barrel-roll set to 'roll_off', so reverse-roll by  0 (1 head)
+     roll = off;
+enddef;
+*------------------------------------------------------------------------------
+$SCHED;
+* schedule section for experiment fpt_test_2025   
+* APEX-PV 86/258 GHz FPT test 2025                                        
+scan No0001;
+     start=2025y274d00h30m00s; mode=w1mm_512mhz; source=CTA102;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Ax:    0 sec:  180 sec:       0.000 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:       0.000 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:       0.000 GB:   : &n    : 1;
+endscan;
+scan No0002;
+     start=2025y274d00h35m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax:    0 sec:  180 sec:     370.999 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:     370.999 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:     370.999 GB:   : &n    : 1;
+endscan;
+scan No0003;
+     start=2025y274d00h40m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax:    0 sec:  180 sec:     741.999 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:     741.999 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:     741.999 GB:   : &n    : 1;
+endscan;
+scan No0004;
+     start=2025y274d00h45m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax:    0 sec:  180 sec:    1112.998 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:    1112.998 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:    1112.998 GB:   : &n    : 1;
+endscan;
+scan No0005;
+     start=2025y274d00h50m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax:    0 sec:  180 sec:    1483.997 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:    1483.997 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:    1483.997 GB:   : &n    : 1;
+endscan;
+scan No0006;
+     start=2025y274d01h01m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax:    0 sec:  180 sec:    1854.996 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:    1854.996 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:    1854.996 GB:   : &n    : 1;
+endscan;
+scan No0007;
+     start=2025y274d01h06m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax:    0 sec:  180 sec:    2225.996 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:    2225.996 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:    2225.996 GB:   : &n    : 1;
+endscan;
+scan No0008;
+     start=2025y274d01h11m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax:    0 sec:  180 sec:    2596.995 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:    2596.995 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:    2596.995 GB:   : &n    : 1;
+endscan;
+scan No0009;
+     start=2025y274d01h16m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax:    0 sec:  180 sec:    2967.994 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:    2967.994 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:    2967.994 GB:   : &n    : 1;
+endscan;
+scan No0010;
+     start=2025y274d01h21m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax:    0 sec:  180 sec:    3338.993 GB:   : &n    : 1;
+     station=Pv:    0 sec:  180 sec:    3338.993 GB:   : &n    : 1;
+     station=On:    0 sec:  180 sec:    3338.993 GB:   : &n    : 1;
+endscan;
+scan No0011;
+     start=2025y274d01h34m00s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax:    0 sec:  670 sec:    3709.993 GB:   : &n    : 1;
+     station=Pv:    0 sec:  670 sec:    3709.993 GB:   : &n    : 1;
+     station=On:    0 sec:  670 sec:    3709.993 GB:   : &n    : 1;
+endscan;
+scan No0012;
+     start=2025y274d01h46m50s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax:    0 sec:  670 sec:    5090.935 GB:   : &n    : 1;
+     station=Pv:    0 sec:  670 sec:    5090.935 GB:   : &n    : 1;
+     station=On:    0 sec:  670 sec:    5090.935 GB:   : &n    : 1;
+endscan;
+scan No0013;
+     start=2025y274d02h08m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax:    0 sec:  300 sec:    6471.876 GB:   : &n    : 1;
+     station=Pv:    0 sec:  300 sec:    6471.876 GB:   : &n    : 1;
+     station=On:    0 sec:  300 sec:    6471.876 GB:   : &n    : 1;
+endscan;
+scan No0014;
+     start=2025y274d02h15m00s; mode=w1mm_512mhz; source=3C454.3;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Ax:    0 sec:  240 sec:    7090.208 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:    7090.208 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:    7090.208 GB:   : &n    : 1;
+endscan;
+scan No0015;
+     start=2025y274d02h21m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax:    0 sec:  240 sec:    7584.874 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:    7584.874 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:    7584.874 GB:   : &n    : 1;
+endscan;
+scan No0016;
+     start=2025y274d02h27m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax:    0 sec:  240 sec:    8079.540 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:    8079.540 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:    8079.540 GB:   : &n    : 1;
+endscan;
+scan No0017;
+     start=2025y274d02h41m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax:    0 sec:  240 sec:    8574.205 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:    8574.205 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:    8574.205 GB:   : &n    : 1;
+endscan;
+scan No0018;
+     start=2025y274d02h47m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax:    0 sec:  240 sec:    9068.871 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:    9068.871 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:    9068.871 GB:   : &n    : 1;
+endscan;
+scan No0019;
+     start=2025y274d02h53m00s; mode=w1mm_512mhz; source=3C454.3;
+     station=Ax:    0 sec:  240 sec:    9563.537 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:    9563.537 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:    9563.537 GB:   : &n    : 1;
+endscan;
+scan No0020;
+     start=2025y274d02h59m00s; mode=w1mm_512mhz; source=CTA102;
+     station=Ax:    0 sec:  240 sec:   10058.203 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   10058.203 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   10058.203 GB:   : &n    : 1;
+endscan;
+scan No0021;
+     start=2025y274d03h13m00s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax:    0 sec:  700 sec:   10552.869 GB:   : &n    : 1;
+     station=Pv:    0 sec:  700 sec:   10552.869 GB:   : &n    : 1;
+     station=On:    0 sec:  700 sec:   10552.869 GB:   : &n    : 1;
+endscan;
+scan No0022;
+     start=2025y274d03h26m20s; mode=w1mm_512mhz; source=BLLAC;
+     station=Ax:    0 sec:  700 sec:   11995.645 GB:   : &n    : 1;
+     station=Pv:    0 sec:  700 sec:   11995.645 GB:   : &n    : 1;
+     station=On:    0 sec:  700 sec:   11995.645 GB:   : &n    : 1;
+endscan;
+scan No0023;
+     start=2025y274d03h50m10s; mode=w1mm_512mhz; source=0420-014;
+     station=Ax:    0 sec:  600 sec:   13438.420 GB:   : &n    : 1;
+     station=Pv:    0 sec:  600 sec:   13438.420 GB:   : &n    : 1;
+     station=On:    0 sec:  600 sec:   13438.420 GB:   : &n    : 1;
+endscan;
+scan No0024;
+     start=2025y274d04h02m10s; mode=w1mm_512mhz; source=3C120;
+     station=Ax:    0 sec:  240 sec:   14675.084 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   14675.084 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   14675.084 GB:   : &n    : 1;
+endscan;
+scan No0025;
+     start=2025y274d04h08m10s; mode=w1mm_512mhz; source=0420-014;
+     station=Ax:    0 sec:  240 sec:   15169.750 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   15169.750 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   15169.750 GB:   : &n    : 1;
+endscan;
+scan No0026;
+     start=2025y274d04h14m10s; mode=w1mm_512mhz; source=3C120;
+     station=Ax:    0 sec:  240 sec:   15664.416 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   15664.416 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   15664.416 GB:   : &n    : 1;
+endscan;
+scan No0027;
+     start=2025y274d04h28m10s; mode=w1mm_512mhz; source=0420-014;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Ax:    0 sec:  240 sec:   16159.082 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   16159.082 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   16159.082 GB:   : &n    : 1;
+endscan;
+scan No0028;
+     start=2025y274d04h34m10s; mode=w1mm_512mhz; source=3C120;
+     station=Ax:    0 sec:  240 sec:   16653.748 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   16653.748 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   16653.748 GB:   : &n    : 1;
+endscan;
+scan No0029;
+     start=2025y274d04h40m10s; mode=w1mm_512mhz; source=0420-014;
+     station=Ax:    0 sec:  240 sec:   17148.414 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   17148.414 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   17148.414 GB:   : &n    : 1;
+endscan;
+scan No0030;
+     start=2025y274d04h46m10s; mode=w1mm_512mhz; source=3C120;
+     station=Ax:    0 sec:  240 sec:   17643.080 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   17643.080 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   17643.080 GB:   : &n    : 1;
+endscan;
+scan No0031;
+     start=2025y274d04h52m10s; mode=w1mm_512mhz; source=0420-014;
+     station=Ax:    0 sec:  240 sec:   18137.746 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   18137.746 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   18137.746 GB:   : &n    : 1;
+endscan;
+scan No0032;
+     start=2025y274d05h06m10s; mode=w1mm_512mhz; source=0420-014;
+     station=Ax:    0 sec:  240 sec:   18632.412 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   18632.412 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   18632.412 GB:   : &n    : 1;
+endscan;
+scan No0033;
+     start=2025y274d05h12m10s; mode=w1mm_512mhz; source=3C120;
+     station=Ax:    0 sec:  240 sec:   19127.078 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   19127.078 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   19127.078 GB:   : &n    : 1;
+endscan;
+scan No0034;
+     start=2025y274d05h18m10s; mode=w1mm_512mhz; source=0420-014;
+     station=Ax:    0 sec:  240 sec:   19621.744 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   19621.744 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   19621.744 GB:   : &n    : 1;
+endscan;
+scan No0035;
+     start=2025y274d05h24m10s; mode=w1mm_512mhz; source=3C120;
+     station=Ax:    0 sec:  240 sec:   20116.410 GB:   : &n    : 1;
+     station=Pv:    0 sec:  240 sec:   20116.410 GB:   : &n    : 1;
+     station=On:    0 sec:  240 sec:   20116.410 GB:   : &n    : 1;
+endscan;
