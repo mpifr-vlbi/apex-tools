@@ -1,0 +1,32 @@
+
+APEX:OPTICS:C2
+
+Sending commands
+
+[oper@cc-apex ~]$ nc -u 10.0.2.89 15322
+
+
+Safe commands
+
+APEX:OPTICS:C2:cmdPosition A          without mirror, without dichroic
+APEX:OPTICS:C2:cmdPosition C          with mirror redirecting beam into N3AR, blocks the A-cabin
+APEX:OPTICS:C2:cmdPosition C_A1       with dichroic splitting beam into N3AR and into A-cabin
+APEX:OPTICS:C2:position?
+
+
+Unsafe commands
+
+APEX:OPTICS:C2:recalibrate   or something like that
+
+
+Example
+
+[oper@cc-apex ~]$ nc -u 10.0.2.89 15322
+APEX:OPTICS:C2:position?
+APEX:OPTICS:C2:POSITION A 2026-03-05T16:59:09.7225
+APEX:OPTICS:C2:cmdPosition C_A1
+APEX:OPTICS:C2:position?
+APEX:OPTICS:C2:POSITION MOVING 2026-03-05T17:02:16.5964
+APEX:OPTICS:C2:position?
+APEX:OPTICS:C2:POSITION C_A1 2026-03-05T17:05:37.1265
+
