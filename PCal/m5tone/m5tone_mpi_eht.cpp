@@ -145,7 +145,14 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
 
     // Open VDIF file
     mark5_library_init();
-    struct mark5_format_generic *fmt = new_mark5_format_vdif(8192, 1, 2, 1, 8192, 32, 0);
+    struct mark5_format_generic *fmt;
+    if (VDIF_CHAN_BW_MHZ == 64) {
+        fmt = new_mark5_format_vdif(2048, 8, 2, 1, 8192, 32, 0);
+    } else if (VDIF_CHAN_BW_MHZ == 1024) {
+        fmt = new_mark5_format_vdif(4096, 1, 2, 1, 8192, 32, 0);
+    } else {
+        fmt = new_mark5_format_vdif(8192, 1, 2, 1, 8192, 32, 0);
+    }
     struct mark5_stream *ms = new_mark5_stream(new_mark5_stream_file(vdiffilename,0), fmt);
     if (!ms) {
         fprintf(stderr, "Problem creating mark5_stream\n");
@@ -178,7 +185,7 @@ int samplestream_producer(MPI_Comm mpi, const char* vdiffilename)
 
     // Summary of settings
     printf("Starting MJD: %.9lf\n", scanStartMJD);
-    printf("Hardcoded settings: %d-point FFT, tone at %.1f MHz, LO offset %.3f Hz that %s to be removed\n",
+    printf("Hardcoded settings: %d-point FFT, tone at %.1f MHz, LO offset %.6f Hz that %s to be removed\n",
         DFT_LENGTH, (float)TONE_FREQ_MHZ, (float)LO_OFFSET_HZ,
         (HAVE_LO_OFFSET==1) ? "is" : "is NOT"
     );

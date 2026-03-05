@@ -69,7 +69,13 @@ double processRecordingByDFT(const char *infilename, int chan, int fftlen, int n
 
     // Open VDIF file
     mark5_library_init();
-    fmt = new_mark5_format_vdif(8192, 1, 2, 1, 8192, 32, 0);
+    if (VDIF_CHAN_BW_MHZ == 64) {
+        fmt = new_mark5_format_vdif(2048, 8, 2, 1, 8192, 32, 0);
+    } else if (VDIF_CHAN_BW_MHZ == 1024) {
+        fmt = new_mark5_format_vdif(4096, 1, 2, 1, 8192, 32, 0);
+    } else {
+        fmt = new_mark5_format_vdif(8192, 1, 2, 1, 8192, 32, 0);
+    }
     ms = new_mark5_stream(new_mark5_stream_file(infilename,0), fmt);
     if (!ms) {
         fprintf(stderr, "Problem creating mark5_stream\n");
@@ -225,7 +231,11 @@ double processRecordingByCrosscorr(const char *infilename, int chan, int nsampav
 
     // Open VDIF file
     mark5_library_init();
-    fmt = new_mark5_format_vdif(8192, 1, 2, 1, 8192, 32, 0);
+    if (VDIF_CHAN_BW_MHZ == 1024) {
+        fmt = new_mark5_format_vdif(4096, 1, 2, 1, 8192, 32, 0);
+    } else {
+        fmt = new_mark5_format_vdif(8192, 1, 2, 1, 8192, 32, 0);
+    }
     ms = new_mark5_stream(new_mark5_stream_file(infilename,0), fmt);
     if (!ms) {
         fprintf(stderr, "Problem creating mark5_stream\n");
