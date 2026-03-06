@@ -1,0 +1,31 @@
+#ifndef HPCounterGPIB_h
+#define HPCounterGPIB_h
+
+#include <string>
+
+class PrologixEthGPIB;
+
+class HPCounterGPIB {
+
+public:
+
+   /** Create instance of HP counter residing behind given Prologix GPIB-Ethernet converter */
+   HPCounterGPIB(PrologixEthGPIB& host, int gpib_dev_nr) : m_host(host),m_devnr(gpib_dev_nr) { }
+   ~HPCounterGPIB() { }
+
+   /** Read ID string from HP counter */
+   std::string identify();
+
+   /** Initialize the HP counter */
+   int configure();
+
+   /** Return GPIB device address */
+   int getAddr() const { return m_devnr; }
+
+private:
+   PrologixEthGPIB& m_host;
+   int m_devnr;
+
+};
+
+#endif
