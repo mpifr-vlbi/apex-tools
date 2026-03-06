@@ -138,9 +138,11 @@ int PrologixEthGPIB::selectDevice(int deviceNr)
    }
 
    reply = this->read(false);
-   std::cerr << "PrologixEthGPIB::selectDevice(" << deviceNr << ") ok, sent request '" << request.str() << "'" << ", got response '" << reply << "'" << std::endl;
-
-   // todo: inspect reply?
+   int activeAddr = stoi(reply);
+   if (activeAddr != deviceNr) {
+      std::cerr << "PrologixEthGPIB::selectDevice() of device " << deviceNr << " failed, active device is " << activeAddr << std::endl; 
+      return -1;
+   }
 
    return 0;
 }
@@ -181,6 +183,9 @@ std::string PrologixEthGPIB::read(bool prologixReadmode)
       if (rxbuf[nrx] == eol_marker) {
          rxbuf[nrx] = '\0';
          break;
+      }
+      if (rxbuf[nrx] == '\r' || rxbuf[nrx] == '\n') {
+         continue;
       }
       nrx++;
    }

@@ -9,12 +9,16 @@
 /** Read ID string from counter */
 std::string HPCounterGPIB::identify()
 {
+   int rc;
    if (!m_host.isConnected()) {
       std::cerr << "HPCounterGPIB::identify() of device " << m_devnr << " : configure error, no TCP connection" << std::endl;
       return std::string("");
    }
 
-   m_host.selectDevice(m_devnr);
+   rc = m_host.selectDevice(m_devnr);
+   if (rc != 0) {
+      return std::string("");
+   }
 
    m_host.write("*IDN?");
    std::string id = m_host.read(true);
@@ -49,7 +53,10 @@ int HPCounterGPIB::configure()
       return -1;
    }
 
-   m_host.selectDevice(m_devnr);
+   int rc = m_host.selectDevice(m_devnr);
+   if (rc != 0) {
+      return 0;
+   }
 
    for (auto cmd : CounterConfigCommands) {
       int nwr = m_host.write(cmd);
