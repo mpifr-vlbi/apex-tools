@@ -92,6 +92,7 @@ args = parser.parse_args()
 
 anritsu = AnritsuMG369xA(host=args.host, address=int(args.gpib_addr))
 anritsu.open(verbose=False)
+anritsu.rfOn()
 print('Current settings: ', anritsu.getActiveSettings())
 
 f0 = 3042.9900
