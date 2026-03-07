@@ -31,9 +31,6 @@ pollCounters_maser: pollCounters_maser.o nettools.o
 pollCounters_both: pollCounters_both.o nettools.o
 	$(CC) pollCounters_both.o nettools.o -o pollCounters_both
 
-initCounters_both: initCounters_both.o nettools.o
-	$(CC) initCounters_both.o nettools.o -o initCounters_both
-
 install:
 	cp pollVectorVoltmeter $(OUTDIR)/
 	cp pollCounters $(OUTDIR)/
