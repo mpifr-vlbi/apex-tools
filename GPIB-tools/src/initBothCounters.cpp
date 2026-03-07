@@ -1,4 +1,3 @@
-
 #include "HPCounterGPIB.h"
 #include "PrologixEthGPIB.h"
 
@@ -14,9 +13,10 @@ int main(int argc, char** argv)
    const int prologix_tcp_port = 1234;
    int rc;
 
+   std::vector<HPCounterGPIB*> counters;
    PrologixEthGPIB prologix(prologix_ipv4addr, prologix_tcp_port);
-   HPCounterGPIB counter1(prologix, /*gpib addr:*/ 3);
-   HPCounterGPIB counter2(prologix, /*gpib addr:*/ 4);
+   counters.push_back(new HPCounterGPIB(prologix, 3));
+   counters.push_back(new HPCounterGPIB(prologix, 4));
 
    rc = prologix.connect();
    if (rc != 0) {
@@ -30,19 +30,13 @@ int main(int argc, char** argv)
       return -1;
    }
 
-   std::cout << "Counter with GPIB address " << counter1.getAddr() << " has ID " << counter1.identify() << std::endl;
-   std::cout << "Counter with GPIB address " << counter2.getAddr() << " has ID " << counter2.identify() << std::endl;
-
-   rc = counter1.configure();
-   if (rc != 0) {
-      std::cout << "Failed to configure counter with GPIB address " << counter1.getAddr() << std::endl;
-      return -1;
-   }
-
-   rc = counter2.configure();
-   if (rc != 0) {
-      std::cout << "Failed to configure counter with GPIB address " << counter1.getAddr() << std::endl;
-      return -1;
+   for(auto counter : counters) {
+      std::cout << "Counter with GPIB address " << counter->getAddr() << " has ID " << counter->identify() << std::endl;
+      rc = counter->configure();
+      if (rc != 0) {
+         std::cout << "Failed to configure counter with GPIB address " << counter->getAddr() << std::endl;
+         return -1;
+      }
    }
 
    return 0;

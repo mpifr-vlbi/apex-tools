@@ -1,4 +1,3 @@
-
 #include "HPCounterGPIB.h"
 #include "PrologixEthGPIB.h"
 
@@ -8,17 +7,15 @@
 
 int main(int argc, char** argv)
 {
-   // TODO: command line args?
-
    const char* prologix_ipv4addr = "10.0.2.93";
    const int prologix_tcp_port = 1234;
-   int rc;
 
+   std::vector<HPCounterGPIB*> counters;
    PrologixEthGPIB prologix(prologix_ipv4addr, prologix_tcp_port);
-   HPCounterGPIB counter1(prologix, /*gpib addr:*/ 3);
-   HPCounterGPIB counter2(prologix, /*gpib addr:*/ 4);
+   counters.push_back(new HPCounterGPIB(prologix, 3));
+   counters.push_back(new HPCounterGPIB(prologix, 4));
 
-   rc = prologix.connect();
+   int rc = prologix.connect();
    if (rc != 0) {
       std::cout << "Failed to connect to " << prologix_ipv4addr << " TCP port " << prologix_tcp_port << std::endl;
       return -1;
@@ -30,13 +27,11 @@ int main(int argc, char** argv)
       return -1;
    }
 
-   std::cout << "Counter with GPIB address " << counter1.getAddr()
-      << " has ID " << counter1.identify()
-      << " and measurement " << counter1.query("FETCH:TINT?") << std::endl;
-
-   std::cout << "Counter with GPIB address " << counter2.getAddr()
-      << " has ID " << counter2.identify()
-      << " and measurement " << counter1.query("FETCH:TINT?") << std::endl;
+   for(auto counter : counters) {
+      std::cout << "Counter with GPIB address " << counter->getAddr()
+         << " has ID " << counter->identify()
+         << " and measurement " << counter->query("FETCH:TINT?") << std::endl;
+   }
 
    return 0;
 }
