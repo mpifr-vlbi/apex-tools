@@ -80,6 +80,11 @@ std::string HPCounterGPIB::query(std::string cmd)
       return std::string("");
    } 
 
+   int rc = m_host.selectDevice(m_devnr);
+   if (rc != 0) {
+      return std::string("");
+   }
+
    int nwr = m_host.write(cmd);
    if (nwr <= 0) {
       std::cerr << "HPCounterGPIB::query() write to device " << m_devnr << " failed for command '" << cmd << "'" << std::endl;
