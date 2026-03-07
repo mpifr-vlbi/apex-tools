@@ -63,9 +63,31 @@ int HPCounterGPIB::configure()
       if (nwr <= 0) {
          std::cerr << "HPCounterGPIB::configure() of device " << m_devnr << " failed at command '" << cmd << "'" << std::endl;
          return nwr;
+      } else if(m_verbose) {
+         std::cout << "HPCounterGPIB::configure() of device " << m_devnr << " : successfully sent command '" << cmd << "'" << std::endl;
       }
    }
 
    return 0;
+}
+
+
+/** Send a query command and return its response */
+std::string HPCounterGPIB::query(std::string cmd)
+{
+   if (!m_host.isConnected()) {
+      std::cerr << "HPCounterGPIB::query() of device " << m_devnr << " : query error, no TCP connection" << std::endl;
+      return std::string("");
+   } 
+
+   int nwr = m_host.write(cmd);
+   if (nwr <= 0) {
+      std::cerr << "HPCounterGPIB::query() write to device " << m_devnr << " failed for command '" << cmd << "'" << std::endl;
+      return std::string("");
+   } 
+
+   std::string response = m_host.read(true);
+
+   return response;
 }
 
