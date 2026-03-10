@@ -81,7 +81,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {host=\"cc-apex\", sensor=\"Top_Rack\"}"
+              "options": "rec-room_temperature value {host=\"cc-apex\", sensor=\"Top_Rack\"}"
             },
             "properties": [
               {
@@ -93,7 +93,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {host=\"cc-apex\", sensor=\"Hanging_Mid_Rack\"}"
+              "options": "rec-room_temperature value {host=\"cc-apex\", sensor=\"Hanging_Mid_Rack\"}"
             },
             "properties": [
               {
@@ -105,12 +105,24 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {host=\"cc-apex\", sensor=\"Bottom_Rack\"}"
+              "options": "rec-room_temperature value {host=\"cc-apex\", sensor=\"Bottom_Rack\"}"
             },
             "properties": [
               {
                 "id": "displayName",
                 "value": "Bottom Rack"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "D"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "LAN Temperature Sensor"
               }
             ]
           }
@@ -160,6 +172,15 @@
           "hide": false,
           "query": " from(bucket: \"eht\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"rec-room_temperature\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"cc-apex\")\r\n  |> filter(fn: (r) => r[\"sensor\"] == \"Bottom_Rack\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
           "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "SchNJUxIz"
+          },
+          "hide": false,
+          "query": "from(bucket: \"eht\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ip_tsensor1\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "refId": "D"
         }
       ],
       "title": "Recorder Room Temperatures",
@@ -1002,6 +1023,6 @@
   "timezone": "utc",
   "title": "VLBI Hardware",
   "uid": "DuRJbUxSk",
-  "version": 50,
+  "version": 55,
   "weekStart": "monday"
 }
