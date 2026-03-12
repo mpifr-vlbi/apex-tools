@@ -12,7 +12,7 @@ import ntpath
 import glob
 ## from VexLib import vex # had to give up on this, uses ply.lex, outdated, now ugly manual parsing
 
-always_send_source = False  # set to True to always send source() go() track() for every scan, rather than only at each source change
+always_send_source = True  # set to True to always send source() go() track() for every scan, rather than only at each source change
 
 
 def coordReformatVex2Apecs(s):
@@ -183,6 +183,7 @@ def obs_writeStandardsetup(fd, setupName='NFLASH230'):
 	rx_commands = 'vlbi-%s_commands.py' % (setupName)
 	# obs_writeLine(fd, '@always', 10, 'execfile(\'%s\')' % (rx_setup)) # commented due to a user interaction -requiring cmd in SEPIA*/NFLASH*.apecs added in e24b07
 	obs_writeLine(fd, '@always', 2, 'execfile(\'%s\')' % (rx_commands))
+	obs_writeLine(fd, '@always', 2, 'vlbi_tone(enable=True)')
 	fd.write('\n')
 
 
@@ -345,6 +346,7 @@ def obs_writeScans(fd,scans,sources):
 		scanNr += 1
 
 	fd.write('\n# Finished VLBI schedule\n')
+	obs_writeLine(fd, datetimeToSNP_str(Tprev_end + datetime.timedelta(seconds=15)), 1, 'vlbi_tone(enable=False)')
 	obs_writeLine(fd, datetimeToSNP_str(Tprev_end + datetime.timedelta(seconds=30)), 1, 'remote_control(\'off\')')
 
 
