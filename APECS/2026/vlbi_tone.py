@@ -4,6 +4,10 @@
 import time
 import requests
 
+#############################################################################
+# Tone Synthesizer Control
+#############################################################################
+
 def vlbi_tone(enable=False, freq_mhz=15315.0, pow_dbm=-4, scpi_url="http://10.0.6.66/scpi", simulate=False):
     '''
     Controls the output of an Agilent synthesizer via SCPI commands.
@@ -42,6 +46,7 @@ def vlbi_tone(enable=False, freq_mhz=15315.0, pow_dbm=-4, scpi_url="http://10.0.
                 g = requests.get(hcmd)
             time.sleep(0.2)
 
+#############################################################################
 
 vlbi_tone(enable=False, simulate=True)
 vlbi_tone(enable=False, pow_dbm=22, simulate=True)
