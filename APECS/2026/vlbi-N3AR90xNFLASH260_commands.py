@@ -7,29 +7,38 @@ import os
 import time
 import requests
 
+# Simulatenous 86G+260G observing
+# cf. APEX-MPI-MAN-0011-R4_5-Draft2.pdf section 3.3.1.3,
+# where setup_nflash() can be used to set up non-NFlash frontends
+
 #############################################################################
 # VLBI Calibration and Scan/VLBI Recording Helpers
 #############################################################################
 
 def vlbi_tuning():
     '''
-    (Re)Configure n3ar90.
+    (Re)Configure nflash230 and n3ar90.
 
     This needs to be invoked regulary in case 1) operator interaction left apecs
     tuned to e.g. CO line instead of vlbi freq, or 2) backend for Tsys was left
     in continuum rather than in line mode.
 
-    Note: In 2022 we verified CO line pointing works fine while tuned to 'vlbifreq230',
+    Note: In 2022 we verified CO line pointing works fine while tuned to 'vlbifreq260',
           nevertheless it remains prudent for the scripted schedule to hammer in the
           correct VLBI tuning at every opportunity.
     '''
 
-    setup_n3ar90(
-        linename='vlbifreq86',
-        sideband='', mode='spec', sbwidth=8, numchan=65536,
-        cats='all',
-        doppler='off' )
+    setup_nflash(
+       fenames=['nflash230', 'n3ar90'], # NB: always the first receiver is used for the pointing model
+       linenames=['vlbifreqfpt260', 'vlbifreqfpt86'],
+       #fenames=['n3ar90', 'nflash230'],
+       #linenames=['vlbifreqfpt86', 'vlbifreqfpt260'],
+       sidebands=['', ''], mode='spec',
+       sbwidths=[8, 8], numchans=[65536, 65536],
+       cats='all', doppler='off')
+
     n3ar90.configure(doppler='off') # prevent Doppler correction during VLBI scan on()
+    nflash230.configure(doppler='off')
     tp()                            # cancel any wob() wobbler config persisting from operator line pointing (JPE: 2021-04-13)
     use_ref('OFF')                  # avoid going off-source during VLBI scan on()
 
@@ -118,6 +127,7 @@ def vlbi_scan(t_mins=5,targetSource=''):
 def vlbi_wpoint(t=20,cal=1):
     '''Wobbler pointing for VLBI.'''
     n3ar90.configure(doppler='on')
+    nflash230.configure(doppler='on')
     if (cal):
         calibrate('cold')
     wob(amplitude=75, rate=1.5, mode='pos')
@@ -126,6 +136,7 @@ def vlbi_wpoint(t=20,cal=1):
     wob(amplitude=75, rate=1, mode='sym')
     tp()
     n3ar90.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
+    nflash230.configure(doppler='off')
 
 
 def vlbi_focus(axis='Z',t=6):
@@ -137,6 +148,7 @@ def vlbi_focus(axis='Z',t=6):
     wob(amplitude=75, rate=1, mode='sym')
     tp()
     n3ar90.configure(doppler='off')  # This brings back the VLBI frequency for the next source (velocity=0)
+    nflash230.configure(doppler='off')
 
 
 def vlbi_get_calibration():
@@ -148,7 +160,7 @@ def vlbi_get_calibration():
         print 'No calibration result available.'
 
 
-def vwcpoint(t=24., l=[], cal=1, line='vlbifreq230', dopp='OFF', ptRun=False, dbpcorr=False):
+def vwcpoint(t=24., l=[], cal=1, line='vlbifreq260', dopp='OFF', ptRun=False, dbpcorr=False):
     '''
 
     Continuum pointing cross scan in beam switching (wob) mode using pseudocontinumm.
@@ -157,7 +169,7 @@ def vwcpoint(t=24., l=[], cal=1, line='vlbifreq230', dopp='OFF', ptRun=False, db
                   l: Length of the arms of the cross
                      [] = use default value for current FE.
                 cal: 1 = calibrate before the pointing
-               line: 'vlbifreq230' = do pointing at vlbifreq230
+               line: 'vlbifreq260' = do pointing at vlbifreq260
                      '' = do pointing at current frequency
                      '*' = use standard line for current FE.
                dopp: 'ON' apply Doppler correction in the tuning frequency.
@@ -169,12 +181,11 @@ def vwcpoint(t=24., l=[], cal=1, line='vlbifreq230', dopp='OFF', ptRun=False, db
     doPoint(t, l, ask, cal, line, dopp, ptRun,
             dbpcorr, obsmode='wob', mode='otf')
 
-
 #############################################################################
 # Tone Synthesizer Control
 #############################################################################
 
-def vlbi_tone(enable=False, freq_mhz=17219.0, pow_dbm=1.0, scpi_url="http://10.0.6.66/scpi", simulate=False):
+def vlbi_tone(enable=False, freq_mhz=17219.0, pow_dbm=3.0, scpi_url="http://10.0.6.66/scpi", simulate=False):
     '''
     Controls the output of an Agilent synthesizer via SCPI commands.
     Turn off, or softly turn on with a given freq by ramping power from -20 dBm to the target level.
@@ -182,7 +193,7 @@ def vlbi_tone(enable=False, freq_mhz=17219.0, pow_dbm=1.0, scpi_url="http://10.0
 
     Examples:
     vlbi_tone(enable=False, simulate=True)
-    vlbi_tone(enable=True, freq_mhz=17219.0, pow_dbm=1.0, simulate=True)
+    vlbi_tone(enable=True, freq_mhz=17219.0, pow_dbm=3.0, simulate=True)
     '''
 
     powLimit_dbm = +4
