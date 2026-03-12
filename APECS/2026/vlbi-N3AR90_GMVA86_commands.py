@@ -199,16 +199,16 @@ def vlbi_tone(enable=False, freq_mhz=17219.0, pow_dbm=0, scpi_url="http://10.0.6
             scpiCommands += ['pow %.2f dbm' % (ramp_dbm)]
         scpiCommands += ['pow %.2f dbm' % (pow_dbm)]
 
-        # Encode commands, examples from Agilent web gui are:
-        # http://10.0.6.66/scpi?s=output+off
-        # http://10.0.6.66/scpi?s=pow+-4+dbm  = pow -4 dbm
-        # http://10.0.6.66/scpi?s=freq+15315.00+mhz
-        httpCommands = ['%s?s=%s' % (scpi_url,cmd.replace(' ','+')) for cmd in scpiCommands]
-        for scmd,hcmd in zip(scpiCommands,httpCommands):
-            if simulate:
-                print("Tone synthesizer control (simulated), would send '%s' via %s" % (scmd,hcmd))
-            else:
-                print("Tone synthesizer control, sending '%s' via %s" % (scmd,hcmd))
-                g = requests.get(hcmd)
-            time.sleep(0.2)
+    # Encode commands, examples from Agilent web gui are:
+    # http://10.0.6.66/scpi?s=output+off
+    # http://10.0.6.66/scpi?s=pow+-4+dbm  = pow -4 dbm
+    # http://10.0.6.66/scpi?s=freq+15315.00+mhz
+    httpCommands = ['%s?s=%s' % (scpi_url,cmd.replace(' ','+')) for cmd in scpiCommands]
+    for scmd,hcmd in zip(scpiCommands,httpCommands):
+        if simulate:
+            print("Tone synthesizer control (simulated), would send '%s' via %s" % (scmd,hcmd))
+        else:
+            print("Tone synthesizer control, sending '%s' via %s" % (scmd,hcmd))
+            g = requests.get(hcmd)
+        time.sleep(0.2)
 
