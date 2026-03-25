@@ -14,8 +14,17 @@
 ! vlbifreq86  86.436 GHz USB
 !
 ! GMVA Autumn 2025: C252A C252B at 86G, C252C at 94G
-vlbifreq86   86.100 GHz LSB
+!vlbifreq86   86.100 GHz LSB
 !vlbifreq94   94.100 GHz LSB
+!
+! GMVA Spring 2026: additional 91.2 GHz OH line experiment
+vlbifreq86     86.100 GHz LSB  ! lands dbbc3 ch#1 on 86012-86076 MHz (standard GMVA)
+vlbifreq91     93.000 GHz LSB
+vlbifreqMK036  90.600 GHz LSB  ! lands dbbc3 ch#1 on 90512-90576 MHz (track MK036)
+vlbifreqMK037A 85.400 GHz LSB  ! lands dbbc3 ch#1 on 85312-85376 MHz (track MK037A)
+vlbifreqMK037B 85.800 GHz LSB  ! lands dbbc3 ch#1 on 85712-85776 MHz (track MK037B)
+vlbifreqMK037C 88.100 GHz LSB  ! lands dbbc3 ch#1 on 88012-88076 MHz (track MK037C)
+vlbifreqMK037D 88.600 GHz LSB  ! lands dbbc3 ch#1 on 88512-88576 MHz (track MK037D)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
