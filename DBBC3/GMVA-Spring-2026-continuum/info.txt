@@ -1,0 +1,7 @@
+
+GMVA semi standard setup, DDC_U,
+except unlike previous year not 4 x 64 MHz USB LSB
+but this year rather 2 x 128 MHz USB LSB
+
+https://deki.mpifr-bonn.mpg.de/GMVA/GMVA_Setups
+https://deki.mpifr-bonn.mpg.de/Cooperations/DBBC3/DBBC3_FAQ
