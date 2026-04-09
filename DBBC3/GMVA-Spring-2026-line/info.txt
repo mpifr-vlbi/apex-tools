@@ -1,6 +1,0 @@
-
-GMVA semi standard setup, DDC_U,
-but for spectral line with continuum 2 x 128 MHz USB LSB replaced by  4 x 128 MHz USB
-
-https://deki.mpifr-bonn.mpg.de/GMVA/GMVA_Setups
-https://deki.mpifr-bonn.mpg.de/Cooperations/DBBC3/DBBC3_FAQ
