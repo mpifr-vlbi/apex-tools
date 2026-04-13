@@ -1,0 +1,223 @@
+#
+# APEX observing script for station Ax from file vexfiles/triggered/mk037d.vex
+# File created on 2026.103.10:52:53 UT
+#
+# Columns: 1) Start time 2) Duration in seconds 3) APECS command 
+# Details on the columns:
+#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+#    2) estimated duration of the command in seconds
+#    3) APECS command and parameters to execute. If the command includes whitespace.
+#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+#
+# At time              Duration   Command
+@always                2          execfile('vlbi-N3AR90_mk037d_commands.py')
+@always                2          vlbi_tone(enable=False)
+
+# ### Block for J0006-0623 scan 1 'No0030' at 2026.110.16:00:00 in 200s #########
+2026.110.15:56:40      20         source('J0006-0623',cats='user'); go(); track()
+2026.110.15:57:05      80         vlbi_tsys()
+2026.110.15:58:30      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2026.110.16:00:00      480        vlbi_scan(t_mins=8,targetSource='J0006-0623')
+#     scan ends at 2026.110.16:08:00
+
+# ### Block for NGC1052 scan 2 'No0035' at 2026.110.16:15:00 in 420s ############
+2026.110.16:12:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.16:12:50      80         vlbi_tsys()
+2026.110.16:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.16:15:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.16:23:00
+
+# ### Block for NGC1052 scan 3 'No0040' at 2026.110.16:30:00 in 420s ############
+2026.110.16:27:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.16:27:50      80         vlbi_tsys()
+2026.110.16:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.16:30:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.16:38:00
+
+# ### Block for NGC1052 scan 4 'No0045' at 2026.110.16:45:00 in 420s ############
+2026.110.16:42:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.16:42:50      80         vlbi_tsys()
+2026.110.16:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.16:45:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.16:53:00
+
+# ### Block for J0006-0623 scan 5 'No0049' at 2026.110.17:01:00 in 480s #########
+2026.110.16:58:25      20         source('J0006-0623',cats='user'); go(); track()
+2026.110.16:58:50      80         vlbi_tsys()
+2026.110.17:00:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.17:01:00      480        vlbi_scan(t_mins=8,targetSource='J0006-0623')
+#     scan ends at 2026.110.17:09:00
+
+# ### Block for NGC1052 scan 6 'No0052' at 2026.110.17:15:00 in 360s ############
+2026.110.17:12:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.17:12:50      80         vlbi_tsys()
+2026.110.17:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.17:15:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.17:23:00
+
+# ### Block for NGC1052 scan 7 'No0056' at 2026.110.17:30:00 in 420s ############
+2026.110.17:27:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.17:27:50      80         vlbi_tsys()
+2026.110.17:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.17:30:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.17:38:00
+
+# ### Block for NGC1052 scan 8 'No0060' at 2026.110.17:45:00 in 420s ############
+2026.110.17:42:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.17:42:50      80         vlbi_tsys()
+2026.110.17:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.17:45:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.17:53:00
+
+# ### Block for J0006-0623 scan 9 'No0065' at 2026.110.18:01:00 in 480s #########
+2026.110.17:58:25      20         source('J0006-0623',cats='user'); go(); track()
+2026.110.17:58:50      80         vlbi_tsys()
+2026.110.18:00:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.18:01:00      480        vlbi_scan(t_mins=8,targetSource='J0006-0623')
+#     scan ends at 2026.110.18:09:00
+
+# ### Block for NGC1052 scan 10 'No0068' at 2026.110.18:15:00 in 360s ###########
+2026.110.18:12:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.18:12:50      80         vlbi_tsys()
+2026.110.18:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.18:15:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.18:23:00
+
+# ### Block for NGC1052 scan 11 'No0073' at 2026.110.18:30:00 in 420s ###########
+2026.110.18:27:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.18:27:50      80         vlbi_tsys()
+2026.110.18:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.18:30:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.18:38:00
+
+# ### Block for NGC1052 scan 12 'No0078' at 2026.110.18:45:00 in 420s ###########
+2026.110.18:42:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.18:42:50      80         vlbi_tsys()
+2026.110.18:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.18:45:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.18:53:00
+
+# ### Block for J0006-0623 scan 13 'No0083' at 2026.110.19:01:00 in 480s ########
+2026.110.18:58:25      20         source('J0006-0623',cats='user'); go(); track()
+2026.110.18:58:50      80         vlbi_tsys()
+2026.110.19:00:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.19:01:00      480        vlbi_scan(t_mins=8,targetSource='J0006-0623')
+#     scan ends at 2026.110.19:09:00
+
+# ### Block for NGC1052 scan 14 'No0086' at 2026.110.19:15:00 in 360s ###########
+2026.110.19:12:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.19:12:50      80         vlbi_tsys()
+2026.110.19:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.19:15:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.19:23:00
+
+# ### Block for NGC1052 scan 15 'No0091' at 2026.110.19:30:00 in 420s ###########
+2026.110.19:27:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.19:27:50      80         vlbi_tsys()
+2026.110.19:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.19:30:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.19:38:00
+
+# ### Block for NGC1052 scan 16 'No0096' at 2026.110.19:45:00 in 420s ###########
+2026.110.19:42:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.19:42:50      80         vlbi_tsys()
+2026.110.19:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.19:45:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.19:53:00
+
+# ### Block for 0420-014 scan 17 'No0101' at 2026.110.20:01:00 in 480s ##########
+2026.110.19:58:25      20         source('0420-014',cats='user'); go(); track()
+2026.110.19:58:50      80         vlbi_tsys()
+2026.110.20:00:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.20:01:00      480        vlbi_scan(t_mins=8,targetSource='0420-014')
+#     scan ends at 2026.110.20:09:00
+
+# ### Block for NGC1052 scan 18 'No0104' at 2026.110.20:15:00 in 360s ###########
+2026.110.20:12:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.20:12:50      80         vlbi_tsys()
+2026.110.20:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.20:15:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.20:23:00
+
+# ### Block for NGC1052 scan 19 'No0109' at 2026.110.20:30:00 in 420s ###########
+2026.110.20:27:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.20:27:50      80         vlbi_tsys()
+2026.110.20:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.20:30:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.20:38:00
+
+# ### Block for NGC1052 scan 20 'No0114' at 2026.110.20:45:00 in 420s ###########
+2026.110.20:42:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.20:42:50      80         vlbi_tsys()
+2026.110.20:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.20:45:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.20:53:00
+
+# ### Block for 0420-014 scan 21 'No0119' at 2026.110.21:01:00 in 480s ##########
+2026.110.20:58:25      20         source('0420-014',cats='user'); go(); track()
+2026.110.20:58:50      80         vlbi_tsys()
+2026.110.21:00:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.21:01:00      480        vlbi_scan(t_mins=8,targetSource='0420-014')
+#     scan ends at 2026.110.21:09:00
+
+# ### Block for NGC1052 scan 22 'No0122' at 2026.110.21:15:00 in 360s ###########
+2026.110.21:12:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.21:12:50      80         vlbi_tsys()
+2026.110.21:14:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.21:15:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.21:23:00
+
+# ### Block for NGC1052 scan 23 'No0127' at 2026.110.21:30:00 in 420s ###########
+2026.110.21:27:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.21:27:50      80         vlbi_tsys()
+2026.110.21:29:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.21:30:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.21:38:00
+
+# ### Block for NGC1052 scan 24 'No0132' at 2026.110.21:45:00 in 420s ###########
+2026.110.21:42:25      20         source('NGC1052',cats='user'); go(); track()
+2026.110.21:42:50      80         vlbi_tsys()
+2026.110.21:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.21:45:00      480        vlbi_scan(t_mins=8,targetSource='NGC1052')
+#     scan ends at 2026.110.21:53:00
+
+# ### Block for 0420-014 scan 25 'No0133' at 2026.110.21:55:00 in 200s ##########
+2026.110.21:53:00      20         source('0420-014',cats='user'); go(); track()
+2026.110.21:53:25      80         vlbi_tsys()
+2026.110.21:54:50      30         vlbi_reference_scan()
+#                      TIME       ran short, ~-1 min 35 sec "gap"
+2026.110.21:55:00      300        vlbi_scan(t_mins=5,targetSource='0420-014')
+#     scan ends at 2026.110.22:00:00
+
+
+# Finished VLBI schedule
+2026.110.22:00:15      1          vlbi_tone(enable=False)
+2026.110.22:00:30      1          remote_control('off')
+################################################################################
+### end of schedule
+################################################################################
