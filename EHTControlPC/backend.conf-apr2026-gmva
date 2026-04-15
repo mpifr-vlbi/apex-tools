@@ -1,0 +1,175 @@
+##!/hint/yaml
+# This config file describes a VLBI backend as a graph consisting of nodes and
+# links that together make up chains.  The nodes are backend devices and the
+# links are cables.
+#
+# Nodes:
+# ======
+# Backend device configuration is split in two parts, "layout" and "device",
+# according to:
+#  1. hardware layout (I/O ports) and other unmutable properties
+#  2. device-specific and site-specific properties/settings
+# The layout describes the internal routing, i.e. which outputs are connected to
+# which inputs.  The purpose of this split is to separate variable properties
+# from device properties that are constant over time and for the whole EHT.
+#
+# Links:
+# ======
+# Each link connects one device's output to another device's input.  Each link
+# in this section will be part of a multi-node-link chain.  Each device's input
+# or output can only be used once.
+#
+# Chains:
+# =======
+# Links together with nodes and their internal routing define end-to-end data
+# chains.  Chains can only start/end at inputs/outputs that are labeled
+# accordingly.  Unused outputs that are internally connected to used inputs are
+# not allowed to be left dangling; they need to be terminated with terminator
+# dummy devices.
+
+
+# Execute schedule by instructing components.
+instruct:
+        vexstore: /srv/vexstore
+        stationname: APEX
+        stationcode: Ax
+
+# Report status to VLBImonitor server.
+report:
+
+deviceLayouts:
+#       Name    Input   Output
+        rx:
+                analog:
+                        lsb_L: {label: lcp_lsb, sideband: lsb, pol: lcp}
+                        lsb_R: {label: rcp_lsb, sideband: lsb, pol: rcp}
+                        usb_L: {label: lcp_usb, sideband: usb, pol: lcp}
+                        usb_R: {label: rcp_usb, sideband: usb, pol: rcp}
+                _role:  rx
+                _chainstart: [analog]
+
+        dbbc3:
+                boardA:
+                        A_e0: {label: lo, band: low}
+                        A_e2: {label: hi, band: high}
+                boardB:
+                        B_e0: {label: lo, band: low}
+                        B_e2: {label: hi, band: high}
+                boardC:
+                        C_e0: {label: lo, band: low}
+                        C_e2: {label: hi, band: high}
+                boardD:
+                        D_e0: {label: lo, band: low}
+                        D_e2: {label: hi, band: high}
+                _role: dbbc
+
+        mark6:
+                eth2:
+                        groupa: {}
+                eth3:
+                        groupb: {}
+                eth4:
+                        groupc: {}
+                eth5:
+                        groupd: {}
+                _role: recorder
+                _chainend: [groupa, groupb, groupc, groupd]
+
+        terminator:
+                in: {out: {}}
+                _role: terminator
+                _chainstart: [in]
+                _chainend: [out]
+
+
+delim_device: "."
+devices:
+        rx.86: {layout: rx}
+        rx.230: {layout: rx}
+        rx.345: {layout: rx}
+        rx.460: {layout: rx}
+
+        dbbc3.all: {layout: dbbc3, hostname: dbbc3, port: 4000, mode: "OCT_D", sw_major: 120, sw_minor: 220831,
+          # EHT 230G VLBI
+          # boardA: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
+          # boardB: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9051},
+          # boardC: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
+          # boardD: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9045},
+          # EHT 260G VLBI
+          # boardA: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9054},
+          # boardB: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9054},
+          # boardC: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9042},
+          # boardD: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 9042},
+          # EHT 345G VLBI
+          # boardA: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 8048},
+          # boardB: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 8048},
+          # boardC: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 8048},
+          # boardD: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-4000_64taps.flt", filter2: "0-2000_64taps.flt", synth_freq: 8048},
+          #
+          # Test 86G+260G FPT with DBBC3 OCT_D but 0-1 GHz filters
+          boardA: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "0-1000_64taps.flt", filter2: "0-1000_64taps.flt", synth_freq: 9048},
+          boardB: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "0-1000_64taps.flt", filter2: "0-1000_64taps.flt", synth_freq: 9048},
+          boardC: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-3000_64taps.flt", filter2: "2000-3000_64taps.flt", synth_freq: 9048},
+          boardD: {bitfile: "dbbc3_oct_D_2hv2_221122.bit", filter1: "2000-3000_64taps.flt", filter2: "2000-3000_64taps.flt", synth_freq: 9048},
+          #
+          # GMVA 86G with DBBC3 DDC_U 8 x 64 MHz x 2-pol
+          # unsupported firmware DDC_U for backendctl dbbc3 configure,
+          # but datastreams can be configured
+          A_e0: {thread: 0, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 31250},
+          A_e2: {thread: 12, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 31250},
+          B_e0: {thread: 20, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 31250},
+          B_e2: {thread: 22, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 31250},
+          C_e0: {thread: 30, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 31250},
+          C_e2: {thread: 32, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 31250},
+          D_e0: {thread: 40, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 31250},
+          D_e2: {thread: 42, data_format: "vdif", payload_size: 8224, payload_offset: 50, psn_offset: 42, packet_rate: 31250}}
+
+        mark6.unused1:
+                layout: mark6
+                hostname: recorder1
+                modules: {groupa: [mod1, mod2], groupc: [mod3, mod4]}
+        mark6.unused2:
+                layout: mark6
+                hostname: recorder2
+                modules: {groupa: [mod1, mod2], groupc: [mod3, mod4]}
+        mark6.86ghz:
+                # note: recorder3 fibers are patched to EHT band3
+                layout: mark6
+                hostname: recorder3
+                modules: {groupb: [mod1, mod2], groupd: [mod3, mod4]}
+        mark6.dup86ghz:
+                # note: recorder4 fibers are patched to EHT band1
+                layout: mark6
+                hostname: recorder4
+                modules: {groupb: [mod1, mod2], groupc: [mod3, mod4]}
+
+        terminator.1: {layout: terminator}
+        terminator.2: {layout: terminator}
+
+
+delim_port: ":"
+delim_link: "  "
+links:
+        # level 1-2
+        - rx.230:lsb_L  dbbc3.all:boardA   # 230G/260G
+        - rx.230:lsb_R  dbbc3.all:boardB   # 230G/260G
+        - rx.230:usb_L  dbbc3.all:boardC   # 86G
+        - rx.230:usb_R  dbbc3.all:boardD   # 86G
+
+        # Recorder1 - unused for GMVA, fibers carry DDC_U 260G (IF_A=IF1, IF_B=IF2)
+        - dbbc3.all:A_e0  mark6.unused1:eth2
+        - dbbc3.all:B_e0  mark6.unused1:eth4
+
+        # Recorder2 - kaputt - unused for GMVA
+        - dbbc3.all:A_e2  mark6.unused2:eth2
+        - dbbc3.all:B_e2  mark6.unused2:eth4
+
+        # Recorder3 - 86ghz - fibers carry DDC_U 86G (IF_C=N3AR IF1, IF_D=N3AR IF2)
+        - dbbc3.all:C_e0  mark6.86ghz:eth3
+        - dbbc3.all:D_e0  mark6.86ghz:eth5
+
+        # Recorder4 - 86ghz - fibers carry DDC_U 86G (IF_C=N3AR IF1, IF_D=N3AR IF2)
+        - dbbc3.all:C_e2  mark6.dup86ghz:eth3
+        - dbbc3.all:D_e2  mark6.dup86ghz:eth4
+
+# vim: ft=yaml:ts=8:sts=8:sw=8:expandtab:tw=80 foldmethod=indent
