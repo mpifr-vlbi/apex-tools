@@ -1,0 +1,143 @@
+#
+# APEX observing script for station Ax from file vexfiles/triggered/c261e.vex
+# File created on 2026.097.19:00:33 UT
+#
+# Columns: 1) Start time 2) Duration in seconds 3) APECS command 
+# Details on the columns:
+#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+#    2) estimated duration of the command in seconds
+#    3) APECS command and parameters to execute. If the command includes whitespace.
+#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+#
+# At time              Duration   Command
+@always                2          execfile('vlbi-N3AR90_GMVA86_commands.py')
+@always                2          vlbi_tone(enable=True)
+
+# ### Block for 0420-014 scan 1 'No0226' at 2026.110.22:15:01 in 200s ###########
+2026.110.22:11:41      20         source('0420-014',cats='user'); go(); track()
+2026.110.22:12:06      80         vlbi_tsys()
+2026.110.22:13:31      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2026.110.22:15:01      180        vlbi_scan(t_mins=3,targetSource='0420-014')
+#     scan ends at 2026.110.22:18:01
+
+# ### Block for 0346-279 scan 2 'No0227' at 2026.110.22:19:21 in 80s ############
+2026.110.22:18:01      20         source('0346-279',cats='user'); go(); track()
+2026.110.22:18:26      22         vlbi_tsys(mode_='HOT',time_s=5)
+#                      gap        max ~0 min 28 sec
+2026.110.22:19:21      360        vlbi_scan(t_mins=6,targetSource='0346-279')
+#     scan ends at 2026.110.22:25:21
+
+# ### Block for 0518+165 scan 3 'No0231' at 2026.110.22:30:01 in 280s ###########
+2026.110.22:27:26      20         source('0518+165',cats='user'); go(); track()
+2026.110.22:27:51      80         vlbi_tsys()
+2026.110.22:29:16      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.22:30:01      180        vlbi_scan(t_mins=3,targetSource='0518+165')
+#     scan ends at 2026.110.22:33:01
+
+# ### Block for 0506+056 scan 4 'No0232' at 2026.110.22:34:16 in 75s ############
+2026.110.22:33:01      20         source('0506+056',cats='user'); go(); track()
+2026.110.22:33:26      22         vlbi_tsys(mode_='HOT',time_s=5)
+#                      gap        max ~0 min 23 sec
+2026.110.22:34:16      300        vlbi_scan(t_mins=5,targetSource='0506+056')
+#     scan ends at 2026.110.22:39:16
+
+# ### Block for 0420-014 scan 5 'No0239' at 2026.110.22:47:31 in 495s ###########
+2026.110.22:44:56      20         source('0420-014',cats='user'); go(); track()
+2026.110.22:45:21      80         vlbi_tsys()
+2026.110.22:46:46      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.22:47:31      180        vlbi_scan(t_mins=3,targetSource='0420-014')
+#     scan ends at 2026.110.22:50:31
+
+# ### Block for 0346-279 scan 6 'No0240' at 2026.110.22:51:51 in 80s ############
+2026.110.22:50:31      20         source('0346-279',cats='user'); go(); track()
+2026.110.22:50:56      22         vlbi_tsys(mode_='HOT',time_s=5)
+#                      gap        max ~0 min 28 sec
+2026.110.22:51:51      360        vlbi_scan(t_mins=6,targetSource='0346-279')
+#     scan ends at 2026.110.22:57:51
+
+# ### Block for 0518+165 scan 7 'No0242' at 2026.110.23:00:01 in 130s ###########
+2026.110.22:57:51      20         source('0518+165',cats='user'); go(); track()
+2026.110.22:58:16      80         vlbi_tsys()
+#                      gap        max ~0 min 20 sec
+2026.110.23:00:01      180        vlbi_scan(t_mins=3,targetSource='0518+165')
+#     scan ends at 2026.110.23:03:01
+
+# ### Block for 0506+056 scan 8 'No0243' at 2026.110.23:04:16 in 75s ############
+2026.110.23:03:01      20         source('0506+056',cats='user'); go(); track()
+2026.110.23:03:26      22         vlbi_tsys(mode_='HOT',time_s=5)
+#                      gap        max ~0 min 23 sec
+2026.110.23:04:16      360        vlbi_scan(t_mins=6,targetSource='0506+056')
+#     scan ends at 2026.110.23:10:16
+
+# ### Block for 0420-014 scan 9 'No0247' at 2026.110.23:15:01 in 285s ###########
+2026.110.23:12:26      20         source('0420-014',cats='user'); go(); track()
+2026.110.23:12:51      80         vlbi_tsys()
+2026.110.23:14:16      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.23:15:01      180        vlbi_scan(t_mins=3,targetSource='0420-014')
+#     scan ends at 2026.110.23:18:01
+
+# ### Block for 0346-279 scan 10 'No0248' at 2026.110.23:19:21 in 80s ###########
+2026.110.23:18:01      20         source('0346-279',cats='user'); go(); track()
+2026.110.23:18:26      22         vlbi_tsys(mode_='HOT',time_s=5)
+#                      gap        max ~0 min 28 sec
+2026.110.23:19:21      360        vlbi_scan(t_mins=6,targetSource='0346-279')
+#     scan ends at 2026.110.23:25:21
+
+# ### Block for 0518+165 scan 11 'No0253' at 2026.110.23:30:01 in 280s ##########
+2026.110.23:27:26      20         source('0518+165',cats='user'); go(); track()
+2026.110.23:27:51      80         vlbi_tsys()
+2026.110.23:29:16      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.23:30:01      180        vlbi_scan(t_mins=3,targetSource='0518+165')
+#     scan ends at 2026.110.23:33:01
+
+# ### Block for 0506+056 scan 12 'No0254' at 2026.110.23:34:16 in 75s ###########
+2026.110.23:33:01      20         source('0506+056',cats='user'); go(); track()
+2026.110.23:33:26      22         vlbi_tsys(mode_='HOT',time_s=5)
+#                      gap        max ~0 min 23 sec
+2026.110.23:34:16      360        vlbi_scan(t_mins=6,targetSource='0506+056')
+#     scan ends at 2026.110.23:40:16
+
+# ### Block for 0420-014 scan 13 'No0258' at 2026.110.23:45:01 in 285s ##########
+2026.110.23:42:26      20         source('0420-014',cats='user'); go(); track()
+2026.110.23:42:51      80         vlbi_tsys()
+2026.110.23:44:16      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.110.23:45:01      180        vlbi_scan(t_mins=3,targetSource='0420-014')
+#     scan ends at 2026.110.23:48:01
+
+# ### Block for 0346-279 scan 14 'No0259' at 2026.110.23:49:21 in 80s ###########
+2026.110.23:48:01      20         source('0346-279',cats='user'); go(); track()
+2026.110.23:48:26      22         vlbi_tsys(mode_='HOT',time_s=5)
+#                      gap        max ~0 min 28 sec
+2026.110.23:49:21      360        vlbi_scan(t_mins=6,targetSource='0346-279')
+#     scan ends at 2026.110.23:55:21
+
+# ### Block for 0736+017 scan 15 'No0262' at 2026.111.00:00:01 in 280s ##########
+2026.110.23:57:26      20         source('0736+017',cats='user'); go(); track()
+2026.110.23:57:51      80         vlbi_tsys()
+2026.110.23:59:16      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.111.00:00:01      360        vlbi_scan(t_mins=6,targetSource='0736+017')
+#     scan ends at 2026.111.00:06:01
+
+# ### Block for 0506+056 scan 16 'No0269' at 2026.111.00:16:00 in 200s ##########
+2026.111.00:06:01      20         source('0506+056',cats='user'); go(); track()
+2026.111.00:06:26      80         vlbi_tsys()
+2026.111.00:07:51      30         vlbi_reference_scan()
+#                      gap        max ~7 min 34 sec
+2026.111.00:16:00      420        vlbi_scan(t_mins=7,targetSource='0506+056')
+#     scan ends at 2026.111.00:23:00
+
+
+# Finished VLBI schedule
+2026.111.00:23:15      1          vlbi_tone(enable=False)
+2026.111.00:23:30      1          remote_control('off')
+################################################################################
+### end of schedule
+################################################################################
