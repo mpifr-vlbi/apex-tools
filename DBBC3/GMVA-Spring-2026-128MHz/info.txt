@@ -1,7 +1,37 @@
+-----------------------------------------------------------------------------------------
 
-GMVA semi standard setup, DDC_U,
+GMVA semi standard setup, DDC_U v125,
 except unlike previous year not 4 x 64 MHz USB LSB
 but this year rather 2 x 128 MHz USB LSB
 
 https://deki.mpifr-bonn.mpg.de/GMVA/GMVA_Setups
 https://deki.mpifr-bonn.mpg.de/Cooperations/DBBC3/DBBC3_FAQ
+
+-----------------------------------------------------------------------------------------
+
+The same DDC frequency settings in DBBC3 are used for all tracks,
+i.e., continuum C261x and spectral line MK03xxx share the same DBBC3 setup.
+
+It is "merely" the tuning of the 86G receiver which needs to be shifted appropriately
+in the spectral line tracks, the DBBC3 settings stay the same.
+
+-----------------------------------------------------------------------------------------
+
+Bitmasks are
+
+          DWORD 1     DWORD 2     DWORD 3     DWORD 4
+  bitmask 0x000000FF  0x000000FF  0x000000FF  0x0000FFFF
+  BBC#    16......9     87654321  16......9     87654321
+
+     where F = 0b1111  (sign and magnitude enabled for upper and lower sideband)
+
+     and 0x000000FF  = BBC1 (0x000F) + BBC2 (0x00F0), in dual sideband (0xF)
+
+Sampling is for 128 MHz wide DDC bands with no decimation (1)
+
+  vsi_samplerate 128000000 1
+
+  (vs. example 'vsi_samplerate 128000000 2 - sets the sampling clock for 64 MHz bands')
+
+-----------------------------------------------------------------------------------------
+	
