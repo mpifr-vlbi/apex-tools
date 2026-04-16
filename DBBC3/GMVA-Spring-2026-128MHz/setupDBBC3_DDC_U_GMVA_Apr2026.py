@@ -81,6 +81,7 @@ try:
         # bbc 17-24  board C
         # bbc 25-32  board D
         # April 2026 setup :  2 x DDC with USB+LSB and 128 MHz bw in both sidebands
+        bbcBw = 128.0
         bbcFreq = {
             1: 3088.0,   2: 3344.0,
             9: 3088.0,  10: 3344.0,
@@ -95,9 +96,17 @@ try:
 
         print ("=== Updating BBC frequencies" )
         for bbc,freq in bbcFreq.items():
-            print ("Setting BBC %d to %f" %(bbc, freq))
-            dbbc3.dbbc(bbc, freq)
+            print ("Setting BBC %d to %.3f MHz and enabling AGC" % (bbc, freq))
+            dbbc3.dbbc(bbc, freq, bbcBw)
+            dbbc3.dbbcgain(bbc, mode="agc")
 
+        print ("=== Disabling unused BBC to reduce power consumption)" )
+        for bbc in range(1,32+1):
+            if bbc not in bbcFreq.keys():
+                print ("Setting BBC %d to 0 Hz and gain 0" % (bbc))
+                dbbc3.dbbc(bbc, 0)
+                dbbc3.dbbcgain(bbc, mode="man", gainU=0, gainL=0)
+	
         print ("=== Post-update BBC frequencies" )
         for bbc in bbcFreq.keys():
             ret = dbbc3.dbbc(bbc)
