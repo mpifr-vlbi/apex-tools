@@ -100,7 +100,7 @@ try:
             dbbc3.dbbc(bbc, freq, bbcBw)
             dbbc3.dbbcgain(bbc, mode="agc")
 
-        print ("=== Disabling unused BBC to reduce power consumption)" )
+        print ("=== Disabling unused BBC to reduce power consumption" )
         for bbc in range(1,32+1):
             if bbc not in bbcFreq.keys():
                 print ("Setting BBC %d to 0 Hz and gain 0" % (bbc))
