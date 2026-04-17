@@ -197,7 +197,7 @@ def vlbi_tone(enable=False, freq_mhz=15315.0, pow_dbm=-8.0, scpi_url="http://10.
         scpiCommands = ['output off', 'pow -20 dbm', 'freq %.3f mhz' % (freq_mhz), 'output on']
         for ramp_dbm in range(-18, int(pow_dbm-1), 2):
             scpiCommands += ['pow %.2f dbm' % (ramp_dbm)]
-        scpiCommands += ['pow %.2f dbm' % (pow_dbm)
+        scpiCommands += ['pow %.2f dbm' % (pow_dbm)]
 
     # Encode commands, examples from Agilent web gui are:
     # http://10.0.6.66/scpi?s=output+off
