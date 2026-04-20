@@ -1,0 +1,11 @@
+
+
+Power outage c261c, glitch in H-maser 1pps clock.
+Dbbc3 also lost firmware, rebooted, re-synced
+
+GPS-minus-Fmout:
+  2026 04 19 2.373889 999997053  
+  2026 04 19 2.393611 999997053
+  2026 04 19 10.207778 882196859
+  2026 04 19 10.226111 882217441
+  8 hour gap ~2UT to ~10UT is when DBBC3 rebooted and ran without firmware
