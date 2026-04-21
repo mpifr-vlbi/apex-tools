@@ -28,7 +28,8 @@ def readMeters(logfile, verbose=False):
 
 	try:
 		#calResult = onlineCal.getCalResult('NFLASH230-PBE_A',1,0)
-		calResult = onlineCal.getCalResult('N3AR90-FFTS3',1,0)
+		calResult = onlineCal.getCalResult('NFLASH230-FFTS1',1,0)
+		#calResult = onlineCal.getCalResult('N3AR90-FFTS3',1,0)
 		#print(calResult)
 		tstr = str(calResult.date) + "_" + str(calResult.time)
 		tline = str(calResult.lineName)
