@@ -1,0 +1,393 @@
+#
+# APEX observing script for station Ax from file vexfiles/staging/e26a24.vex
+# File created on 2026.072.00:27:52 UT
+#
+# Columns: 1) Start time 2) Duration in seconds 3) APECS command 
+# Details on the columns:
+#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+#    2) estimated duration of the command in seconds
+#    3) APECS command and parameters to execute. If the command includes whitespace.
+#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+#
+# At time              Duration   Command
+@always                2          execfile('vlbi-NFLASH230_commands.py')
+@always                2          vlbi_tone(enable=True)
+
+# ### Block for 3C273 scan 1 '114-0036' at 2026.114.00:36:00 in 200s ############
+2026.114.00:32:40      20         source('3C273',cats='user'); go(); track()
+2026.114.00:33:05      80         vlbi_tsys()
+2026.114.00:34:30      30         vlbi_reference_scan()
+#                      gap        max ~0 min 55 sec
+2026.114.00:36:00      120        vlbi_scan(t_mins=2,targetSource='3C273')
+#     scan ends at 2026.114.00:38:00
+
+# ### Block for M87 scan 2 '114-0041' at 2026.114.00:41:00 in 180s ##############
+2026.114.00:38:00      20         source('M87',cats='user'); go(); track()
+2026.114.00:38:25      80         vlbi_tsys()
+2026.114.00:39:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.00:41:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.00:45:00
+
+# ### Block for 3C279 scan 3 '114-0055' at 2026.114.00:55:00 in 600s ############
+# 
+# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2026.114.00:52:25
+# 
+2026.114.00:45:00      1          print('You have 7 min 35 sec until the next VLBI calibration scan at 2026.114.00:52:25.')
+2026.114.00:52:25      20         source('3C279',cats='user'); go(); track()
+2026.114.00:52:50      80         vlbi_tsys()
+2026.114.00:54:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.00:55:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.00:57:00
+
+# ### Block for M87 scan 4 '114-0100' at 2026.114.01:00:00 in 180s ##############
+2026.114.00:57:00      20         source('M87',cats='user'); go(); track()
+2026.114.00:57:25      80         vlbi_tsys()
+2026.114.00:58:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.01:00:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.01:04:00
+
+# ### Block for 3C273 scan 5 '114-0114' at 2026.114.01:14:00 in 600s ############
+# 
+# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2026.114.01:11:25
+# 
+2026.114.01:04:00      1          print('You have 7 min 35 sec until the next VLBI calibration scan at 2026.114.01:11:25.')
+2026.114.01:11:25      20         source('3C273',cats='user'); go(); track()
+2026.114.01:11:50      80         vlbi_tsys()
+2026.114.01:13:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.01:14:00      120        vlbi_scan(t_mins=2,targetSource='3C273')
+#     scan ends at 2026.114.01:16:00
+
+# ### Block for M87 scan 6 '114-0119' at 2026.114.01:19:00 in 180s ##############
+2026.114.01:16:00      20         source('M87',cats='user'); go(); track()
+2026.114.01:16:25      80         vlbi_tsys()
+2026.114.01:17:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.01:19:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.01:23:00
+
+# ### Block for 3C279 scan 7 '114-0133' at 2026.114.01:33:00 in 600s ############
+# 
+# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2026.114.01:30:25
+# 
+2026.114.01:23:00      1          print('You have 7 min 35 sec until the next VLBI calibration scan at 2026.114.01:30:25.')
+2026.114.01:30:25      20         source('3C279',cats='user'); go(); track()
+2026.114.01:30:50      80         vlbi_tsys()
+2026.114.01:32:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.01:33:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.01:35:00
+
+# ### Block for M87 scan 8 '114-0138' at 2026.114.01:38:00 in 180s ##############
+2026.114.01:35:00      20         source('M87',cats='user'); go(); track()
+2026.114.01:35:25      80         vlbi_tsys()
+2026.114.01:36:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.01:38:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.01:42:00
+
+# ### Block for J1337-1257 scan 9 '114-0144' at 2026.114.01:44:00 in 120s #######
+2026.114.01:42:00      20         source('J1337-1257',cats='user'); go(); track()
+2026.114.01:42:25      80         vlbi_tsys()
+#                      gap        max ~0 min 10 sec
+2026.114.01:44:00      120        vlbi_scan(t_mins=2,targetSource='J1337-1257')
+#     scan ends at 2026.114.01:46:00
+
+# ### Block for 3C279 scan 10 '114-0157' at 2026.114.01:57:00 in 660s ###########
+# 
+# OPERATOR free 8 min 35 sec until VLBI calibrations to start at 2026.114.01:54:25
+# 
+2026.114.01:46:00      1          print('You have 8 min 35 sec until the next VLBI calibration scan at 2026.114.01:54:25.')
+2026.114.01:54:25      20         source('3C279',cats='user'); go(); track()
+2026.114.01:54:50      80         vlbi_tsys()
+2026.114.01:56:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.01:57:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.01:59:00
+
+# ### Block for M87 scan 11 '114-0202' at 2026.114.02:02:00 in 180s #############
+2026.114.01:59:00      20         source('M87',cats='user'); go(); track()
+2026.114.01:59:25      80         vlbi_tsys()
+2026.114.02:00:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.02:02:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.02:06:00
+
+# ### Block for J1337-1257 scan 12 '114-0211' at 2026.114.02:11:00 in 300s ######
+2026.114.02:08:25      20         source('J1337-1257',cats='user'); go(); track()
+2026.114.02:08:50      80         vlbi_tsys()
+2026.114.02:10:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.02:11:00      120        vlbi_scan(t_mins=2,targetSource='J1337-1257')
+#     scan ends at 2026.114.02:13:00
+
+# ### Block for 3C279 scan 13 '114-0218' at 2026.114.02:18:00 in 300s ###########
+2026.114.02:15:25      20         source('3C279',cats='user'); go(); track()
+2026.114.02:15:50      80         vlbi_tsys()
+2026.114.02:17:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.02:18:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.02:20:00
+
+# ### Block for M87 scan 14 '114-0223' at 2026.114.02:23:00 in 180s #############
+2026.114.02:20:00      20         source('M87',cats='user'); go(); track()
+2026.114.02:20:25      80         vlbi_tsys()
+2026.114.02:21:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.02:23:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.02:27:00
+
+# ### Block for 3C273 scan 15 '114-0236' at 2026.114.02:36:00 in 540s ###########
+# 
+# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2026.114.02:33:25
+# 
+2026.114.02:27:00      1          print('You have 6 min 35 sec until the next VLBI calibration scan at 2026.114.02:33:25.')
+2026.114.02:33:25      20         source('3C273',cats='user'); go(); track()
+2026.114.02:33:50      80         vlbi_tsys()
+2026.114.02:35:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.02:36:00      120        vlbi_scan(t_mins=2,targetSource='3C273')
+#     scan ends at 2026.114.02:38:00
+
+# ### Block for M87 scan 16 '114-0241' at 2026.114.02:41:00 in 180s #############
+2026.114.02:38:00      20         source('M87',cats='user'); go(); track()
+2026.114.02:38:25      80         vlbi_tsys()
+2026.114.02:39:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.02:41:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.02:45:00
+
+# ### Block for 3C279 scan 17 '114-0254' at 2026.114.02:54:00 in 540s ###########
+# 
+# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2026.114.02:51:25
+# 
+2026.114.02:45:00      1          print('You have 6 min 35 sec until the next VLBI calibration scan at 2026.114.02:51:25.')
+2026.114.02:51:25      20         source('3C279',cats='user'); go(); track()
+2026.114.02:51:50      80         vlbi_tsys()
+2026.114.02:53:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.02:54:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.02:56:00
+
+# ### Block for M87 scan 18 '114-0259' at 2026.114.02:59:00 in 180s #############
+2026.114.02:56:00      20         source('M87',cats='user'); go(); track()
+2026.114.02:56:25      80         vlbi_tsys()
+2026.114.02:57:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.02:59:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.03:03:00
+
+# ### Block for 3C279 scan 19 '114-0313' at 2026.114.03:13:00 in 600s ###########
+# 
+# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2026.114.03:10:25
+# 
+2026.114.03:03:00      1          print('You have 7 min 35 sec until the next VLBI calibration scan at 2026.114.03:10:25.')
+2026.114.03:10:25      20         source('3C279',cats='user'); go(); track()
+2026.114.03:10:50      80         vlbi_tsys()
+2026.114.03:12:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.03:13:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.03:15:00
+
+# ### Block for M87 scan 20 '114-0318' at 2026.114.03:18:00 in 180s #############
+2026.114.03:15:00      20         source('M87',cats='user'); go(); track()
+2026.114.03:15:25      80         vlbi_tsys()
+2026.114.03:16:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.03:18:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.03:22:00
+
+# ### Block for J1337-1257 scan 21 '114-0325' at 2026.114.03:25:00 in 180s ######
+2026.114.03:22:00      20         source('J1337-1257',cats='user'); go(); track()
+2026.114.03:22:25      80         vlbi_tsys()
+2026.114.03:23:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.03:25:00      120        vlbi_scan(t_mins=2,targetSource='J1337-1257')
+#     scan ends at 2026.114.03:27:00
+
+# ### Block for 3C273 scan 22 '114-0334' at 2026.114.03:34:00 in 420s ###########
+2026.114.03:31:25      20         source('3C273',cats='user'); go(); track()
+2026.114.03:31:50      80         vlbi_tsys()
+2026.114.03:33:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.03:34:00      120        vlbi_scan(t_mins=2,targetSource='3C273')
+#     scan ends at 2026.114.03:36:00
+
+# ### Block for M87 scan 23 '114-0339' at 2026.114.03:39:00 in 180s #############
+2026.114.03:36:00      20         source('M87',cats='user'); go(); track()
+2026.114.03:36:25      80         vlbi_tsys()
+2026.114.03:37:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.03:39:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.03:43:00
+
+# ### Block for M87 scan 24 '114-0346' at 2026.114.03:46:00 in 180s #############
+2026.114.03:43:00      20         source('M87',cats='user'); go(); track()
+2026.114.03:43:25      80         vlbi_tsys()
+2026.114.03:44:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.03:46:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.03:50:00
+
+# ### Block for 3C279 scan 25 '114-0358' at 2026.114.03:58:00 in 480s ###########
+2026.114.03:55:25      20         source('3C279',cats='user'); go(); track()
+2026.114.03:55:50      80         vlbi_tsys()
+2026.114.03:57:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.03:58:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.04:00:00
+
+# ### Block for M87 scan 26 '114-0403' at 2026.114.04:03:00 in 180s #############
+2026.114.04:00:00      20         source('M87',cats='user'); go(); track()
+2026.114.04:00:25      80         vlbi_tsys()
+2026.114.04:01:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.04:03:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.04:07:00
+
+# ### Block for M87 scan 27 '114-0410' at 2026.114.04:10:00 in 180s #############
+2026.114.04:07:00      20         source('M87',cats='user'); go(); track()
+2026.114.04:07:25      80         vlbi_tsys()
+2026.114.04:08:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.04:10:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.04:14:00
+
+# ### Block for J1337-1257 scan 28 '114-0424' at 2026.114.04:24:00 in 600s ######
+# 
+# OPERATOR free 7 min 35 sec until VLBI calibrations to start at 2026.114.04:21:25
+# 
+2026.114.04:14:00      1          print('You have 7 min 35 sec until the next VLBI calibration scan at 2026.114.04:21:25.')
+2026.114.04:21:25      20         source('J1337-1257',cats='user'); go(); track()
+2026.114.04:21:50      80         vlbi_tsys()
+2026.114.04:23:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.04:24:00      120        vlbi_scan(t_mins=2,targetSource='J1337-1257')
+#     scan ends at 2026.114.04:26:00
+
+# ### Block for 3C273 scan 29 '114-0431' at 2026.114.04:31:00 in 300s ###########
+2026.114.04:28:25      20         source('3C273',cats='user'); go(); track()
+2026.114.04:28:50      80         vlbi_tsys()
+2026.114.04:30:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.04:31:00      120        vlbi_scan(t_mins=2,targetSource='3C273')
+#     scan ends at 2026.114.04:33:00
+
+# ### Block for M87 scan 30 '114-0436' at 2026.114.04:36:00 in 180s #############
+2026.114.04:33:00      20         source('M87',cats='user'); go(); track()
+2026.114.04:33:25      80         vlbi_tsys()
+2026.114.04:34:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.04:36:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.04:40:00
+
+# ### Block for 3C279 scan 31 '114-0446' at 2026.114.04:46:00 in 360s ###########
+2026.114.04:43:25      20         source('3C279',cats='user'); go(); track()
+2026.114.04:43:50      80         vlbi_tsys()
+2026.114.04:45:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.04:46:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.04:48:00
+
+# ### Block for M87 scan 32 '114-0453' at 2026.114.04:53:00 in 300s #############
+2026.114.04:50:25      20         source('M87',cats='user'); go(); track()
+2026.114.04:50:50      80         vlbi_tsys()
+2026.114.04:52:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.04:53:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.04:57:00
+
+# ### Block for 3C279 scan 33 '114-0506' at 2026.114.05:06:00 in 540s ###########
+# 
+# OPERATOR free 6 min 35 sec until VLBI calibrations to start at 2026.114.05:03:25
+# 
+2026.114.04:57:00      1          print('You have 6 min 35 sec until the next VLBI calibration scan at 2026.114.05:03:25.')
+2026.114.05:03:25      20         source('3C279',cats='user'); go(); track()
+2026.114.05:03:50      80         vlbi_tsys()
+2026.114.05:05:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.05:06:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.05:08:00
+
+# ### Block for M87 scan 34 '114-0511' at 2026.114.05:11:00 in 180s #############
+2026.114.05:08:00      20         source('M87',cats='user'); go(); track()
+2026.114.05:08:25      80         vlbi_tsys()
+2026.114.05:09:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.05:11:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.05:15:00
+
+# ### Block for 3C279 scan 35 '114-0523' at 2026.114.05:23:00 in 480s ###########
+2026.114.05:20:25      20         source('3C279',cats='user'); go(); track()
+2026.114.05:20:50      80         vlbi_tsys()
+2026.114.05:22:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.05:23:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.05:25:00
+
+# ### Block for J1337-1257 scan 36 '114-0527' at 2026.114.05:27:00 in 120s ######
+2026.114.05:25:00      20         source('J1337-1257',cats='user'); go(); track()
+2026.114.05:25:25      80         vlbi_tsys()
+#                      gap        max ~0 min 10 sec
+2026.114.05:27:00      120        vlbi_scan(t_mins=2,targetSource='J1337-1257')
+#     scan ends at 2026.114.05:29:00
+
+# ### Block for M87 scan 37 '114-0533' at 2026.114.05:33:00 in 240s #############
+2026.114.05:30:25      20         source('M87',cats='user'); go(); track()
+2026.114.05:30:50      80         vlbi_tsys()
+2026.114.05:32:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.05:33:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.05:37:00
+
+# ### Block for 3C273 scan 38 '114-0545' at 2026.114.05:45:00 in 480s ###########
+2026.114.05:42:25      20         source('3C273',cats='user'); go(); track()
+2026.114.05:42:50      80         vlbi_tsys()
+2026.114.05:44:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.05:45:00      120        vlbi_scan(t_mins=2,targetSource='3C273')
+#     scan ends at 2026.114.05:47:00
+
+# ### Block for M87 scan 39 '114-0550' at 2026.114.05:50:00 in 180s #############
+2026.114.05:47:00      20         source('M87',cats='user'); go(); track()
+2026.114.05:47:25      80         vlbi_tsys()
+2026.114.05:48:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.05:50:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.05:54:00
+
+# ### Block for 3C279 scan 40 '114-0602' at 2026.114.06:02:00 in 480s ###########
+2026.114.05:59:25      20         source('3C279',cats='user'); go(); track()
+2026.114.05:59:50      80         vlbi_tsys()
+2026.114.06:01:15      30         vlbi_reference_scan()
+#                      gap        max ~0 min 10 sec
+2026.114.06:02:00      120        vlbi_scan(t_mins=2,targetSource='3C279')
+#     scan ends at 2026.114.06:04:00
+
+# ### Block for M87 scan 41 '114-0607' at 2026.114.06:07:00 in 180s #############
+2026.114.06:04:00      20         source('M87',cats='user'); go(); track()
+2026.114.06:04:25      80         vlbi_tsys()
+2026.114.06:05:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.06:07:00      240        vlbi_scan(t_mins=4,targetSource='M87')
+#     scan ends at 2026.114.06:11:00
+
+# ### Block for J1337-1257 scan 42 '114-0614' at 2026.114.06:14:00 in 200s ######
+2026.114.06:11:00      20         source('J1337-1257',cats='user'); go(); track()
+2026.114.06:11:25      80         vlbi_tsys()
+2026.114.06:12:50      30         vlbi_reference_scan()
+#                      gap        max ~0 min 35 sec
+2026.114.06:14:00      120        vlbi_scan(t_mins=2,targetSource='J1337-1257')
+#     scan ends at 2026.114.06:16:00
+
+
+# Finished VLBI schedule
+2026.114.06:16:15      1          vlbi_tone(enable=False)
+2026.114.06:16:30      1          remote_control('off')
+################################################################################
+### end of schedule
+################################################################################
