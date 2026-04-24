@@ -1,0 +1,26 @@
+2026.110.22:13:40;"----------| START OF c261e.apecs.obs |----------
+2026.110.22:13:40;"Using TAI-UTC offset of +37 seconds
+2026.110.22:13:40;"#
+2026.110.22:13:40;"# APEX observing script for station Ax from file vexfiles/triggered/c261e.vex
+2026.110.22:13:40;"# File created on 2026.104.10:58:31 UT
+2026.110.22:13:40;"#
+2026.110.22:13:40;"# Columns: 1) Start time 2) Duration in seconds 3) APECS command
+2026.110.22:13:40;"# Details on the columns:
+2026.110.22:13:40;"#    1) @always, or UT date-time in a 2015.016.06:42:40 format (yyyy.doy.hh:mm:ss)
+2026.110.22:13:40;"#         modifiers: !2015.016.06:42:40 to not skip command even if start time already is past
+2026.110.22:13:40;"#    2) estimated duration of the command in seconds
+2026.110.22:13:40;"#    3) APECS command and parameters to execute. If the command includes whitespace.
+2026.110.22:13:40;"#       Commands include, e.g.: tsys(), interactive("message"), tracksource("sourcename"), ...
+2026.110.22:13:40;"#
+2026.110.22:13:40;"# At time              Duration   Command
+2026.110.22:13:40;"execfile('vlbi-N3AR90_GMVA86_commands.py')
+2026.110.22:13:41;"reply from APECS: (timeout)
+2026.110.22:13:43;"vlbi_tone(enable=True)
+2026.110.22:13:44;"reply from APECS: (timeout)
+2026.110.22:13:46;"
+2026.110.22:13:46;"# ### Block for 0420-014 scan 1 'No0226' at 2026.110.22:15:01 in 200s ###########
+2026.110.22:13:46;"missed time 2026.110.22:11:41 : source('0420-014',cats='user'); go(); track()
+2026.110.22:13:46;"missed time 2026.110.22:12:06 : vlbi_tsys()
+2026.110.22:13:46;"missed time 2026.110.22:13:31 : vlbi_reference_scan()
+2026.110.22:13:46;"#                      gap        max ~0 min 55 sec
+2026.110.22:13:59;"----------| USER-REQUESTED STOP OF  c261e.apecs.obs |----------
