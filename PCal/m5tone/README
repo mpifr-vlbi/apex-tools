@@ -13,3 +13,7 @@ make
 gcc -Wall -mtune=native -march=native -DSTATION_APEX -I$DIFXROOT/include m5tone_eht.c -o m5tone_eht2021 -L$DIFXROOT/lib/ -lfftw3f -lmark5access -lm
 gcc -Wall -mtune=native -march=native -DSTATION_APEX_2018_VDI -I$DIFXROOT/include m5tone_eht.c -o m5tone_eht2018_vdi -L$DIFXROOT/lib/ -lfftw3f -lmark5access -lm
 gcc -Wall -mtune=native -march=native -DSTATION_APEX_2018_RS  -I$DIFXROOT/include m5tone_eht.c -o m5tone_eht2018_rs  -L$DIFXROOT/lib/ -lfftw3f -lmark5access -lm
+
+
+# Python m5tone.py based on DiFX C/C++-library mark5access and its Python ctypes 'mark5access' wrapper
+# m5tone.py /data/mj008b/Ax/12/mj008b_Ax_111-0700.vdif VDIF_8192-8192-1-2 tmp.out 1 1e-3 1197e6 409600 0 0
