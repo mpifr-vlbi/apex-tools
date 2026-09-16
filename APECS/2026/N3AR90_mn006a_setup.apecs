@@ -1,3 +1,5 @@
+## TODO: LINE FREQ for MN006A!
+##  perhaps vlbifreq88 ?
 
 sourcecats('t-0117.f-9996a-2026.cat')
 linecats('t-0117.f-9996a-2026.lin')
