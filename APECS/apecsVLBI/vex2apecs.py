@@ -245,6 +245,7 @@ def obs_writeScans(fd,scans,sources):
 		do_vlbi_reference_scan = False
 		do_vlbi_tsys = False
 		do_vlbi_tsys_shorter = False
+		do_fringe_ampl_jump_workaround = True  # attempt working around fringe ampl jump in vlbi_scan(), where ampl high only during the on() portion
 		L_prescan_tasks = 0
 
 		# Plan what to do, time permitting
@@ -294,6 +295,13 @@ def obs_writeScans(fd,scans,sources):
 			calTotalTime += Lrefscan + Lcmdmargin
 			calBlock.append(calstep)
 
+		if do_fringe_ampl_jump_workaround:
+			# And attempt at working around odd fringe amplitude jumps,
+			# which seem randomly associated with the go()+track() preceding repeat(n)+on() in vlbi_scan()
+			calstep = {'offset':calTotalTime, 'dur':Lslew, 'cmd':'source(\'%s\',cats=\'user\'); go(); track()' % (scan['source'])}
+			calTotalTime += Lslew + Lcmdmargin
+			calBlock.append(calstep)
+
 		# Place the calibration commands
 		#
 		# A) [prev VLBI Scan] -> change source -> vlbi_tsys() -> vlbi_reference_scan() -> [short gap] -> [VLBI Scan]
@@ -334,8 +342,14 @@ def obs_writeScans(fd,scans,sources):
 
 		# Place VLBI scan command
 
-		obs_writeLine(fd, datetimeToSNP_str(T_scan), scan['dur'], 'vlbi_scan(t_mins=%d,targetSource=\'%s\')' % (scan['dur']/60,scan['source']))
-		obs_writeComment(fd, '    scan ends at %s\n' % (datetimeToSNP_str(T_scan_end)))
+		if not do_fringe_ampl_jump_workaround:
+			obs_writeLine(fd, datetimeToSNP_str(T_scan), scan['dur'], 'vlbi_scan(t_mins=%d,targetSource=\'%s\')' % (scan['dur']/60,scan['source']))
+			obs_writeComment(fd, '    scan ends at %s\n' % (datetimeToSNP_str(T_scan_end)))
+		else:
+			# leave source unspecified so that vlbi_scan() skips issuing its own go()+track(),
+			# rely on the explicit go()+track() issued at the end of the calBlock
+			obs_writeLine(fd, datetimeToSNP_str(T_scan), scan['dur'], 'vlbi_scan(t_mins=%d)' % (scan['dur']/60))
+			obs_writeComment(fd, '    scan ends at %s\n' % (datetimeToSNP_str(T_scan_end)))
 
 		T = T + datetime.timedelta(seconds=Ldur)
 
