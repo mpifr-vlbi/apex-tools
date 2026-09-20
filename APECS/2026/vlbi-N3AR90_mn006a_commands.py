@@ -25,7 +25,7 @@ def vlbi_tuning():
     '''
 
     setup_n3ar90(
-        linename='vlbifreq86',
+        linename='vlbifreq88',
         sideband='', mode='spec', sbwidth=8, numchan=65536,
         cats='all',
         doppler='off' )
@@ -91,7 +91,7 @@ def vlbi_scan(t_mins=5,targetSource=''):
     if targetSource:
         # If 'targetSource' arg is not empty, make sure we are on that source before starting VLBI scan
         # todo: query current APECS source somehow? to avoid possibly no-op commands?
-        # Overhead: 10-20 sec in 2026
+        # Overhead: 10-20s
         source(targetSource,cats='user')
         go()
         track()
