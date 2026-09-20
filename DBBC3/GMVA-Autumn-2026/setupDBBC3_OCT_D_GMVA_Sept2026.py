@@ -1,0 +1,199 @@
+#!/usr/bin/env python
+
+import argparse
+import subprocess
+from dbbc3.DBBC3 import DBBC3
+from dbbc3.DBBC3Config import DBBC3Config
+from dbbc3.DBBC3Validation import ValidationFactory
+import dbbc3.DBBC3Util as d3u
+import re
+import sys
+import numpy as np
+import traceback
+from signal import signal, SIGINT
+
+from time import sleep
+
+def reportResult(rep):
+
+    if not rep:
+        return
+
+    for res in rep.result:
+        if ("OK" in res.state):
+            state = "\033[1;32m{0}\033[0m".format(res.state)
+        elif ("FAIL" in res.state):
+            state = "\033[1;31m{0}\033[0m".format(res.state)
+
+        if ("ERROR" in res.level):
+            level = "\033[1;31m{0}\033[0m".format(res.level)
+        elif ("WARN" in res.level):
+            level = "\033[1;35m{0}\033[0m".format(res.level)
+
+        if "INFO" in res.level:
+            print("[{0}] {1} - {2}".format(state,  res.action, res.message))
+        elif ("WARN" in res.level ):
+            print("[{0}]/[{1}] {2} - {3}".format(state, level, res.action, res.message))
+        elif ("ERROR" in res.level ):
+            print("[{0}]/[{1}] {2} - {3}".format(state, level, res.action, res.message))
+
+        if len(res.resolution) > 0:
+            print("\033[1;34m[{0}] {1}\033[0m".format("RESOLUTION",  res.resolution))
+
+
+def exitClean():
+    if 'dbbc3' in vars() or 'dbbc3' in globals():
+        # re-enable the calibration loop
+        dbbc3.enableloop()
+
+        dbbc3.disconnect()
+
+    print ("Bye")
+    sys.exit()
+
+def signal_handler(sig, frame):
+    exitClean()
+
+# handle SIGINT (Ctrl-C)
+signal(SIGINT, signal_handler)
+
+if __name__ == "__main__":
+
+        parser = argparse.ArgumentParser(description="Setup and validate DBBC3 in OCT_D mode")
+
+        parser.add_argument("-p", "--port", default=4000, type=int, help="The port of the control software socket (default: 4000)")
+        parser.add_argument("-n", "--num-coreboards", default=4, type=int, help="The number of activated core boards in the DBBC3 (default 4)")
+        parser.add_argument("-b", "--boards", dest='boards', type=lambda s: list(map(str, s.split(","))), help="A comma separated list of core boards to be used for setup and validation. Can be specified as 0,1 or A,B,.. (default: use all activated core boards)")
+        parser.add_argument("--use-version", dest='ver', default= "", help="The software version of the DBBC3 DDC_V mode to use. Will assume the latest release version if not specified")
+        parser.add_argument("--ignore-errors", dest='ignoreErrors',default=False, action='store_true', help="Ignore any errors and continue with the validation")
+        parser.add_argument('ipaddress',  help="the IP address of the DBBC3 running the control software")
+        parser.add_argument("-m", "--mode", required=False, default="OCT_D", help="The current DBBC3 mode (default: %(default)s)")
+
+        args = parser.parse_args()
+        redoCal = False
+
+        try:
+
+                print ("===Trying to connect to %s:%d" % (args.ipaddress, args.port))
+                dbbc3 = DBBC3(host=args.ipaddress, port=args.port, mode=args.mode)
+                print ("===Connected")
+
+                ver = dbbc3.version()
+                print ("=== DBBC3 is running: mode=%s version=%s(%s)" % (ver['mode'], ver['majorVersion'], ver['minorVersion']))
+
+                # val = DBBC3Validation(dbbc3, ignoreErrors=args.ignoreErrors)
+                val = ValidationFactory().create(dbbc3, args.ignoreErrors)
+                # val = valFactory.create(dbbc3, args.ignoreErrors)
+
+                print ("=== Disabling calibration loop")
+                dbbc3.disableloop()
+
+                useBoards = []
+                if args.boards:
+                    for board in args.boards:
+                        useBoards.append(dbbc3.boardToDigit(board))
+                elif args.num_coreboards:
+                    for board in range(args.num_coreboards):
+                        useBoards.append(dbbc3.boardToDigit(board))
+                else:
+                    for board in range(dbbc3.config.numCoreBoards):
+                        useBoards.append(dbbc3.boardToDigit(board))
+
+                print ("=== Using boards: %s" % str(useBoards))
+
+                # GMVA Autumn 2026 at 86G with 512 MHz bandwidth
+                # IF-C/IF-D =  86G rx OCT_D flt 500-1000 MHz , Valons 2 x 4500 MHz = 9000 MHz
+                # Bandwidth 512 MHz instead of full 2048 MHz,
+                # hence in C:\DBBC_CONF\OCT_D_v120 need vsi_bitmask 0x03030303 ...
+
+                print ("=== Loading tap filters - 500-1000_64taps.flt" )
+                dbbc3.tap(0,1, "500-1000_64taps.flt")
+                dbbc3.tap(0,2, "500-1000_64taps.flt")
+                dbbc3.tap(1,1, "500-1000_64taps.flt")
+                dbbc3.tap(1,2, "500-1000_64taps.flt")
+                dbbc3.tap(2,1, "500-1000_64taps.flt")
+                dbbc3.tap(2,2, "500-1000_64taps.flt")
+                dbbc3.tap(3,1, "500-1000_64taps.flt")
+                dbbc3.tap(3,2, "500-1000_64taps.flt")
+
+                print ("=== Tuning Valons - 9000 MHz" )
+                dbbc3.sendCommand("synth=1,source 1")
+                dbbc3.sendCommand("synth=1,cw 4500")
+                dbbc3.sendCommand("synth=1,source 2")
+                dbbc3.sendCommand("synth=1,cw 4500")
+                dbbc3.sendCommand("synth=2,source 1")
+                dbbc3.sendCommand("synth=2,cw 4500")
+                dbbc3.sendCommand("synth=2,source 2")
+                dbbc3.sendCommand("synth=2,cw 4500")
+
+                print ("=== Checking state of recorder interfaces" )
+                # print ("=== recorder1 eth3: %s" % d3u.checkRecorderInterface ("recorder1", "eth3"))
+                # print ("=== recorder1 eth5: %s" % d3u.checkRecorderInterface ("recorder1", "eth5"))
+                # print ("=== recorder2 eth3: %s" % d3u.checkRecorderInterface ("recorder2", "eth3"))
+                # print ("=== recorder2 eth5: %s" % d3u.checkRecorderInterface ("recorder2", "eth5"))
+                print ("=== recorder3 eth3: %s" % d3u.checkRecorderInterface ("recorder3", "eth3"))
+                print ("=== recorder3 eth5: %s" % d3u.checkRecorderInterface ("recorder3", "eth5"))
+                # print ("=== recorder4 eth3: %s" % d3u.checkRecorderInterface ("recorder4", "eth3"))
+                # print ("=== recorder4 eth5: %s" % d3u.checkRecorderInterface ("recorder4", "eth5"))
+                
+                print ("=== Validating system state" )
+
+                print ("==============================================")
+                print ("NOTE: the following tests should be done with")
+                print ("only noise fed to the IF inputs of the DBBC3.")
+                print ("Injecting additional tones can lead to false")
+                print ("results in the validation of the sampler states.")
+                print ("==============================================")
+
+                # print ("=== Checking sampler phase synchronisation")
+                # reportResult(val.validateSamplerPhases())
+
+                for board in useBoards:
+
+                    reportResult(val.validateTimesync(board))
+                    reportResult(val.validateSynthesizerLock(board))
+                    reportResult(val.validateSynthesizerFreq(board))
+                    # reportResult(val.validateIFLevel(board))
+                    # reportResult(val.validateSamplerPower(board))
+                    # reportResult(val.validateSamplerOffsets(board))
+
+                if redoCal:
+
+                    print ("=== Setting up calibration loop")
+                    dbbc3.enablecal()
+
+                    print ("=== Enabling calibration loop")
+                    dbbc3.enableloop()
+
+                    print ("=== Waiting for 2 minutes to allow adjusting the power levels")
+                    for remaining in range(120, 0, -1):
+                        sys.stdout.write("\r")
+                        sys.stdout.write("{:2d} seconds remaining.".format(remaining))
+                        sys.stdout.flush()
+                        sleep(1)
+                    
+                    dbbc3.disableloop()
+
+                    print ("=== Now re-checking the bit statistics (should be proper 2-bit)")
+                    for board in useBoards:
+                        reportResult(val.validateBitStatistics(board))
+
+                print ("=== Setting up calibration loop")
+                dbbc3.enablecal()
+
+                print ("=== Enabling calibration loop")
+                dbbc3.enableloop()
+                
+                dbbc3.disconnect()
+                print ("=== Done")
+
+        except Exception as e:
+               # make compatible with python 2 and 3
+               if hasattr(e, 'message'):
+                    print(e.message)
+               else:
+                    print(e)
+                    
+               exitClean() 
+
+        
