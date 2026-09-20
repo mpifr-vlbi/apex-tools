@@ -29,9 +29,10 @@
 ! vlbifreqMK037D 88.600 GHz LSB  ! lands dbbc3 ch#1 on 88512-88576 MHz (track MK037D)
 !
 ! GMVA Autumn 2026: C262A C262B C262C at 86G, MN006A at 88G, MN006B at 89G
-vlbifreq86     86.100 GHz LSB  ! for 4 Gbps std mode DBBC3 DDC_U v126
-! vlbifreq88 --todo-- with goal of recording 88312--88824 MHz incl HCN
-! vlbifreq89 --todo-- with goal of recording 89012--89524 MHz incl HCO+
+! All tracks observed with OCT_D instead of DDC_U, slightly different tuning from Spring 2026
+vlbifreq86     88.500 GHz LSB  ! for 4 Gbps OCT_D
+vlbifreq88     90.848 GHz LSB  ! for OCT_D recording 88312--88824 MHz incl HCN  in MN006A
+vlbifreq89     91.548 GHz LSB  ! for OCT_D recording 89012--89524 MHz incl HCO+ in MN006B
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
