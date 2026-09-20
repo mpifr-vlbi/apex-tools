@@ -178,7 +178,7 @@ def vwcpoint(t=24., l=[], cal=1, line='vlbifreq230', dopp='OFF', ptRun=False, db
 # Tone Synthesizer Control
 #############################################################################
 
-def vlbi_tone(enable=False, freq_mhz=17219.0, pow_dbm=-6.0, scpi_url="http://10.0.6.66/scpi", simulate=False):
+def vlbi_tone(enable=False, freq_mhz=17679.0, pow_dbm=-6.0, scpi_url="http://10.0.6.66/scpi", simulate=False):
     '''
     Controls the output of an Agilent synthesizer via SCPI commands.
     Turn off, or softly turn on with a given freq by ramping power from -20 dBm to the target level.
@@ -186,7 +186,7 @@ def vlbi_tone(enable=False, freq_mhz=17219.0, pow_dbm=-6.0, scpi_url="http://10.
 
     Examples:
     vlbi_tone(enable=False, simulate=True)
-    vlbi_tone(enable=True, freq_mhz=17219.0, pow_dbm=1.0, simulate=True)
+    vlbi_tone(enable=True, freq_mhz=17679.0, pow_dbm=1.0, simulate=True)
     '''
 
     powLimit_dbm = +4
