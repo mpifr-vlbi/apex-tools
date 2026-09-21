@@ -3,6 +3,7 @@
 Shows an info feed from the APEX Weather Station (wx)
 together with APEX Radiometer readings (pwv).
 '''
+import argparse
 import apexObsUtils
 import datetime
 import time
@@ -11,7 +12,6 @@ import apexOnlineWV
 # apexWV = apexOnlineWV.onlineWV()
 
 def getMCPoint_nx(name, defaultVal):
-
 	rv = defaultVal
 	try:
 		rv = apexObsUtils.getMCPoint(name)
@@ -20,16 +20,18 @@ def getMCPoint_nx(name, defaultVal):
 	finally:
 		return rv
 
+def readMeters(logfile, backend='NFLASH230-FFTS1', verbose=False):
+	'''
+	Outputs live data from the online calibrator and current
+	data from the APEX weather station.
 
-def readMeters(logfile, verbose=False):
-
+	Optional args
+	backend: 'NFLASH230-FFTS1' or 'N3AR90-FFTS3'
+	'''
 	onlineCal = apexObsUtils.getApexCalibrator()
-	offsetUTC = 37  # TODO: update automatically to most recent TAI (APECS computer) vs UTC time offset
-
+	offsetUTC = 37 # TODO: update automatically to most recent TAI (APECS computer) vs UTC time offset
 	try:
-		#calResult = onlineCal.getCalResult('NFLASH230-PBE_A',1,0)
-		calResult = onlineCal.getCalResult('NFLASH230-FFTS1',1,0)
-		#calResult = onlineCal.getCalResult('N3AR90-FFTS3',1,0)
+		calResult = onlineCal.getCalResult(backend,1,0)
 		#print(calResult)
 		tstr = str(calResult.date) + "_" + str(calResult.time)
 		tline = str(calResult.lineName)
@@ -39,16 +41,14 @@ def readMeters(logfile, verbose=False):
 			tstr, calResult.FEBE, tline, calResult.restFreq, calResult.sideBand,
 			calResult.tSys[0], calResult.tRx[0],
 			calResult.tauSig[0], calResult.tauIma[0],
-			calResult.tHot,	calResult.tCold)
+			calResult.tHot, calResult.tCold)
 	except Exception as e:
 		print(e)
 		calStr = 'tsys/nodata'
-
 	try:
 		timestamp = apexObsUtils.getMCPointTS('APEX:WEATHERSTATION:temperature')
 	except:
 		timestamp = (-1, -1)
-
 	temperature = getMCPoint_nx('APEX:WEATHERSTATION:temperature', -273)
 	dewPoint = getMCPoint_nx('APEX:WEATHERSTATION:dewPoint', -273)
 	humidity = getMCPoint_nx('APEX:WEATHERSTATION:humidity', -1)
@@ -56,16 +56,12 @@ def readMeters(logfile, verbose=False):
 	windspeed = getMCPoint_nx('APEX:WEATHERSTATION:windSpeed', 0)
 	winddir = getMCPoint_nx('APEX:WEATHERSTATION:windDirection', 0)
 	pwv = getMCPoint_nx('APEX:RADIOMETER:RESULTS:pwv', -1)
-
 	# pwvCalc = apexWV.getCurrentWaterVapour()
 	# print(pwv, pwvCalc)
-
 	wxStr = 'wx/%.2f,%.1f,%.1f,%.2f,%.0f,%.2f' % (temperature, pressure, humidity, windspeed, winddir, pwv)
-	wxStr_alt = 'temp %.1f C, dew %.1f C, hum %.1f %%, p %.1f mbar, wind %.2f m/s, wind dir %.1f deg, pwv %.2f mm' % (temperature,  dewPoint,  humidity, pressure, windspeed, winddir, pwv)
-
+	wxStr_alt = 'temp %.1f C, dew %.1f C, hum %.1f %%, p %.1f mbar, wind %.2f m/s, wind dir %.1f deg, pwv %.2f mm' % (temperature, dewPoint, humidity, pressure, windspeed, winddir, pwv)
 	T = datetime.datetime.utcnow() + datetime.timedelta(seconds=-offsetUTC)
-        T_snp = T.strftime('%Y.%j.%H:%M:%S')
-
+	T_snp = T.strftime('%Y.%j.%H:%M:%S')
 	logfile.write('%s;%s\n' % (T_snp,calStr))
 	logfile.write('%s/%s\n' % (T_snp,wxStr))
 	logfile.write('%s;%s\n' % (T_snp,wxStr_alt))
@@ -74,8 +70,21 @@ def readMeters(logfile, verbose=False):
 		print('%s/%s' % (T_snp,wxStr))
 		print('%s;%s' % (T_snp,wxStr_alt))
 
-logfile = open('vlbi-cals.log', 'a')
-while True:
-	readMeters(logfile, verbose=True)
-	time.sleep(30)
-logfile.close()
+
+def parseArgs():
+	parser = argparse.ArgumentParser(
+		description='Shows an info feed from the APEX Weather Station (wx) '
+		            'together with APEX Radiometer readings (pwv).')
+	parser.add_argument('-b', '--backend', type=str, default='NFLASH230-FFTS1',
+		help="backend to query for calibration results, e.g. 'NFLASH230-FFTS1' "
+		     "or 'N3AR90-FFTS3' (default: %(default)s)")
+	return parser.parse_args()
+
+
+if __name__ == '__main__':
+	args = parseArgs()
+	logfile = open('monitorWx.log', 'a')
+	while True:
+		readMeters(logfile, backend=args.backend, verbose=True)
+		time.sleep(30)
+	logfile.close()
