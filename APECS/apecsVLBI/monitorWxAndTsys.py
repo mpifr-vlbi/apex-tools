@@ -1,7 +1,8 @@
 #!/alma/ACS-2021DEC/pyenv/shims/python
 '''
-Shows an info feed from the APEX Weather Station (wx)
-together with APEX Radiometer readings (pwv).
+Logs and displays current data from the APEX Weather Station (wx),
+the APEX Radiometer (pwv), as well as live calibration data (Tsys)
+from a selected backend.
 '''
 import argparse
 import apexObsUtils
@@ -32,16 +33,15 @@ def readMeters(logfile, backend='NFLASH230-FFTS1', verbose=False):
 	offsetUTC = 37 # TODO: update automatically to most recent TAI (APECS computer) vs UTC time offset
 	try:
 		calResult = onlineCal.getCalResult(backend,1,0)
-		#print(calResult)
 		tstr = str(calResult.date) + "_" + str(calResult.time)
 		tline = str(calResult.lineName)
 		if len(tstr) < 4: tstr = '<none>'
 		if len(tline) < 2: tline = '<none>'
-		calStr = 'datetime/%s,fe/%s,line/%s,freq/%.6f%s,tsys/%.1f,trx/%.1f,tausig/%.3f,tauima/%.3f,thot/%.1f,tcold/%.1f' % (
+		calStr = 'datetime/%s,fe/%s,line/%s,freq/%.6f%s,tsys/%.1f,trx/%.1f,tausig/%.3f,tauima/%.3f,thot/%.1f,tcold/%.1f,tamb/%.1f' % (
 			tstr, calResult.FEBE, tline, calResult.restFreq, calResult.sideBand,
 			calResult.tSys[0], calResult.tRx[0],
 			calResult.tauSig[0], calResult.tauIma[0],
-			calResult.tHot, calResult.tCold)
+			calResult.tHot, calResult.tCold, calResult.tAmb)
 	except Exception as e:
 		print(e)
 		calStr = 'tsys/nodata'
@@ -78,12 +78,14 @@ def parseArgs():
 	parser.add_argument('-b', '--backend', type=str, default='NFLASH230-FFTS1',
 		help="backend to query for calibration results, e.g. 'NFLASH230-FFTS1' "
 		     "or 'N3AR90-FFTS3' (default: %(default)s)")
+	parser.add_argument('-l', '--logfile', type=str, default='monitorWxAndTsys.fslog', help="name of log file (default: %(default)s)")
 	return parser.parse_args()
 
 
 if __name__ == '__main__':
 	args = parseArgs()
-	logfile = open('monitorWx.log', 'a')
+	logfile = open(args.logfile, 'a')
+	print("Logging into %s" % args.logfile)
 	while True:
 		readMeters(logfile, backend=args.backend, verbose=True)
 		time.sleep(30)
