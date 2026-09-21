@@ -21,15 +21,16 @@ def getMCPoint_nx(name, defaultVal):
 		return rv
 
 
-def readMeters(logfile, verbose=False):
+def readMeters(logfile, backend='NFLASH230-FFTS1', verbose=False):
+	'''
+	backend: 'NFLASH230-FFTS1' or 'N3AR90-FFTS3'
+	'''
 
 	onlineCal = apexObsUtils.getApexCalibrator()
 	offsetUTC = 37  # TODO: update automatically to most recent TAI (APECS computer) vs UTC time offset
 
 	try:
-		#calResult = onlineCal.getCalResult('NFLASH230-PBE_A',1,0)
-		calResult = onlineCal.getCalResult('NFLASH230-FFTS1',1,0)
-		#calResult = onlineCal.getCalResult('N3AR90-FFTS3',1,0)
+		calResult = onlineCal.getCalResult(backend,1,0)
 		#print(calResult)
 		tstr = str(calResult.date) + "_" + str(calResult.time)
 		tline = str(calResult.lineName)
@@ -74,7 +75,7 @@ def readMeters(logfile, verbose=False):
 		print('%s/%s' % (T_snp,wxStr))
 		print('%s;%s' % (T_snp,wxStr_alt))
 
-logfile = open('vlbi-cals.log', 'a')
+logfile = open('monitorWx.log', 'a')
 while True:
 	readMeters(logfile, verbose=True)
 	time.sleep(30)
