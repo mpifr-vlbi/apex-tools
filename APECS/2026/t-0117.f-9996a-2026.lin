@@ -30,9 +30,10 @@
 !
 ! GMVA Autumn 2026: C262A C262B C262C at 86G, MN006A at 88G, MN006B at 89G
 ! All tracks observed with OCT_D instead of DDC_U, slightly different tuning from Spring 2026
+! ALl tracks with DBBC3 Valons set to 9000 MHz
 vlbifreq86     88.500 GHz LSB  ! for 4 Gbps OCT_D
-vlbifreq88     90.848 GHz LSB  ! for OCT_D recording 88312--88824 MHz incl HCN  in MN006A
-vlbifreq89     91.548 GHz LSB  ! for OCT_D recording 89012--89524 MHz incl HCO+ in MN006B
+vlbifreq88     90.800 GHz LSB  ! for OCT_D recording 88312--88824 MHz incl HCN  in MN006A
+vlbifreq89     91.500 GHz LSB  ! for OCT_D recording 89012--89524 MHz incl HCO+ in MN006B
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
