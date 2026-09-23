@@ -16,10 +16,10 @@ N3AR90.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
 # Line freq for GMVA MN006A is vlbifreq88
 setup_n3ar90(linename='vlbifreq88', sideband='', mode='spec', sbwidth=8, numchan=65536, cats='all', doppler='off')
 
-use_ref('on')
+use_foc_temp_corr('off')  # 'off' used in Spring 2026 GMVA to try to (unsuccessfully) avoid phase and amplitude jumps
 continuous_data('off')
 skip_hardware_setup('off')
 use_tiltmeters('on', 'on')
-use_foc_temp_corr('off')  # 'off' used in Spring 2026 GMVA to try to (unsuccessfully) avoid phase and amplitude jumps
-n3ar90.configure(doppler='off')
+#n3ar90.configure(doppler='off')
+use_ref('on')
 tp() # Added to be extra sure we disable the wobbler after line pointings
