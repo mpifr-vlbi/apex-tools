@@ -96,14 +96,21 @@ def vlbi_scan(t_mins=5,targetSource=''):
         go()
         track()
 
-    #n_rep = t_mins  # EHT2022-2026 & GMVA 2026I:  n x on(30s)
-    n_rep = int(2*t_mins*0.87) # GMVA 2026II: 2 x on(30s) x 87% overhead repeated often enough to nearly fill the scan
+    # Fill most of the VLBI scan duration with a series of on() measurements
 
-    # Fill most of the VLBI scan time with series of on()
+    # EHT2022-2026 & GMVA 2026I:  repeat(n_rep) x on(30s):
+    # n_rep = t_mins
+    # repeat(n_rep)
+    # #on(drift='no',time=60) # EHT2017, EHT2018
+    # #on(drift='no',time=30) # EHT2021: changed to 50% of t_mins from middle of e21b09 due to overheads (30%) that are greater than before
+    # on(drift='no',time=30)   # EHT2022, EHT2023: assume same high overhead of EHT2021. Worked out okay in e22b19 with 1-5min long scans.
+
+    # GMVA 2026II : repeat(n_rep) x on(10s) with requested time shrunk by estimate of overhead
+    t_secs = int(t_mins * 60)
+    on_sec = 10
+    n_rep = int((t_sec*0.87) / on_sec)
     repeat(n_rep)
-    # on(drift='no',time=60) # EHT2017, EHT2018
-    # on(drift='no',time=30) # EHT2021: changed to 50% of t_mins from middle of e21b09 due to overheads (30%) that are greater than before
-    on(drift='no',time=30)   # EHT2022, EHT2023: assume same high overhead of EHT2021. Worked out okay in e22b19 with 1-5min long scans.
+    on(drift='no',time=on_sec)
 
     # Alternate method attempted for e24e07: single very long on()-scan, perhaps no phase jumps them, but perhaps no contiguous sub-integration data either?
     #on(drift='no',time=int(30*t_mins))

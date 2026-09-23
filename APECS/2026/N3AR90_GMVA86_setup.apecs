@@ -13,9 +13,6 @@ N3AR90.monPoints.append(['GPS_COUNTERS_FMOUT_MASER',
                             ('prop', 'APEX:COUNTERS:GPSMINUSMASER.GPSMinusMaser', 1.0, '-')],
                            5])
 
-# Freq setup for Apr 18th for ARO and ALO tests
-# setup_n3ar90(linename='vlbifreq16G_86', sideband='', mode='spec', sbwidth=8, numchan=65536, cats='all', doppler='off')
-
 # Standard GMVA 86G continuum setup
 setup_n3ar90(linename='vlbifreq86', sideband='', mode='spec', sbwidth=8, numchan=65536, cats='all', doppler='off')
 
