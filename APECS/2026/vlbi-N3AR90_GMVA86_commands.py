@@ -108,7 +108,7 @@ def vlbi_scan(t_mins=5,targetSource=''):
     # GMVA 2026II : repeat(n_rep) x on(10s) with requested time shrunk by estimate of overhead
     t_secs = int(t_mins * 60)
     on_sec = 10
-    n_rep = int((t_sec*0.87) / on_sec)
+    n_rep = int((t_secs*0.78) / on_sec) # 0.87: a bit too long, 0.82: too long
     repeat(n_rep)
     on(drift='no',time=on_sec)
 
