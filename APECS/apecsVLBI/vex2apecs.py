@@ -245,7 +245,7 @@ def obs_writeScans(fd,scans,sources):
 		do_vlbi_reference_scan = False
 		do_vlbi_tsys = False
 		do_vlbi_tsys_shorter = False
-		do_fringe_ampl_jump_workaround = True  # attempt working around fringe ampl jump in vlbi_scan(), where ampl high only during the on() portion
+		do_fringe_ampl_jump_workaround = False  # attempt working around fringe ampl jump in vlbi_scan(), where ampl high only during the on() portion
 		L_prescan_tasks = 0
 
 		# Plan what to do, time permitting
