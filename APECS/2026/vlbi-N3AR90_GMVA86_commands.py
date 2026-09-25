@@ -34,7 +34,7 @@ def vlbi_tuning():
     use_ref('OFF')                  # avoid going off-source during VLBI scan on()
 
 
-def vlbi_tsys(mode_='COLD',time_s=10):
+def vlbi_tsys(mode_='COLD',time_s=10,targetSource=''):
     '''
     Initiate Tsys measurement. Should ideally be called on-target before vlbi_scan().
 
@@ -42,12 +42,15 @@ def vlbi_tsys(mode_='COLD',time_s=10):
           calibrate(time=10,mode='COLD')  full Sky-Hot-Cold, takes ~85 sec in total
     '''
 
+    if targetSource:
+        source(targetSource,cats='user')
+
     vlbi_tuning()
     reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='HO', epoch=2000.0)
     calibrate(mode=mode_,time=time_s)
 
 
-def vlbi_reference_scan():
+def vlbi_reference_scan(targetSource=''):
     '''
     Take an on() scan with duration of 20s (was:~1 minute) with an off-source reference.
     Prior to calling this function, must already be tracking a source.
@@ -55,6 +58,9 @@ def vlbi_reference_scan():
     2022: on(drift='no',time=10) takes ~40 seconds
           on(drift='no',time=5)  takes ~30 seconds
     '''
+
+    if targetSource:
+        source(targetSource,cats='user')
 
     vlbi_tuning()
 
@@ -132,11 +138,16 @@ def vlbi_scan(t_mins=5,targetSource=''):
     # repeat(n_rep)
     # on(drift='no',time=on_sec)
 
-    # GMVA 2026II : repeat(1) x on(seconds=60*t_mins*0.78) with requested time shrunk by estimate of overhead
+    # GMVA 2026II : repeat(1) x on(seconds=60*t_mins*0.82) with requested time shrunk by estimate of overhead
     # based on Dirk Muders comments 25.09.2026 11:xx that N x on(10s) adjust hexapod between every 10 sec scan
     # Done like this from C262A 268-1801 onwards
+    #
+    # on_sec = int(60*t_mins*0.78)) # 0.78: from N x on(10s) but turned out too short here, 5min VEX -> 4min actual
+    on_sec = int(60*t_mins) - 25 # use a fixed assumed worst case overhead of 25 sec
+    if on_sec < 10:
+        on_sec = 10
     repeat(1)
-    on(drift='no',time=int(60*t_mins*0.78))
+    on(drift='no',time=on_sec)
 
     # Continue tracking for remainder of VLBI scan; ought to be less than auto-standby timeout time
     repeat(1)

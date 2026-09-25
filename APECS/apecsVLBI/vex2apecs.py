@@ -282,16 +282,16 @@ def obs_writeScans(fd,scans,sources):
 			calBlock.append(calstep)
 
 		if do_vlbi_tsys_shorter:
-			calstep = {'offset':calTotalTime, 'dur':Ltsys_no_cold, 'cmd':"vlbi_tsys(mode_='HOT',time_s=5)"}
+			calstep = {'offset':calTotalTime, 'dur':Ltsys_no_cold, 'cmd':"vlbi_tsys(mode_='HOT',time_s=5,targetSource=\'%s\')" % (scan['source'])}
 			calTotalTime += Ltsys_no_cold + Lcmdmargin
 			calBlock.append(calstep)
 		elif do_vlbi_tsys:
-			calstep = {'offset':calTotalTime, 'dur':Ltsys, 'cmd':'vlbi_tsys()'}
+			calstep = {'offset':calTotalTime, 'dur':Ltsys, 'cmd':'vlbi_tsys(targetSource=\'%s\')' % (scan['source'])}
 			calTotalTime += Ltsys + Lcmdmargin
 			calBlock.append(calstep)
 
 		if do_vlbi_reference_scan:
-			calstep = {'offset':calTotalTime, 'dur':Lrefscan, 'cmd':'vlbi_reference_scan()'}
+			calstep = {'offset':calTotalTime, 'dur':Lrefscan, 'cmd':'vlbi_reference_scan(targetSource=\'%s\')' % (scan['source'])}
 			calTotalTime += Lrefscan + Lcmdmargin
 			calBlock.append(calstep)
 
