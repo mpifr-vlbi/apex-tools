@@ -34,7 +34,7 @@ def vlbi_tuning():
     use_ref('OFF')                  # avoid going off-source during VLBI scan on()
 
 
-def vlbi_tsys(mode_='COLD',time_s=10):
+def vlbi_tsys(mode_='COLD',time_s=10,targetSource=''):
     '''
     Initiate Tsys measurement. Should ideally be called on-target before vlbi_scan().
 
@@ -42,12 +42,15 @@ def vlbi_tsys(mode_='COLD',time_s=10):
           calibrate(time=10,mode='COLD')  full Sky-Hot-Cold, takes ~85 sec in total
     '''
 
+    if targetSource:
+        source(targetSource,cats='user')
+
     vlbi_tuning()
     reference(x=-100.0, y=0.0, time=0.0, on2off=1, unit='arcsec', mode='REL', system='HO', epoch=2000.0)
     calibrate(mode=mode_,time=time_s)
 
 
-def vlbi_reference_scan():
+def vlbi_reference_scan(targetSource=''):
     '''
     Take an on() scan with duration of 20s (was:~1 minute) with an off-source reference.
     Prior to calling this function, must already be tracking a source.
@@ -55,6 +58,9 @@ def vlbi_reference_scan():
     2022: on(drift='no',time=10) takes ~40 seconds
           on(drift='no',time=5)  takes ~30 seconds
     '''
+
+    if targetSource:
+        source(targetSource,cats='user')
 
     vlbi_tuning()
 
@@ -76,25 +82,38 @@ def vlbi_reference_scan():
 def vlbi_scan(t_mins=5,targetSource=''):
     '''
     Call at the start of a VLBI scan, possibly after vlbi_reference_scan(),
-    while already tracking the VLBI target source.
+    ideally while already tracking the VLBI target source.
 
-    Uses a series of on() measurements, because a plain track() does not signal an active
-    observation in APECS and leads to auto-standby of the telescope some minutes later. 
-    The series of on-scans also collect amplitude calibration data for VLBI postprocessing.
+    t_mins: duration of VLBI scan
+    targetSource: optionally name of the VLBI scan target
 
-    Turns Doppler off, Wobbler off, disables off-source reference position; the telescope
-    must be ON source for the whole  duration of the VLBI scan (~t_mins minutes).
+    Uses on() measurements rather than track(), since tracking does not signal an active
+    observation under APECS and leads to auto-standby of the telescope some minutes later.
+
+    The ON-scans also collect amplitude calibration data for VLBI postprocessing.
+
+    Uses vlbi_tuning() prior to on() for standard setup: Doppler off, Wobbler off,
+    off-source reference position disabled.
     '''
 
+    # Make sure we are on target
+
+    #if targetSource:
+    #    # If 'targetSource' arg is not empty, make sure we are on that source before starting VLBI scan
+    #    # todo: query current APECS source somehow? to avoid possibly no-op commands?
+    #    # Overhead: 10-20 sec in 2026
+    #    source(targetSource,cats='user')
+    #    go()
+    #    track()
+
+    # Dirk Muders email 25.09.2026 11:xx:
+    # - source() alone without extra go()+track() is faster and avoids 20sec overhead
+    # - when already on-source, has little effect
+    # - when accidentally still on different source, the next on() will trigger move to target
+    if targetSource:
+        source(targetSource,cats='user')
     vlbi_tuning()
 
-    if targetSource:
-        # If 'targetSource' arg is not empty, make sure we are on that source before starting VLBI scan
-        # todo: query current APECS source somehow? to avoid possibly no-op commands?
-        # Overhead: 10-20 sec in 2026
-        source(targetSource,cats='user')
-        go()
-        track()
 
     # Fill most of the VLBI scan duration with a series of on() measurements
 
@@ -105,17 +124,30 @@ def vlbi_scan(t_mins=5,targetSource=''):
     # #on(drift='no',time=30) # EHT2021: changed to 50% of t_mins from middle of e21b09 due to overheads (30%) that are greater than before
     # on(drift='no',time=30)   # EHT2022, EHT2023: assume same high overhead of EHT2021. Worked out okay in e22b19 with 1-5min long scans.
 
-    # GMVA 2026II : repeat(n_rep) x on(10s) with requested time shrunk by estimate of overhead
-    t_secs = int(t_mins * 60)
-    on_sec = 10
-    n_rep = int((t_secs*0.78) / on_sec) # 0.87: a bit too long, 0.82: too long
-    repeat(n_rep)
-    on(drift='no',time=on_sec)
-
+    # EHT 2024:
     # Alternate method attempted for e24e07: single very long on()-scan, perhaps no phase jumps them, but perhaps no contiguous sub-integration data either?
     #on(drift='no',time=int(30*t_mins))
     # [[ e24e07 till e24d10 : used single on(drift='no',time=int(30*t_mins)) ]]
     # [[ e24g11: reverted back to the eht2023 known safe repeat(t_mins) x on(drift='no',time=30) ]]
+
+    # GMVA 2026II : repeat(n_rep) x on(10s) with requested time shrunk by estimate of overhead
+    # done like this until C262A 268-1445 inclusive
+    # t_secs = int(t_mins * 60)
+    # on_sec = 10
+    # n_rep = int((t_secs*0.78) / on_sec) # 0.87: a bit too long, 0.82: too long
+    # repeat(n_rep)
+    # on(drift='no',time=on_sec)
+
+    # GMVA 2026II : repeat(1) x on(seconds=60*t_mins*0.82) with requested time shrunk by estimate of overhead
+    # based on Dirk Muders comments 25.09.2026 11:xx that N x on(10s) adjust hexapod between every 10 sec scan
+    # Done like this from C262A 268-1801 onwards
+    #
+    # on_sec = int(60*t_mins*0.78)) # 0.78: from N x on(10s) but turned out too short here, 5min VEX -> 4min actual
+    on_sec = int(60*t_mins) - 25 # use a fixed assumed worst case overhead of 25 sec
+    if on_sec < 10:
+        on_sec = 10
+    repeat(1)
+    on(drift='no',time=on_sec)
 
     # Continue tracking for remainder of VLBI scan; ought to be less than auto-standby timeout time
     repeat(1)
