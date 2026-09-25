@@ -32,7 +32,7 @@ dispatcherProcess = 'apecsVLBI.py'
 # VLBI is using UTC; need to correct for http://www.leapsecond.com/java/gpsclock.htm
 is_observer3 = ('observer' in platform.node()) or ('10.0.2.209' in platform.node())
 if not is_observer3:
-	offsetUTC = 0
+	offsetUTC = 37
 	print ('\nINFO: Apparently not running on Observer3. Not applying TAI/UTC leap seconds correction!\n')
 else:
 	# The TAI time leads UTC by 37 seconds as of February 2020, likely to change June/July 2020
@@ -127,10 +127,13 @@ def showTaskList(stdscr, currtaskidx, title):
 
 	# Check that command dispatcher is running, i.e. tasks are truly getting submitted to APECS
 	foundDispatcher = False
-	for proc in psutil.process_iter():
-		if any(dispatcherProcess in cl_arg for cl_arg in proc.cmdline()):
-			foundDispatcher = True
-			break
+	try:
+		for proc in psutil.process_iter():
+			if any(dispatcherProcess in cl_arg for cl_arg in proc.cmdline()):
+				foundDispatcher = True
+				break
+	except:
+		pass
 
 	# Title bar
 	tcurr = utc_now()
