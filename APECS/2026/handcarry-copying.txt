@@ -1,0 +1,66 @@
+
+# From recorder3 onto hand-carry disks on recorder4
+
+oper@recorder4:~$ mount | grep carry
+/dev/sdb1 on /mnt/handcarry/disk0 type xfs (rw)
+/dev/sdc1 on /mnt/handcarry/disk1 type xfs (rw)
+/dev/sdd1 on /mnt/handcarry/disk2 type xfs (rw)
+/dev/sde1 on /mnt/handcarry/disk3 type xfs (rw)
+/dev/sdf1 on /mnt/handcarry/disk4 type xfs (rw)
+/dev/sdg1 on /mnt/handcarry/disk5 type xfs (rw)
+/dev/sdh1 on /mnt/handcarry/disk6 type xfs (rw)
+
+oper@recorder4:~$ sudo blkid | grep xfs
+/dev/sdb1: UUID="28dee9c8-c43e-415d-9646-235ab1865b07" TYPE="xfs" 
+/dev/sdc1: UUID="4bd45048-196e-4383-876a-30d537133cf1" TYPE="xfs" 
+/dev/sdf1: UUID="85853000-ec62-4d34-a93f-47c6ad424cd1" TYPE="xfs" 
+/dev/sdg1: UUID="1927748f-6067-4209-adce-5d2abd2fc68e" TYPE="xfs" 
+/dev/sdd1: UUID="a07f8cef-ef6c-41cf-975d-c94f274cdf9c" TYPE="xfs" 
+/dev/sde1: UUID="8f656a1a-f343-40fc-9d43-c227f7532107" TYPE="xfs" 
+/dev/sdh1: UUID="889cb09d-d491-4a5f-8b32-5dd24df763ba" TYPE="xfs"
+
+root@recorder4:~# smartctl -i /dev/sdb |grep Serial
+Serial Number:    1590A0T4F4MJ
+root@recorder4:~# smartctl -i /dev/sdc |grep Serial
+Serial Number:    1590A0P1F4MJ
+root@recorder4:~# smartctl -i /dev/sdd |grep Serial
+Serial Number:    1590A0LMF4MJ
+root@recorder4:~# smartctl -i /dev/sde |grep Serial
+Serial Number:    1590A0LLF4MJ
+root@recorder4:~# smartctl -i /dev/sdf |grep Serial
+Serial Number:    1590A0LCF4MJ
+root@recorder4:~# smartctl -i /dev/sdg |grep Serial
+Serial Number:    1590A0P4F4MJ
+root@recorder4:~# smartctl -i /dev/sdh |grep Serial
+Serial Number:    1590A0NXF4MJ
+
+## C262A
+
+du -h -c 1/c262a* 2/c262a*
+  27T total
+
+copying todo
+
+## C262B
+
+du -h -c 1/c262b* 2/c262b*
+  14T total
+
+copying todo
+
+## C262C
+
+du -h -c 1/c262c* 2/c262c*
+  8T total
+
+copying todo
+
+## MN006A
+
+du -h -c 1/mn006a* 2/mn006a* 
+  5.1T    total
+
+rsync -axv --progress --inplace --no-compress 1/mn006a_Ax_* recorder4:/mnt/handcarry/disk0/slot1/
+rsync -axv --progress --inplace --no-compress 2/mn006a_Ax_* recorder4:/mnt/handcarry/disk0/slot2/
+
+  est. time 25 min each dual-pol scan, 26 scans total, 25 * 26 / 60 = 10.8 hours
