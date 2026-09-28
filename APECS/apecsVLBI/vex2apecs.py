@@ -191,8 +191,9 @@ def obs_writeScans(fd,scans,sources):
 
 	Lslew    = 20		# max slew time in seconds to a new source (TODO: take into account slew rates and angular separation!)
 	Ltsys    = 80		# max time for Tsys sky/hot/cold measurement in seconds - EHT2022: calibrate(mode='HOT',time=6)  takes 65 sec
-	#Ltsys_no_cold = 40	# max time for Tsys sky/hot measurement in seconds - EHT2022: calibrate(mode='COLD',time=6) takes 40 sec, calibrate(..,time=10) takes ~80 sec
-	Ltsys_no_cold = 22	# -"- but lie about duration, allowing short Tsys in e22b19 50sec gaps (30sec after slew!) and accept first 10 sec of vlbi data are likely on Hot load
+	Ltsys_shorter = 25	# max time for Tsys sky/hot/cold when using 5 sec instead of 10 sec per subscan
+	#Ltsys_no_cold = 40	# obsolete; max time for Tsys sky/hot measurement in seconds
+	#Ltsys_no_cold = 22	# obsolete; -"- but lie about duration, allowing short Tsys in e22b19 50sec gaps (30sec after slew!) and accept first 10 sec of vlbi data are likely on Hot load
 	Lrefscan = 30  		# EHT2022: 2x10s + margin 10 max time for on() scan with Off-Source reference
 	Lcmdmargin = 5		# allow n seconds between issuing any new APECS command
 	L_minimum_for_interactive = 6*60 # seconds required to allow interactive input from observer - EHT2023: 6 minutes
@@ -257,11 +258,11 @@ def obs_writeScans(fd,scans,sources):
 		if (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Ltsys:
 			do_vlbi_tsys = True
 			L_prescan_tasks += Ltsys + Lcmdmargin
-		elif (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Ltsys_no_cold:
+		elif (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Ltsys_shorter:
 			do_vlbi_tsys_shorter = True
-			L_prescan_tasks += Ltsys_no_cold + Lcmdmargin
+			L_prescan_tasks += Ltsys_shorter + Lcmdmargin
 		else:
-			print('Warning: pre-scan cals for %s (%s) must omit Tsys, time margin is only %d sec, need >%d sec' % (scanname, scan['source'], gap_to_curr - L_prescan_tasks - Lcmdmargin, Ltsys_no_cold))
+			print('Warning: pre-scan cals for %s (%s) must omit Tsys, time margin is only %d sec, need >%d sec' % (scanname, scan['source'], gap_to_curr - L_prescan_tasks - Lcmdmargin, Ltsys_shorter))
 
 		if (gap_to_curr - L_prescan_tasks - Lcmdmargin) > Lrefscan:
 			do_vlbi_reference_scan = True
@@ -282,8 +283,11 @@ def obs_writeScans(fd,scans,sources):
 			calBlock.append(calstep)
 
 		if do_vlbi_tsys_shorter:
-			calstep = {'offset':calTotalTime, 'dur':Ltsys_no_cold, 'cmd':"vlbi_tsys(mode_='HOT',time_s=5,targetSource=\'%s\')" % (scan['source'])}
-			calTotalTime += Ltsys_no_cold + Lcmdmargin
+			# 2026: the faster 'HOT' mode (sky/hot, without cold) is no longer supported by the data reduction,
+			#       JP recommends to just use a shorter integration time at the cost of overall more noisy Tsys values
+			# calstep = {'offset':calTotalTime, 'dur':Ltsys_no_cold, 'cmd':"vlbi_tsys(mode_='HOT',time_s=5,targetSource=\'%s\')" % (scan['source'])}
+			calstep = {'offset':calTotalTime, 'dur':Ltsys_shorter, 'cmd':"vlbi_tsys(time_s=5,targetSource=\'%s\')" % (scan['source'])}
+			calTotalTime += Ltsys_shorter + Lcmdmargin
 			calBlock.append(calstep)
 		elif do_vlbi_tsys:
 			calstep = {'offset':calTotalTime, 'dur':Ltsys, 'cmd':'vlbi_tsys(targetSource=\'%s\')' % (scan['source'])}
