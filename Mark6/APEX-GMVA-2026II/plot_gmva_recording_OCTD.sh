@@ -1,0 +1,61 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+
+	echo
+	echo "Plots Mark6 recordings of DBBC3 DDC_U mode of 8-ch x 64 MHz"
+	echo
+	echo "Usage: plot_gmva_recording.sh <name of VDIF file without path>"
+	echo
+	exit
+fi
+
+vdifname=$1
+
+cd /mark*_fuse/
+mkdir -p 1 2
+./unmount.eht
+./unmount.gmva
+
+./mount.gmva
+rm -f hpol.m5spec
+rm -f vpol.m5spec
+
+if ! [ -f /mark6-?_fuse/1/$vdifname ]; then
+	echo
+	echo "Error: specified file '$vdifname' not found under /mark6-?_fuse/1/"
+	echo
+	exit
+fi
+if ! [ -f /mark6-?_fuse/2/$vdifname ]; then
+	echo
+	echo "Error: specified file '$vdifname' not found under /mark6-?_fuse/2/"
+	echo
+	exit
+fi
+
+m5spec -nopol  /mark6-?_fuse/1/$vdifname VDIF_8192-2048-1-2 12800 1000 hpol.m5spec
+m5spec -nopol  /mark6-?_fuse/2/$vdifname VDIF_8192-2048-1-2 12800 1000 vpol.m5spec
+
+# generate gnuplot config file
+outfile=data.gnu
+echo "set term 'x11'" > $outfile
+echo "set multiplot layout 2,1 title 'DBBC3 OCT_D (2 x 512 MHz): $now'" >> $outfile
+echo "set style data line" >> $outfile
+echo "set grid x" >> $outfile
+echo "set xtics 3024,64" >> $outfile
+echo "set xlabel 'Frequency [MHz]'" >> $outfile
+echo "set ylabel 'Amplitude'">> $outfile
+echo "unset key" >> $outfile
+echo "set logscale y" >> $outfile
+#echo "set title 'DBBC3 DDC: $now'" >> $outfile
+#echo "set term 'png'"  >> $outfile
+#echo "set out 'data.png'"  >> $outfile
+#echo " set logscale y" >> $outfile
+echo "set title 'Pol 0'" >> $outfile
+echo "plot 'hpol.m5spec' u 1:2" >> $outfile
+echo "set title 'Pol 1'" >> $outfile
+echo "plot 'vpol.m5spec' u 1:2" >> $outfile
+echo "unset multiplot" >> $outfile
+
+gnuplot --persist data.gnu
