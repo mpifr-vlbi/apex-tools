@@ -1,0 +1,76 @@
+
+# From recorder3 onto hand-carry disks on same recorder
+
+Handcarry disks are 20 TB each
+
+oper@recorder3:~$ mount | grep carry
+/dev/sdr1 on /mnt/handcarry/disk0 type xfs (rw)
+/dev/sds1 on /mnt/handcarry/disk1 type xfs (rw)
+/dev/sdt1 on /mnt/handcarry/disk2 type xfs (rw)
+/dev/sdu1 on /mnt/handcarry/disk3 type xfs (rw)
+/dev/sdv1 on /mnt/handcarry/disk4 type xfs (rw)
+/dev/sdw1 on /mnt/handcarry/disk5 type xfs (rw)
+/dev/sdx1 on /mnt/handcarry/disk6 type xfs (rw)
+
+oper@recorder3:~$ sudo blkid | grep xfs
+/dev/sdr1: UUID="4bd45048-196e-4383-876a-30d537133cf1" TYPE="xfs"
+/dev/sds1: UUID="28dee9c8-c43e-415d-9646-235ab1865b07" TYPE="xfs"
+/dev/sdt1: UUID="a07f8cef-ef6c-41cf-975d-c94f274cdf9c" TYPE="xfs"
+/dev/sdu1: UUID="8f656a1a-f343-40fc-9d43-c227f7532107" TYPE="xfs"
+/dev/sdv1: UUID="1927748f-6067-4209-adce-5d2abd2fc68e" TYPE="xfs"
+/dev/sdw1: UUID="889cb09d-d491-4a5f-8b32-5dd24df763ba" TYPE="xfs"
+/dev/sdx1: UUID="85853000-ec62-4d34-a93f-47c6ad424cd1" TYPE="xfs"
+
+root@recorder3:~# for dn in sd{r,s,t,u,v,w,x}; do smartctl -i /dev/$dn | grep Serial; done
+Serial Number:    1590A0P1F4MJ     # disk0
+Serial Number:    1590A0T4F4MJ     # disk1
+Serial Number:    1590A0LMF4MJ     # disk2
+Serial Number:    1590A0LLF4MJ     # disk3
+Serial Number:    1590A0P4F4MJ     # disk4
+Serial Number:    1590A0NXF4MJ     # disk5
+Serial Number:    1590A0LCF4MJ     # disk6
+
+
+## C262A
+# Disk 2 : C262A pol 1
+# Disk 3 : C262A pol 2
+
+du -h -c /mark6-3_fuse/{1,2}/c262a*
+  27T total
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262a_Ax_* /mnt/handcarry/disk2/slot1/  # ~13 TB out of disk size 20 TB, LCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262a_Ax_* /mnt/handcarry/disk3/slot2/  # ~13 TB out of disk size 20 TB, RCP
+
+
+## C262B
+# Disk 4 : C262B pol 1 and pol 2
+
+du -h -c /mark6-3_fuse/{1,2}/c262b*
+  14T total
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262b_Ax_* /mnt/handcarry/disk4/slot1/  #  7 TB out of disk size 20 TB, LCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262b_Ax_* /mnt/handcarry/disk4/slot2/  # +7 TB out of disk size 20 TB, RCP
+
+
+## C262C
+# Disk 5 : C262C dual pol
+
+du -h -c /mark6-3_fuse/{1,2}/c262c*
+  8T total
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262c_Ax_* /mnt/handcarry/disk5/slot1/  #  4 TB out of disk size 20 TB, LCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262c_Ax_* /mnt/handcarry/disk5/slot2/  #  4 TB out of disk size 20 TB, RCP
+
+
+## MN006A
+# Disk 0 : MN006A dual pol
+
+du -h -c /mark6-3_fuse/{1,2}/mn006a*
+  5.1T    total
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/mn006a_Ax_* /mnt/handcarry/disk0/slot1/
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006a_Ax_* /mnt/handcarry/disk0/slot2/
+
+## MN006B
+# Disk 1 : MN006B dual pol
+
+du -h -c /mark6-3_fuse/{1,2}/mn006b*
+  3.8T    total
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/mn006b_Ax_* /mnt/handcarry/disk1/slot1/
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006b_Ax_* /mnt/handcarry/disk1/slot2/
