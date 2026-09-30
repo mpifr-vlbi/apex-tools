@@ -1,0 +1,204 @@
+#!/usr/bin/python
+import curses
+import datetime
+import struct
+import time
+
+import redis
+
+class DPlaneStatusMessage(object):
+    """Represents a D-plane status message structure"""
+    def __init__(self, binary):#{{{
+        """Create D-plane status message from bytes"""
+        # messages have fixed length of this size
+        assert len(binary) == 248
+        # message type, sequence number
+        self.code, self.seqno = struct.unpack("<II",binary[:8])
+        assert self.code == self.STATUS_MESSAGE
+        # message timestamp in UNIX time
+        self.twhen, = struct.unpack("<d", binary[8:16])
+        hostname_bin = binary[16:36]
+        self.hostname = "".join([chr(b) for b in hostname_bin[:hostname_bin.index(0)]])
+        # status word, fileno associated with set GSW_FOPEN_ERR, number of active streams
+        self.gsw, self.gsw_fileno, self.nstreams = struct.unpack("<iii", binary[36:48])
+        # amount of data in cache, file timeout bits (bit n means timeout in file n)
+        self.mb_cache, self.file_timeout = struct.unpack("<ii", binary[224:232])
+        self.streams = []
+        for i in range(4):
+            stream = self.DplaneStreamStatus(binary[48+i*44:48+(i+1)*44])
+            stream.set_spooling(self.gsw & (self.GSW_STR0_SPOOLING<<i))
+            stream.set_sequence_err(self.gsw & (self.GSW_STR0_SEQUENCE_ERR<<i))
+            self.streams.append(stream)
+
+    class DplaneStreamStatus(object):
+        """Represents a D-plane stream status structure"""
+        def __init__(self, binary):#{{{
+            """Create D-plane stream status message from bytes"""
+            # amount of data in stream's ring buffer, last-read vdif sec, ..and epoch
+            self.mb_ring, self.t_vdif_recent, self.t_epoch_recent = struct.unpack("<iii", binary[:12])
+            # usable packets, wrong psn packets, wrong len packets, total bytes --- all since stream configure
+            self.npack_good, self.npack_wrong_psn, self.npack_wrong_len, self.nbytes = struct.unpack("<qqqq", binary[12:44])
+
+        @property
+        def spooling(self):
+            return self._spooling
+
+        def set_spooling(self, w):
+            self._spooling = bool(w)
+
+        @property
+        def sequence_err(self):
+            return self._sequence_err
+
+        def set_sequence_err(self, w):
+            self._sequence_err = bool(w)
+#}}}
+
+    STATUS_MESSAGE = 8
+
+    # GSW status bits
+    GSW_FACTIVE_ERR        = 0x00000001
+    GSW_FOPEN_ERR          = 0x00000002
+    GSW_NO_STREAMS_ERR     = 0x00000004
+    GSW_ACTIVE_STREAMS_ERR = 0x00000008
+    GSW_BUFFER_OVERRUN_ERR = 0x00000010
+    GSW_WRITE_ERROR        = 0x00000020
+    GSW_M5PKT_SEQUENCE_ERR = 0x00000040
+    GSW_NO_FILES_ERR       = 0x00000080
+    GSW_STR0_SEQUENCE_ERR  = 0x00000100
+    GSW_STR1_SEQUENCE_ERR  = 0x00000200
+    GSW_STR2_SEQUENCE_ERR  = 0x00000400
+    GSW_STR3_SEQUENCE_ERR  = 0x00000800
+    GSW_STR0_SPOOLING      = 0x00001000
+    GSW_STR1_SPOOLING      = 0x00002000
+    GSW_STR2_SPOOLING      = 0x00004000
+    GSW_STR3_SPOOLING      = 0x00008000
+    GSW_FILES_OPEN         = 0x00010000
+    GSW_PFRING_OPEN_ERR    = 0x00020000
+
+def main(stdscr):
+    stdscr.nodelay(True)
+
+    rds = redis.Redis()	
+
+    # initialize scan state
+    in_scan = False
+    highlight_counter = 0
+    highlight_count_max = 30 # wait for this many repaints of display before highlighting an outliner Mark6 (not)recording state
+
+    while True:
+        try:
+            kp = stdscr.getkey()
+            if kp == 'q':
+                break
+        except curses.error as e:
+            # getkey raises exception on no-key in non-blocking mode
+            pass
+        now = datetime.datetime.utcnow()
+        ypos = 0
+        stdscr.addstr(ypos,0,now.strftime('%Y-%m-%d %H:%M:%S'))
+        ypos = ypos + 1
+ ### Recorder per column
+        ypos = ypos + 1
+        colsize = 22
+        rowhdrs = ["host","serial","last update","stream1","stream2","stream3","stream4"]
+        stdscr.addstr(ypos,0,"Recorders dplane status:")
+        ypos = ypos + 1
+        ypos0 = ypos
+        xindent = 2
+        for row in rowhdrs:
+            stdscr.addstr(ypos,0+xindent,row+":",13)
+            ypos = ypos + 1
+        xpos = 13+xindent
+        allspooling = []
+        for recdstatkeys in sorted(rds.keys('recorder*.dstat')):
+            dpsm = DPlaneStatusMessage(rds.get(recdstatkeys))
+            for ii in range(dpsm.nstreams):
+                 allspooling.append(dpsm.streams[ii].spooling)
+        spoolstatesmixed = abs(allspooling.count(True) - allspooling.count(False)) != len(allspooling)
+        spoolmajoritystate = allspooling.count(True) > allspooling.count(False)
+        if not spoolstatesmixed:
+            highlight_counter = 0
+        elif highlight_counter < highlight_count_max:
+            highlight_count_max += 1
+            spoolstatesmixed = False
+        for recdstatkeys in sorted(rds.keys('recorder*.dstat')):
+            ypos = ypos0
+            dpsm_binary = rds.get(recdstatkeys)
+            dpsm = DPlaneStatusMessage(dpsm_binary)
+            host = recdstatkeys.decode('utf-8').split('.')[0]
+            serial = dpsm.hostname
+            lastupdate = datetime.datetime.fromtimestamp(dpsm.twhen).strftime("%Y-%m-%d %H:%M:%S")
+            streams = ["N/A"]*4
+            rowattrib = colsize
+            for ii in range(dpsm.nstreams):
+                dstr = dpsm.streams[ii]
+                streams[ii] = "recording" if dstr.spooling else "NOT RECORDING"
+                if spoolstatesmixed and dstr.spooling != spoolmajoritystate:
+                    rowattrib = curses.A_STANDOUT
+            for ii,rowstr in enumerate([host,serial,lastupdate]+streams):
+                stdscr.addstr(ypos,xpos,"%{}s".format(colsize) % rowstr,rowattrib)
+                ypos = ypos + 1
+            xpos = xpos + colsize
+ ### Schedules
+        ypos = ypos + 1
+        stdscr.addstr(ypos,0,"Schedules:")
+        ypos = ypos + 1
+        for schedtype in ["testing","trigger"]:
+            schedkeys = rds.keys("schedule.%s.???????" % schedtype)
+            if not schedkeys:
+                continue
+            stdscr.addstr(ypos, 0, "  %s area:" % schedtype)
+            stdscr.clrtoeol()
+            ypos = ypos + 1
+            for schedkey in schedkeys:
+                schedname = rds.get(schedkey)
+                if not schedname:
+                    continue
+                stdscr.addstr(ypos, 0, "    + %s" % schedname.decode('utf-8'))
+                stdscr.clrtoeol()
+                ypos = ypos + 1
+                scanstart = rds.get(b'.'.join([schedkey,b'scan.start']))
+                scanstop = rds.get(b'.'.join([schedkey,b'scan.stop']))
+                if scanstart and scanstop:
+                    start = datetime.datetime.strptime(scanstart.decode('utf-8'),"%Yy%jd-%Hh%Mm%Ss")
+                    stop = datetime.datetime.strptime(scanstop.decode('utf-8'),"%Yy%jd-%Hh%Mm%Ss")
+                    stdscr.addstr(ypos, 0, "      - next scan start: %s" % start.strftime("%Y-%m-%d %H:%M:%S"))
+                    stdscr.clrtoeol()
+                    ypos = ypos + 1
+                    stdscr.addstr(ypos, 0, "      - next scan stop : %s" % stop.strftime("%Y-%m-%d %H:%M:%S"))
+                    stdscr.clrtoeol()
+                    ypos = ypos + 1
+ # ~ ### Recorder per row
+        # ~ # print dplane-status for each recorder
+        # ~ colsizes = [x+2 for x in [9,10,20,13,13,13,13]]
+        # ~ colhdrs = ["host","serial","last update","stream1","stream2","stream3","stream4"]
+        # ~ xpos = 0
+        # ~ for ii,colhdr in enumerate(colhdrs):
+            # ~ stdscr.addnstr(2,xpos,colhdr,colsizes[ii])
+            # ~ xpos = xpos + colsizes[ii]
+        # ~ ypos = 3
+        # ~ for recdstatkeys in sorted(rds.keys('recorder*.dstat')):
+            # ~ dpsm_binary = rds.get(recdstatkeys)
+            # ~ dpsm = DPlaneStatusMessage(dpsm_binary)
+            # ~ host = recdstatkeys.decode('utf-8').split('.')[0]
+            # ~ serial = dpsm.hostname
+            # ~ lastupdate = datetime.datetime.fromtimestamp(dpsm.twhen).strftime("%Y-%m-%d %H:%M:%S")
+            # ~ streams = ["N/A"]*4
+            # ~ for ii in range(dpsm.nstreams):
+                # ~ dstr = dpsm.streams[ii]
+                # ~ streams[ii] = "RECORDING" if dstr.spooling else "NOT RECORDING"
+            # ~ xpos = 0
+            # ~ for ii,colstr in enumerate([host,serial,lastupdate]+streams):
+                # ~ stdscr.addstr(ypos,xpos,colstr,colsizes[ii])
+                # ~ xpos = xpos + colsizes[ii]
+            # ~ ypos = ypos + 1
+        stdscr.clrtobot()
+        stdscr.addstr(ypos+1,0,'Press "q" to exit')
+        stdscr.refresh()
+        time.sleep(0.01)  # that's quite often!
+        time.sleep(0.25)
+
+if __name__ == "__main__":
+    curses.wrapper(main)
+

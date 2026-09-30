@@ -1,0 +1,1834 @@
+import collections
+import datetime
+import os
+import re
+import string
+import time
+
+from .. import common
+
+import logging
+logger = logging.getLogger(__name__)
+
+class Mark6Error(Exception):
+	pass
+
+class VSIError(Exception):
+
+	_VSI_MESSAGE_LOOKUP = {
+	  0: "action successfully completed",
+	  1: "action initiated or enabled but not completed",
+	  2: "command not implemented or not relevant to this DTS",
+	  3: "syntax error",
+	  4: "error encountered during attempt to execute",
+	  5: "currently too busy to service request; try again later",
+	  6: "inconsistent or conflicting request",
+	  7: "no such keyword",
+	  8: "parameter error",
+	  9: "indeterminate state",
+	}
+
+	def __init__(self, message, code, sent, received):
+		assert code in list(self._VSI_MESSAGE_LOOKUP.keys()), "code should be a valid VSI return code"
+
+		self.vsi = code
+		self.sent = sent
+		self.received = received
+		add = "\n".join([
+		  "  - %15s: %s" % ("VSI code %3d" % self.vsi, self._VSI_MESSAGE_LOOKUP[self.vsi]),
+		  "  - %15s: %s" % ("sent", self.sent),
+		  "  - %15s: %s" % ("received", self.received),
+		])
+		super(VSIError, self).__init__("%s\n%s" % (message, add))
+
+class CPlaneError(VSIError):
+	_MK6_MESSAGE_LOOKUP = {
+	  7: "invalid keyword for query or command",
+	  20: "invalid action",
+	  21: "no filename provided",
+	  22: "inconsistent filename used for append/finish process",
+	  23: "duplicate filename",
+	  24: "invalid upload sequence",
+	  25: "attempted removal of non-existent xml file",
+	  30: "attempted open of multiple groups",
+	  31: "attempted open of incomplete group",
+	  32: "'unprotect' not issued immediately before 'erase'",
+	  33: "'auto' option failed, only supports module types initialized as scatter / gather",
+	  34: "attempted group open does not match subgroup defined in 'input_stream' configuration",
+	  60: "invalid subgroup declaration (group already open)",
+	  61: "writing subgroup meta data to disk failed",
+	  62: "input_stream with same label already exists",
+	  63: "input_stream with given label does not exist",
+	  80: "configuration file not found",
+	  81: "m6cc process not found",
+	  82: "attempted abort of process failed",
+	  83: "attempted abort of inactive process",
+	  110: "invalid module group specified",
+	  140: "failed to find all required data files for given scan",
+	}
+
+	def __init__(self, message, vsi, mk6, sent, received):
+		self.mk6 = mk6
+		expl = "unknown code" if not mk6 in list(self._MK6_MESSAGE_LOOKUP.keys()) else self._MK6_MESSAGE_LOOKUP[mk6]
+		add = "  - %15s: %s" % ("cplane code %3d" % self.mk6, expl)
+		msg = "%s\n%s" % (message, add)
+		super(CPlaneError, self).__init__(msg, vsi, sent, received)
+
+class Mark6(object):
+
+### exposed
+	PARAMS = ["name", "host", "streams", "station"]
+	ST_PARAMS = [
+	  "stream_label",
+	  "data_format",
+	  "payload_size",
+	  "payload_offset",
+	  "psn_offset",
+	  "ip",
+	  "mac",
+	  "port",
+	  "sub_group",
+	  "packet_rate",
+	]
+
+### hidden
+	_oper = "oper"
+	_root = "root"
+
+	_DISKS_PER_MOD = 8
+	_MODS = list(range(1,5))
+
+	_CPLANE_PORT = 14242
+	_CPLANE_OP_QUERY = "?"
+	_CPLANE_OP_COMMAND = "="
+	_CPLANE_OPS = [_CPLANE_OP_QUERY, _CPLANE_OP_COMMAND]
+	_CPLANE_TERM = ";"
+	_CPLANE_REPLY = "!"
+	_CPLANE_ARG_SEP = ":"
+
+	_CP_STATUS_SYS_RDY = 0x001
+	_CP_STATUS_ERR_MSG = 0x002
+	_CP_STATUS_DEL_CMD = 0x004
+	_CP_STATUS_DEL_QUE = 0x008
+	_CP_STATUS_REC_ON = 0x010
+	_CP_STATUS_REC_HALT = 0x020
+	_CP_STATUS_BURST_ON = 0x040
+	_CP_STATUS_DAT_LOST = 0x080
+	_CP_STATUS_DPL_OPER = 0x100
+	_CP_STATUS_DPL_ACPT = 0x200
+	_CP_STATUS_FILL_INS = 0x400
+	_CP_STATUS_MSG = {
+	  _CP_STATUS_SYS_RDY: "system ready",
+	  _CP_STATUS_ERR_MSG: "error messages pending",
+	  _CP_STATUS_DEL_CMD: "delayed-completion commands pending",
+	  _CP_STATUS_DEL_QUE: "delayed-completion queries pending",
+	  _CP_STATUS_REC_ON: "record 'on'",
+	  _CP_STATUS_REC_HALT: "media full (recording halted)",
+	  _CP_STATUS_BURST_ON: "burst mode",
+	  _CP_STATUS_DAT_LOST: "recording cannot keep up, some lost data",
+	  _CP_STATUS_DPL_OPER: "dplane operational",
+	  _CP_STATUS_DPL_ACPT: "dplane configured to accept data",
+	  _CP_STATUS_FILL_INS: "fill pattern inserted into scan",
+	}
+	_CP_BSTATUS_SEL = 0x01
+	_CP_BSTATUS_RDY = 0x02
+	_CP_BSTATUS_NWR = 0x04
+	_CP_BSTATUS_WRP = 0x08
+	_CP_BSTATUS_MSG = {
+	  _CP_BSTATUS_SEL: "selected",
+	  _CP_BSTATUS_RDY: "ready",
+	  _CP_BSTATUS_NWR: "media full or faulty (not writable)",
+	  _CP_BSTATUS_WRP: "write protected",
+	}
+
+	_MTU = 9000
+
+	VEX_TIME_FMT = "%Yy%jd%Hh%Mm%Ss"
+
+### properties
+	@property
+	def host(self):
+		return self._host
+
+	@property
+	def name(self):
+		return self._name
+
+	@property
+	def serial(self):
+		return self._safe_system_call('hostname')
+
+	@property
+	def mainboardName(self):
+		return self._safe_system_call('cat /sys/devices/virtual/dmi/id/board_name')
+
+	@property
+	def configuration(self):
+		mk6 = self._safe_system_call("hostname")
+		s_idn = self.host + " : " + mk6
+		s_mod_line = "%4s  %8s  %4s  %4s  %4s  %6s  %6s  %12s  %12s  %4s"
+		s_mods = " "*len(self.host) + " : Mods: " + s_mod_line % ("Slot", "MSN", "Grp", "Ndsc", "Nreg", "Avail", "Total", "Status1", "Status2", "Type")
+		for m in self._mod_grp:
+			try:
+				mstat = self.cp_mstat(m)
+			except RuntimeError:
+				# connection to cplane failed, return empty config
+				return ""
+			except VSIError:
+				s_mods += "\n" + " "*len(self.host) + " :     : " + "!! failed to read %s status" % m
+			else:
+				s_mods += "\n" + " "*len(self.host) + " :     : " + s_mod_line % (tuple(str(mstat[k]) for k in (
+				  "slot", "MSN", "group_ref", "ndisk_discovered", "ndisk_registered", "GB_remain", "GB_total", "status1", "status2", "type")))
+		s_is_line = "%16s  %6s  %6s  %15s  %5s  %6s  %4s  %6s  %3s"
+		s_iss = " "*len(self.host) + " : Inps: " + s_is_line % ("Label", "Subgrp", "Iface", "Filter addr", "Port", "Datfmt", "Size", "Offset", "PSN")
+		try:
+			input_streams = self.cp_input_stream_query()
+		except RuntimeError:
+			# connection to cplane failed, return empty config
+			return ""
+		except VSIError:
+			s_iss += "\n" + " "*len(self.host) + " :     : " + "!! failed to read input streams"
+		else:
+			for i in input_streams:
+				s_iss += "\n" + " "*len(self.host) + " :     : " + s_is_line % (tuple(str(i[k]) for k in (
+				  "stream_label", "sub_group", "interface_ID", "filter_address", "port", "data_format", "payload_size", "payload_offset", "psn_offset")))
+		cpstat = self.cp_status()["word"]
+		s_cpst = " "*len(self.host) + " : Stat: 0x%07x" % cpstat
+		# if scheduler running, show
+		s_schd = " "*len(self.host) + " : Schd: "
+		if self._test_m6_cc_running():
+			pid_schd = ("\n" + " "*len(self.host) + " :     : ").join(["M6_CC is running (PID=%s, filename=%s)" % (k,v) for k,v in list(self.get_running_sched().items())])
+			s_schd += pid_schd
+		else:
+			s_schd += "M6_CC is not running"
+		return "\n".join((s_idn, s_mods, s_iss, s_cpst, s_schd))
+
+### macro procedures
+	def is_configured(self):
+		# is cplane & dplane running?
+		cplane_running = common.remote_process_running("cplane", self._oper, self._host)
+		logger.debug("%s cplane is %s, configured requires running", self._host, "running" if cplane_running else "not running")
+		if not cplane_running:
+			return False
+		dplane_running = common.remote_process_running("dplane", self._oper, self._host)
+		logger.debug("%s dplane is %s, configured requires running", self._host, "running" if dplane_running else "not running")
+		if not dplane_running:
+			return False
+		# input streams defined? ... and do they match config?
+		inp_streams = self.cp_input_stream_query()
+		n_conf_stream, n_inp_stream = len(self._streams), len(inp_streams)
+		logger.debug("%s %d input streams defined, configured requires %d", self._host, n_inp_stream, n_conf_stream)
+		if not n_conf_stream == n_inp_stream:
+			return False
+		for iface, conf_stream in self._streams.items():
+			matches = []
+			for inp_stream in inp_streams:
+				if iface == inp_stream["interface_ID"]:
+					# one-to-one-mapped keys
+					for k_inp in [
+					  "data_format",
+					  "payload_size",
+					  "payload_offset",
+					  "psn_offset",
+					  "sub_group",
+					  "port",
+					]:
+						v_conf, v_inp = conf_stream[k_inp], inp_stream[k_inp]
+						matches.append((k_inp, v_conf, v_inp))
+					# mismatched keys
+					#   .. IP
+					k_inp = "filter_address"
+					v_conf, v_inp = conf_stream["ip"], inp_stream[k_inp]
+					matches.append((k_inp, v_conf, v_inp))
+			# empty matches means
+			if not matches:
+				logger.debug("%s no input_stream matching label '%s'", self._host, conf_stream["stream_label"])
+				return False
+			logger.debug("%s input_stream[%s] has:\n    %s", self._host, conf_stream["stream_label"], "\n    ".join("%s = %s, configured requires %s" % (k, v1, v2) for k, v1, v2 in matches))
+			if not all(v1 == v2 for _, v1, v2 in matches):
+				return False
+		# check 'dplane configured to accept data'-bit
+		b9 = self.cp_status()[0x200]
+		logger.debug("%s dplane configured to accept data status bit is %d, configured requires 1", self._host, int(b9))
+		if not b9:
+			return False
+		# modules grouped as per input streams, open ready?
+		for m in self._mod_grp:
+			mstat = self.cp_mstat(m)
+			m_grp = mstat["group_ref"]
+			logger.debug("%s module %s group_ref is %s, configured requires %s", self._host, m, m_grp, self._mod_grp)
+			if not sorted(m_grp) == sorted(self._mod_grp):
+				return False
+			status1, status2 = mstat["status1"], mstat["status2"]
+			logger.debug("%s module %s status is %s:%s, configured requires %s", self._host, m, status1, status2, "open:ready")
+			if not status1 == "open" and not status2 == "ready":
+				return False
+		# network interfaces correct MAC IP?
+		for iface, conf_stream in self._streams.items():
+			ip = common.get_iface_ip_addr(iface, self._oper, self._host)
+			logger.debug("%s interface %s IP is %s, configured requires %s", self._host, iface, ip, conf_stream["ip"])
+			if not ip == conf_stream["ip"]:
+				return False
+			#mac = common.get_iface_mac_addr(iface, self._oper, self._host)
+			#logger.debug("%s interface %s MAC is %s, configured requires %s", self._host, iface, mac, conf_stream["mac"])
+			#if not mac == conf_stream["mac"]:
+			#	return False
+		return True
+
+	def configure(self):
+		if not self.conf_dplane_cplane():
+			return False
+		if not self.conf_network():
+			return False
+		if not self.conf_modules():
+			return False
+		if not self.conf_input_streams():
+			return False
+		if not self.conf_open_modules():
+			return False
+		return True
+
+	def testgroup_preconfig(self):
+		if not self.test_device_reachable():
+			return False
+		if not self.test_login_oper():
+			return False
+		result = all([
+		  self.test_ntp(),
+		  self.test_system_time_utc(),
+		  self.test_cpu_core_count(),
+		  self.test_memory(),
+		  self.test_system_disk_capacity(),
+		  self.test_number_of_data_disks(),
+		  self.test_login_root(),
+		  self.test_mk6_opts(),
+		])
+		return result
+
+	def testgroup_postconfig(self):
+		# first group of tests do no require cplane
+		result = all([
+		  self.test_netstat_interfaces(),
+		  self.test_smp_irq_affinities(),
+		  self.test_dplane_running(),
+		  self.test_lsmod_pf_ring(),
+		  self.test_lsmod_myri10ge(),
+		  self.test_myri10ge_wc_enabled(),
+		  self.test_console_kit_daemon_stopped(),
+		])
+		logger.info("%s testgroup_postconfig() part 1 dplane tests " + ("succeeded" if result else "failed"), self._host)
+
+		# if cplane not running, cannot continue further testing and fail
+		result = self.test_cplane_running()
+		logger.info("%s testgroup_postconfig() part 2 cplane reachable test " + ("succeeded" if result else "failed"), self._host)
+		if not result:
+			return False
+
+		# if cplane is running, carry over current result and continue testing
+		result = result and all([
+		  self.test_cplane_status(),
+		  self.test_modules_open_ready(),
+		  self.test_mount_points(),
+		])
+		logger.info("%s testgroup_postconfig() part 2 cplane tests " + ("succeeded" if result else "failed"), self._host)
+		return result
+
+###configure steps
+	def conf_dplane_cplane(self):
+		result = self.restart_dplane_cplane()
+		logger.info("%s restarting dplane & cplane " + ("succeeded" if result else "failed"), self._host)
+		return result
+
+	def conf_network(self):
+		result = True
+		for iface, par in list(self._streams.items()):
+			mac = par["mac"]
+			ip = par["ip"]
+			# set MAC first
+			#set_mac = "ip link set dev %s address %s" % (iface, mac)
+			#self._safe_system_call(set_mac, self._root)
+			#_mac = common.get_iface_mac_addr(iface, self._root, self._host)
+			#logger.debug("%s iface %s set mac '%s', read back '%s'", self._host, iface, mac, _mac)
+			#if not mac == _mac:
+			#	logger.debug("%s iface %s setting mac failed", self._host, iface)
+			#	result = False
+			# then set IP
+			old_ip = common.get_iface_ip_addr(iface, self._oper, self._host)
+			set_ip = "ip addr add %s dev %s" % (ip, iface)#"ifconfig %s %s" % (iface, ip)
+			self._safe_system_call(set_ip, self._root)
+			del_ip = "ip addr del %s dev %s" % (old_ip, iface)
+			self._safe_system_call(del_ip, self._root)
+			_ip = common.get_iface_ip_addr(iface, self._root, self._host)
+			logger.debug("%s iface %s set ip '%s', read back '%s'", self._host, iface, ip, _ip)
+			if not ip == _ip:
+				logger.debug("%s iface %s setting ip failed", self._host, iface)
+				result = False
+			# finally set these parameters, they go unchecked now (checked later in post-conf tests)
+			set_more = "ip link set dev %s promisc on mtu %d" % (iface, self._MTU)
+			self._safe_system_call(set_more, self._root)
+			set_more = "ip link set dev %s arp off" % iface
+			self._safe_system_call(set_more, self._root)
+		logger.info("%s configuring network " + ("succeeded" if result else "failed"), self._host)
+		return result
+
+	def conf_modules(self):
+		result = True
+		# test if modules have correct group, or if all of them do not belong to any group
+		existing_group = False
+		make_new_group = False
+		for m in self._mod_grp:
+			mstat = self.cp_mstat(m)
+			logger.debug("%s mod %s group_ref=%s, expect %s", self._host, m, mstat["group_ref"], self._mod_grp)
+			if not sorted(mstat["group_ref"]) == sorted(self._mod_grp):
+				if not mstat["group_ref"] == "-":
+					existing_group = True
+				logger.debug("%s module %s does not have right group", self._host, m)
+				make_new_group = True
+		# handle new group required cases
+		if make_new_group:
+			# cannot continue with existing wrong group
+			if existing_group:
+				logger.debug("%s one or more modules already belong(s) to a different group, install a complete group or initialise modules first", self._host)
+				result = False
+			# attempt to create new group from ungrouped modules
+			else:
+				logger.debug("%s all modules are found to not belong to any group, creating new group %s", self._host, self._mod_grp)
+				try:
+					self.cp_group_new(self._mod_grp)
+				except VSIError as vsie:
+					logger.debug("%s failed to do group=new, modules may need to be initialised (%s)", self._host, str(vsie))
+					result = False
+		# only continue if result still True, otherwise pre-existing failure
+		if not result:
+			logger.info("%s configuring modules failed", self._host)
+			return result
+		# check module states and attempt to get to closed:unprotected
+		if self._test_modules_s1_s2(s1_ref="unmounted", mod_grp=self._mod_grp):
+			logger.debug("%s modules %s all have status1='unmounted', trying group=mount", self._host, self._mod_grp)
+			self.cp_group_mount(self._mod_grp)
+		if self._test_modules_s1_s2(s1_ref="open", mod_grp=self._mod_grp):
+			logger.debug("%s modules %s all have status1='open', trying group=close", self._host, self._mod_grp)
+			self.cp_group_close(self._mod_grp)
+		if self._test_modules_s1_s2(s1_ref="closed", s2_ref="protected", mod_grp=self._mod_grp):
+			logger.debug("%s modules %s all have status1='closed' and status2='protected', trying group=close", self._host, self._mod_grp)
+			self.cp_group_unprotect(self._mod_grp)
+		if not self._test_modules_s1_s2(s1_ref="closed", s2_ref="unprotected", mod_grp=self._mod_grp):
+			logger.debug("%s modules %s not in (closed, unprotected) state", self._host, self._mod_grp)
+			result = False
+		logger.info("%s configuring modules " + ("succeeded" if result else "failed"), self._host)
+		return result
+
+	def conf_input_streams(self):
+		result = True
+		# remove existing streams
+		exist = self.cp_input_stream_query()
+		for st in exist:
+			label = st["stream_label"]
+			logger.debug("%s removing existing stream '%s'", self._host, label)
+			if not self.cp_input_stream_delete(label):
+				logger.debug("%s failed removing existing stream '%s'", self._host, label)
+				result = False
+		if not result:
+			logger.debug("%s failed removing one or more existing input streams, not attempting to add new input streams", self._host)
+			return result
+		# add new streams
+		for iface, par in list(self._streams.items()):
+			logger.debug("%s adding new stream for iface %s, %s", self._host, iface, str(par))
+			if not self.cp_input_stream_add(par["stream_label"], par["data_format"], par["payload_size"], par["payload_offset"], par["psn_offset"], iface, par["ip"], par["port"], par["sub_group"]):
+				logger.debug("%s failed adding new stream for iface %s", self._host, iface)
+				result = False
+		if not result:
+			logger.debug("%s failed adding one or more new input streams, not attempting to commit input streams", self._host)
+			return result
+		# commit input streams
+		if not self.cp_input_stream_commit():
+			logger.debug("%s failed to commit input streams", self._host)
+			result = False
+		logger.info("%s configuring input streams " + ("succeeded" if result else "failed"), self._host)
+		return result
+
+	def conf_open_modules(self):
+		logger.debug("%s opening group '%s'", self._host, self._mod_grp)
+		result = True
+		if not self.cp_group_open(self._mod_grp):
+			logger.debug("%s open group failed,", self._host)
+			result = False
+		logger.info("%s opening modules " + ("succeeded" if result else "failed"), self._host)
+		return result
+
+###misc
+	def restart_dplane_cplane(self, timeout=30):
+		# these two calls should return success
+		self._safe_system_call("/etc/init.d/cplane stop", self._root)
+		self._safe_system_call("/etc/init.d/dplane stop", self._root)
+		# wait for proper stop before start
+		tstart = time.time()
+		while True:
+			time.sleep(1)
+			# this call expected to return error, do not use self._safe_system_call
+			rc, _, _ = common.subp_remote_system_call("pgrep dplane", self._oper, self._host)
+			if not rc == 0:
+				break
+			if time.time() - tstart > timeout:
+				logger.debug("timeout while waiting for dplane stop on %s", self._host)
+				return False
+		# start dplane, this call should return success
+		self._safe_system_call("/etc/init.d/dplane start", self._root)
+		# give some time for log to refresh
+		time.sleep(5)
+		# this call might return error, do not use self._safe_system_call
+		rc, _, _ = common.subp_remote_system_call("pgrep dplane", self._oper, self._host)
+		if not rc == 0:
+			logger.debug("dplane failed to restart on %s", self._host)
+			return False
+		# wait until hostname line appears in d-plane log
+		tstart = time.time()
+		while True:
+			# this call can return error, do not use self._safe_system_call
+			rc, line, _ = common.subp_remote_system_call("grep hostname /var/log/mark6/dplane-daemon.log", self._oper, self._host)
+			if rc == 0:
+				logger.debug("hostname line in dplane-daemon.log, '%s'", line)
+				break
+			time.sleep(1)
+			if time.time() - tstart > timeout:
+				logger.debug("timeout while waiting for dplane start on %s", self._host)
+				return False
+		# start cplane, this call should return succes
+		self._safe_system_call("/etc/init.d/cplane start", self._root)
+		time.sleep(5)
+		# wait for proper cplane to start
+		ntries = 3
+		while True:
+			ntries = ntries - 1
+			rc, _, _ = common.subp_remote_system_call("pgrep cplane", self._oper, self._host)
+			if rc == 0:
+				break
+			else:
+				if ntries >= 0:
+					logger.debug("waiting longer for cplane to restart on %s", self.host)
+					time.sleep(10)
+					continue
+				else:
+					logger.debug("cplane failed to restart on %s", self._host)
+					return False
+		return True
+
+	def get_recording_stats(self, last_n_scans=0):
+		assert isinstance(last_n_scans, int) and last_n_scans >= 0, "last_n_scans should be a non-negative int"
+		result = dict()
+		spaces = "[[:space:]]+"
+		pattern = "stream_[0-3]:_packets_good_[0-9]+_fill_[0-9]+_bytes_[0-9]+_wrong_len_[0-9]+"
+		rc, out, err = common.subp_remote_system_call("'egrep %s /var/log/mark6/dplane-daemon.log | tail -n 100'" % pattern.replace("_", spaces), self._oper, self._host)
+		if not rc == 0:
+			# apparently no recordings het
+			return result
+		lines = out.splitlines()
+		# process lines from bottom to top
+		lines.reverse()
+		spaces = "[\s]+"
+		pattern = "stream_([0-3]):_packets_good_([0-9]+)_fill_([0-9]+)_bytes_([0-9]+)_wrong_len_([0-9]+)"
+		re_pattern = re.compile(pattern.replace("_", spaces))
+		for line in lines:
+			m = re_pattern.search(line)
+			if not m:
+				continue
+			stream, good, fill, bytes_, wrong_len = m.groups()
+			if stream not in list(result.keys()):
+				result[stream] = dict({
+				  "good": [],
+				  "fill": [],
+				  "bytes": [],
+				  "wrong_len": [],
+				  "nscans": 0,
+				})
+			elif last_n_scans and result[stream]["nscans"] == last_n_scans:
+				break
+			result[stream]["good"].append(int(good))
+			result[stream]["fill"].append(int(fill))
+			result[stream]["bytes"].append(int(bytes_))
+			result[stream]["wrong_len"].append(int(wrong_len))
+			result[stream]["nscans"] += 1
+		return result
+
+	def load_sched(self, sched_full_path):
+		assert isinstance(sched_full_path, str) and \
+		  sched_full_path.lower().find(".vex") > -1, "sched should be a VEX schedule filepath str"
+		sched = os.path.basename(sched_full_path)
+		# create remote control directory
+		remote_ctrl = "/home/oper/remote_ctrl/"
+		cmd = "mkdir -p %s" % remote_ctrl
+		rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+		if not rc == 0:
+			logger.error("failed to create %s on %s", remote_ctrl, self._host)
+			return False
+		# copy file there
+		rc, out, err = common.remote_copy_file(sched_full_path, remote_ctrl, self._oper, self._host)
+		if not rc == 0:
+			logger.error("failed to copy %s to %s", sched, self._host)
+			return False
+		# convert to XML
+		remote_vex = remote_ctrl + sched
+		cmd = "python /home/oper/bin/vex2xml.py -s %s -f %s" % (self._station, remote_vex)
+		rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+		if not rc == 0:
+			logger.error("failed to execute vex2xml.py on %s, tried '%s', got '%s'", self._host, cmd, out)
+			return False
+		# start scheduler
+		remote_xml = remote_vex.replace(".vex", ".xml")
+		remote_stdout = remote_xml.replace(".xml", ".stdout")
+		remote_stderr = remote_xml.replace(".xml", ".stderr")
+		cmd = "'nohup M6_CC -f %s >%s 2>%s </dev/null &'" % (remote_xml, remote_stdout, remote_stderr)
+		rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+		if not rc == 0:
+			logger.error("failed running M6_CC on %s, trying to read stderr / stdout ... ", self._host)
+			cmd = "cat %s" % remote_stdout
+			rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+			if rc == 0:
+				logger.error(" ... stdout from failed M6_CC call on %s is: %s", self._host, out)
+			cmd = "cat %s" % remote_stdout
+			rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+			if rc == 0:
+				logger.error(" ... stderr from failed M6_CC call on %s is: %s", self._host, out)
+			return False
+		return True
+
+	def unload_sched(self):
+		# find and kill M6_CC processes
+		cmd = "pkill M6_CC"
+		rc, out, err = common.subp_remote_system_call(cmd, self._root, self._host)
+		logger.debug("pkill returned %d, expect 0 or 1", rc)
+		# ... not failure if match found (0) or not (1)
+		if rc in [2, 3]:
+			raise RuntimeError("pkill returned %d (%s): %s", rc, {2: "syntax error in command line", 3: "fatal error e.g. out of memory"}[rc], err)
+		# ... then check to make sure M6_CC no longer running
+		cmd = "pgrep M6_CC"
+		rc, out, err = common.subp_remote_system_call(cmd, self._root, self._host)
+		logger.debug("pgrep returned %d after pkill, expect 1", rc)
+		if rc == 0:
+			# means instance found, was not killed, unload failed
+			return False
+		# send a record=off
+		self.cp_record_off()
+		time.sleep(1)
+		rq = self.cp_record_query()
+		logger.debug("record query status is '%s', expect 'off'", rq["status"])
+		if not rq["status"] == "off":
+			return False
+		return True
+
+	def get_running_sched(self):
+		re_comp = re.compile("[\s]+-f[\s]*([\S]*)")
+		cmd = "pgrep M6_CC"
+		rc, out, err = common.subp_remote_system_call(cmd, self._root, self._host)
+		logger.debug("pgrep returned %d", rc)
+		schedules = {}
+		for pid in out.split():
+			cmd = "ps aux | grep -v grep | grep %s" % pid
+			rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+			if rc == 1:
+				# process may have terminated, forget about it
+				continue
+			# something else went wrong
+			if not rc == 0:
+				raise Mark6Error("%s call '%s' failed [returned %d: %s]" % (self._host, cmd, rc, err))
+			# confirm correct schedule
+			match = re_comp.search(out)
+			if match:
+				schedules[pid] = match.groups()[0]
+				logger.debug("schedule filename %s for PID %s", match.groups()[0], pid)
+		return schedules
+
+	def get_m6_cc_log(self, pid):
+		# look through process file descriptors for one matching logfile
+		cmd = "ls -l /proc/{pid}/fd/* | egrep -o '/[^[:space:]]+M6_CC.+log'".format(pid=pid)
+		rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+		logger.debug("ls | egrep to identify M6_CC log returned %d", rc)
+		if not rc == 0:
+			logger.debug("errout = '%s'" % err)
+			return ""
+
+		return out.strip()
+
+	def get_m6_cc_log_result(self, logfile, keyword, op, n_last=1):
+		cmd = "grep 'mk6 ret' {logfile} | egrep -o '{reply}{keyword}[{op}][^[:space:]]+'".format(reply=self._CPLANE_REPLY, keyword=keyword, op=op, logfile=logfile)
+		rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+		logger.debug("egrep returned %d", rc)
+		if not rc == 0:
+			if rc == 1:
+				logger.debug("no match found")
+			else:
+				logger.debug("errout = '%s'" % err)
+			return collections.OrderedDict()
+		# remove duplicates while preserving order
+		replies = out.split()
+		#replies = list(collections.OrderedDict(zip(lines,[None]*len(lines))).keys())
+		# now reverse order
+		replies = replies[::-1]
+		# process only requested number of results
+		results = []
+		for n, reply in enumerate(replies):
+			if n >= n_last:
+				break
+			results.append(self._cplane_parse_reply(reply, keyword, op))
+
+		return results
+
+	def get_m6_cc_log_command(self, logfile, keyword, op, n_last=1):
+		cmd = "grep 'sent' {logfile} | egrep -o '{keyword}[{op}][^[:space:]]+'".format(keyword=keyword, op=op, logfile=logfile)
+		rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+		logger.debug("egrep returned %d", rc)
+		if not rc == 0:
+			if rc == 1:
+				logger.debug("no match found")
+			else:
+				logger.debug("errout = '%s'" % err)
+			return collections.OrderedDict()
+		# remove duplicates while preserving order
+		commands = out.split()
+		#replies = list(collections.OrderedDict(zip(lines,[None]*len(lines))).keys())
+		# now reverse order
+		commands = commands[::-1]
+		# process only requested number of results
+		results = []
+		for n, command in enumerate(commands):
+			if n >= n_last:
+				break
+			results.append(command.split(op)[-1].split(self._CPLANE_TERM)[0].split(self._CPLANE_ARG_SEP))
+
+		return results
+
+
+	def get_m6_cc_log_input_stream_query(self, logfile, n_last=1):
+		results = self.get_m6_cc_log_result(logfile, "input_stream", self._CPLANE_OP_QUERY, n_last=n_last)
+		if len(results) == 0:
+			return []
+		vsi_rc, mk6_rc, args = results[0]
+
+		return self._cp_input_stream_query_parse_args(args)
+
+	def get_m6_cc_log_scan_check(self, logfile, n_last=1):
+		results = self.get_m6_cc_log_result(logfile, "scan_check", self._CPLANE_OP_QUERY, n_last=n_last)
+		if len(results) == 0:
+			return collections.OrderedDict()
+		vsi_rc, mk6_rc, args = results[0]
+
+		return self._cp_scan_check_parse_args(args)
+
+	def get_m6_cc_log_record_query(self, logfile, n_last=1):
+		results = self.get_m6_cc_log_result(logfile, "record", self._CPLANE_OP_QUERY, n_last=n_last)
+		if len(results) == 0:
+			return collections.OrderedDict()
+		vsi_rc, mk6_rc, args = results[0]
+
+		return self._cp_record_query_parse_args(args)
+
+	def get_m6_cc_log_record_command(self, logfile, n_last=1):
+		results = self.get_m6_cc_log_command(logfile,'record',self._CPLANE_OP_COMMAND,n_last=n_last)
+		if len(results) == 0:
+			return collections.OrderedDict()
+
+		return collections.OrderedDict(zip(["start","duration","size","scan","exp","station"],results[0]))
+
+###tests
+	def test_device_reachable(self):
+		"""Test if device is reachable on the network
+		In case of failure:
+		  - check if Mark6 is powered on
+		  - check network cable (connect to eht0 on device)
+		  - check /etc/dnsmasq.conf on control computer has correct MAC address"""
+		return common.ping_test(self._host)
+
+	def test_login_oper(self):
+		"""Test if batch-mode login as user 'oper' works
+		In case of failure:
+		  - install ssh-key from control computer, 'ssh-copy-id oper@<mark6-hostname>'"""
+		return common.remote_login_test(self._host, self._oper)
+
+	def test_login_root(self):
+		"""Test if batch-mode login as user 'root' works
+		In case of failure:
+		  - install ssh-key from control computer, 'ssh-copy-id root@<mark6-hostname>'"""
+		return common.remote_login_test(self._host, self._root)
+
+	def test_ntp(self, max_offset=100.0, sys_peer="192.168.0.1"):
+		"""Test if NTP is properly sync'ed
+		In case of failure:
+		  - as root on Mark6 try:
+		      service ntp stop
+		      ntpdate 192.168.0.1
+		      service ntp start
+		  - check /etc/ntp.conf on Mark6 (should have 'server 192.168.0.1 iburst' line)
+		  - start NTP server on Mark6, 'ssh root@<mark6-hostname> "service ntp start"'
+		  - check and debug list of peers on Mark6, 'ssh root@<mark6-hostname> "ntpq -p"'"""
+		return common.ntp_test(user_host=(self._root, self._host), max_offset=max_offset,
+		  sys_peer=sys_peer, cmd_is_ntp_running="service ntp status")
+
+	def test_system_time_utc(self):
+		"""Test if system time is set to UTC
+		In case of failure:
+		  - on Mark6, 'dpkg-reconfigure tzdata' and set to UTC"""
+		return common.system_time_utc_test(user_host=(self._oper, self._host))
+
+	def test_number_of_data_disks(self):
+		"""Test if corrrect number of module-disks detected (using lsscsi)
+		In case of failure:
+		  - check SAS cable connections at both ends"""
+		n_mod = len(self._mod_grp)
+		count_ref = self._DISKS_PER_MOD * n_mod
+		count = self.get_disk_count()
+		logger.debug("%s found %d disks, expect %d", self._host, count, count_ref)
+		result = count == count_ref
+		logger.info("%s data disk count test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_dplane_running(self):
+		"""Test if dplane process is running
+		In case of failure:
+		  - try reconfigure device
+		  - reboot device"""
+		return common.remote_process_running("dplane", self._oper, self._host)
+
+	def test_cplane_running(self):
+		"""Test if cplane process is running
+		In case of failure:
+		  - try reconfigure device
+		  - reboot device"""
+		return common.remote_process_running("cplane", self._oper, self._host)
+
+	def _test_m6_cc_running(self, sched=None):
+		assert sched is None or isinstance(sched, str), "sched should be None or schedule name str"
+		cmd = "ps aux | grep -v grep | grep M6_CC"
+		rc, out, err = common.subp_remote_system_call(cmd, self._oper, self._host)
+		if rc == 1:
+			return False
+		# something else went wrong
+		if not rc == 0:
+			raise Mark6Error("%s call '%s' failed [returned %d: %s]" % (self._host, cmd, rc, err))
+		# at this point M6_CC running, if no sched then success
+		if not sched:
+			return True
+		# confirm correct schedule
+		re_comp = re.compile("[\s]+-f[\s]*[\S]*" + re.escape(sched))
+		if re_comp.search(out):
+			return True
+		return False
+
+	def test_no_sched_running(self):
+		return not self._test_m6_cc_running()
+
+	def test_sched_running(self, sched):
+		assert isinstance(sched, str) and \
+		  sched.lower().find(".xml") > -1, "sched should be an XML schedule filename str"
+		return self._test_m6_cc_running(sched=sched)
+
+	def test_modules_initial_state(self):
+		status1_test_status2 = {
+		  "closed": lambda s2: s2 in ["unprotected", "protected"],
+		  "initialized": lambda s2: True,
+		  "unmounted": lambda s2: True,
+		  "open": lambda s2: True,
+		}
+		result = True
+		# first collect mstats
+		mstats = dict(list(zip(self._mod_grp, [None,]*len(self._mod_grp))))
+		for m in self._mod_grp:
+			mstats[m] = self.cp_mstat(int(m))
+		# test status1 and status2
+		for m in self._mod_grp:
+			mstat = mstats[m]
+			s1, s2 = mstat["status1"], mstat["status2"]
+			logger.debug("%s mod %s has status (%s, %s)", self._host, m, s1, s2)
+			if not s1 in list(status1_test_status2.keys()):
+				logger.debug("%s cannot handle module %s status1=='%s'", self._host, m, s1)
+				result = False
+				continue
+			test = status1_test_status2[s1]
+			if not test(s2):
+				logger.debug("%s cannot handle module %s status2=='%s' if status1=='%s'", self._host, m, s2, s1)
+				result = False
+		# test group reference
+		for m in self._mod_grp:
+			mstat = mstats[m]
+			group_ref = mstat["group_ref"]
+			logger.debug("%s mod %s group_ref=%s, expect %s", self._host, m, group_ref, self._mod_grp)
+			if not sorted(group_ref) == sorted(self._mod_grp):
+				logger.debug("module %s has incorrect group", m)
+				result = False
+		# test discovered disks
+		for m in self._mod_grp:
+			mstat = mstats[m]
+			ndisk_disc = int(mstat["ndisk_discovered"])
+			logger.debug("%s mod %s ndisk_discovered=%d", self._host, m, ndisk_disc)
+			if not ndisk_disc == self._DISKS_PER_MOD:
+				logger.debug("%s module %s not right number of disks discovered", self._host, m)
+				result = False
+		logger.info("%s modules initial state test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_lsmod_myri10ge(self):
+		"""Test if myri10ge module loaded (using modprobe)
+		In case of failure:
+		  - try reconfigure device
+		  - reboot device"""
+		return self._test_lsmod("myri10ge")
+
+	def test_lsmod_pf_ring(self):
+		"""Test if pf_ring module loaded (using modprobe)
+		In case of failure:
+		  - try reconfigure device
+		  - reboot device"""
+		return self._test_lsmod("pf_ring")
+
+	def _test_lsmod(self, modname):
+		assert isinstance(modname, str), "modname should be a str"
+		# this call might return error, do not use self._safe_system_call
+		rc, out, _ = common.subp_remote_system_call("lsmod | grep %s" % modname, self._oper, self._host)
+		if not rc == 0:
+			return False
+		result = any(l.startswith(modname) for l in out.splitlines())
+		logger.info("%s lsmod %s test " + ("passed" if result else "failed"), self._host, modname)
+		return result
+
+	def test_cpu_core_count(self):
+		"""Test if expected number of CPU cores detected
+		In case of failure:
+		  - check hyperthreading enabled in BIOS
+		  - call support"""
+		valid_ncore = (12, 20, 16, 32)
+		ncore = self.get_cpu_core_count()
+		logger.debug("nproc returned %d", ncore)
+		result = ncore in valid_ncore
+		if not result:
+			if 2*ncore in valid_ncore:
+				logger.debug("it looks like hyperthreading needs to be enabled in the BIOS")
+		logger.info("%s number of CPU cores test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_memory(self, mem_min=64000):
+		"""Test if expected amount of system memory detected
+		In case of failure:
+		  - call support"""
+		assert isinstance(mem_min, int) and mem_min > 0, "mem_min should be a positive integer"
+		mem = self.get_memory(size="MB")["total"]
+		logger.debug("total memory is %d MB, expect >= %d MB", mem, mem_min)
+		result = mem >= mem_min
+		logger.info("%s memory test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_mk6_opts(self):
+		"""Test if correct MK6_OPTS in /etc/default/mark6
+		In case of failure:
+		  - edit /etc/default/mark6 to list only used interfaces in MK6_OPTS"""
+		opt = "MK6_OPTS"
+		fname = "/etc/default/mark6"
+		result = True
+		try:
+			out = self._safe_system_call("grep %s %s" % (opt, fname))
+		except Mark6Error as mk6e:
+			logger.error(str(mk6e))
+			return False
+		lines = out.splitlines()
+		for line in lines:
+			if line.strip().startswith("#"):
+				lines.remove(line)
+		if not len(lines) == 1:
+			logger.debug("found %d MK6_OPTS lines, require exactly 1", len(lines))
+			return False
+		out = lines[0]
+		match = re.search("%s[\s]*=[\s]*([\w]+([\s]*:[\w]+)*)" % opt, out)
+		if not match:
+			logger.debug("did not find option '%s' set in %s", opt, fname)
+			return False
+		logger.debug("found option '%s' in %s", match.string, fname)
+		ifaces = [s.strip() for s in match.group(1).split(":")]
+		# check if all interfaces in option are used
+		for iface in ifaces:
+			if iface not in list(self._streams.keys()):
+				logger.debug("interface %s in %s, but not associated with any stream", iface, opt)
+				result = False
+		# check if all used interfaces are included in option
+		for iface in list(self._streams.keys()):
+			if iface not in ifaces:
+				logger.debug("interface %s associated with input stream, but not in %s", iface, opt)
+				result = False
+		logger.info("%s Mark6 options test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_netstat_interfaces(self, flag_ref="POU"):
+		"""Test if ethernet interfaces are up and correctly configured
+		(point-to-point, ARP off, interface up, MTU correct)
+		In case of failure:
+		  - try reconfigure device
+		  - call support"""
+		iface_status = self.get_netstat_interfaces()
+		result = True
+		for iface in list(self._streams.keys()):
+			# check if interface is up
+			if not iface in list(iface_status.keys()):
+				logger.debug("%s interface '%s' is not up", self._host, iface)
+				result = False
+				continue
+			# check MTU
+			mtu = iface_status[iface]["MTU"]
+			logger.debug("%s interface %s MTU %d, expect %d", self._host, iface, mtu, self._MTU)
+			result = result and mtu == self._MTU
+			# check flags:
+			#   'P' - point-to-point connection ("promiscuous mode")
+			#   'O' - ARP turned off
+			#   'U' - interface is up
+			flags = iface_status[iface]["Flg"]
+			logger.debug("%s interface %s flags are '%s', expect '%s' to be present", self._host, iface, flags, flag_ref)
+			result = result and all(f in flags for f in flag_ref)
+		logger.info("%s netstat interfaces test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_smp_irq_affinities(self, sases=["sas0", "sas1"]):
+		"""Test if SMP IRQ affinities are correct
+		In case of failure:
+		  - check /etc/default/mark6
+		  - try reconfigure device
+		  - call support"""
+		ifaces = list(self._streams.keys())
+		nproc = self.get_cpu_core_count()
+		all_cpu = 2**nproc-1
+		irqs = self.get_smp_irq_affinities()
+		result = True
+		aff_all = 0x00000
+		# check valid affinities for SAS
+		aff_sases = dict(list(zip(sases, [0x00000, ]*len(sases))))
+		for sas in sases:
+			# first OR all the affinities for a single sas (possibly multiple, and they are allowed to be equal)
+			for k, v in list(irqs.items()):
+				if k.find(sas) > -1:
+					aff_sases[sas] = aff_sases[sas] | v["affinity"]
+			aff_this = aff_sases[sas]
+			logger.debug("%s affinity for %s is %05x", self._host, sas, aff_this)
+			# check if any affinities for this sas already assigned to other tested affinities
+			if aff_all & aff_this:
+				logger.debug("%s CPU shared between %s and other interrupts", self._host, sas)
+				result = False
+			# mask in the affinities for this device, if not set to "all"
+			if not all_cpu == aff_this:
+				aff_all = aff_all | aff_this
+		# get affinities of other non-listed ethernet interfaces
+		aff_other_ifaces = 0x00000
+		for k, v in list(irqs.items()):
+			if k in ifaces or not k.find("eth") > -1:
+				continue
+			aff_this = v["affinity"]
+			# mask in the affinities for this device, if not set to "all"
+			if not all_cpu == aff_this:
+				aff_other_ifaces = aff_all | aff_this
+		logger.debug("%s aff_other_ifaces = %05x", self._host, aff_other_ifaces)
+		# check valid affinities for given interfaces
+		for iface in ifaces:
+			if not iface in list(irqs.keys()):
+				logger.debug("%s interface '%s' not found in SMP IRQ affinities table", self._host, iface)
+				result = False
+				continue
+			aff_this = irqs[iface]["affinity"]
+			logger.debug("%s affinity for %s is %05x", self._host, iface, aff_this)
+			# CPU0 not allowed
+			if aff_this & 0x00001:
+				logger.debug("%s CPU0 services %s interrupts, not allowed", self._host, iface)
+				result = False
+			# check affinity is different from any non-listed ethernet interface
+			if aff_other_ifaces & aff_this:
+				logger.debug("%s CPU shared between %s and non-listed interface interrupts", self._host, iface)
+				result = False
+			# check affinity is different from any listed devices
+			if aff_all & aff_this:
+				logger.debug("%s CPU shared between %s and listed devices interrupts", self._host, iface)
+				result = False
+			# mask in the affinities for this device, if not set to "all"
+			if not all_cpu == aff_this:
+				aff_all = aff_all | aff_this
+		if self._host in ['recorder3','recorder4']:
+			logger.info("%s SMP IRQ affinities test : override to success", self._host)
+			result = True
+		logger.info("%s SMP IRQ affinities test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_console_kit_daemon_stopped(self):
+		"""Test if console-kit-daemon is stopped
+		In case of failure:
+		  - check if console-kit-daemon is running and kill it
+		  - comment all lines (add '#' to start of each line) in /usr/share/dbus-1/system-services/org.freedesktop.ConsoleKit.service
+		  - call support"""
+		result = True
+		if not common.remote_process_running("console-kit-daemon", self._oper, self._host, invert_logic=True):
+			result = False
+		logger.info("%s console-kit-daemon test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_myri10ge_wc_enabled(self):
+		"""Test if myri10ge has write combining enabled (using dmesg)
+		In case of failure:
+		  - try reconfigure device
+		  - call support"""
+		result = True
+		irqs = self.get_smp_irq_affinities(search="eth")
+		for iface in list(self._streams.keys()):
+			if iface not in list(irqs.keys()):
+				logger.debug("%s interfaces '%s' not found in SMP IRQ affinities table", self._host, iface)
+				result = False
+				continue
+			irq = irqs[iface]["irq"]
+			# this call can return error, do not use _safe_system_call
+			rc, out, _ = common.subp_remote_system_call("dmesg | grep myri10ge | egrep -i 'irq[[:space:]]+%d' | grep -i 'myri10ge_eth_z8e.dat'" % irq, self._root, self._host)
+			if not len(out):
+				logger.warn("%s no matching myri10ge entry found in dmesg for interface %s, cannot check WC state and test will pass", self._host, iface)
+				continue
+			# check line for WC enabled
+			match = re.search('wc[\s]+(enabled|disabled)', out, re.IGNORECASE)
+			if match == None:
+				logger.warn("%s no WC state reported for dmesg for interface %s, test will pass", self._host, iface)
+				continue
+			# use last reported WC status
+			status = match[1].lower()
+			logger.debug("%s interface %s WC status is '%s', expect 'enabled'", self._host, iface, status)
+			if not status == "enabled":
+				result = False
+		if self._host in ['recorder3','recorder4']:
+			logger.info("%s myri10ge WC enabled test : override to success", self._host)
+			result = True
+		logger.info("%s myri10ge WC enabled test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_cplane_status(self):
+		"""Test cplane status flags are as expected (using cplane command 'status?')
+		In case of failure:
+		  - try reconfigure device
+		  - interpret reported output using Mark6 cplane command set reference
+		  - call support"""
+		status = self.cp_status()
+		logger.debug("%s cplane status word is 0x%07x", self._host, status["word"])
+		status_ref = {
+		  self._CP_STATUS_SYS_RDY: True,
+		  self._CP_STATUS_ERR_MSG: None,
+		  self._CP_STATUS_DEL_CMD: False,
+		  self._CP_STATUS_DEL_QUE: False,
+		  self._CP_STATUS_REC_ON: False,
+		  self._CP_STATUS_REC_HALT: False,
+		  self._CP_STATUS_BURST_ON: False,
+		  self._CP_STATUS_DAT_LOST: False,
+		  self._CP_STATUS_DPL_OPER: True,
+		  self._CP_STATUS_DPL_ACPT: True,
+		  self._CP_STATUS_FILL_INS: False,
+		}
+		# if schedule running, ignore the recording on bit
+		if self._test_m6_cc_running():
+			logger.warning("%s is running a schedule, ignoring cplane status bit 4 ('recording on')", self._host)
+			status_ref[self._CP_STATUS_REC_ON] = None
+		bstatus_ref = {
+		  self._CP_BSTATUS_SEL: True,
+		  self._CP_BSTATUS_RDY: True,
+		  self._CP_BSTATUS_NWR: False,
+		  self._CP_BSTATUS_WRP: False,
+		}
+		# first check system-level status bits
+		result = True
+		for k in sorted(status_ref.keys()):
+			v_ref = status_ref[k]
+			v = status[k]
+			txt = self._CP_STATUS_MSG[k]
+			logger.debug("%s cplane status bit %03x is %s, expect %s (%s)", self._host, k, str(v), "any" if v_ref is None else str(v_ref), txt)
+			if v_ref is None:
+				v_ref = v
+			result = result and v == v_ref
+		# then check bank-level status bits
+		for b in self._mod_grp:
+			bstatus = status[b]
+			for k in sorted(bstatus_ref.keys()):
+				v_ref = bstatus_ref[k]
+				v = bstatus[k]
+				txt = self._CP_BSTATUS_MSG[k]
+				logger.debug("%s cplane bank %s status bit %1x is %s, expect %s (%s)", self._host, b, k, str(v), "any" if v_ref is None else str(v_ref), txt)
+				if v_ref is None:
+					v_ref = v
+				result = result and v == v_ref
+		logger.info("%s cplane status test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_mount_points(self):
+		"""Test if mount points exist for all disks in used modules (using df)
+		In case of failure:
+		  - try reconfigure device
+		  - call support"""
+		mounts = self.get_module_mount_points()
+		result = True
+		for m in self._mod_grp:
+			if m not in list(mounts.keys()):
+				logger.debug("%s module %s has no disk mount points", self._host, m)
+				result = result and False
+				continue
+			n_disk = len(mounts[m])
+			logger.debug("%s module %s has %d disk mount points, expect %d", self._host, m, n_disk, self._DISKS_PER_MOD)
+			result = result and n_disk == self._DISKS_PER_MOD
+		logger.info("%s mount points test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def _test_modules_s1_s2(self, s1_ref=None, s2_ref=None, mod_grp="1234"):
+		assert s1_ref is None or isinstance(s1_ref, str), "s1_ref should be None or a str"
+		assert s2_ref is None or isinstance(s2_ref, str), "s2_ref should be None or a str"
+		assert isinstance(mod_grp, str) and \
+		  all(m in [str(M) for M in self._MODS] for m in mod_grp), "mod_grp should be a str of valid module numbers"
+		result = True
+		# test status1 and status2
+		for m in mod_grp:
+			mstat = self.cp_mstat(int(m))
+			s1, s2 = mstat["status1"], mstat["status2"]
+			if (not s1_ref is None and not s1 == s1_ref) or \
+			  (not s2_ref is None and not s2 == s2_ref):
+				#logger.debug("mod %s has status (%s, %s), expect (%s, %s)", m, s1, s2, s1_ref if s1_ref else "*", s2_ref if s2_ref else "*")
+				result = False
+		return result
+
+	def test_modules_open_ready(self):
+		"""Test if modules are in open:ready state (using cplane 'mstat')
+		In case of failure:
+		  - try reconfigure device
+		  - call support"""
+		result = self._test_modules_s1_s2("open", "ready", mod_grp=self._mod_grp)
+		logger.info("%s modules open ready " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_record_capacity(self, total_seconds):
+		"""Test if remaining space on each module sub-group is sufficient to
+		record for expected length of time
+		In case of failure:
+		  - install modules with more space available"""
+		available = [(k, v["available"]) for k, v in self.get_subgroup_record_capacity().items()]
+		logger.debug("%s recording time left: %s; requested %.1fs", self._host, ", ".join("%.1fs on %s" % (v, k) for k,v in available), total_seconds)
+		result = all(v > total_seconds for _, v in available)
+		logger.info("%s recording time left " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_system_disk_capacity(self, min_avail=10e9):
+		"""Test if sufficient system-disk space (> 10GB)
+		In case of failure:
+		  - remove unnecessary and large files (e.g. gathered VDIF)"""
+		avail = self.get_system_disk_usage()["available"]
+		logger.debug("%s system disk has %.1fGB remaining, expect >= %.1fGB", self._host, avail/1e9, min_avail/1e9)
+		result = avail >= min_avail
+		logger.info("%s system disk remaining space " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_wrong_length_packets(self, last_n_scans=1):
+		"""Test if any packets of wrong length were detected on recording streams
+		In case of failure:
+		  - check if ARP is disabled for the interface, 'ssh oper@<mark6-hostname> "ip link show dev <iface>"'
+		  - reconfigure device (should disable ARP for interface)
+		  - inspect with tcpdump on Mark6"""
+		stats = self.get_recording_stats(last_n_scans=last_n_scans)
+		result = True
+		for stream, v in list(stats.items()):
+			logger.debug("stream %s wronglen = %d", stream, v["wrong_len"][0])
+			if v["wrong_len"][0] > 0:
+				result = False
+		logger.info("%s wrong length packets test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_fill_rate(self, last_n_scans=1, acceptable=1e-4, desirable=1e-5):
+		"""Test if the fill rate on each stream is below acceptable range (< 1e-4)
+		In case of failure:
+		  - reconfigure device (checks / configures settings that affect fill rate)
+		  - call support"""
+		# get good / fill / wrong_len / bytes
+		stats = self.get_recording_stats(last_n_scans=last_n_scans)
+		# try to get names of scans for last_n_scans
+		nlist = []
+		try:
+			nlist = [s["name"] for s in self.cp_list()["scans"]]
+			nlist.reverse()
+			nlist = nlist[:last_n_scans]
+		except VSIError as err:
+			logger.debug("failed to extract scan list, will use fill+good to calculate expected data size (%s)", str(err))
+		try:
+			input_streams = self.cp_input_stream_query()
+			for stream_idx, stats_entry in list(stats.items()):
+				stream_idx = int(stream_idx)
+				is_dict = input_streams[stream_idx]
+				for iface, stream_dict in list(self._streams.items()):
+					if is_dict["interface_ID"] == iface:
+						logger.debug("updating stats for stream %d", stream_idx)
+						stats_entry.update(stream_dict)
+						stats_entry["iface"] = iface
+		except VSIError as vsie:
+			logger.error("failed to update stream stats (%s), will use fill+good to calculate expected data size", str(vsie))
+		# check fill rate
+		result = True
+		total_fill_rate = 0
+		for stream_idx, stats_entry in list(stats.items()):
+			stream_idx = int(stream_idx)
+			total_fill, total_good, total_expect = 0, 0, 0
+			for i in range(last_n_scans):
+				fill = stats_entry["fill"][i]
+				good = stats_entry["good"][i]
+				try:
+					scan_name = nlist[i]
+					packet_rate = stats_entry["packet_rate"]
+					duration = float(self.cp_scan_check(scan_name)["streams"][stream_idx]["duration"])
+					expect = packet_rate*duration
+					logger.debug("expect %d = %d * %f packets for scan %s", expect, packet_rate, duration, scan_name)
+				except (IndexError, VSIError, KeyError) as err:
+					# VSIError is if scan_check failed
+					if isinstance(err, VSIError):
+						logger.debug("scan_check failed for %s, using fill+good to calculate expected size (%s)", scan_name, str(err))
+					if isinstance(err, KeyError):
+						logger.debug("could not extract stream %d packet_rate, using fill+good to calculate expected size (%s)", stream_idx, str(err))
+					# reason for IndexError is failed self._cp_list above, reason already reported to user
+					expect = fill + good
+					logger.debug("expect %d = %d + %d packets for scan %d", expect, fill, good, i)
+				logger.debug("scan %d, packets good = %d, packets fill = %d, packets expect = %d", i, good, fill, expect)
+				try:
+					fill_rate = 1.0 * fill / expect
+				except ZeroDivisionError:
+					logger.error("expect = %d, apparently no data recorded, cannot calculate fill rate", expect)
+					result = False
+					continue
+				logger.debug("scan %d fill rate for stream %d is %.2e, should be < %.2e (desirable) or at worst < %.2e (acceptable)", i, stream_idx, fill_rate, desirable, acceptable)
+				if fill_rate > acceptable:
+					result = False
+				elif fill_rate > desirable:
+					logger.warning("fill rate for stream %d is %.2e, higher than desirable (< %.2e)", i, stream_idx, fill_rate, desirable)
+				total_fill += fill
+				total_good += good
+				total_expect += expect
+				total_fill_rate = 1.0 * total_fill / total_expect
+			logger.debug("total fill rate for stream %d is %.2e (good=%d, fill=%d, expect=%d)", stream_idx, total_fill_rate, total_good, total_fill, total_expect)
+		logger.info("%s fill rate test " + ("passed" if result else "failed"), self._host)
+		return result
+
+	def test_recorded_data(self, last_n_scans=1, allowed_status=["OK","data?"]):
+		"""Test if scan_check reports 'OK' status
+		In case of failure or warning, check the reported status
+		  'data?': (warning only) data does not appear to be random
+		    - check if input power to digitiser is within recommended range
+		    - run 2-bit threshold calibration on digitiser
+		  'time?': error encoding time in data frames
+		    - check NTP on Mark6
+		    - check time-synchronisation between digitiser and Mark6
+		    - try reconfigure of digitiser and Mark6
+		    - call support"""
+		nlist = []
+		try:
+			nlist = [s["name"] for s in self.cp_list()["scans"]]
+			nlist.reverse()
+			nlist = nlist[:last_n_scans]
+		except VSIError as err:
+			logger.warn("%s failed to extract scan list, will limit test to last scan (%s)", self._host, str(err))
+			nlist = [None]
+		result = True
+		for scan_name in nlist:
+			try:
+				scan_check = self.cp_scan_check(scan_name)
+			except VSIError as vsie:
+				logger.error("%s failed to do scan_check, skipping scan (%s)", self._host, str(vsie))
+				result = False
+				continue
+			scan_label = scan_check["scan_label"]
+			for i, stream in enumerate(scan_check["streams"]):
+				stream_status = stream["status"]
+				logger.debug("scan %s has status '%s', should be one of ['%s']", scan_label, stream_status, "', '".join(allowed_status))
+				if not stream_status in allowed_status:
+					result = False
+				elif stream_status == "data?":
+					logger.warn("%s data recording test reported status '%s', check digitiser input or 2-bit quantisation threshold", self, stream_status)
+		logger.info("%s recorded data test " + ("passed" if result else "failed"), self._host)
+		return result
+
+###set-get methods
+	def get_disk_count(self):
+		# out = self._safe_system_call("lsscsi -t | grep sas | wc -l")
+		out = self._safe_system_call('lsscsi -t | grep -E "disk.*sas:" | wc -l')
+
+		return int(out)
+
+	def get_cpu_core_count(self):
+		out = self._safe_system_call("nproc")
+
+		return int(out)
+
+	def get_memory(self, size="MB"):
+		_sizes = dict([("B", "-b"), ("KB", "-k"), ("MB", "-m"), ("GB", "-g")])
+		assert size in list(_sizes.keys()), "size should be one of ['%s']" % "', '".join(list(_sizes.keys()))
+
+		out = self._safe_system_call("free %s" % _sizes[size])
+		lines = out.splitlines()
+		keys = lines[0].split()
+		for line in lines[1:]:
+			elements = line.split()
+			if elements[0] == "Mem:":
+				values = [int(e) for e in elements[1:]]
+		mem = dict(list(zip(keys, values)))
+
+		return mem
+
+	def get_netstat_interfaces(self):
+		out = self._safe_system_call("netstat -i")
+		lines = out.splitlines()
+		ifaces = dict()
+		# first line is not part of table
+		keys = lines[1].split()[1:]
+		for line in lines[2:]:
+			elements = line.split()
+			name = elements[0]
+			# all but last column are integers
+			values = [int(e) for e in elements[1:-1]] + elements[-1:]
+			ifaces[name] = dict(list(zip(keys, values)))
+
+		return ifaces
+
+	def get_smp_irq_affinities(self, search="(eth|sas)"):
+		assert isinstance(search, str), "search should be regex pattern str"
+
+		nproc = self.get_cpu_core_count()
+		out = self._safe_system_call("cat /proc/interrupts | egrep '%s' | tr -s ' '" % search)
+		irqs = dict()
+		lines = out.splitlines()
+		for line in lines:
+			elements = line.split()
+			irq = int(elements[0].split(":")[0])
+			aff = int(self._safe_system_call("cat /proc/irq/%d/smp_affinity" % irq, self._root), 16)
+			#~ cpus = []
+			#~ for n in range(nproc):
+				#~ if (aff >> n) & 0x01:
+					#~ cpus.append(n)
+			dev = elements[-1]
+			irqs[dev] = {"irq": irq, "affinity": aff}#, "cpu_list": cpus}
+
+		return irqs
+
+	def get_module_mount_points(self):
+		out = self._safe_system_call("df | grep -v meta | grep /mnt/disks | awk '{print $6}'")
+		lines = out.splitlines()
+		mounts = dict()
+		for line in lines:
+			m, d = line.split("/")[-2:]
+			if not m in list(mounts.keys()):
+				mounts[m] = []
+			mounts[m].append(d)
+
+		return mounts
+
+	def _get_mount_point_usage(self, mntpt):
+		out = self._safe_system_call("df --block-size 1 %s | grep '/dev' | awk '{print $1,$2,$3,$4}'" % mntpt)
+		lines = out.splitlines()
+		total, used, available = 0, 0, 0
+		for line in lines:
+			dev, _tot, _used, _avail = line.split()
+			total, used, available = total + int(_tot), used + int(_used), available + int(_avail)
+		return {"total": total, "used": used, "available": available}
+
+	def get_system_disk_usage(self):
+		return self._get_mount_point_usage("/")
+
+	def get_subgroup_usage(self):
+		result = {}
+		for stream in list(self._streams.values()):
+			subgrp = stream["sub_group"]
+			mntpt = "/mnt/disks/[%s]/?/data" % subgrp
+			result[subgrp] = self._get_mount_point_usage(mntpt)
+		return result
+
+	def get_subgroup_record_capacity(self):
+		result = {}
+		for stream in list(self._streams.values()):
+			subgrp = stream["sub_group"]
+			usage = self.get_subgroup_usage()[subgrp]
+			for k, v in usage.items():
+				usage[k] = 1.0 * usage[k] / (stream["payload_size"] * stream["packet_rate"])
+			result[subgrp] = usage
+		return result
+
+	def get_subgroup_streams(self):
+		result = {}
+		for ko,vo in self._streams.items():
+			kr = vo["sub_group"]
+			result[kr] = {"iface": ko}
+			for ki,vi in vo.items():
+				if ki == "sub_group":
+					continue
+				result[kr][ki] = vi
+		return result
+
+###cplane commands
+	def cp_group_close(self, group_ref=None):
+		if not group_ref:
+			group_ref = self._mod_grp
+		try:
+			vsi, mk6, args = self._cplane_command("group", "close", group_ref)
+		except Mark6Error as me:
+			# group=close under certain error conditions does not respond with valid VSI syntax
+			weird_vsi = "invalid literal for int() with base 10: '-'"
+			if not me.message.find(weird_vsi) > -1:
+				# if some other message, raise again
+				raise me
+			# report to stderr, and return False
+			logger.debug("cplane response to group=close:%s does not look like VSI: %s", group_ref, weird_vsi)
+
+			return False
+
+		return mk6 == 0
+
+	def cp_disk_info(self, slot, info):
+		infos = ("serial", "model", "vendor", "usage", "size", "temp")
+		assert info in infos, "info should be one of %s" % str(infos)
+		assert int(slot) in self._MODS, "slot should be a valid slot number"
+
+		vsi, mk6, args = self._cplane_query("disk_info", info, slot)
+		keys = ["info_type", "slot", "eMSN", "ndisk_discovered", "ndisk_registered", "_extra"]
+		result = collections.OrderedDict(list(zip(keys, args[:len(keys)])))
+		result.update({info: args[len(keys):]})
+
+		return result
+
+	def cp_group_erase(self, group_ref=None):
+		if not group_ref:
+			group_ref = self._mod_grp
+		#~ # first issue unprotect
+		#~ if not self.cp_group_unprotect(group_ref):
+			#~ logger.debug("unprotect failed on %s", group_ref)
+#~ 
+			#~ return False
+#~ 
+		vsi, mk6, args = self._cplane_command("group", "erase", group_ref)
+
+		return mk6 == 0
+
+	def cp_group_mount(self, group_ref=None):
+		if not group_ref:
+			group_ref = self._mod_grp
+		vsi, mk6, args = self._cplane_command("group", "mount", group_ref)
+
+		return mk6 == 0
+
+	def cp_group_new(self, group_ref=None):
+		if not group_ref:
+			group_ref = self._mod_grp
+		#~ # mod_init first, and need msn for that
+		#~ for m in group_ref:
+			#~ msn = self.cp_mstat(m)["MSN"]
+			#~ self.cp_mod_init(m, msn)
+		vsi, mk6, args = self._cplane_command("group", "new", group_ref)
+
+		return mk6 == 0
+
+	def cp_group_open(self, group_ref=None):
+		if not group_ref:
+			group_ref = self._mod_grp
+		vsi, mk6, args = self._cplane_command("group", "open", group_ref)
+
+		return mk6 == 0
+
+	def cp_group_protect(self, group_ref=None):
+		if not group_ref:
+			group_ref = self._mod_grp
+		vsi, mk6, args = self._cplane_command("group", "protect", group_ref)
+
+		return mk6 == 0
+
+	def cp_group_unmount(self, group_ref=None):
+		if not group_ref:
+			group_ref = self._mod_grp
+		vsi, mk6, args = self._cplane_command("group", "unmount", group_ref)
+
+		return mk6 == 0
+
+	def cp_group_unprotect(self, group_ref=None):
+		if not group_ref:
+			group_ref = self._mod_grp
+		vsi, mk6, args = self._cplane_command("group", "unprotect", group_ref)
+
+		return mk6 == 0
+
+	def cp_input_stream_add(self, label, dfmt, pl, pl_off, psn_off, iface, ip, port, mods):
+		# additional check for unique input_stream, cplane checks agains label
+		ins_def = self.cp_input_stream_query()
+		valid = True
+		compares = {"interface_ID": iface, "filter_address": ip, "sub_group": mods}
+		for key, val in list(compares.items()):
+			if val in [i[key] for i in ins_def]:
+				logger.debug("input_stream with %s=%s already exists", key, val)
+				valid = False
+		#~ # additional check for IP matching interface
+		#~ iface_ip = common.get_iface_ip_addr(iface, self._oper, self._host)
+		#~ if not iface_ip == ip:
+			#~ logger.debug("filter_address '%s' does not match interface '%s' inet address '%s'", ip, iface, iface_ip)
+			#~ valid = False
+		if not valid:
+
+			return valid
+
+		vsi, mk6, args = self._cplane_command("input_stream", "add",
+		  label, dfmt, pl, pl_off, psn_off, iface, ip, port, mods)
+
+		return mk6 == 0
+
+	def cp_input_stream_commit(self):
+		vsi, mk6, args = self._cplane_command("input_stream", "commit")
+
+		return mk6 == 0
+
+	def cp_input_stream_delete(self, label):
+		vsi, mk6, args = self._cplane_command("input_stream", "delete", label)
+
+		return mk6 == 0
+
+	def cp_input_stream_query(self, label=None):
+		args_in = []
+		if label:
+			args_in.append(label)
+		vsi, mk6, args = self._cplane_query("input_stream", *args_in)
+
+		return self._cp_input_stream_query_parse_args(args)
+
+	def _cp_input_stream_query_parse_args(self, args):
+		result = []
+		n_aps = 9
+		for ii in range(len(args)//n_aps):
+			result.append(collections.OrderedDict([
+			  ("stream_label", args[ii*9]),
+			  ("data_format", args[ii*9+1]),
+			  ("payload_size", int(args[ii*9+2])),
+			  ("payload_offset", int(args[ii*9+3])),
+			  ("psn_offset", int(args[ii*9+4])),
+			  ("interface_ID", args[ii*9+5]),
+			  ("filter_address", args[ii*9+6]),
+			  ("port", int(args[ii*9+7])),
+			  ("sub_group", args[ii*9+8]),
+			]))
+
+		return result
+
+	def cp_list(self):
+		vsi, mk6, args = self._cplane_query("list")
+		result = collections.OrderedDict([("group", args[0]), ("scans", [])])
+		n_aps = 4
+		keys = ["num", "name", "GB", "start"]
+		# if no scans yet, args[1] is 0
+		if args[1] == "0":
+
+			return result
+
+		for i in range(len(args[1:])//n_aps):
+			scan_args = args[1+i*n_aps:1+(i+1)*n_aps]
+			# convert last to datetime
+			scan_args[-1] = datetime.datetime.strptime(scan_args[-1].strip(), self.VEX_TIME_FMT)
+			result["scans"].append(collections.OrderedDict(list(zip(keys, scan_args))))
+
+		return result
+
+	def cp_mod_init(self, slot, msn=None, ndisk=_DISKS_PER_MOD, fmt="sg", new=False):
+		#~ # unmount the module first
+		#~ if not self.cp_group_unmount(slot):
+			#~ logger.debug("unmount failed on %d", slot)
+#~ 
+			#~ return False
+#~ 
+		# get current MSN if none specified
+		if not msn:
+			msn = self.cp_mstat(slot)["MSN"]
+		args_in = [slot, ndisk, msn, fmt]
+		if new:
+			args_in.append("new")
+		vsi, mk6, args = self._cplane_command("mod_init", *args_in)
+
+		return mk6 == 0
+
+	def cp_msg(self, last_only=True):
+		assert isinstance(last_only, bool), "last_only should be bool"
+
+		vsi, mk6, args = self._cplane_query("msg")
+		# apparently message list may contain ":" characters, rejoin the self._CPLANE_ARG_SEP split
+		all_msg = ":".join(args)
+		# split by '|'
+		msg_list = all_msg.split("|")
+		if last_only:
+			return msg_list[-1:]
+
+		return msg_list
+
+	def cp_mstat(self, which):
+		vsi, mk6, args = self._cplane_query("mstat", which)
+		mstat_result = collections.OrderedDict(list(zip([
+		  "group_ref", "slot", "eMSN", "ndisk_discovered", "ndisk_registered",
+		  "GB_remain", "GB_total", "status1", "status2", "type"
+		], args)))
+		# add MSN to returned result
+		mstat_result["MSN"] = self.MSN_from_eMSN(mstat_result["eMSN"])
+
+		return mstat_result
+
+	def cp_record_at(self, when, duration, data_size, scan, exp, code, min_wait=4):
+		assert isinstance(when, datetime.datetime), "when should be a datetime.datetime instance"
+		assert isinstance(duration, int) and duration > 0, "duration should be a positive integer"
+		assert isinstance(data_size, int) and data_size > 0, "data_size should be a positive integer"
+		assert isinstance(min_wait, int) and min_wait > 0, "min_wait should be a positive integer"
+
+		when_vex = when.strftime(self.VEX_TIME_FMT)
+		now = datetime.datetime.utcnow()
+		if (when - now).total_seconds() < min_wait:
+			logger.debug("%s is less than %d seconds from now, not sending record command", when_vex, min_wait)
+
+			return False
+
+		vsi, mk6, args = self._cplane_command("record", when_vex, duration, data_size, scan, exp, code)
+
+		return mk6 == 0
+
+	def cp_record_off(self):
+		vsi, mk6, args = self._cplane_command("record", "off")
+
+		return mk6 == 0
+
+	def cp_record_query(self):
+		vsi, mk6, args = self._cplane_query("record")
+
+		return self._cp_record_query_parse_args(args)
+
+	def _cp_record_query_parse_args(self, args):
+		keys = ["status", "scan_number", "scan_name"]
+		result = collections.OrderedDict(list(zip(keys, args[:len(keys)])))
+
+		return result
+
+	def cp_rtime(self):
+		vsi, mk6, args = self._cplane_query("rtime")
+		keys = ["group", "rate_Mbps", "rem_sec", "GB_remain", "GB_total"]
+		result = collections.OrderedDict(list(zip(keys, args)))
+
+		return result
+
+	def cp_scan_check(self, name=None):
+		args_in = [name] if name else []
+		vsi, mk6, args = self._cplane_query("scan_check", *args_in)
+
+		return self._cp_scan_check_parse_args(args)
+
+	def _cp_scan_check_parse_args(self, args):
+		keys = ["group", "scan_num", "scan_label", "nstream"]
+		result = collections.OrderedDict(list(zip(keys, args[:len(keys)])))
+		result.update({"streams": []})
+		skeys = ["label", "status", "data_format", "start", "duration", "data_size", "data_rate", "missing_bytes"]
+		n_aps = len(skeys)
+		for i in range(len(args[len(keys):])//n_aps):
+			sargs = args[len(keys) + i*n_aps: len(keys) + (i+1)*n_aps]
+			stream = collections.OrderedDict(list(zip(skeys, sargs)))
+			result["streams"].append(stream)
+
+		return result
+
+	def cp_status(self):
+		vsi, mk6, args = self._cplane_query("status")
+		stat = int(args[0], 16)
+		status = {
+		  self._CP_STATUS_SYS_RDY: bool(stat & self._CP_STATUS_SYS_RDY),
+		  self._CP_STATUS_ERR_MSG: bool(stat & self._CP_STATUS_ERR_MSG),
+		  self._CP_STATUS_DEL_CMD: bool(stat & self._CP_STATUS_DEL_CMD),
+		  self._CP_STATUS_DEL_QUE: bool(stat & self._CP_STATUS_DEL_QUE),
+		  self._CP_STATUS_REC_ON: bool(stat & self._CP_STATUS_REC_ON),
+		  self._CP_STATUS_REC_HALT: bool(stat & self._CP_STATUS_REC_HALT),
+		  self._CP_STATUS_BURST_ON: bool(stat & self._CP_STATUS_BURST_ON),
+		  self._CP_STATUS_DAT_LOST: bool(stat & self._CP_STATUS_DAT_LOST),
+		  self._CP_STATUS_DPL_OPER: bool(stat & self._CP_STATUS_DPL_OPER),
+		  self._CP_STATUS_DPL_ACPT: bool(stat & self._CP_STATUS_DPL_ACPT),
+		  self._CP_STATUS_FILL_INS: bool(stat & self._CP_STATUS_FILL_INS),
+		}
+		for ib, bank in enumerate(self._MODS):
+			bpb = 4
+			bb_off = 12
+			bstatus = {
+			  self._CP_BSTATUS_SEL: bool((stat >> (bpb*ib+bb_off)) & self._CP_BSTATUS_SEL),
+			  self._CP_BSTATUS_RDY: bool((stat >> (bpb*ib+bb_off)) & self._CP_BSTATUS_RDY),
+			  self._CP_BSTATUS_NWR: bool((stat >> (bpb*ib+bb_off)) & self._CP_BSTATUS_NWR),
+			  self._CP_BSTATUS_WRP: bool((stat >> (bpb*ib+bb_off)) & self._CP_BSTATUS_WRP),
+			}
+			bname = str(bank)
+			status.update({bname: bstatus})
+		# add raw word
+		status["word"] = stat
+		return status
+
+	def __init__(self, **kwargs):
+		assert all(p in list(kwargs.keys()) for p in self.PARAMS), "kwargs has to include the following keys for %s:\n  - %s" % (self.__class__.__name__, "\n  - ".join(self.PARAMS))
+		for k, v in list(kwargs.items()):
+			setattr(self, "_" + k, v)
+		for st, d in list(self._streams.items()):
+			for k in self.ST_PARAMS:
+				assert k in list(d.keys()), "stream %s missing key %s" % (st, k)
+		# build mod-group from all used mouldes
+		mod_grp = ""
+		for iface, par in list(self._streams.items()):
+			mod_grp = mod_grp + par["sub_group"]
+		self._mod_grp = mod_grp
+
+	def __str__(self):
+		return self._host
+
+	def _cplane_send_recv(self, keyword, op, *args):
+		assert isinstance(keyword, str), "keyword should be a str"
+		assert op in self._CPLANE_OPS, "op should be one of ['%s']" % "', '".join(self._CPLANE_OPS)
+
+		s_args = [str(a) for a in args]
+		line = keyword + op + self._CPLANE_ARG_SEP.join(s_args) + self._CPLANE_TERM
+		try:
+			reply = common.netcat_echo(line, self._host, self._CPLANE_PORT).strip()
+		except RuntimeError as rune:
+			raise RuntimeError("failed to connect to cplane (%s) - host %s - port %s" % (str(rune),self._host,str(self._CPLANE_PORT))) from None
+		#~ logger.debug("sent '%s', reply is '%s'", line, reply)
+
+		vsi_rc, mk6_rc, args_out = self._cplane_parse_reply(reply, keyword, op)
+
+		# raise CPlane error if non-zero Mark6 code
+		if mk6_rc:
+			raise CPlaneError("%s received non-zero cplane return code" % self._host, vsi_rc, mk6_rc, line, reply)
+		# otherwise VSIError if VSI error code
+		if vsi_rc not in (0, 1):
+			raise VSIError("%s received VSI-S return code other than 0 or 1" % self._host, vsi_rc, line, reply)
+
+		return vsi_rc, mk6_rc, args_out
+
+	def _cplane_parse_reply(self, reply, keyword, op):
+		if not reply[:len(self._CPLANE_REPLY)] == self._CPLANE_REPLY:
+			raise Mark6Error("%s cplane response '%s' missing a leading '%s'" % (self._host, reply, self._CPLANE_REPLY))
+		if not reply[-len(self._CPLANE_TERM):] == self._CPLANE_TERM:
+			raise Mark6Error("%s cplane response '%s' missing a trailing '%s'" % (self._host, reply, self._CPLANE_TERM))
+
+		# split by op should only split once (op character may appear later again in line)
+		tmp = reply.split(op)
+		reply_keyword = tmp[0]
+		reply_rem = op.join(tmp[1:])
+		# strip the leading reply identifier
+		reply_keyword = reply_keyword[len(self._CPLANE_REPLY):]
+		if not reply_keyword == keyword:
+			raise Mark6Error("%s cplane response apparent reply to command '%s', but sent command '%s'" % (self._host, reply_keyword, keyword))
+
+		# strip the trailing termination identifier
+		reply_rem = reply_rem[:-len(self._CPLANE_TERM)]
+		args_out = reply_rem.split(self._CPLANE_ARG_SEP)
+		vsi_rc = int(args_out.pop(0))
+		mk6_rc = int(args_out.pop(0))
+		# strip whitespace around remaining args
+		args_out = [a.strip() for a in args_out]
+
+		return vsi_rc, mk6_rc, args_out
+
+	def _cplane_query(self, keyword, *args):
+		return self._cplane_send_recv(keyword, self._CPLANE_OP_QUERY, *args)
+
+	def _cplane_command(self, keyword, *args):
+		return self._cplane_send_recv(keyword, self._CPLANE_OP_COMMAND, *args)
+
+	def _safe_system_call(self, cmd, user=None):
+		if not user:
+			user = self._oper
+		rc, out, err = common.subp_remote_system_call(cmd, user, self._host)
+		if not rc == 0:
+			raise Mark6Error("%s call '%s' failed [returned %d: %s]" % (self._host, cmd, rc, err))
+
+		return out.strip()
+
+	def MSN_from_eMSN(self, emsn):
+		return emsn.split("/")[0]

@@ -1,0 +1,341 @@
+#!/usr/bin/python
+import datetime
+import glob
+import threading
+import os
+import signal
+import sys
+import time
+
+import logging
+logger = logging.getLogger()
+
+import h5py
+import redis
+
+import r2daemon
+import config
+import vexinterpreter
+import vexparser
+import vdif
+
+import becs.bdc as bdc
+import becs.config
+#~ import becs.r2dbe
+import becs.r2dbe.data as r2data
+import becs.ui as ui
+
+# make instance generator function
+get_bdc_1band_inst = lambda name, cfg: becs.config.get_bdc_1band_inst(name, cfg, bdc.SingleBandBDC)
+get_bdc_2band_inst = lambda name, cfg: becs.config.get_bdc_2band_inst(name, cfg, bdc.DualBandBDC)
+
+# implement a graceful SIGINT handler
+stop_signal_received = False
+def sigint_handler(signum, frame):
+    global stop_signal_received
+    stop_signal_received = True
+signal.signal(signal.SIGINT, sigint_handler)
+
+def update_bdc_attn(bdc_bookkeep, bdc_name, attn_out):
+    try:
+        attn_out[bdc_name] = bdc_bookkeep[bdc_name]["obj"].get_attn()
+        attn_out[bdc_name].update({"updated": datetime.datetime.utcnow()})
+    except RuntimeError as re:
+        logger.warning("could not read attenuators from %s (%s)", bdc_name, str(re))
+
+def get_valid_schedules(cfg, area="trigger"):
+    stationcode = cfg.instruct["stationcode"]
+    valids = []
+    # look for schedules in the trigger area
+    candidates = glob.glob(os.sep.join([cfg.instruct["vexstore"], area, "*.vex"]))
+    if not candidates:
+        logger.info("no vex-files found in %s area", area)
+        return valids
+    # filter out invalid schedules
+    now = datetime.datetime.utcnow()
+    for candidate in candidates:
+        vex_dict = vexparser.vexparser(candidate)
+        vex = vexinterpreter.Vex(vex_dict)
+        vex.schedule.set_station(stationcode)
+        # any scans?
+        if not vex.schedule.scans:
+            logger.debug("candidate schedule %s contains no scans for station %s, invalid", candidate, stationcode)
+            continue
+        # scans with future end date? (only check last scan)
+        if vex.schedule.scans[-1].stop <= now:
+            logger.debug("candidate schedule %s last scan for %s ends at %s, invalid", candidate, stationcode, vex.schedule.scans[-1].stop.strftime("%Yy%jd-%Hh%Mm%Ss"))
+            continue
+        logger.info("candidate schedule %s is valid for station %s", candidate, stationcode)
+        valids.append(candidate)
+    return valids
+
+def redis_key(r2dbe_name, k):
+    return bytes(ord(c) for c in (r2dbe_name + ".raw." + k))
+
+def get_value(rs, r2dbe_name, name):
+    param_dict = r2data.lookup_param(name)
+    binary = r2daemon.decode(rs[redis_key(r2dbe_name, param_dict["dev"])])
+    return param_dict["decode"](binary)
+
+def main(args, sample_period_ms=100, start_early=30, stop_late=30, loop_period=5):
+    assert isinstance(sample_period_ms, int) and \
+      sample_period_ms <= 1000 and 1000 % sample_period_ms == 0, "sample_period_ms should be an integer factor of 1000"
+    assert isinstance(start_early, int) and start_early >= 0, "start_early should be a non-negative integer"
+    assert isinstance(stop_late, int) and stop_late >= 0, "stop_late should be a non-negative integer"
+    assert isinstance(loop_period, int) and \
+      loop_period >= 2 and loop_period <= 14, "loop_period should be an integer in the range [2,14]"
+    cfg = config.Config("/etc/backend.conf")
+    stationcode = cfg.instruct["stationcode"]
+    # find schedule full path
+    if args.testvex:
+        # use test schedule ...
+        full_path = os.sep.join([cfg.instruct["vexstore"], "testing", args.testvex])
+        valids = get_valid_schedules(cfg, area="testing")
+        if not full_path in valids:
+            logger.info("schedule '%s' is invalid (no scans for station '%s' with future end-time)", full_path, stationcode)
+            return False
+        msg = "using TEST schedule: %s" % full_path
+        logger.info(ui.format(msg, color="y", bold=True))
+    else:
+        # ... otherwise get valid schedules from trigger area
+        valids = get_valid_schedules(cfg, area="trigger")
+        if not len(valids) == 1:
+            logger.info("found %d valid schedules in trigger area, there should be exactly 1, aborting", len(valids))
+            return False
+        full_path = valids[0]
+    vex_dict = vexparser.vexparser(full_path)
+    vex = vexinterpreter.Vex(vex_dict)
+    vex.schedule.set_station(stationcode)
+    scan_list_str = "\n    ".join(["%10d   %s   %s   %9ds   %10s" % (i, s.start.strftime("%Yy%jd-%Hh%Mm%Ss"), s.stop.strftime("%jd-%Hh%Mm%Ss"), s.duration, s.source) for i, s in enumerate(vex.schedule.scans)])
+    hdr_str = "%10s   %19s   %14s   %10s   %10s" % ("#scan", "start", "stop", "duration", "source")
+    logger.info("schedule file %s contains the following scans for station '%s':\n    %s\n    %s", full_path, stationcode, hdr_str, scan_list_str)
+    start = vex.schedule.scans[0].start - datetime.timedelta(seconds=start_early)
+    stop = vex.schedule.scans[-1].stop + datetime.timedelta(seconds=stop_late)
+    logger.info("power logging will run from %s until %s", start.strftime("%Y-%m-%d %H:%M:%S"), stop.strftime("%Y-%m-%d %H:%M:%S"))
+    wait = (start - datetime.datetime.utcnow()).total_seconds()
+    if wait > 0:
+        logger.info("sleeping for %d seconds", wait)
+        time.sleep(wait)
+    # connect to redis
+    rs = redis.Redis()
+    # initialise bookkeeping
+    r2dbe_bookkeep = {}
+    bdc_bookkeep = {}
+    # initialise datafile
+    vdif_start = vdif.VDIFTime.from_datetime(start)
+    vdif_stop = vdif.VDIFTime.from_datetime(stop)
+    n_seconds = int((stop - start).total_seconds())
+    n_samples_per_second = 1000 // sample_period_ms
+    md5hash_or_empty = ("_" + vex.md5sum[:args.appendmd5]) if args.appendmd5 else ""
+    datafilename = "ifpwr" + "_" + vex.experiment.name + "_" + stationcode + md5hash_or_empty + ".hdf5"
+    datafilepath = datafilename #TBD
+    logger.info("initialising datafile '%s' with time reference %s and sample rate %d", datafilepath, vdif_start, n_samples_per_second)
+    n_iter = 0
+    with h5py.File(datafilepath, "a") as fh:
+        # metadata
+        try:
+            fh.require_dataset("start_vdif_epoch", shape=(), dtype="i4", data=vdif_start.epoch)
+            if not fh["start_vdif_epoch"][()] == vdif_start.epoch:
+                raise TypeError()
+        except TypeError:
+            logger.error("datafile already exists with different VDIF epoch (%d) than current (%d)", fh["start_vdif_epoch"][()], vdif_start.epoch)
+            sys.exit(1)
+        try:
+            fh.require_dataset("start_vdif_second", shape=(), dtype="i4", data=vdif_start.sec)
+            if not fh["start_vdif_second"][()] == vdif_start.sec:
+                raise TypeError()
+        except TypeError:
+            logger.error("datafile already exists with different second-reference (%d) than current (%d)", fh["start_vdif_second"][()], vdif_start.sec)
+            sys.exit(1)
+        try:
+            fh.require_dataset("samples_per_second", shape=(), dtype="i4", data=n_samples_per_second)
+            if not fh["samples_per_second"][()] == n_samples_per_second:
+                raise TypeError()
+        except TypeError:
+            logger.error("datafile already exists with different sample rate (%d) than current (%d)", fh["samples_per_second"][()], n_samples_per_second)
+            sys.exit(1)
+
+        # data gather loop
+        while True:
+            # check loop termination
+            if loop_period*n_iter + (start - stop).total_seconds() > 0:
+                logger.info("stop time has passed, terminating loop")
+                break
+
+            # update iter-counter
+            n_iter += 1
+
+            # wait until near mid-second to avoid mid-read update of redis data
+            wait = 0.5 + loop_period*n_iter + (start - datetime.datetime.utcnow()).total_seconds()
+            if wait <= 0.0:
+                continue
+            logger.debug("sleeping for %.3f seconds", wait)
+            time.sleep(wait)
+
+            logger.debug("start of iteration %d at %s", n_iter, datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f"))
+
+            # data read over all r2dbe
+            update = {}
+            for k in rs.keys("r2dbe.*.raw._last_update"):
+                k = "".join(chr(c) for c in k)
+                r2dbe_name = ".".join(k.split(".")[:2])
+                if r2dbe_name not in cfg.devices:
+                    continue
+                r2dbe_dev = cfg.devices[r2dbe_name]
+                # initialise bookkeeping and datasets if needed
+                if r2dbe_name not in list(r2dbe_bookkeep.keys()):
+                    r2dbe_bookkeep[r2dbe_name] = {"last_update": -1}
+                    for ch in (0,1):
+                        # power dataset
+                        dsp_pwr = 2**32-1
+                        dsn_pwr_prefix = "/".join([""] + [get_value(rs, r2dbe_name, n % ch) for n in ["rx_sb_%d", "bdc_ch_%d", "pol_%d"]] + ["pwr"])
+                        dsn_pwr = "/".join([dsn_pwr_prefix, "data"])
+                        r2dbe_bookkeep[r2dbe_name]["pwrdset%d" % ch] = dsn_pwr
+                        logger.debug("%s pwrdset%d is %s", r2dbe_name, ch, dsn_pwr)
+                        fh.require_dataset(dsn_pwr, shape=(n_seconds, n_samples_per_second), dtype="u4", data=[[dsp_pwr,]*n_samples_per_second,]*n_seconds)
+                        fh[dsn_pwr].attrs["description"] = "Average power (arbitrary linear scale) computed over each sampling period. Time increases uniformly by sub-second intervals along 2nd dimension, and 1-second intervals along 1st dimension."
+                        # power scaling dataset
+                        dsn_pwr_scale = "/".join([dsn_pwr_prefix, "scale"])
+                        fh.require_dataset(dsn_pwr_scale, shape=(), dtype="f", data=16/4096e3)
+                        fh[dsn_pwr_scale].attrs["description"] = "Multiplying with this constant scales power data to mean-square of 8-bit samples."
+                        # power placeholder dataset
+                        dsn_pwr_placeholder = "/".join([dsn_pwr_prefix, "placeholder"])
+                        fh.require_dataset(dsn_pwr_placeholder, shape=(), dtype="u4", data=dsp_pwr)
+                        fh[dsn_pwr_placeholder].attrs["description"] = "Missing samples in average power data have this value."
+                        # attenuator dataset
+                        dsp_attn = 255
+                        dsn_attn_prefix = "/".join([""] + [get_value(rs, r2dbe_name, n % ch) for n in ["rx_sb_%d", "bdc_ch_%d", "pol_%d"]] + ["attn"])
+                        dsn_attn = "/".join([dsn_attn_prefix, "data"])
+                        r2dbe_bookkeep[r2dbe_name]["attndset%d" % ch] = dsn_attn
+                        logger.debug("%s attnset%d is %s", r2dbe_name, ch, dsn_attn)
+                        fh.require_dataset(dsn_attn, shape=(n_seconds, ), dtype='u1', data=[dsp_attn,]*n_seconds)
+                        fh[dsn_attn].attrs["description"] = "Attenuator values (arbitrary logarithmic scale). Time increases uniformly by 1-second intervals along 1st dimension."
+                        # attenuator scaling dataset
+                        dsn_attn_scale = "/".join([dsn_attn_prefix, "scale"])
+                        fh.require_dataset(dsn_attn_scale, shape=(), dtype="f", data=1/2)
+                        fh[dsn_attn_scale].attrs["description"] = "Multiplying with this constant scales attenuator values to decibel."
+                        # attenuator placeholder dataset
+                        dsn_attn_placeholder = "/".join([dsn_attn_prefix, "placeholder"])
+                        fh.require_dataset(dsn_attn_placeholder, shape=(), dtype="u1", data=dsp_attn)
+                        fh[dsn_attn_placeholder].attrs["description"] = "Missing samples in attenuator data have this value."
+                        # manage bdcs and links
+                        fedby = cfg.ports[cfg.delim_port.join([r2dbe_name, "if%d" % ch])]["fedby"]
+                        bdc_name, outp = fedby.split(cfg.delim_port)
+                        if bdc_name not in list(bdc_bookkeep.keys()):
+                            bdc_dev = cfg.devices[bdc_name]
+                            if bdc_dev["layout"] == "bdc_1band":
+                                bdc_obj = get_bdc_1band_inst(bdc_name, cfg)
+                                attn_name_map = becs.config.get_bdc_1band_attn_from_outport
+                            elif bdc_dev["layout"] == "bdc_2band":
+                                bdc_obj = get_bdc_2band_inst(bdc_name, cfg)
+                                attn_name_map = becs.config.get_bdc_2band_attn_from_outport
+                            bdc_bookkeep[bdc_name] = {"obj": bdc_obj, "map": attn_name_map}
+                        attn_name = bdc_bookkeep[bdc_name]["map"](outp)
+                        r2dbe_bookkeep[r2dbe_name]["bdcattn%d" % ch] = (bdc_name, attn_name)
+                        print(r2dbe_name,ch,bdc_name,attn_name)
+                last_update = float(rs[k])
+                # warn and skip if no new updates
+                if last_update <= r2dbe_bookkeep[r2dbe_name]["last_update"]:
+                    logger.warning("no new updates for %s, skipping", r2dbe_name)
+                    continue
+                # read data
+                update[r2dbe_name] = {}
+                for ch in (0,1):
+                    # read data and time references
+                    update[r2dbe_name]["pwrdict%d" % ch] = get_value(rs, r2dbe_name, "8bit_power_%d" % ch)
+                    # read time to absolute
+                    update[r2dbe_name]["uptime%d" % ch] = get_value(rs, r2dbe_name, "uptime")
+                    update[r2dbe_name]["abstime%d" % ch] = get_value(rs, r2dbe_name, "vdif_seconds")
+
+            # get attenuator values
+            attenuators = {}
+            bdc_names = list(bdc_bookkeep.keys())
+            attn_update_threads = [threading.Thread(target=update_bdc_attn, args=(bdc_bookkeep, bdc_name, attenuators)) for bdc_name in bdc_names]
+            [aut.start() for aut in attn_update_threads]
+            [aut.join() for aut in attn_update_threads]
+
+            logger.debug("data read complete at %s", datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f"))
+
+            # data process over all data read
+            for r2dbe_name in list(update.keys()):
+                for ch in (0,1):
+                    pwrdict = update[r2dbe_name]["pwrdict%d" % ch]
+                    uptime = update[r2dbe_name]["uptime%d" % ch]
+                    abstime = update[r2dbe_name]["abstime%d" % ch]
+                    # off-by-one verified through testing
+                    rel_offset = abstime - uptime + 1
+                    logger.debug("calculate offset = %d from uptime = %d and absolute time = %d", rel_offset, uptime, abstime)
+                    t_rel = pwrdict["time"]
+                    t_abs = [tr + rel_offset for tr in t_rel]
+                    logger.debug("found data in range [%.3f, %.3f]", t_abs[0], t_abs[-1])
+                    # start and end data capture on largest section that runs from x.0 to y.999
+                    first_dot0 = [ta for ta in t_abs if ta == int(ta)][0]
+                    last_dot999 = [ta for ta in t_abs if ta - 0.999 == int(ta)][-1]
+                    idx1 = t_abs.index(first_dot0)
+                    idxN = t_abs.index(last_dot999)
+                    t = t_abs[idx1:idxN+1]
+                    p = pwrdict["power"][idx1:idxN+1]
+                    logger.debug("using data in range [%.3f, %.3f]", t[0], t[-1])
+                    # average data over sample-periods
+                    t_avg = t[0::sample_period_ms]
+                    p_avg = [int(sum(p[i*sample_period_ms:(i+1)*sample_period_ms])/sample_period_ms) for i in range(len(t_avg))]
+                    #~ p_avg0 = int(sum(p[0:sample_period_ms])/sample_period_ms)
+                    #~ logger.debug("average 0 at %.3f is %d (expect %d)", t_avg[0], p_avg[0], p_avg0)
+                    d1 = int(t_avg[0]) - vdif_start.sec
+                    d2 = 0
+                    logger.debug("calculated %d averaged samples, (%d,%d) --> (%d,%d)", len(p_avg), d1, d2, int(t_avg[-1]) - vdif_start.sec, n_samples_per_second)
+                    # get dataset
+                    dset = fh[r2dbe_bookkeep[r2dbe_name]["pwrdset%d" % ch]]
+                    for tt, pp in zip(t_avg, p_avg):
+                        # terminate if data extends beyond stop-time
+                        if tt >= vdif_stop.sec:
+                            logger.info("found data at time (%.3f) beyond stop-time (%d), not inserting anymore data for this stream", tt, vdif_stop.sec)
+                            break
+                        # insert data, checking valid indecies
+                        if d1 >= 0 and d2 >= 0 and d1 < dset.shape[0] and d2 < dset.shape[1]:
+                            dset[d1,d2] = pp
+                        # update indecies
+                        d2 = (d2 + 1) % n_samples_per_second
+                        if d2 == 0:
+                            d1 += 1
+                    # store attenuator values
+                    dset = fh[r2dbe_bookkeep[r2dbe_name]["attndset%d" % ch]]
+                    bdc_name, attn_name = r2dbe_bookkeep[r2dbe_name]["bdcattn%d" % ch]
+                    try:
+                        d1 = vdif.VDIFTime.from_datetime(attenuators[bdc_name]["updated"]).sec - vdif_start.sec
+                        if d1 >= 0 and d1 < dset.shape[0]:
+                            dset[d1] = int(2*attenuators[bdc_name][attn_name])
+                    except KeyError as ke:
+                        logger.warning("no attenuator value %s:%s (%s:if%d)", bdc_name, attn_name, r2dbe_name, ch)
+
+                # finally update last update time
+                r2dbe_bookkeep[r2dbe_name]["last_update"] = last_update
+
+            # check stop signal
+            if stop_signal_received:
+                logger.info("stop signal received, exiting loop")
+                break
+
+            logger.debug("end of iteration %d at %s", n_iter, datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f"))
+
+    return True
+
+if __name__ == "__main__":
+    from argparse import ArgumentParser
+    arg_parser = ArgumentParser(description="collect average power data from R2DBE",
+      epilog="This script will automatically select a valid schedule from the trigger area to use, unless the --test-vex option is invoked in which case the given TESTVEX in the testing area is used." + \
+      "A valid schedule is defined as having one or more scans for this station that have a future end-time. " + \
+      "An error is reported if the number of valid schedules in the trigger area is not exactly equal to 1.")
+    arg_parser.add_argument("--test-vex", dest="testvex", metavar="TESTVEX",
+      help="test schedule filename (basename) to run")
+    arg_parser.add_argument("--append-md5", dest="appendmd5", metavar="NUM", nargs="?", type=int, const=7,
+      help="append first NUM digits of VEX MD5 hash to output filename")
+    arg_parser.add_argument("-v", "--verbose", action="store_true",
+      help="display verbose output")
+    args = arg_parser.parse_args()
+    logger.addHandler(logging.StreamHandler(sys.stdout))
+    if args.verbose:
+        logger.setLevel(logging.DEBUG)
+    else:
+        logger.setLevel(logging.INFO)
+    main(args)
