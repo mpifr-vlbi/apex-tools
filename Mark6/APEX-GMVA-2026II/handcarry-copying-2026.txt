@@ -61,16 +61,23 @@ rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262c_Ax_* /mnt/ha
 
 ## MN006A
 # Disk 0 : MN006A dual pol
+# Disk 1 : MN006A dual pol (2nd copy)
 
 du -h -c /mark6-3_fuse/{1,2}/mn006a*
   5.1T    total
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/mn006a_Ax_* /mnt/handcarry/disk0/slot1/
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006a_Ax_* /mnt/handcarry/disk0/slot2/
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/mn006a_Ax_* /mnt/handcarry/disk1/slot1/
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006a_Ax_* /mnt/handcarry/disk1/slot2/
+
 
 ## MN006B
 # Disk 1 : MN006B dual pol
+# Disk 0 : MN006B dual pol (2nd copy)
 
 du -h -c /mark6-3_fuse/{1,2}/mn006b*
   3.8T    total
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/mn006b_Ax_* /mnt/handcarry/disk1/slot1/
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006b_Ax_* /mnt/handcarry/disk1/slot2/
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/mn006b_Ax_* /mnt/handcarry/disk0/slot1/
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006b_Ax_* /mnt/handcarry/disk0/slot2/
