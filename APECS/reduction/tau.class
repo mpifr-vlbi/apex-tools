@@ -61,7 +61,7 @@ for fnr 1 to DIR%NFILE
    let outputname = tau_'DIR%FILE[fnr][21:30]'.txt
 
    set line VLBI*
-   set offset 0 0
+   set offset 0 0   ! avoids including calibration scans
 
    ! Backends GMVA 86G:
    set telescope AP-N901-F303
