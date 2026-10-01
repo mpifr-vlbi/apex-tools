@@ -1,29 +1,26 @@
 
 # Extraction of tau and other values
 
-Input are the observational data in the timestamped files ~/scidata/*.apex
+Input are the observational datasets found under ~/scidata/*.apex
 
 These can be read by Gildas https://www.iram.fr/IRAMFR/GILDAS/
 
-Edit tau.class and modify the lines
-
-  file in ../scidata/T-0117.F-9996A-2026-2026-09-29.apex
-  sic output "tau_0929.txt"
-
-Then run with
+Check the content of the tau.class script, make modifications if needed.
+By default it will process all datasets (all ~/scidata/*.apex files).
+Run the script with:
 
 $ class @tau
 
-The order of the columns in the output .txt file are:
+The order of the columns in the generated tau_<dataset>.txt file(s) are:
 
-  - source-name
-  - date of obs
+  - date of obs (dd-mm-yyyy)
+  - time (UT hour)
   - scan number
-  - time(UT)
+  - source-name
+  - elevation
   - rest freq (MHz)
-  - backends
+  - backend (e.g., 'AP-N901-F303')
   - opacity (tau)
   - opacity signal band
-  - elevation
   - Tsys system temperature
   - Tamb ambient temperature (K)
