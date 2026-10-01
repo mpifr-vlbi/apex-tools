@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+#
+# APEX - Atacama Pathfinder EXperiment Project
+#
+# Copyright (C) 2011
+#
+# Max-Planck-Institut fuer Radioastronomie, Bonn, Germany
+#
+# Jan Wagner, based on example by Dirk Muders
+#
+
+import sys
+import os
+
+# own library
+homepath = os.getenv("HOME")
+sys.path.append(homepath + '/commands')
+import vlbi_commands
+
+# poll calibration data
+vlbi_commands.vlbi_get_calibration()
