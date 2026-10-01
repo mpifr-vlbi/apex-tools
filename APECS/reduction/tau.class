@@ -1,0 +1,21 @@
+set def
+
+set variable general
+set variable position
+set variable spectro
+set variable calibration
+set variable skydip
+
+file in ../scidata/T-0117.F-9996A-2026-2026-09-29.apex
+set line VLBI*
+set offset 0 0
+fin
+ 
+
+sic message class a+i
+sic output "tau_0929.txt"
+for t 1 to found
+  get next  
+  say 'sourc','cdobs','scan','ut','restf','teles','tau','taus','el','tsys','tamb'
+  next 
+sic out
