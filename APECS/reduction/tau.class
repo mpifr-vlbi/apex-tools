@@ -13,6 +13,14 @@
 !   vlbifreq88     90.800 GHz LSB  ! for OCT_D recording 88312--88824 MHz incl HCN  in MN006A
 !   vlbifreq89     91.500 GHz LSB  ! for OCT_D recording 89012--89524 MHz incl HCO+ in MN006B
 !
+! EHT 230G Spring 2026
+!
+! The backends containing the VLBI recorded EHT b1/b2/b3/b4 are approximately
+!   AP-N201-F101  for X LSB 4-8G
+!   AP-N202-F101  for Y LSB 4-8G
+!   AP-N203-F101  for X USB 4-8G
+!   AP-N204-F101  for Y USB 4-8G
+!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 ! Changelog
@@ -53,14 +61,27 @@ for fnr 1 to DIR%NFILE
    let outputname = tau_'DIR%FILE[fnr][21:30]'.txt
 
    set line VLBI*
-   set offset 0 0
+   set offset 0 0   ! avoids including calibration scans
+
+   ! Backends GMVA 86G:
    set telescope AP-N901-F303
    find
    set telescope AP-N902-F303
    find append
 
+   ! plus backends EHT 230G:
+   set telescope AP-N201-F101
+   find append
+   set telescope AP-N202-F101
+   find append
+   set telescope AP-N203-F101
+   find append
+   set telescope AP-N204-F101
+   find append
+
    sic message class a+i
    sic output 'outputname'
+   get zero
    for t 1 to found
       get next  
       say 'cdobs','tscaling*ut','scan','sourc','el','restf','teles','tau','taus','tsys','tamb'
