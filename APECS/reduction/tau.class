@@ -1,4 +1,22 @@
-set def
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+! GMVA Autumn 2026
+!
+! The backends containing the VLBI recorded 2-pol x 1-channel x 512 MHz band are:
+!   AP-N901-F303    corresponding to RCP(?)
+!   AP-N902-F303    corresponding to LCP(?)
+!
+! The line names were
+!   vlbifreq86     88.500 GHz LSB  ! for OCT_D recording 86012--86524 MHz standard GMVA continuum mode
+!   vlbifreq88     90.800 GHz LSB  ! for OCT_D recording 88312--88824 MHz incl HCN  in MN006A
+!   vlbifreq89     91.500 GHz LSB  ! for OCT_D recording 89012--89524 MHz incl HCO+ in MN006B
+!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+define real tscaling
+let tscaling = 24/(2*pi)
+
+set default
 
 set variable general
 set variable position
@@ -6,16 +24,21 @@ set variable spectro
 set variable calibration
 set variable skydip
 
-file in ../scidata/T-0117.F-9996A-2026-2026-09-29.apex
+! todo: make the .apex input file a command line argument, if possible?
+file in T-0117.F-9996A-2026-2026-09-24.apex
+
 set line VLBI*
 set offset 0 0
-fin
- 
+
+set telescope AP-N901-F303
+find
+set telescope AP-N902-F303
+find append
 
 sic message class a+i
-sic output "tau_0929.txt"
+sic output "tautest_0924.txt"
 for t 1 to found
   get next  
-  say 'sourc','cdobs','scan','ut','restf','teles','tau','taus','el','tsys','tamb'
+  say 'cdobs','tscaling*ut','scan','sourc','el','restf','teles','tau','taus','tsys','tamb'
   next 
 sic out
