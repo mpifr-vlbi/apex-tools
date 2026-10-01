@@ -1,3 +1,28 @@
+
+OBSOLETE
+
+FieldSystem was used only until ca 2015.
+
+It does not fulfill the requirements of controlling
+the telescope, DBBC3 in different firmware modes,
+and recording on multiple parallel Mark6'es with
+different module groupings.
+
+It is superseded by EHT 'backendctl' ('backendctl-gmva'
+in case of GMVA) and APECS 'apecsVLBI'.
+
+Backendctl controls the Mark6 recorder configuration
+and partly also DBBC3 configuration, and manages
+the recording on multiple Mark6 according to VEX schedules.
+
+Similarly, apecsVLBI controls the APEX telescope via
+timed APECS Python user interface commands that are
+submitted in concordance to a VEX schedule.
+
+FieldSystem code and details below are retained as legacy info.
+
+
+
 Extra notes
 =======================================
 
