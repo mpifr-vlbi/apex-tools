@@ -31,41 +31,6 @@ Serial Number:    1590A0NXF4MJ     # disk5 C262C
 Serial Number:    1590A0LCF4MJ     # disk6 C262C as 2nd copy
 
 
-## C262A
-# Disk 2 : C262A pol 1
-# Disk 3 : C262A pol 2
-# Copying completed, 187 scans
-
-du -h -c /mark6-3_fuse/{1,2}/c262a*
-  27T total
-rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262a_Ax_* /mnt/handcarry/disk2/slot1/  # ~13 TB out of disk size 20 TB, LCP
-rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262a_Ax_* /mnt/handcarry/disk3/slot2/  # ~13 TB out of disk size 20 TB, RCP
-
-
-## C262B
-# Disk 4 : C262B pol 1 and pol 2
-# Completed pol1 (79 scans)
-# Still copying pol2 (40 of 79)
-
-du -h -c /mark6-3_fuse/{1,2}/c262b*
-  14T total
-rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262b_Ax_* /mnt/handcarry/disk4/slot1/  #  7 TB out of disk size 20 TB, LCP
-rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262b_Ax_* /mnt/handcarry/disk4/slot2/  # +7 TB out of disk size 20 TB, RCP
-
-
-## C262C
-# Disk 5 : C262C dual pol
-# Disk 6 : C262C dual pol (2nd copy)
-# Copying completed
-
-du -h -c /mark6-3_fuse/{1,2}/c262c*
-  8T total
-rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262c_Ax_* /mnt/handcarry/disk5/slot1/  #  4 TB out of disk size 20 TB, LCP
-rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262c_Ax_* /mnt/handcarry/disk5/slot2/  #  4 TB out of disk size 20 TB, RCP
-rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262c_Ax_* /mnt/handcarry/disk6/slot1/  #  4 TB out of disk size 20 TB, LCP
-rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262c_Ax_* /mnt/handcarry/disk6/slot2/  #  4 TB out of disk size 20 TB, RCP
-
-
 ## MN006A
 # Disk 0 : MN006A dual pol
 # Disk 1 : MN006A dual pol (2nd copy)
@@ -91,4 +56,37 @@ rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006b_Ax_* /mnt/h
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/mn006b_Ax_* /mnt/handcarry/disk0/slot1/
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006b_Ax_* /mnt/handcarry/disk0/slot2/
 
+
+## C262A
+# Disk 2 : C262A pol 1
+# Disk 3 : C262A pol 2
+# Copying completed, 187 scans
+
+du -h -c /mark6-3_fuse/{1,2}/c262a*
+  27T total
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262a_Ax_* /mnt/handcarry/disk2/slot1/  # ~13 TB out of disk size 20 TB, LCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262a_Ax_* /mnt/handcarry/disk3/slot2/  # ~13 TB out of disk size 20 TB, RCP
+
+
+## C262B
+# Disk 4 : C262B pol 1 and pol 2
+# Copying completed, 79 scans
+
+du -h -c /mark6-3_fuse/{1,2}/c262b*
+  14T total
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262b_Ax_* /mnt/handcarry/disk4/slot1/  #  7 TB out of disk size 20 TB, LCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262b_Ax_* /mnt/handcarry/disk4/slot2/  # +7 TB out of disk size 20 TB, RCP
+
+
+## C262C
+# Disk 5 : C262C dual pol
+# Disk 6 : C262C dual pol (2nd copy)
+# Copying completed
+
+du -h -c /mark6-3_fuse/{1,2}/c262c*
+  8T total
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262c_Ax_* /mnt/handcarry/disk5/slot1/  #  4 TB out of disk size 20 TB, LCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262c_Ax_* /mnt/handcarry/disk5/slot2/  #  4 TB out of disk size 20 TB, RCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262c_Ax_* /mnt/handcarry/disk6/slot1/  #  4 TB out of disk size 20 TB, LCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262c_Ax_* /mnt/handcarry/disk6/slot2/  #  4 TB out of disk size 20 TB, RCP
 
