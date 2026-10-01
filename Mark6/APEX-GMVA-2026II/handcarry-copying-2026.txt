@@ -34,8 +34,7 @@ Serial Number:    1590A0LCF4MJ     # disk6 C262C as 2nd copy
 ## C262A
 # Disk 2 : C262A pol 1
 # Disk 3 : C262A pol 2
-# Pol 1 complete (187 scans)
-# Pol 2 ongoing (175 out of 187 scans)
+# Copying completed, 187 scans
 
 du -h -c /mark6-3_fuse/{1,2}/c262a*
   27T total
@@ -45,8 +44,8 @@ rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262a_Ax_* /mnt/ha
 
 ## C262B
 # Disk 4 : C262B pol 1 and pol 2
-# Completed pol1
-# Still copying pol2
+# Completed pol1 (79 scans)
+# Still copying pol2 (40 of 79)
 
 du -h -c /mark6-3_fuse/{1,2}/c262b*
   14T total
@@ -57,8 +56,7 @@ rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262b_Ax_* /mnt/ha
 ## C262C
 # Disk 5 : C262C dual pol
 # Disk 6 : C262C dual pol (2nd copy)
-# Primary copy is complete
-# Secondary copy pol1 complete, pol2 still copying
+# Copying completed
 
 du -h -c /mark6-3_fuse/{1,2}/c262c*
   8T total
