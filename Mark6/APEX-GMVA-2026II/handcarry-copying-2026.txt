@@ -22,18 +22,20 @@ oper@recorder3:~$ sudo blkid | grep xfs
 /dev/sdx1: UUID="85853000-ec62-4d34-a93f-47c6ad424cd1" TYPE="xfs"
 
 root@recorder3:~# for dn in sd{r,s,t,u,v,w,x}; do smartctl -i /dev/$dn | grep Serial; done
-Serial Number:    1590A0P1F4MJ     # disk0
-Serial Number:    1590A0T4F4MJ     # disk1
-Serial Number:    1590A0LMF4MJ     # disk2
-Serial Number:    1590A0LLF4MJ     # disk3
-Serial Number:    1590A0P4F4MJ     # disk4
-Serial Number:    1590A0NXF4MJ     # disk5
-Serial Number:    1590A0LCF4MJ     # disk6
+Serial Number:    1590A0P1F4MJ     # disk0 MN006A+B
+Serial Number:    1590A0T4F4MJ     # disk1 MN006A+B as a 2nd copy
+Serial Number:    1590A0LMF4MJ     # disk2 C262A[RCP]~13T
+Serial Number:    1590A0LLF4MJ     # disk3 C262A[LCP]~13T
+Serial Number:    1590A0P4F4MJ     # disk4 C262B
+Serial Number:    1590A0NXF4MJ     # disk5 C262C
+Serial Number:    1590A0LCF4MJ     # disk6 C262C as 2nd copy
 
 
 ## C262A
 # Disk 2 : C262A pol 1
 # Disk 3 : C262A pol 2
+# Pol 1 complete (187 scans)
+# Pol 2 ongoing (175 out of 187 scans)
 
 du -h -c /mark6-3_fuse/{1,2}/c262a*
   27T total
@@ -43,6 +45,8 @@ rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262a_Ax_* /mnt/ha
 
 ## C262B
 # Disk 4 : C262B pol 1 and pol 2
+# Completed pol1
+# Still copying pol2
 
 du -h -c /mark6-3_fuse/{1,2}/c262b*
   14T total
@@ -52,16 +56,22 @@ rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262b_Ax_* /mnt/ha
 
 ## C262C
 # Disk 5 : C262C dual pol
+# Disk 6 : C262C dual pol (2nd copy)
+# Primary copy is complete
+# Secondary copy pol1 complete, pol2 still copying
 
 du -h -c /mark6-3_fuse/{1,2}/c262c*
   8T total
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262c_Ax_* /mnt/handcarry/disk5/slot1/  #  4 TB out of disk size 20 TB, LCP
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262c_Ax_* /mnt/handcarry/disk5/slot2/  #  4 TB out of disk size 20 TB, RCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/c262c_Ax_* /mnt/handcarry/disk6/slot1/  #  4 TB out of disk size 20 TB, LCP
+rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/c262c_Ax_* /mnt/handcarry/disk6/slot2/  #  4 TB out of disk size 20 TB, RCP
 
 
 ## MN006A
 # Disk 0 : MN006A dual pol
 # Disk 1 : MN006A dual pol (2nd copy)
+# Copying completed
 
 du -h -c /mark6-3_fuse/{1,2}/mn006a*
   5.1T    total
@@ -74,6 +84,7 @@ rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006a_Ax_* /mnt/h
 ## MN006B
 # Disk 1 : MN006B dual pol
 # Disk 0 : MN006B dual pol (2nd copy)
+# Copying completed
 
 du -h -c /mark6-3_fuse/{1,2}/mn006b*
   3.8T    total
@@ -81,3 +92,5 @@ rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/mn006b_Ax_* /mnt/h
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006b_Ax_* /mnt/handcarry/disk1/slot2/
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/1/mn006b_Ax_* /mnt/handcarry/disk0/slot1/
 rsync -axv --progress --inplace --no-compress /mark6-3_fuse/2/mn006b_Ax_* /mnt/handcarry/disk0/slot2/
+
+
