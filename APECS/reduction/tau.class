@@ -13,8 +13,9 @@
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+define character*500 outputname
 define real tscaling
-let tscaling = 24/(2*pi)
+let tscaling = 24/(2*pi)  ! to convert UT Radian into UT Hour
 
 set default
 
@@ -24,21 +25,37 @@ set variable spectro
 set variable calibration
 set variable skydip
 
-! todo: make the .apex input file a command line argument, if possible?
-file in T-0117.F-9996A-2026-2026-09-24.apex
+!! Find all datasets, tell where scan metadata will be extracted to
+!! e.g. T-0117.F-9996A-2026-2026-09-29.apex  -->  tau_2026-09-29.txt
+sic find *.apex ~/scidata/
+say ""
+say "== Found these data files under ~/scidata/:"
+for fnr 1 to DIR%NFILE
+   let outputname = tau_'DIR%FILE[fnr][21:30]'.txt
+   say 'DIR%FILE[fnr]'"  -->  "'outputname'
+next
+say ""
 
-set line VLBI*
-set offset 0 0
+!! For each dataset, extract metadata of every contained scan
+!for fnr 1 to 2  ! fewer files just for testing
+for fnr 1 to DIR%NFILE
 
-set telescope AP-N901-F303
-find
-set telescope AP-N902-F303
-find append
+   file in ~/scidata/'DIR%FILE[fnr]'
+   let outputname = tau_'DIR%FILE[fnr][21:30]'.txt
 
-sic message class a+i
-sic output "tautest_0924.txt"
-for t 1 to found
-  get next  
-  say 'cdobs','tscaling*ut','scan','sourc','el','restf','teles','tau','taus','tsys','tamb'
-  next 
-sic out
+   set line VLBI*
+   set offset 0 0
+   set telescope AP-N901-F303
+   find
+   set telescope AP-N902-F303
+   find append
+
+   sic message class a+i
+   sic output 'outputname'
+   for t 1 to found
+      get next  
+      say 'cdobs','tscaling*ut','scan','sourc','el','restf','teles','tau','taus','tsys','tamb'
+   next 
+   sic out
+
+next
