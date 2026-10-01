@@ -1,0 +1,6 @@
+--vlbi_get_calibration @ 2012-05-05 14:18:07.419990
+\"timestamp/135555202710000000
+\"tsys/178.737931,trx/106.348092,gainimage/0.100000,tausig/0.101099,tauima/0.096225,wvr/2.139997,wvrrm/2.219502,thot/286.710000,tcold/73.564000
+\"gps-fmout/-1
+\"gps-maser/-1
+\"wx/temp/1.780000,dew/-21.350000,hum/13.050000,p/556.950000,windspeed/3.800000,winddir/96.000000,pwv/1.102778
