@@ -25,3 +25,5 @@ done
 
 ./filterByVexTime.py --backend AP-N90 --output mj008ax_tau.csv ~/vlbisystem/vexfiles/triggered/mj008.vex  tau_2025-*.sorted
 
+./filterByVexTime.py --backend AP-N90 --output fpt25ax_86G_tau.csv ~/vlbisystem/vexfiles/triggered/fpt_test_2025.vex  tau_2025-*.sorted
+./filterByVexTime.py --backend AP-N20 --output fpt25ax_260G_tau.csv ~/vlbisystem/vexfiles/triggered/fpt_test_2025.vex  tau_2025-*.sorted
