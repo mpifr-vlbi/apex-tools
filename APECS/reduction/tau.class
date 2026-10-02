@@ -16,10 +16,16 @@
 ! EHT 230G Spring 2026
 !
 ! The backends containing the VLBI recorded EHT b1/b2/b3/b4 are approximately
+!  NFLASH 230/260
 !   AP-N201-F101  for X LSB 4-8G
 !   AP-N202-F101  for Y LSB 4-8G
 !   AP-N203-F102  for X USB 4-8G
 !   AP-N204-F102  for Y USB 4-8G
+!  SEPIA 345
+!   AP-S301-F101  for X LSB 4-8G
+!   AP-S302-F101  for Y LSB 4-8G
+!   AP-S303-F102  for X USB 4-8G
+!   AP-S304-F102  for Y USB 4-8G
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
