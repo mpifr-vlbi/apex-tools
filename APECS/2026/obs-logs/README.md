@@ -15,7 +15,7 @@ This directory contains various observation log and metadata files:
 
  - *.fslog : live APECS Online Calibrator data logged during the observations, incl. Tsys, Trec, and since Autumn 2026 also Tamb, tausig (tau in main typ. LSB sideband), tauima (tau in opposite sideband)
 
- - *\_tau.csv : single dish metadata like tau and Tamb [K], extracted and converted with Gildas from observer.apex-telescope.org:~/scidata/*.apex day-based datasets
+ - _tau.csv : single dish metadata like tau and Tamb [K], extracted and converted with Gildas from observer.apex-telescope.org:~/scidata/*.apex day-based datasets
 
 
 The order of the columns in the CSV files is:
