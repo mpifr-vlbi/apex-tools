@@ -24,3 +24,20 @@ The order of the columns in the generated tau_<dataset>.txt file(s) are:
   - opacity signal band
   - Tsys system temperature
   - Tamb ambient temperature (K)
+
+The APEX FFTS spectrometer backend produces tau data grouped by 4 GHz wide dual-pol
+spectral windows; FFTS windows are 4-8 GHz and 8-12 GHz on either receiver sideband.
+
+For GMVA 86G the VLBI spectral window is narrow (512 MHz) and falls entirely within
+a single 4-8 GHz FFTS spectral window.
+
+The EHT 345G observations record VLBI spectral windows at 4-6 GHz (b2/b3) and
+6-8 GHz (b1/b4). Both fall within a single 4-8 GHz FFTS window. Consequently
+the metadata of each 4-6G+6-8G band pair (b1+b2, b3+b4) are identical.
+
+The EHT 230G/260G observations record VLBI spectral windows at 5-7 GHz (b2/b3) and
+7-9 GHz (b1/b4). These are mosly within the same 4-8 GHz FFTS spectral window, but notice
+the 1 GHz shift which leads the outer (b1, b4) to overlap into the higher 8-12 GHz
+FFTS spectral window. There is no workaround. A weighted average of metadata
+might be possible. The easier choice, however, is to take all metadata from just
+the 4-8 GHz FFTS spectral window.
