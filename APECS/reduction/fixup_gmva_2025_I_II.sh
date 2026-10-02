@@ -13,13 +13,13 @@
 # Trying to fix the above issues:
 #
 
-#for fn in tau_*.txt; do
-#	sort -k 2 $fn > ${fn}.sorted
-#done
+for fn in tau_*.txt; do
+	sort -k 2 $fn > ${fn}.sorted
+done
 
 for vexf in ~/vlbisystem/vexfiles/triggered/c25*.vex; do
 	outname=$(basename $vexf)
-	outname=${outname/.vex/}_tau.csv
+	outname=${outname/.vex/}ax_tau.csv
 	./filterByVexTime.py --backend AP-N90 --output $outname $vexf  tau_2025-*.sorted
 done
 
