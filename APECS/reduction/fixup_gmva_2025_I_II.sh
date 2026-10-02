@@ -23,3 +23,5 @@ for vexf in ~/vlbisystem/vexfiles/triggered/c25*.vex; do
 	./filterByVexTime.py --backend AP-N90 --output $outname $vexf  tau_2025-*.sorted
 done
 
+./filterByVexTime.py --backend AP-N90 --output mj008ax_tau.csv ~/vlbisystem/vexfiles/triggered/mj008.vex  tau_2025-*.sorted
+
