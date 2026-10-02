@@ -36,6 +36,8 @@ cp -av tau_2026-04-24.txt.sorted e26a24ax_tau.csv
 cp -av tau_2026-04-28.txt.sorted e26a28ax_tau.csv
 
 cp -av tau_2026-05-01.txt.sorted e26y01ax_tau.csv
+
+# EHT tracks that crossed UT day boundaries
 cat tau_2026-05-04.txt.sorted tau_2026-05-05.txt.sorted >  e26y05ax_tau.csv
 cat tau_2026-05-07.txt.sorted tau_2026-05-08.txt.sorted >  e26y08ax_tau.csv
 
