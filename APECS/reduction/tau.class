@@ -18,8 +18,8 @@
 ! The backends containing the VLBI recorded EHT b1/b2/b3/b4 are approximately
 !   AP-N201-F101  for X LSB 4-8G
 !   AP-N202-F101  for Y LSB 4-8G
-!   AP-N203-F101  for X USB 4-8G
-!   AP-N204-F101  for Y USB 4-8G
+!   AP-N203-F102  for X USB 4-8G
+!   AP-N204-F102  for Y USB 4-8G
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
@@ -74,9 +74,9 @@ for fnr 1 to DIR%NFILE
    find append
    set telescope AP-N202-F101
    find append
-   set telescope AP-N203-F101
+   set telescope AP-N203-F102
    find append
-   set telescope AP-N204-F101
+   set telescope AP-N204-F102
    find append
 
    sic message class a+i
