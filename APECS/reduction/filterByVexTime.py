@@ -22,8 +22,8 @@ def parse_args(args):
 	cmd = '%(prog)s <options>'
         parser = argparse.ArgumentParser(description=__doc__, add_help=True, formatter_class=argparse.RawDescriptionHelpFormatter)
 	parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
-	parser.add_argument('-b', dest='backend', default='AP-N90', help='substring of backend name to match (default: %(default)d)')
-	parser.add_argument('-o', dest='output', default='filtered.csv', help='output file name (default: %(default)d)')
+	parser.add_argument('-b', '--backend', dest='backend', default='AP-N90', help='substring of backend name to match (default: %(default)s)')
+	parser.add_argument('-o', '--output', dest='output', default='filtered.csv', help='output file name (default: %(default)s)')
 	parser.add_argument('vexfile')
 	parser.add_argument('csvfiles', nargs='+')
 
