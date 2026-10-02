@@ -1,5 +1,5 @@
 
-# Logs and raw metadata for 2026
+# Logs and raw metadata for 2025
 
 This directory contains various observation log and metadata files:
 
