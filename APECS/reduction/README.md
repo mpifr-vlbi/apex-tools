@@ -35,10 +35,10 @@ Names of FFTS channels that correspond roughly to the VLBI-covered parts of the 
  - AP-N202-F101    NFLASH 1mm VLBI in LSB (EHT b1+b2), 4-8G, LCP(?)
  - AP-N203-F102    NFLASH 1mm VLBI in USB (EHT b3+b4), 4-8G, RCP(?)
  - AP-N204-F102    NFLASH 1mm VLBI in USB (EHT b3+b4), 4-8G, LCP(?)
- - AP-S301-F101    SEPIA345 0.8mm VLBI LSB (EHT b1+b2), 4-8G, RCP(?)
- - AP-S302-F101    SEPIA345 0.8mm VLBI LSB (EHT b1+b2), 4-8G, LCP(?)
- - AP-S303-F102    SEPIA345 0.8mm VLBI USB (EHT b3+b4), 4-8G, RCP(?)
- - AP-S304-F102    SEPIA345 0.8mm VLBI USB (EHT b3+b4), 4-8G, LCP(?)
+ - AP-S301-F101    SEPIA345 0.8mm VLBI in LSB (EHT b1+b2), 4-8G, RCP(?)
+ - AP-S302-F101    SEPIA345 0.8mm VLBI in LSB (EHT b1+b2), 4-8G, LCP(?)
+ - AP-S303-F102    SEPIA345 0.8mm VLBI in USB (EHT b3+b4), 4-8G, RCP(?)
+ - AP-S304-F102    SEPIA345 0.8mm VLBI in USB (EHT b3+b4), 4-8G, LCP(?)
 
 ## FFTS Details
 
