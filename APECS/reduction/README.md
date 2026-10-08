@@ -25,6 +25,23 @@ The order of the columns in the generated tau_<dataset>.txt file(s) are:
   - Tsys system temperature
   - Tamb ambient temperature (K)
 
+## FFTS Mappings
+
+Names of FFTS channels that correspond roughly to the VLBI-covered parts of the spectrum are
+
+ - AP-N901-F303    N3AR 3mm VLBI, 4-8G, RCP(?)
+ - AP-N902-F303    N3AR 3mm VLBI, 4-8G, LCP(?)
+ - AP-N201-F101    NFLASH 1mm VLBI in LSB (EHT b1+b2), 4-8G, RCP(?)
+ - AP-N202-F101    NFLASH 1mm VLBI in LSB (EHT b1+b2), 4-8G, LCP(?)
+ - AP-N203-F102    NFLASH 1mm VLBI in USB (EHT b3+b4), 4-8G, RCP(?)
+ - AP-N204-F102    NFLASH 1mm VLBI in USB (EHT b3+b4), 4-8G, LCP(?)
+ - AP-S301-F101    SEPIA345 0.8mm VLBI LSB (EHT b1+b2), 4-8G, RCP(?)
+ - AP-S302-F101    SEPIA345 0.8mm VLBI LSB (EHT b1+b2), 4-8G, LCP(?)
+ - AP-S303-F102    SEPIA345 0.8mm VLBI USB (EHT b3+b4), 4-8G, RCP(?)
+ - AP-S304-F102    SEPIA345 0.8mm VLBI USB (EHT b3+b4), 4-8G, LCP(?)
+
+## FFTS Details
+
 The APEX FFTS spectrometer backend produces tau data grouped by 4 GHz wide dual-pol
 spectral windows; FFTS windows are 4-8 GHz and 8-12 GHz on either receiver sideband.
 
@@ -41,3 +58,6 @@ the 1 GHz shift which leads the outer (b1, b4) to overlap into the higher 8-12 G
 FFTS spectral window. There is no workaround. A weighted average of metadata
 might be possible. The easier choice, however, is to take all metadata from just
 the 4-8 GHz FFTS spectral window.
+
+
+
