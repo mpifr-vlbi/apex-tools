@@ -16,10 +16,16 @@
 ! EHT 230G Spring 2026
 !
 ! The backends containing the VLBI recorded EHT b1/b2/b3/b4 are approximately
+!  NFLASH 230/260
 !   AP-N201-F101  for X LSB 4-8G
 !   AP-N202-F101  for Y LSB 4-8G
 !   AP-N203-F102  for X USB 4-8G
 !   AP-N204-F102  for Y USB 4-8G
+!  SEPIA 345
+!   AP-S301-F101  for X LSB 4-8G
+!   AP-S302-F101  for Y LSB 4-8G
+!   AP-S303-F102  for X USB 4-8G
+!   AP-S304-F102  for Y USB 4-8G
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
@@ -27,6 +33,7 @@
 !  01oct2026 v1.0  Francisco Azagra  first version
 !  01oct2026 v1.1  Jan Wagner        loop over all datasets, UT Radians->Hours,
 !                                    and only backends containing the VLBI RCP,LCP 512 MHz slice
+!  02oct2026 v1.2                    include EHT 345G FFTS backend names
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -77,6 +84,16 @@ for fnr 1 to DIR%NFILE
    set telescope AP-N203-F102
    find append
    set telescope AP-N204-F102
+   find append
+
+   ! plus backends EHT 345G with Sepia:
+   set telescope AP-S301-F101
+   find append
+   set telescope AP-S302-F101
+   find append
+   set telescope AP-S303-F102
+   find append
+   set telescope AP-S304-F102
    find append
 
    sic message class a+i
