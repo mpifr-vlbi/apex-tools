@@ -20,7 +20,7 @@
 #
 
 for fn in tau_*.txt; do
-	sort -k 2 $fn > ${fn}.sorted
+	sort -k 2 -h -t"," $fn > ${fn}.sorted
 done
 
 grep "AP-N90" tau_2026-04-21.txt.sorted > mj008bax_tau.csv

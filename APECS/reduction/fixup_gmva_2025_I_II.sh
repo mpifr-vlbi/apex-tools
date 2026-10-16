@@ -14,7 +14,7 @@
 #
 
 for fn in tau_*.txt; do
-	sort -k 2 $fn > ${fn}.sorted
+	sort -k 2 -h -t"," $fn > ${fn}.sorted
 done
 
 for vexf in ~/vlbisystem/vexfiles/triggered/c25*.vex; do
