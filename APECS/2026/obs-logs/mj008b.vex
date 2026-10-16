@@ -1,0 +1,3394 @@
+VEX_rev = 1.5;
+*    SCHED vers: Release 12.0; March 2025
+*    VEX/SCHED:  1.5.88
+*    Other versions: Sched:  12.0  Plot: 1.06  JPL-ephem: 1.01
+*------------------------------------------------------------------------------
+$GLOBAL;
+     ref $EXPER = mj008b;
+*                                                      +------------+
+*                         PI revision number:          |   12.0000  |
+*                                                      +------------+
+*    mode:       4096-8-2
+*------------------------------------------------------------------------------
+$EXPER;
+*
+def mj008b;
+     exper_name = mj008b;
+     exper_description = "GMVA Apr. 2026";
+     PI_name = "Global mm-VLBI Array (GMVA)";
+     PI_email = hrottmann@mpifr-bonn.mpg.de;
+*    address:   Max-Planck-Institut fuer Radioastronomie
+*               Auf dem Huegel 69
+*               53121 Bonn
+*               Germany
+*    phone:     0049-228-525-123
+*    during obs:0049-2257-301-155
+*    fax:       0049-2257-301-106
+*    notes:     using Sched 12.0
+*
+*    year, doy: 2026, 111
+*    date     : Tue 21 Apr 2026
+*    MJD      : 61151
+     exper_nominal_start=2026y111d06h48m00s;
+     exper_nominal_stop=2026y111d13h59m15s;
+*
+     target_correlator = BONN;
+*
+*    integr_time    :     0.500 s
+*    number_channels:   256
+*    number_antenna : 20
+*    cross_polarize : Yes
+*    weight_func    : UNIFORM
+*    distrib_medium : FTP
+*    distrib_format : FITS
+*    source_pos_cat : STANDARD
+*    distribute_to  : 
+*                     H. Rottmann
+*                     Max-Planck-Institut fuer Radioastronomie
+*                     Auf dem Huegel 69
+*                     D-53121 Bonn, Germany
+*    corr_notes : 
+*               dual polarisation setup using 64/128 MHz channels
+*               VLBA at 86 GHz, SiO maser pointing at 43 GHz
+*               please use latest station coordinates
+*
+enddef;
+*------------------------------------------------------------------------------
+$MODE;
+*
+def 86ghz;
+     ref $PROCEDURES = Mode_01;
+     ref $FREQ = 86012.00MHz8x128MHz:Gb:Aa:Nl:Fd:Pt:La:Ov:Kp:Br:Lm:Hs:Mk:Mm;
+     ref $FREQ = 86076.00MHz16x64MHz:Ax;
+     ref $IF = LO@85500MHzDPolNoTone#02:Gb;
+     ref $IF = LO@85500MHzDPolNoTone#04:Aa;
+     ref $IF = LO@85500MHzDPolNoTone#05:Ax;
+     ref $IF = LO@85500MHzDPolNoTone:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@85500MHzDPolNoTone#03:Lm:Hs:Mm;
+     ref $BBC = 8BBCs#02:Gb:Lm:Hs:Mm;
+     ref $BBC = 8BBCs#03:Aa;
+     ref $BBC = 16BBCs:Ax;
+     ref $BBC = 8BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.8Ch2bit1to1:Gb:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.8Ch2bit1to1#02:Aa:Lm:Hs:Mm;
+     ref $TRACKS = VDIF.16Ch2bit1to1:Ax;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Gb:Aa:Ax:Nl:Fd:Pt:La:Ov:Kp:Br:Lm:Hs:Mk:Mm;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect:Gb:Aa:Nl:Fd:Pt:La:Ov:Kp:Br:Lm:Hs:Mk:Mm;
+     ref $PHASE_CAL_DETECT = NoDetect#02:Ax;
+enddef;
+*
+def ptd7mm;
+     ref $PROCEDURES = Mode_02;
+     ref $FREQ = 43115.75MHz2x64MHz:Ov;
+     ref $IF = LO@42400MHzDPolTone/1:Ov;
+     ref $BBC = 2BBCs:Ov;
+     ref $TRACKS = VDIF.2Ch2bit1to1:Ov;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Ov;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = UsbDetect:Ov;
+enddef;
+*
+def ptdl7mm;
+     ref $PROCEDURES = Mode_03;
+     ref $FREQ = 43115.75MHz4x2MHz:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@42400MHzDPolTone/1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = UsbDetect#02:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+enddef;
+*
+def Doppler@P-UHER;
+     ref $PROCEDURES = Mode_04;
+     ref $FREQ = 43127.453125MHz4x2MHz:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@42400MHzDPolNoTone:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect#03:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+enddef;
+*
+def Doppler@P-UHER#02;
+     ref $PROCEDURES = Mode_05;
+     ref $FREQ = 43127.453125MHz4x2MHz#02:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@42400MHzDPolNoTone#02:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect#04:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+enddef;
+*
+def Doppler@P-WHYA;
+     ref $PROCEDURES = Mode_06;
+     ref $FREQ = 43115.375MHz4x2MHz:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@42400MHzDPolNoTone#03:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect#05:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+enddef;
+*
+def Doppler@P-RAQL;
+     ref $PROCEDURES = Mode_07;
+     ref $FREQ = 43120.453125MHz4x2MHz:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@42400MHzDPolNoTone#04:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect#06:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+enddef;
+*
+def Doppler@P-VXSGR;
+     ref $PROCEDURES = Mode_08;
+     ref $FREQ = 43125.390625MHz4x2MHz:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@42400MHzDPolNoTone#05:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect#07:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+enddef;
+*
+def Doppler@P-VXSGR#02;
+     ref $PROCEDURES = Mode_09;
+     ref $FREQ = 43125.390625MHz4x2MHz#02:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@42400MHzDPolNoTone#06:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect#08:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+enddef;
+*
+def Doppler@P-RCAS;
+     ref $PROCEDURES = Mode_10;
+     ref $FREQ = 43118.9375MHz4x2MHz:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@42400MHzDPolNoTone#07:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect#09:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+enddef;
+*
+def Doppler@P-RCAS#02;
+     ref $PROCEDURES = Mode_11;
+     ref $FREQ = 43118.9375MHz4x2MHz#02:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $IF = LO@42400MHzDPolNoTone#08:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect#10:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+enddef;
+*
+def Doppler@P-RRAQL;
+     ref $PROCEDURES = Mode_12;
+     ref $FREQ = 43122.90625MHz4x2MHz:Ov:Br:Mk;
+     ref $IF = LO@42400MHzDPolNoTone#09:Ov:Br:Mk;
+     ref $BBC = 4BBCs:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+     ref $TRACKS = VDIF.4Ch2bit1to1:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $HEAD_POS = DiskVoid <= obsolete definition
+     ref $ROLL = NoRoll:Nl:Fd:Pt:La:Ov:Kp:Br:Mk;
+*    ref $PASS_ORDER = DiskVoid <= obsolete definition
+     ref $PHASE_CAL_DETECT = NoDetect#11:Ov:Br:Mk;
+enddef;
+*------------------------------------------------------------------------------
+$STATION;
+*
+def Gb;
+     ref $SITE = GBT_VLBA;
+     ref $ANTENNA = GBT_VLBA;
+     ref $DAS = 2RDBE2+NONE<;
+enddef;
+*
+def Aa;
+     ref $SITE = ALMA;
+     ref $ANTENNA = ALMA;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def Ax;
+     ref $SITE = APEX;
+     ref $ANTENNA = APEX;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def Nl;
+     ref $SITE = VLBA_NL;
+     ref $ANTENNA = VLBA_NL;
+     ref $DAS = 2RDBE2+NONE<;
+enddef;
+*
+def Fd;
+     ref $SITE = VLBA_FD;
+     ref $ANTENNA = VLBA_FD;
+     ref $DAS = 2RDBE2+NONE<;
+enddef;
+*
+def Pt;
+     ref $SITE = VLBA_PT;
+     ref $ANTENNA = VLBA_PT;
+     ref $DAS = 2RDBE2+NONE<;
+enddef;
+*
+def La;
+     ref $SITE = VLBA_LA;
+     ref $ANTENNA = VLBA_LA;
+     ref $DAS = 2RDBE2+NONE<;
+enddef;
+*
+def Ov;
+     ref $SITE = VLBA_OV;
+     ref $ANTENNA = VLBA_OV;
+     ref $DAS = 2RDBE2+NONE<;
+enddef;
+*
+def Kp;
+     ref $SITE = VLBA_KP;
+     ref $ANTENNA = VLBA_KP;
+     ref $DAS = 2RDBE2+NONE<;
+enddef;
+*
+def Br;
+     ref $SITE = VLBA_BR;
+     ref $ANTENNA = VLBA_BR;
+     ref $DAS = 2RDBE2+NONE<;
+enddef;
+*
+def Lm;
+     ref $SITE = LMT;
+     ref $ANTENNA = LMT;
+     ref $DAS = 2NONE<#02;
+enddef;
+*
+def Hs;
+     ref $SITE = HAYSTACK;
+     ref $ANTENNA = HAYSTACK;
+     ref $DAS = 2NONE<;
+enddef;
+*
+def Mk;
+     ref $SITE = VLBA_MK;
+     ref $ANTENNA = VLBA_MK;
+     ref $DAS = 2RDBE2+NONE<;
+enddef;
+*
+def Mm;
+     ref $SITE = JCMT;
+     ref $ANTENNA = JCMT;
+     ref $DAS = 2NONE<;
+enddef;
+*------------------------------------------------------------------------------
+$PROCEDURES;
+*
+def Mode_01;
+     procedure_name_prefix =  "01";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_02;
+     procedure_name_prefix =  "02";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_03;
+     procedure_name_prefix =  "03";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_04;
+     procedure_name_prefix =  "04";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_05;
+     procedure_name_prefix =  "05";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_06;
+     procedure_name_prefix =  "06";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_07;
+     procedure_name_prefix =  "07";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_08;
+     procedure_name_prefix =  "08";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_09;
+     procedure_name_prefix =  "09";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_10;
+     procedure_name_prefix =  "10";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_11;
+     procedure_name_prefix =  "11";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*
+def Mode_12;
+     procedure_name_prefix =  "12";
+     tape_change =  420 sec;
+     headstack_motion =    6 sec;
+     new_source_command =    5 sec;
+     new_tape_setup =   20 sec;
+     setup_always = on :  20 sec;
+     parity_check = off : 100 sec;
+     tape_prepass = off : 600 sec;
+     preob_cal  = on :  10 sec : preob;
+     midob_cal  = on :  15 sec : midob;
+     postob_cal = on :   0 sec : postob;
+enddef;
+*------------------------------------------------------------------------------
+$SITE;
+*
+def GBT_VLBA;
+     site_type = fixed;
+     site_name = GBT_VLBA;
+     site_ID = Gb;
+*    elev=  823.66 long= 079:50:23. lat= 38:25:59.3
+     site_position =  882589.57400 m:-4924872.34400 m: 3943729.36600 m;
+     site_velocity = -0.014720   m/yr: -0.001220   m/yr:  0.002670  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2001y336d;
+     site_position_epoch =   52245;
+enddef;
+*
+def ALMA;
+     site_type = fixed;
+     site_name = ALMA;
+     site_ID = Aa;
+*    elev= 5074.13 long= 067:45:17. lat=-23:01:45.1
+     site_position = 2225061.28460 m:-5440061.73794 m:-2481681.15054 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2011y085d;
+     site_position_epoch =   55646;
+enddef;
+*
+def APEX;
+     site_type = fixed;
+     site_name = APEX;
+     site_ID = Ax;
+*    elev= 5104.47 long= 067:45:32. lat=-23:00:20.8
+     site_position = 2225039.52970 m:-5441197.62920 m:-2479303.35970 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 1997y001d;
+     site_position_epoch =   50449;
+     horizon_map_az =  1.0 deg: 39.0: 40.0: 68.0: 78.0: 86.0: 94.5:103.0:360.0;
+     horizon_map_el =  3.0 deg: 15.0: 15.0:  9.6:  3.0:  3.0:  5.2:  3.0:  3.0;
+enddef;
+*
+def VLBA_NL;
+     site_type = fixed;
+     site_name = VLBA_NL;
+     site_ID = Nl;
+*    elev=  222.22 long= 091:34:26. lat= 41:46:17.1
+     site_position = -130872.60440 m:-4762317.09070 m: 4226850.97730 m;
+     site_velocity = -0.015370   m/yr:  0.001300   m/yr: -0.002380  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+     horizon_map_az =  0.0 deg:  5.0: 75.0: 80.0: 85.0:100.0:105.0:110.0:115.0:
+                               120.0:125.0:130.0:135.0:140.0:145.0:150.0:155.0:
+                               160.0:165.0:170.0:190.0:195.0:200.0:220.0:225.0:
+                               360.0;
+     horizon_map_el =  2.0 deg:  2.0:  2.0:  3.0:  6.0:  6.0:  8.0:  7.0:  7.0:
+                                 6.0:  7.0:  7.0:  6.0:  6.0:  7.0:  7.0:  6.0:
+                                 5.0:  4.0:  3.0:  3.0:  2.0:  3.0:  3.0:  2.0:
+                                 2.0;
+enddef;
+*
+def VLBA_FD;
+     site_type = fixed;
+     site_name = VLBA_FD;
+     site_ID = Fd;
+*    elev= 1606.42 long= 103:56:41. lat= 30:38:06.1
+     site_position =-1324009.41200 m:-5332181.95760 m: 3231962.34920 m;
+     site_velocity = -0.012560   m/yr:  0.000440   m/yr: -0.005050  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+     horizon_map_az =  0.0 deg:  5.0: 10.0: 15.0: 20.0: 30.0: 35.0: 40.0: 45.0:
+                                50.0: 55.0: 60.0: 65.0: 70.0: 75.0: 80.0: 85.0:
+                                90.0: 95.0:100.0:105.0:110.0:115.0:150.0:155.0:
+                               160.0:220.0:225.0:230.0:240.0:245.0:250.0:255.0:
+                               260.0:265.0:270.0:275.0:280.0:285.0:290.0:295.0:
+                               300.0:305.0:310.0:315.0:325.0:330.0:335.0:340.0:
+                               345.0:360.0;
+     horizon_map_el =  5.0 deg:  4.0:  5.0:  5.0:  3.0:  3.0:  2.0:  3.0:  2.0:
+                                 2.0:  3.0:  4.0:  7.0:  5.0:  4.0:  4.0:  5.0:
+                                 6.0:  6.0:  5.0:  4.0:  3.0:  2.0:  2.0:  3.0:
+                                 2.0:  2.0:  4.0:  2.0:  2.0:  3.0:  3.0:  4.0:
+                                 5.0:  5.0:  4.0:  4.0:  3.0:  3.0:  2.0:  2.0:
+                                 3.0:  4.0:  5.0:  4.0:  4.0:  5.0:  6.0:  6.0:
+                                 5.0:  5.0;
+enddef;
+*
+def VLBA_PT;
+     site_type = fixed;
+     site_name = VLBA_PT;
+     site_ID = Pt;
+*    elev= 2364.68 long= 108:07:09. lat= 34:18:03.7
+     site_position =-1640954.03570 m:-5014816.02810 m: 3575411.73740 m;
+     site_velocity = -0.014350   m/yr: -0.000090   m/yr: -0.005920  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+     horizon_map_az =  0.0 deg:  5.0: 60.0: 65.0: 70.0: 75.0: 80.0: 85.0:165.0:
+                               170.0:180.0:185.0:190.0:195.0:200.0:240.0:245.0:
+                               250.0:255.0:265.0:270.0:275.0:280.0:285.0:360.0;
+     horizon_map_el =  2.0 deg:  2.0:  2.0:  3.0:  3.0:  2.0:  3.0:  2.0:  2.0:
+                                 3.0:  3.0:  4.0:  4.0:  3.0:  4.0:  4.0:  3.0:
+                                 4.0:  3.0:  3.0:  4.0:  3.0:  3.0:  2.0:  2.0;
+enddef;
+*
+def VLBA_LA;
+     site_type = fixed;
+     site_name = VLBA_LA;
+     site_ID = La;
+*    elev= 1962.43 long= 106:14:44. lat= 35:46:30.4
+     site_position =-1449752.68140 m:-4975298.57780 m: 3709123.79710 m;
+     site_velocity = -0.014230   m/yr:  0.000450   m/yr: -0.005270  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+     horizon_map_az =  0.0 deg:  5.0: 75.0: 80.0: 85.0:130.0:135.0:145.0:150.0:
+                               250.0:255.0:300.0:305.0:315.0:320.0:340.0:345.0:
+                               360.0;
+     horizon_map_el =  2.0 deg:  2.0:  2.0:  3.0:  2.0:  2.0:  3.0:  3.0:  2.0:
+                                 2.0:  3.0:  3.0:  4.0:  4.0:  3.0:  3.0:  2.0:
+                                 2.0;
+enddef;
+*
+def VLBA_OV;
+     site_type = fixed;
+     site_name = VLBA_OV;
+     site_ID = Ov;
+*    elev= 1196.31 long= 118:16:37. lat= 37:13:53.9
+     site_position =-2409150.52770 m:-4478573.07980 m: 3838617.29990 m;
+     site_velocity = -0.018330   m/yr:  0.006500   m/yr: -0.003940  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+     horizon_map_az =  0.0 deg:  5.0: 10.0: 15.0: 20.0: 25.0: 30.0: 35.0: 40.0:
+                                45.0: 50.0: 60.0: 65.0: 70.0: 75.0: 80.0: 85.0:
+                                90.0: 95.0:100.0:105.0:110.0:115.0:120.0:125.0:
+                               130.0:145.0:150.0:155.0:175.0:180.0:185.0:190.0:
+                               195.0:200.0:205.0:210.0:230.0:235.0:240.0:245.0:
+                               250.0:260.0:265.0:270.0:280.0:285.0:290.0:295.0:
+                               300.0:305.0:310.0:350.0:355.0:360.0;
+     horizon_map_el =  3.0 deg:  5.0:  5.0:  7.0:  9.0: 10.0: 12.0: 13.0: 13.0:
+                                14.0: 15.0: 15.0: 13.0: 12.0: 11.0: 10.0:  9.0:
+                                 8.0:  7.0:  6.0:  6.0:  5.0:  4.0:  3.0:  3.0:
+                                 4.0:  4.0:  3.0:  2.0:  2.0:  3.0:  3.0:  4.0:
+                                 5.0:  5.0:  6.0:  7.0:  7.0:  6.0:  7.0:  8.0:
+                                 9.0:  9.0:  8.0:  7.0:  7.0:  5.0:  4.0:  4.0:
+                                 3.0:  3.0:  2.0:  2.0:  3.0:  3.0;
+enddef;
+*
+def VLBA_KP;
+     site_type = fixed;
+     site_name = VLBA_KP;
+     site_ID = Kp;
+*    elev= 1901.99 long= 111:36:44. lat= 31:57:22.7
+     site_position =-1995678.93100 m:-5037317.69820 m: 3357327.96450 m;
+     site_velocity = -0.013440   m/yr:  0.000670   m/yr: -0.006850  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+     horizon_map_az =  0.0 deg:  5.0: 45.0: 50.0: 55.0: 60.0: 65.0: 70.0: 75.0:
+                                80.0: 85.0: 90.0: 95.0:105.0:110.0:115.0:120.0:
+                               150.0:155.0:165.0:170.0:180.0:185.0:215.0:220.0:
+                               225.0:230.0:235.0:240.0:255.0:260.0:265.0:270.0:
+                               360.0;
+     horizon_map_el =  2.0 deg:  2.0:  2.0:  5.0:  6.0:  7.0:  7.0:  8.0:  8.0:
+                                 9.0:  6.0:  3.0:  2.0:  2.0:  3.0:  3.0:  2.0:
+                                 2.0:  3.0:  3.0:  2.0:  2.0:  3.0:  3.0:  4.0:
+                                 4.0:  5.0:  5.0:  4.0:  4.0:  3.0:  3.0:  2.0:
+                                 2.0;
+enddef;
+*
+def VLBA_BR;
+     site_type = fixed;
+     site_name = VLBA_BR;
+     site_ID = Br;
+*    elev=  250.47 long= 119:40:59. lat= 48:07:52.4
+     site_position =-2112065.30820 m:-3705356.51420 m: 4726813.61240 m;
+     site_velocity = -0.014730   m/yr:  0.000110   m/yr: -0.007690  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+     horizon_map_az =  0.0 deg:  5.0: 10.0: 15.0: 25.0: 30.0: 40.0: 45.0: 70.0:
+                                75.0:120.0:125.0:130.0:135.0:155.0:160.0:185.0:
+                               190.0:195.0:220.0:225.0:235.0:240.0:245.0:250.0:
+                               255.0:265.0:270.0:275.0:300.0:305.0:310.0:315.0:
+                               330.0:335.0:340.0:345.0:350.0:360.0;
+     horizon_map_el =  2.0 deg:  2.0:  3.0:  2.0:  2.0:  3.0:  3.0:  4.0:  4.0:
+                                 5.0:  5.0:  4.0:  4.0:  3.0:  3.0:  2.0:  2.0:
+                                 3.0:  4.0:  4.0:  3.0:  3.0:  4.0:  4.0:  5.0:
+                                 6.0:  6.0:  5.0:  6.0:  6.0:  5.0:  6.0:  5.0:
+                                 5.0:  4.0:  4.0:  3.0:  2.0:  2.0;
+enddef;
+*
+def LMT;
+     site_type = fixed;
+     site_name = LMT;
+     site_ID = Lm;
+*    elev= 4593.30 long= 097:18:53. lat= 18:59:08.8
+     site_position = -768715.63200 m:-5988507.07200 m: 2063354.85200 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2008y001d;
+     site_position_epoch =   54466;
+enddef;
+*
+def HAYSTACK;
+     site_type = fixed;
+     site_name = HAYSTACK;
+     site_ID = Hs;
+*    elev=  116.69 long= 071:29:17. lat= 42:37:23.9
+     site_position = 1492404.38830 m:-4457266.55690 m: 4296881.86980 m;
+     site_velocity = -0.015200   m/yr: -0.001360   m/yr:  0.004490  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+enddef;
+*
+def VLBA_MK;
+     site_type = fixed;
+     site_name = VLBA_MK;
+     site_ID = Mk;
+*    elev= 3763.00 long= 155:27:19. lat= 19:48:05.0
+     site_position =-5464075.27360 m:-2495247.68250 m: 2148297.56170 m;
+     site_velocity = -0.014020   m/yr:  0.062490   m/yr:  0.031830  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 2020y001d;
+     site_position_epoch =   58849;
+     horizon_map_az =  0.0 deg:  5.0: 10.0: 15.0: 20.0:120.0:125.0:130.0:135.0:
+                               140.0:145.0:150.0:155.0:160.0:165.0:170.0:175.0:
+                               185.0:190.0:195.0:200.0:205.0:210.0:215.0:220.0:
+                               255.0:260.0:270.0:275.0:280.0:285.0:290.0:295.0:
+                               300.0:305.0:310.0:315.0:320.0:325.0:330.0:335.0:
+                               340.0:345.0:350.0:355.0:360.0;
+     horizon_map_el =  5.0 deg:  4.0:  3.0:  3.0:  2.0:  2.0:  4.0:  5.0:  5.0:
+                                 4.0:  4.0:  6.0:  8.0:  8.0: 11.0: 12.0: 13.0:
+                                13.0: 11.0: 11.0:  9.0:  7.0:  5.0:  3.0:  2.0:
+                                 2.0:  3.0:  3.0:  5.0:  6.0:  8.0: 10.0: 12.0:
+                                14.0: 12.0: 11.0:  9.0: 10.0: 11.0: 10.0: 12.0:
+                                14.0: 12.0:  9.0:  7.0:  5.0;
+enddef;
+*
+def JCMT;
+     site_type = fixed;
+     site_name = JCMT;
+     site_ID = Mm;
+*    elev= 4120.05 long= 155:28:37. lat= 19:49:22.2
+     site_position =-5464584.67600 m:-2493001.17000 m: 2150653.98200 m;
+     site_velocity =  0.000000   m/yr:  0.000000   m/yr:  0.000000  m/yr;
+*    First line below is VEX standard format.  Use only when readers are ready.
+*    site_position_epoch = 1997y001d;
+     site_position_epoch =   50449;
+enddef;
+*------------------------------------------------------------------------------
+$ANTENNA;
+*
+def GBT_VLBA;
+     axis_type = az : el;
+     antenna_motion = el :  18.0 deg/min : 30 sec;  *    0.050 deg/sec/sec
+     antenna_motion = az :  36.0 deg/min : 30 sec;  *    0.050 deg/sec/sec
+     axis_offset =   -0.08300 m;
+enddef;
+*
+def ALMA;
+     axis_type = az : el;
+     antenna_motion = el : 150.0 deg/min : 10 sec;  *    9.000 deg/sec/sec
+     antenna_motion = az : 300.0 deg/min : 10 sec;  *   18.000 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*
+def APEX;
+     axis_type = az : el;
+     antenna_motion = el :  60.0 deg/min : 20 sec;  * 1000.000 deg/sec/sec
+     antenna_motion = az :  60.0 deg/min : 20 sec;  * 1000.000 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*
+def VLBA_NL;
+     axis_type = az : el;
+     antenna_motion = el :  28.7 deg/min :  6 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  82.5 deg/min :  6 sec;  *    0.750 deg/sec/sec
+     pointing_sector = &ccw  : az : -90.00 deg:  90.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 1
+     pointing_sector = &n    : az :  90.00 deg: 270.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 2
+     pointing_sector = &cw   : az : 270.00 deg: 450.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 3
+     axis_offset =    2.13080 m;
+enddef;
+*
+def VLBA_FD;
+     axis_type = az : el;
+     antenna_motion = el :  30.5 deg/min :  6 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  84.3 deg/min :  6 sec;  *    0.750 deg/sec/sec
+     pointing_sector = &ccw  : az : -90.00 deg:  90.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 1
+     pointing_sector = &n    : az :  90.00 deg: 270.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 2
+     pointing_sector = &cw   : az : 270.00 deg: 450.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 3
+     axis_offset =    2.13170 m;
+enddef;
+*
+def VLBA_PT;
+     axis_type = az : el;
+     antenna_motion = el :  29.3 deg/min :  6 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  82.3 deg/min :  6 sec;  *    0.750 deg/sec/sec
+     pointing_sector = &ccw  : az : -90.00 deg:  90.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 1
+     pointing_sector = &n    : az :  90.00 deg: 270.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 2
+     pointing_sector = &cw   : az : 270.00 deg: 450.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 3
+     axis_offset =    2.13750 m;
+enddef;
+*
+def VLBA_LA;
+     axis_type = az : el;
+     antenna_motion = el :  29.5 deg/min :  6 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  82.0 deg/min :  6 sec;  *    0.750 deg/sec/sec
+     pointing_sector = &ccw  : az : -90.00 deg:  90.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 1
+     pointing_sector = &n    : az :  90.00 deg: 270.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 2
+     pointing_sector = &cw   : az : 270.00 deg: 450.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 3
+     axis_offset =    2.13100 m;
+enddef;
+*
+def VLBA_OV;
+     axis_type = az : el;
+     antenna_motion = el :  28.7 deg/min :  6 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  84.5 deg/min :  6 sec;  *    0.750 deg/sec/sec
+     pointing_sector = &ccw  : az : -90.00 deg:  90.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 1
+     pointing_sector = &n    : az :  90.00 deg: 270.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 2
+     pointing_sector = &cw   : az : 270.00 deg: 450.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 3
+     axis_offset =    2.13090 m;
+enddef;
+*
+def VLBA_KP;
+     axis_type = az : el;
+     antenna_motion = el :  29.4 deg/min :  6 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  80.8 deg/min :  6 sec;  *    0.750 deg/sec/sec
+     pointing_sector = &ccw  : az : -90.00 deg:  90.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 1
+     pointing_sector = &n    : az :  90.00 deg: 270.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 2
+     pointing_sector = &cw   : az : 270.00 deg: 450.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 3
+     axis_offset =    2.13090 m;
+enddef;
+*
+def VLBA_BR;
+     axis_type = az : el;
+     antenna_motion = el :  29.0 deg/min :  6 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  83.6 deg/min :  6 sec;  *    0.750 deg/sec/sec
+     pointing_sector = &ccw  : az : -90.00 deg:  90.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 1
+     pointing_sector = &n    : az :  90.00 deg: 270.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 2
+     pointing_sector = &cw   : az : 270.00 deg: 450.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 3
+     axis_offset =    2.13040 m;
+enddef;
+*
+def LMT;
+     axis_type = az : el;
+     antenna_motion = el :  60.0 deg/min : 30 sec;  *    1.000 deg/sec/sec
+     antenna_motion = az :  42.0 deg/min : 30 sec;  *    0.500 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*
+def HAYSTACK;
+     axis_type = az : el;
+     antenna_motion = el :  29.3 deg/min : 20 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  82.3 deg/min : 20 sec;  *    0.750 deg/sec/sec
+     axis_offset =    0.00140 m;
+enddef;
+*
+def VLBA_MK;
+     axis_type = az : el;
+     antenna_motion = el :  28.3 deg/min :  6 sec;  *    0.250 deg/sec/sec
+     antenna_motion = az :  86.8 deg/min :  6 sec;  *    0.750 deg/sec/sec
+     pointing_sector = &ccw  : az : -90.00 deg:  90.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 1
+     pointing_sector = &n    : az :  90.00 deg: 270.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 2
+     pointing_sector = &cw   : az : 270.00 deg: 450.00 deg: el :  2.25 deg: 90.00 deg; * cable wrap zone 3
+     axis_offset =    2.13360 m;
+enddef;
+*
+def JCMT;
+     axis_type = az : el;
+     antenna_motion = el :  42.0 deg/min : 30 sec;  * 1000.000 deg/sec/sec
+     antenna_motion = az :  66.0 deg/min : 30 sec;  * 1000.000 deg/sec/sec
+     axis_offset =    0.00000 m;
+enddef;
+*------------------------------------------------------------------------------
+$DAS;
+*
+def 2RDBE2+NONE<;
+     record_transport_type = Mark6;
+     electronics_rack_type = RDBE2;
+     number_drives = 2;
+     headstack = 1 :            : 0 ;
+     headstack = 2 :            : 1 ;
+     tape_motion = adaptive : 0 min: 0 min: 10 sec;
+enddef;
+*
+def 2NONE<;
+     record_transport_type = Mark6;
+     electronics_rack_type = none;
+     number_drives = 2;
+     headstack = 1 :            : 0 ;
+     headstack = 2 :            : 1 ;
+     tape_motion = adaptive : 0 min: 0 min: 10 sec;
+enddef;
+*
+def 2NONE<#02;
+     record_transport_type = Mark6;
+     electronics_rack_type = none;
+     number_drives = 2;
+     headstack = 1 :            : 0 ;
+     headstack = 2 :            : 1 ;
+     tape_motion = adaptive : 0 min: 0 min: 10 sec;
+enddef;
+*------------------------------------------------------------------------------
+$SOURCE;
+*
+def SGR_A;
+     source_name = SGR_A;
+*    this source had calibrator code:  
+     ra = 17h45m40.0315360s; dec = -29d00'28.277860"; ref_coord_frame = J2000;
+*    ra = 17h42m29.3004972s; dec = -28d59'18.692500"; ref_coord_frame = B1950;
+*    ra = 17h47m21.6316016s; dec = -29d01'06.488215"; ref_coord_frame = Date;
+enddef;
+*
+def IRS7;
+     source_name = IRS7;
+*    this source had calibrator code:  
+     ra = 17h45m40.0338510s; dec = -29d00'22.831416"; ref_coord_frame = J2000;
+*    ra = 17h42m29.3051124s; dec = -28d59'13.246310"; ref_coord_frame = B1950;
+*    ra = 17h47m21.6326889s; dec = -29d01'01.042154"; ref_coord_frame = Date;
+enddef;
+*
+def P-HALF;
+     source_name = P-HALF;
+*    this source had calibrator code:  
+     ra = 17h45m40.0326935s; dec = -29d00'25.554638"; ref_coord_frame = J2000;
+*    ra = 17h42m29.3028048s; dec = -28d59'15.969405"; ref_coord_frame = B1950;
+*    ra = 17h47m21.6321452s; dec = -29d01'03.765185"; ref_coord_frame = Date;
+enddef;
+*
+def 1741-038;
+     source_name = 1741-038;
+*    this source had calibrator code: V
+*    alternate source name: J1743-0350
+*    alternate source name: J174358.8-03
+*    alternate source name: OT068
+*    ICRF3 X/S astro solution, 235088 observations.
+     ra = 17h43m58.8561354s; dec = -03d50'04.616733"; ref_coord_frame = J2000;
+*    ra = 17h41m20.6160110s; dec = -03d48'48.899934"; ref_coord_frame = B1950;
+*    ra = 17h45m23.1996251s; dec = -03d50'54.416578"; ref_coord_frame = Date;
+enddef;
+*
+def 1749+096;
+     source_name = 1749+096;
+*    this source had calibrator code: V
+*    alternate source name: J1751+0939
+*    alternate source name: J175132.8+09
+*    alternate source name: OT081
+*    ICRF3 X/S astro solution, 205810 observations.
+     ra = 17h51m32.8185733s; dec =  09d39'00.728407"; ref_coord_frame = J2000;
+*    ra = 17h49m10.3879302s; dec =  09d39'42.825854"; ref_coord_frame = B1950;
+*    ra = 17h52m48.7832123s; dec =  09d38'24.602243"; ref_coord_frame = Date;
+enddef;
+*
+def 1921-293;
+     source_name = 1921-293;
+*    this source had calibrator code: V
+*    alternate source name: J1924-2914
+*    alternate source name: J192451.0-29
+*    ICRF3 X/S astro solution,  67286 observations.
+     ra = 19h24m51.0559525s; dec = -29d14'30.121025"; ref_coord_frame = J2000;
+*    ra = 19h21m42.2341256s; dec = -29d20'26.353927"; ref_coord_frame = B1950;
+*    ra = 19h26m31.0485943s; dec = -29d11'21.630302"; ref_coord_frame = Date;
+enddef;
+*
+def 3C454.3;
+     source_name = 3C454.3;
+*    this source had calibrator code: V
+*    alternate source name: J2253+1608
+*    alternate source name: 2251+158
+*    alternate source name: J225357.7+16
+*    ICRF3 X/S astro solution,  37263 observations.
+     ra = 22h53m57.7479401s; dec =  16d08'53.560881"; ref_coord_frame = J2000;
+*    ra = 22h51m29.5197407s; dec =  15d52'54.348052"; ref_coord_frame = B1950;
+*    ra = 22h55m15.0479186s; dec =  16d17'08.407917"; ref_coord_frame = Date;
+enddef;
+*
+def P-WHYA;
+     source_name = P-WHYA;
+*    this source had calibrator code: L
+*    alternate source name: WHYA
+*    alternate source name: SIO-WHYA
+*    MOPRA position and spectrum
+     ra = 13h49m01.9200000s; dec = -28d22'03.360000"; ref_coord_frame = J2000;
+*    ra = 13h46m11.9088383s; dec = -28d07'09.561712"; ref_coord_frame = B1950;
+*    ra = 13h50m33.1300521s; dec = -28d30'04.028863"; ref_coord_frame = Date;
+*    velocity_wrt_LSR =      44.00 km/sec; * warning, only given here for 1st channel
+*    calculations used radio definition 
+enddef;
+*
+def P-UHER;
+     source_name = P-UHER;
+*    this source had calibrator code: L
+*    alternate source name: SIO-UHER
+*    MOPRA position and spectrum
+     ra = 16h25m47.6400000s; dec =  18d53'33.000000"; ref_coord_frame = J2000;
+*    ra = 16h23m34.8371971s; dec =  19d00'17.765498"; ref_coord_frame = B1950;
+*    ra = 16h26m58.9936727s; dec =  18d49'44.796070"; ref_coord_frame = Date;
+*    velocity_wrt_LSR =     -15.00 km/sec; * warning, only given here for 1st channel
+*    calculations used radio definition 
+enddef;
+*
+def P-AHSCO;
+     source_name = P-AHSCO;
+*    this source had calibrator code: L
+*    sest.
+     ra = 17h11m17.1600000s; dec = -32d19'30.720000"; ref_coord_frame = J2000;
+*    ra = 17h08m02.1581989s; dec = -32d15'52.321148"; ref_coord_frame = B1950;
+*    ra = 17h13m01.2294159s; dec = -32d21'27.349712"; ref_coord_frame = Date;
+*    velocity_wrt_LSR =     -13.50 km/sec; * warning, only given here for 1st channel
+*    calculations used radio definition 
+enddef;
+*
+def P-VXSGR;
+     source_name = P-VXSGR;
+*    this source had calibrator code: L
+*    alternate source name: SIO-VXSGR
+*    alternate source name: VXSGRSIO
+*    Sest vel 2MHz BW, proper motion corrected pos. from Lynn
+     ra = 18h08m04.0465000s; dec = -22d13'26.624600"; ref_coord_frame = J2000;
+*    ra = 18h05m02.9658175s; dec = -22d13'55.302618"; ref_coord_frame = B1950;
+*    ra = 18h09m40.3820353s; dec = -22d13'14.861947"; ref_coord_frame = Date;
+*    velocity_wrt_LSR =       8.00 km/sec; * warning, only given here for 1st channel
+*    calculations used radio definition 
+enddef;
+*
+def P-RAQL;
+     source_name = P-RAQL;
+*    this source had calibrator code: L
+*     sest.
+     ra = 19h06m22.3200000s; dec =  08d13'48.000000"; ref_coord_frame = J2000;
+*    ra = 19h03m57.7621821s; dec =  08d09'06.847372"; ref_coord_frame = B1950;
+*    ra = 19h07m38.9696372s; dec =  08d16'02.862794"; ref_coord_frame = Date;
+*    velocity_wrt_LSR =      47.00 km/sec; * warning, only given here for 1st channel
+*    calculations used radio definition 
+enddef;
+*
+def P-RRAQL;
+     source_name = P-RRAQL;
+*    this source had calibrator code: L
+*    Sest vel., proper motion corrected pos. from Lynn
+     ra = 19h57m36.0314000s; dec = -01d53'12.401200"; ref_coord_frame = J2000;
+*    ra = 19h55m00.2518927s; dec = -02d01'19.432804"; ref_coord_frame = B1950;
+*    ra = 19h58m58.3207757s; dec = -01d49'04.925382"; ref_coord_frame = Date;
+*    velocity_wrt_LSR =      30.00 km/sec; * warning, only given here for 1st channel
+*    calculations used radio definition 
+enddef;
+*
+def P-RCAS;
+     source_name = P-RCAS;
+*    this source had calibrator code: L
+*    alternate source name: RCAS
+*    alternate source name: SIO-RCAS
+*    Also not in P-, but is used in startup pointing. prop. motion corrected position
+     ra = 23h58m25.0653000s; dec =  51d23'20.102200"; ref_coord_frame = J2000;
+*    ra = 23h55m52.3293300s; dec =  51d06'38.290787"; ref_coord_frame = B1950;
+*    ra = 23h59m43.6728150s; dec =  51d31'57.035096"; ref_coord_frame = Date;
+*    velocity_wrt_LSR =      24.00 km/sec; * warning, only given here for 1st channel
+*    calculations used radio definition 
+enddef;
+*
+def DR21;
+     source_name = DR21;
+*    this source had calibrator code:  
+*    Revised VLA position at 7mm from Araya+ 2009
+     ra = 20h39m01.0200000s; dec =  42d22'48.800000"; ref_coord_frame = J2000;
+*    ra = 20h37m14.1007242s; dec =  42d12'11.026368"; ref_coord_frame = B1950;
+*    ra = 20h39m56.9318324s; dec =  42d28'03.661181"; ref_coord_frame = Date;
+enddef;
+*------------------------------------------------------------------------------
+$FREQ;
+*
+def 86012.00MHz8x128MHz;
+* mode =  1    stations =Gb:Aa:Nl:Fd:Pt:La:Ov:Kp:Br:Lm:Hs:Mk:Mm
+     sample_rate =   256.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 86012.00 MHz : U : 128.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 86012.00 MHz : U : 128.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 86140.00 MHz : U : 128.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 86140.00 MHz : U : 128.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+     chan_def = : 86268.00 MHz : U : 128.00 MHz : &CH05 : &BBC05 : &NoCal; *Rcp
+     chan_def = : 86268.00 MHz : U : 128.00 MHz : &CH06 : &BBC06 : &NoCal; *Lcp
+     chan_def = : 86396.00 MHz : U : 128.00 MHz : &CH07 : &BBC07 : &NoCal; *Rcp
+     chan_def = : 86396.00 MHz : U : 128.00 MHz : &CH08 : &BBC08 : &NoCal; *Lcp
+enddef;
+*
+def 86076.00MHz16x64MHz;
+* mode =  1    stations =Ax
+     sample_rate =   128.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 86076.00 MHz : U :  64.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 86204.00 MHz : U :  64.00 MHz : &CH02 : &BBC02 : &NoCal; *Rcp
+     chan_def = : 86332.00 MHz : U :  64.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 86460.00 MHz : U :  64.00 MHz : &CH04 : &BBC04 : &NoCal; *Rcp
+     chan_def = : 86076.00 MHz : U :  64.00 MHz : &CH05 : &BBC09 : &NoCal; *Lcp
+     chan_def = : 86204.00 MHz : U :  64.00 MHz : &CH06 : &BBC10 : &NoCal; *Lcp
+     chan_def = : 86332.00 MHz : U :  64.00 MHz : &CH07 : &BBC11 : &NoCal; *Lcp
+     chan_def = : 86460.00 MHz : U :  64.00 MHz : &CH08 : &BBC12 : &NoCal; *Lcp
+     chan_def = : 86076.00 MHz : L :  64.00 MHz : &CH09 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 86204.00 MHz : L :  64.00 MHz : &CH10 : &BBC02 : &NoCal; *Rcp
+     chan_def = : 86332.00 MHz : L :  64.00 MHz : &CH11 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 86460.00 MHz : L :  64.00 MHz : &CH12 : &BBC04 : &NoCal; *Rcp
+     chan_def = : 86076.00 MHz : L :  64.00 MHz : &CH13 : &BBC09 : &NoCal; *Lcp
+     chan_def = : 86204.00 MHz : L :  64.00 MHz : &CH14 : &BBC10 : &NoCal; *Lcp
+     chan_def = : 86332.00 MHz : L :  64.00 MHz : &CH15 : &BBC11 : &NoCal; *Lcp
+     chan_def = : 86460.00 MHz : L :  64.00 MHz : &CH16 : &BBC12 : &NoCal; *Lcp
+enddef;
+*
+def 43115.75MHz2x64MHz;
+* mode =  2    stations =Ov
+     sample_rate =   128.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43115.75 MHz : U :  64.00 MHz : &CH01 : &BBC01 : &U_Cal; *Rcp
+     chan_def = : 43115.75 MHz : U :  64.00 MHz : &CH02 : &BBC02 : &U_Cal; *Lcp
+enddef;
+*
+def 43115.75MHz4x2MHz;
+* mode =  3    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43115.75 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &U_Cal; *Rcp
+     chan_def = : 43115.75 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &U_Cal; *Lcp
+     chan_def = : 43215.75 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &U_Cal; *Rcp
+     chan_def = : 43215.75 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &U_Cal; *Lcp
+enddef;
+*
+def 43127.453125MHz4x2MHz;
+* mode =  4    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43127.453125 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 43127.453125 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 43227.46875 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 43227.46875 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+enddef;
+*
+def 43127.453125MHz4x2MHz#02;
+* mode =  5    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43127.453125 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 43127.453125 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 43227.46875 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 43227.46875 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+enddef;
+*
+def 43115.375MHz4x2MHz;
+* mode =  6    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43115.375 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 43115.375 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 43215.359375 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 43215.359375 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+enddef;
+*
+def 43120.453125MHz4x2MHz;
+* mode =  7    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43120.453125 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 43120.453125 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 43220.453125 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 43220.453125 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+enddef;
+*
+def 43125.390625MHz4x2MHz;
+* mode =  8    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43125.390625 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 43125.390625 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 43225.40625 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 43225.40625 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+enddef;
+*
+def 43125.390625MHz4x2MHz#02;
+* mode =  9    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43125.390625 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 43125.390625 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 43225.40625 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 43225.40625 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+enddef;
+*
+def 43118.9375MHz4x2MHz;
+* mode = 10    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43118.9375 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 43118.9375 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 43218.9375 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 43218.9375 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+enddef;
+*
+def 43118.9375MHz4x2MHz#02;
+* mode = 11    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43118.9375 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 43118.9375 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 43218.9375 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 43218.9375 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+enddef;
+*
+def 43122.90625MHz4x2MHz;
+* mode = 12    stations =Ov:Br:Mk
+     sample_rate =     4.000 Ms/sec;  * (2bits/sample)
+     chan_def = : 43122.90625 MHz : U :   2.00 MHz : &CH01 : &BBC01 : &NoCal; *Rcp
+     chan_def = : 43122.90625 MHz : U :   2.00 MHz : &CH02 : &BBC02 : &NoCal; *Lcp
+     chan_def = : 43222.90625 MHz : U :   2.00 MHz : &CH03 : &BBC03 : &NoCal; *Rcp
+     chan_def = : 43222.90625 MHz : U :   2.00 MHz : &CH04 : &BBC04 : &NoCal; *Lcp
+enddef;
+*------------------------------------------------------------------------------
+$IF;
+*
+def LO@85500MHzDPolNoTone;
+* mode =  1    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_B : B : R : 85500.00 MHz : U ; * PCall off!   12900.00   4900.00  3mm 72600 NA
+     if_def = &IF_D : D : L : 85500.00 MHz : U ; * PCall off!   12900.00   4900.00  3mm 72600 NA
+enddef;
+*
+def LO@85500MHzDPolNoTone#02;
+* mode =  1    stations =Gb
+     if_def = &IF_A : A : R : 85500.00 MHz : U ; * PCall off!   0.0   0.0  3mm     0 NA
+     if_def = &IF_C : C : L : 85500.00 MHz : U ; * PCall off!   0.0   0.0  3mm     0 NA
+enddef;
+*
+def LO@85500MHzDPolNoTone#03;
+* mode =  1    stations =Lm:Hs:Mm
+     if_def = &IF_A : A : R : 85500.00 MHz : U ; * PCall off!   0.0   0.0  omit     0 NA
+     if_def = &IF_C : C : L : 85500.00 MHz : U ; * PCall off!   0.0   0.0  omit     0 NA
+enddef;
+*
+def LO@85500MHzDPolNoTone#04;
+* mode =  1    stations =Aa
+     if_def = &IF_A1 : A1 : R : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+     if_def = &IF_B1 : B1 : L : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+enddef;
+*
+def LO@85500MHzDPolNoTone#05;
+* mode =  1    stations =Ax
+     if_def = &IF_A1 : A1 : R : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+     if_def = &IF_B4 : B4 : L : 85500.00 MHz : U ; * PCall off!   0.0   0.0  NA     0 NA
+enddef;
+*
+def LO@42400MHzDPolTone/1;
+* mode =  2    stations =Ov
+* mode =  3    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U : 1 MHz ; *    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U : 1 MHz ; *    3900.00   7600.00  7mm 34800 NA
+enddef;
+*
+def LO@42400MHzDPolNoTone;
+* mode =  4    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+enddef;
+*
+def LO@42400MHzDPolNoTone#02;
+* mode =  5    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+enddef;
+*
+def LO@42400MHzDPolNoTone#03;
+* mode =  6    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+enddef;
+*
+def LO@42400MHzDPolNoTone#04;
+* mode =  7    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+enddef;
+*
+def LO@42400MHzDPolNoTone#05;
+* mode =  8    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+enddef;
+*
+def LO@42400MHzDPolNoTone#06;
+* mode =  9    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+enddef;
+*
+def LO@42400MHzDPolNoTone#07;
+* mode = 10    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+enddef;
+*
+def LO@42400MHzDPolNoTone#08;
+* mode = 11    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+enddef;
+*
+def LO@42400MHzDPolNoTone#09;
+* mode = 12    stations =Ov:Br:Mk
+     if_def = &IF_A : A : R : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+     if_def = &IF_C : C : L : 42400.00 MHz : U ; * PCall off!    3900.00   7600.00  7mm 34800 NA
+enddef;
+*------------------------------------------------------------------------------
+$BBC;
+*
+def 8BBCs;
+* mode =  1    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     BBC_assign = &BBC01 :  1 : &IF_B;
+     BBC_assign = &BBC02 :  2 : &IF_D;
+     BBC_assign = &BBC03 :  3 : &IF_B;
+     BBC_assign = &BBC04 :  4 : &IF_D;
+     BBC_assign = &BBC05 :  5 : &IF_B;
+     BBC_assign = &BBC06 :  6 : &IF_D;
+     BBC_assign = &BBC07 :  7 : &IF_B;
+     BBC_assign = &BBC08 :  8 : &IF_D;
+enddef;
+*
+def 8BBCs#02;
+* mode =  1    stations =Gb:Lm:Hs:Mm
+     BBC_assign = &BBC01 :  1 : &IF_A;
+     BBC_assign = &BBC02 :  2 : &IF_C;
+     BBC_assign = &BBC03 :  3 : &IF_A;
+     BBC_assign = &BBC04 :  4 : &IF_C;
+     BBC_assign = &BBC05 :  5 : &IF_A;
+     BBC_assign = &BBC06 :  6 : &IF_C;
+     BBC_assign = &BBC07 :  7 : &IF_A;
+     BBC_assign = &BBC08 :  8 : &IF_C;
+enddef;
+*
+def 8BBCs#03;
+* mode =  1    stations =Aa
+     BBC_assign = &BBC01 :  1 : &IF_A1;
+     BBC_assign = &BBC02 :  2 : &IF_B1;
+     BBC_assign = &BBC03 :  3 : &IF_A1;
+     BBC_assign = &BBC04 :  4 : &IF_B1;
+     BBC_assign = &BBC05 :  5 : &IF_A1;
+     BBC_assign = &BBC06 :  6 : &IF_B1;
+     BBC_assign = &BBC07 :  7 : &IF_A1;
+     BBC_assign = &BBC08 :  8 : &IF_B1;
+enddef;
+*
+def 16BBCs;
+* mode =  1    stations =Ax
+     BBC_assign = &BBC01 :  1 : &IF_A1;
+     BBC_assign = &BBC02 :  2 : &IF_A1;
+     BBC_assign = &BBC03 :  3 : &IF_A1;
+     BBC_assign = &BBC04 :  4 : &IF_A1;
+     BBC_assign = &BBC09 :  9 : &IF_B4;
+     BBC_assign = &BBC10 : 10 : &IF_B4;
+     BBC_assign = &BBC11 : 11 : &IF_B4;
+     BBC_assign = &BBC12 : 12 : &IF_B4;
+enddef;
+*
+def 2BBCs;
+* mode =  2    stations =Ov
+     BBC_assign = &BBC01 :  1 : &IF_A;
+     BBC_assign = &BBC02 :  2 : &IF_C;
+enddef;
+*
+def 4BBCs;
+* mode =  3    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  4    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  5    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  6    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  7    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  8    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  9    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 10    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 11    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 12    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     BBC_assign = &BBC01 :  1 : &IF_A;
+     BBC_assign = &BBC02 :  2 : &IF_C;
+     BBC_assign = &BBC03 :  3 : &IF_A;
+     BBC_assign = &BBC04 :  4 : &IF_C;
+enddef;
+*------------------------------------------------------------------------------
+$PHASE_CAL_DETECT;
+*
+def NoDetect;
+* mode =  1    stations =Gb:Aa:Nl:Fd:Pt:La:Ov:Kp:Br:Lm:Hs:Mk:Mm
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#02;
+* mode =  1    stations =Ax
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def UsbDetect;
+* mode =  2    stations =Ov
+     phase_cal_detect = &U_Cal :  1 : 64 :  0 :  2;
+enddef;
+*
+def UsbDetect#02;
+* mode =  3    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     phase_cal_detect = &U_Cal :  1 :  2 :  0;
+enddef;
+*
+def NoDetect#03;
+* mode =  4    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#04;
+* mode =  5    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#05;
+* mode =  6    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#06;
+* mode =  7    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#07;
+* mode =  8    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#08;
+* mode =  9    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#09;
+* mode = 10    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#10;
+* mode = 11    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+     phase_cal_detect = &NoCal;
+enddef;
+*
+def NoDetect#11;
+* mode = 12    stations =Ov:Br:Mk
+     phase_cal_detect = &NoCal;
+enddef;
+*------------------------------------------------------------------------------
+$TRACKS;
+*
+def VDIF.8Ch2bit1to1;
+* mode =  1    stations =Gb:Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+*    firmware_type = RDBE_DDC;
+*    format = VDIF, and fan-out = 1
+*    mode requires 256.00Mb/s/tr; stations using disks
+     track_frame_format = VDIF5032;
+     fanout_def =   : &CH01 : sign : 1:  1;
+     fanout_def =   : &CH01 :  mag : 1:  1;
+     fanout_def =   : &CH02 : sign : 1:  2;
+     fanout_def =   : &CH02 :  mag : 1:  2;
+     fanout_def =   : &CH03 : sign : 1:  3;
+     fanout_def =   : &CH03 :  mag : 1:  3;
+     fanout_def =   : &CH04 : sign : 1:  4;
+     fanout_def =   : &CH04 :  mag : 1:  4;
+     fanout_def =   : &CH05 : sign : 1:  5;
+     fanout_def =   : &CH05 :  mag : 1:  5;
+     fanout_def =   : &CH06 : sign : 1:  6;
+     fanout_def =   : &CH06 :  mag : 1:  6;
+     fanout_def =   : &CH07 : sign : 1:  7;
+     fanout_def =   : &CH07 :  mag : 1:  7;
+     fanout_def =   : &CH08 : sign : 1:  8;
+     fanout_def =   : &CH08 :  mag : 1:  8;
+enddef;
+*
+def VDIF.8Ch2bit1to1#02;
+* mode =  1    stations =Aa:Lm:Hs:Mm
+*    format = VDIF, and fan-out = 1
+*    mode requires 256.00Mb/s/tr; stations using disks
+     track_frame_format = VDIF5032;
+     fanout_def =   : &CH01 : sign : 1:  1;
+     fanout_def =   : &CH01 :  mag : 1:  1;
+     fanout_def =   : &CH02 : sign : 1:  2;
+     fanout_def =   : &CH02 :  mag : 1:  2;
+     fanout_def =   : &CH03 : sign : 1:  3;
+     fanout_def =   : &CH03 :  mag : 1:  3;
+     fanout_def =   : &CH04 : sign : 1:  4;
+     fanout_def =   : &CH04 :  mag : 1:  4;
+     fanout_def =   : &CH05 : sign : 1:  5;
+     fanout_def =   : &CH05 :  mag : 1:  5;
+     fanout_def =   : &CH06 : sign : 1:  6;
+     fanout_def =   : &CH06 :  mag : 1:  6;
+     fanout_def =   : &CH07 : sign : 1:  7;
+     fanout_def =   : &CH07 :  mag : 1:  7;
+     fanout_def =   : &CH08 : sign : 1:  8;
+     fanout_def =   : &CH08 :  mag : 1:  8;
+enddef;
+*
+def VDIF.16Ch2bit1to1;
+* mode =  1    stations =Ax
+*    format = VDIF, and fan-out = 1
+*    mode requires 128.00Mb/s/tr; stations using disks
+     track_frame_format = VDIF5032;
+     fanout_def =   : &CH01 : sign : 1:  1;
+     fanout_def =   : &CH01 :  mag : 1:  1;
+     fanout_def =   : &CH02 : sign : 1:  2;
+     fanout_def =   : &CH02 :  mag : 1:  2;
+     fanout_def =   : &CH03 : sign : 1:  3;
+     fanout_def =   : &CH03 :  mag : 1:  3;
+     fanout_def =   : &CH04 : sign : 1:  4;
+     fanout_def =   : &CH04 :  mag : 1:  4;
+     fanout_def =   : &CH05 : sign : 1:  5;
+     fanout_def =   : &CH05 :  mag : 1:  5;
+     fanout_def =   : &CH06 : sign : 1:  6;
+     fanout_def =   : &CH06 :  mag : 1:  6;
+     fanout_def =   : &CH07 : sign : 1:  7;
+     fanout_def =   : &CH07 :  mag : 1:  7;
+     fanout_def =   : &CH08 : sign : 1:  8;
+     fanout_def =   : &CH08 :  mag : 1:  8;
+     fanout_def =   : &CH09 : sign : 1:  9;
+     fanout_def =   : &CH09 :  mag : 1:  9;
+     fanout_def =   : &CH10 : sign : 1: 10;
+     fanout_def =   : &CH10 :  mag : 1: 10;
+     fanout_def =   : &CH11 : sign : 1: 11;
+     fanout_def =   : &CH11 :  mag : 1: 11;
+     fanout_def =   : &CH12 : sign : 1: 12;
+     fanout_def =   : &CH12 :  mag : 1: 12;
+     fanout_def =   : &CH13 : sign : 1: 13;
+     fanout_def =   : &CH13 :  mag : 1: 13;
+     fanout_def =   : &CH14 : sign : 1: 14;
+     fanout_def =   : &CH14 :  mag : 1: 14;
+     fanout_def =   : &CH15 : sign : 1: 15;
+     fanout_def =   : &CH15 :  mag : 1: 15;
+     fanout_def =   : &CH16 : sign : 1: 16;
+     fanout_def =   : &CH16 :  mag : 1: 16;
+enddef;
+*
+def VDIF.2Ch2bit1to1;
+* mode =  2    stations =Ov
+*    firmware_type = RDBE_DDC;
+*    format = VDIF, and fan-out = 1
+*    mode requires 128.00Mb/s/tr; stations using disks
+     track_frame_format = VDIF5032;
+     fanout_def =   : &CH01 : sign : 1:  1;
+     fanout_def =   : &CH01 :  mag : 1:  1;
+     fanout_def =   : &CH02 : sign : 1:  2;
+     fanout_def =   : &CH02 :  mag : 1:  2;
+enddef;
+*
+def VDIF.4Ch2bit1to1;
+* mode =  3    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  4    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  5    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  6    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  7    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  8    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  9    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 10    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 11    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 12    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+*    firmware_type = RDBE_DDC;
+*    format = VDIF, and fan-out = 1
+*    mode requires   4.00Mb/s/tr; stations using disks
+     track_frame_format = VDIF5032;
+     fanout_def =   : &CH01 : sign : 1:  1;
+     fanout_def =   : &CH01 :  mag : 1:  1;
+     fanout_def =   : &CH02 : sign : 1:  2;
+     fanout_def =   : &CH02 :  mag : 1:  2;
+     fanout_def =   : &CH03 : sign : 1:  3;
+     fanout_def =   : &CH03 :  mag : 1:  3;
+     fanout_def =   : &CH04 : sign : 1:  4;
+     fanout_def =   : &CH04 :  mag : 1:  4;
+enddef;
+*------------------------------------------------------------------------------
+$HEAD_POS;
+def DiskVoid;
+* mode =  1    stations =Gb:Aa:Ax:Nl:Fd:Pt:La:Ov:Kp:Br:Lm:Hs:Mk:Mm
+* mode =  2    stations =Ov
+* mode =  3    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  4    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  5    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  6    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  7    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  8    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  9    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 10    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 11    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 12    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+*     Head positions irrelevant for Disk: empty def
+enddef;
+*------------------------------------------------------------------------------
+$PASS_ORDER;
+*
+def DiskVoid;
+* mode =  1    stations =Gb:Aa:Ax:Nl:Fd:Pt:La:Ov:Kp:Br:Lm:Hs:Mk:Mm
+* mode =  2    stations =Ov
+* mode =  3    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  4    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  5    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  6    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  7    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  8    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  9    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 10    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 11    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 12    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+*     Pass orders irrelevant for Disk: empty def
+enddef;
+*------------------------------------------------------------------------------
+$ROLL;
+*
+def NoRoll;
+* mode =  1    stations =Gb:Aa:Ax:Nl:Fd:Pt:La:Ov:Kp:Br:Lm:Hs:Mk:Mm
+* mode =  2    stations =Ov
+* mode =  3    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  4    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  5    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  6    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  7    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  8    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode =  9    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 10    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 11    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+* mode = 12    stations =Nl:Fd:Pt:La:Ov:Kp:Br:Mk
+*    barrel-roll set to 'roll_off', so reverse-roll by  0 (1 head)
+     roll = off;
+enddef;
+*------------------------------------------------------------------------------
+$SCHED;
+* schedule section for experiment mj008b          
+* GMVA Apr. 2026                                                          
+scan No0081;
+*     Note a COMMENT was inserted during scheduling: 
+*       GBT pointing scan.
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d06h48m00s; mode=86ghz; source=1749+096;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Gb:    0 sec:  390 sec:       0.000 GB:   : &n    : 0;
+endscan;
+scan No0082;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:PROJECT_FIRST_SCAN:mj008b"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d06h53m40s; mode=Doppler@P-UHER; source=P-UHER;
+     station=Nl:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+endscan;
+scan No0083;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:PROJECT_FIRST_SCAN:mj008b"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d06h56m26s; mode=Doppler@P-UHER; source=P-UHER;
+     station=Nl:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+endscan;
+scan No0084;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:PROJECT_FIRST_SCAN:mj008b"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d06h53m40s; mode=Doppler@P-UHER#02; source=P-UHER;
+     station=Ov:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+endscan;
+scan No0085;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:PROJECT_FIRST_SCAN:mj008b"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d06h56m26s; mode=Doppler@P-UHER#02; source=P-UHER;
+     station=Ov:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:       0.000 GB:   : &n    : 0;
+endscan;
+scan No0086;
+*     Note a COMMENT was inserted during scheduling: 
+*       ALMA 1st SB
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:PROJECT_FIRST_SCAN:mj008b"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h00m00s; mode=86ghz; source=1749+096;
+     station=Gb:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=Aa:    0 sec:  300 sec:       0.000 GB:   : &ccw  : 1;
+     station=Ax:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=Nl:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=Fd:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=Pt:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=La:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=Ov:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=Kp:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=Br:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=Lm:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+     station=Hs:    0 sec:  300 sec:       0.000 GB:   : &n    : 1;
+endscan;
+scan No0087;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d07h07m24s; mode=Doppler@P-WHYA; source=P-WHYA;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Nl:    0 sec:  160 sec:     154.583 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:     154.583 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:     154.583 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:     154.583 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:     154.583 GB:   : &n    : 0;
+endscan;
+scan No0088;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group start=7:11 UT
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h11m00s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:     154.583 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+endscan;
+scan No0089;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h19m00s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:     340.083 GB:   : &n    : 0;
+endscan;
+scan No0090;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h20m20s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:     340.083 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:     340.083 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:     340.083 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:     340.083 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:     340.083 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:     340.083 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:     340.083 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:     340.083 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:     340.083 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:     340.083 GB:   : &n    : 1;
+endscan;
+scan No0091;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h27m20s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:     525.582 GB:   : &n    : 0;
+endscan;
+scan No0092;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h30m10s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:     525.582 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:     525.582 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:     525.582 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:     525.582 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:     525.582 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:     525.582 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:     525.582 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:     525.582 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:     525.582 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:     525.582 GB:   : &n    : 1;
+endscan;
+scan No0093;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h38m10s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:     711.082 GB:   : &n    : 0;
+endscan;
+scan No0094;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h39m30s; mode=86ghz; source=P-HALF;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Gb:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:     711.082 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:     154.583 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+endscan;
+scan No0095;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h46m30s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:     896.582 GB:   : &n    : 0;
+endscan;
+scan No0096;
+*     Note a COMMENT was inserted during scheduling: 
+*       GBT pointing scan.
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d07h47m50s; mode=86ghz; source=1741-038;
+     station=Gb:    0 sec:  390 sec:     896.582 GB:   : &n    : 0;
+endscan;
+scan No0097;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d07h50m25s; mode=Doppler@P-RAQL; source=P-RAQL;
+     station=Nl:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+endscan;
+scan No0098;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d07h53m11s; mode=Doppler@P-RAQL; source=P-RAQL;
+     station=Nl:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+endscan;
+scan No0099;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d07h50m00s; mode=ptd7mm; source=DR21;
+     station=Ov:    0 sec:  160 sec:     340.083 GB:   : &ccw  : 0;
+endscan;
+scan No0100;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d07h52m46s; mode=ptd7mm; source=DR21;
+     station=Ov:    0 sec:  160 sec:     340.083 GB:   : &ccw  : 0;
+endscan;
+scan No0101;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group, ALMA new SB 2, long gap
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d07h56m20s; mode=86ghz; source=1741-038;
+     station=Gb:    0 sec:  180 sec:     896.582 GB:   : &n    : 1;
+     station=Aa:    0 sec:  180 sec:     896.582 GB:   : &ccw  : 1;
+     station=Ax:    0 sec:  180 sec:     896.582 GB:   : &n    : 1;
+     station=Nl:    0 sec:  180 sec:     896.582 GB:   : &n    : 1;
+     station=Fd:    0 sec:  180 sec:     896.582 GB:   : &n    : 1;
+     station=Pt:    0 sec:  180 sec:     896.582 GB:   : &n    : 1;
+     station=La:    0 sec:  180 sec:     896.582 GB:   : &n    : 1;
+     station=Ov:    0 sec:  180 sec:     340.083 GB:   : &n    : 1;
+     station=Kp:    0 sec:  180 sec:     896.582 GB:   : &n    : 1;
+     station=Lm:    0 sec:  180 sec:     896.582 GB:   : &n    : 1;
+     station=Hs:    0 sec:  180 sec:     896.582 GB:   : &n    : 1;
+endscan;
+scan No0102;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h01m55s; mode=86ghz; source=P-HALF;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Gb:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:     989.331 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:     432.832 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+endscan;
+scan No0103;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h09m55s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    1174.831 GB:   : &n    : 0;
+endscan;
+scan No0104;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d08h08m18s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    1174.831 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    1174.831 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    1174.831 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    1174.831 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    1174.831 GB:   : &n    : 0;
+endscan;
+scan No0105;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h11m15s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    1174.831 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:     618.332 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+endscan;
+scan No0106;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h18m15s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    1360.331 GB:   : &n    : 0;
+endscan;
+scan No0107;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d08h18m08s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    1360.331 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    1360.331 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    1360.331 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    1360.331 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    1360.331 GB:   : &n    : 0;
+endscan;
+scan No0108;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h21m05s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    1360.331 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:     803.832 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+endscan;
+scan No0109;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h29m05s; mode=86ghz; source=SGR_A;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Aa:    0 sec:   70 sec:    1545.830 GB:   : &n    : 0;
+endscan;
+scan No0110;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d08h27m27s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    1545.830 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    1545.830 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    1545.830 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    1545.830 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    1545.830 GB:   : &n    : 0;
+endscan;
+scan No0111;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h30m25s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    1545.830 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    1545.830 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    1545.830 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:    1545.830 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    1545.830 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    1545.830 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    1545.830 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:     989.331 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    1545.830 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    1545.830 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    1545.830 GB:   : &n    : 1;
+endscan;
+scan No0112;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h37m25s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    1731.330 GB:   : &n    : 0;
+endscan;
+scan No0113;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d08h37m21s; mode=Doppler@P-UHER; source=P-AHSCO;
+     station=Nl:    0 sec:  160 sec:    1731.330 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    1731.330 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    1731.330 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    1731.330 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    1731.330 GB:   : &n    : 0;
+endscan;
+scan No0114;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h40m15s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    1731.330 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    1731.330 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    1731.330 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:    1731.330 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    1731.330 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    1731.330 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    1731.330 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    1174.831 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    1731.330 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    1731.330 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    1731.330 GB:   : &n    : 1;
+endscan;
+scan No0115;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h48m15s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    1916.830 GB:   : &n    : 0;
+endscan;
+scan No0116;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d08h46m41s; mode=Doppler@P-UHER; source=P-AHSCO;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Nl:    0 sec:  160 sec:    1916.830 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    1916.830 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    1916.830 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    1916.830 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    1916.830 GB:   : &n    : 0;
+endscan;
+scan No0117;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h49m35s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    1916.830 GB:   : &cw   : 1;
+     station=Nl:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    1360.331 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+endscan;
+scan No0118;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d08h56m35s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    2102.329 GB:   : &n    : 0;
+endscan;
+scan No0119;
+*     Note a COMMENT was inserted during scheduling: 
+*       GBT pointing scan.
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d08h57m55s; mode=86ghz; source=1741-038;
+     station=Gb:    0 sec:  390 sec:    2102.329 GB:   : &n    : 0;
+endscan;
+scan No0120;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h00m27s; mode=Doppler@P-RAQL; source=P-RAQL;
+     station=Nl:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+endscan;
+scan No0121;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h03m13s; mode=Doppler@P-RAQL; source=P-RAQL;
+     station=Nl:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    2102.329 GB:   : &n    : 0;
+endscan;
+scan No0122;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d08h59m49s; mode=Doppler@P-UHER#02; source=P-UHER;
+     station=Ov:    0 sec:  160 sec:    1545.830 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:     154.583 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:       0.000 GB:   : &ccw  : 0;
+endscan;
+scan No0123;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h02m35s; mode=Doppler@P-UHER#02; source=P-UHER;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Ov:    0 sec:  160 sec:    1545.830 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:     154.583 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:       0.000 GB:   : &ccw  : 0;
+endscan;
+scan No0124;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group, ALMA new SB 3, long gap
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h06m25s; mode=86ghz; source=1741-038;
+     station=Gb:    0 sec:  180 sec:    2102.329 GB:   : &n    : 1;
+     station=Aa:    0 sec:  180 sec:    2102.329 GB:   : &cw   : 1;
+     station=Ax:    0 sec:  180 sec:    2102.329 GB:   : &n    : 1;
+     station=Nl:    0 sec:  180 sec:    2102.329 GB:   : &n    : 1;
+     station=Fd:    0 sec:  180 sec:    2102.329 GB:   : &n    : 1;
+     station=Pt:    0 sec:  180 sec:    2102.329 GB:   : &n    : 1;
+     station=La:    0 sec:  180 sec:    2102.329 GB:   : &n    : 1;
+     station=Ov:    0 sec:  180 sec:    1545.830 GB:   : &n    : 1;
+     station=Kp:    0 sec:  180 sec:    2102.329 GB:   : &n    : 1;
+     station=Br:    0 sec:  180 sec:     154.583 GB:   : &n    : 1;
+     station=Lm:    0 sec:  180 sec:    2102.329 GB:   : &n    : 1;
+     station=Hs:    0 sec:  180 sec:    2102.329 GB:   : &n    : 1;
+     station=Mk:    0 sec:  180 sec:       0.000 GB:   : &n    : 1;
+endscan;
+scan No0125;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h11m25s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    2195.079 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    1638.580 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+endscan;
+scan No0126;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h19m25s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    2380.579 GB:   : &n    : 0;
+endscan;
+scan No0127;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h17m51s; mode=Doppler@P-UHER; source=P-AHSCO;
+     station=Nl:    0 sec:  160 sec:    2380.579 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    2380.579 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    2380.579 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    2380.579 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    2380.579 GB:   : &n    : 0;
+endscan;
+scan No0128;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h17m51s; mode=Doppler@P-UHER#02; source=P-AHSCO;
+     station=Ov:    0 sec:  160 sec:    1824.080 GB:   : &n    : 0;
+endscan;
+scan No0129;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h20m45s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    2380.579 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    1824.080 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+endscan;
+scan No0130;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h27m45s; mode=86ghz; source=SGR_A;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Aa:    0 sec:   70 sec:    2566.078 GB:   : &n    : 0;
+endscan;
+scan No0131;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h27m41s; mode=Doppler@P-UHER; source=P-AHSCO;
+     station=Nl:    0 sec:  160 sec:    2566.078 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    2566.078 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    2566.078 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    2566.078 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    2566.078 GB:   : &n    : 0;
+endscan;
+scan No0132;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h27m41s; mode=Doppler@P-UHER#02; source=P-AHSCO;
+     station=Ov:    0 sec:  160 sec:    2009.579 GB:   : &n    : 0;
+endscan;
+scan No0133;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h30m35s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    2566.078 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    2009.579 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+endscan;
+scan No0134;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h38m35s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    2751.578 GB:   : &n    : 0;
+endscan;
+scan No0135;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h37m00s; mode=Doppler@P-UHER; source=P-AHSCO;
+     station=Nl:    0 sec:  160 sec:    2751.578 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    2751.578 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    2751.578 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    2751.578 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    2751.578 GB:   : &n    : 0;
+endscan;
+scan No0136;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h37m01s; mode=Doppler@P-UHER#02; source=P-AHSCO;
+     station=Ov:    0 sec:  160 sec:    2195.079 GB:   : &n    : 0;
+endscan;
+scan No0137;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h39m55s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    2751.578 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    2751.578 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    2751.578 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    2751.578 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    2751.578 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    2751.578 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    2751.578 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    2195.079 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    2751.578 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    2751.578 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    2751.578 GB:   : &n    : 1;
+endscan;
+scan No0138;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h46m55s; mode=86ghz; source=SGR_A;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Aa:    0 sec:   70 sec:    2937.077 GB:   : &n    : 0;
+endscan;
+scan No0139;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h46m50s; mode=Doppler@P-UHER; source=P-AHSCO;
+     station=Nl:    0 sec:  160 sec:    2937.077 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    2937.077 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    2937.077 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    2937.077 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    2937.077 GB:   : &n    : 0;
+endscan;
+scan No0140;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h49m45s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    2937.077 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    2937.077 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    2937.077 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    2937.077 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    2937.077 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    2937.077 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    2937.077 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    2380.579 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    2937.077 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:     247.333 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    2937.077 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    2937.077 GB:   : &n    : 1;
+endscan;
+scan No0141;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h57m45s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    3122.577 GB:   : &n    : 0;
+endscan;
+scan No0142;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d09h56m09s; mode=Doppler@P-UHER; source=P-AHSCO;
+     station=Nl:    0 sec:  160 sec:    3122.577 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    3122.577 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    3122.577 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    3122.577 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    3122.577 GB:   : &n    : 0;
+endscan;
+scan No0143;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d09h59m05s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    3122.577 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    3122.577 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    3122.577 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    3122.577 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    3122.577 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    3122.577 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    3122.577 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    2566.078 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    3122.577 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:     432.832 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    3122.577 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    3122.577 GB:   : &n    : 1;
+endscan;
+scan No0144;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h06m05s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    3308.076 GB:   : &n    : 0;
+endscan;
+scan No0145;
+*     Note a COMMENT was inserted during scheduling: 
+*       GBT pointing scan.
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h07m25s; mode=86ghz; source=1741-038;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Gb:    0 sec:  390 sec:    3308.076 GB:   : &n    : 0;
+endscan;
+scan No0146;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h09m51s; mode=Doppler@P-RAQL; source=P-RAQL;
+     station=Nl:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+endscan;
+scan No0147;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h12m37s; mode=Doppler@P-RAQL; source=P-RAQL;
+     station=Nl:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    3308.076 GB:   : &n    : 0;
+endscan;
+scan No0148;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h09m25s; mode=Doppler@P-UHER#02; source=P-UHER;
+     station=Ov:    0 sec:  160 sec:    2751.578 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:     618.332 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:      92.750 GB:   : &ccw  : 0;
+endscan;
+scan No0149;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h12m11s; mode=Doppler@P-UHER#02; source=P-UHER;
+     station=Ov:    0 sec:  160 sec:    2751.578 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:     618.332 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:      92.750 GB:   : &ccw  : 0;
+endscan;
+scan No0150;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group, ALMA new SB 4, long gap
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h15m55s; mode=86ghz; source=1741-038;
+     station=Gb:    0 sec:  180 sec:    3308.076 GB:   : &n    : 1;
+     station=Aa:    0 sec:  180 sec:    3308.076 GB:   : &cw   : 1;
+     station=Ax:    0 sec:  180 sec:    3308.076 GB:   : &n    : 1;
+     station=Nl:    0 sec:  180 sec:    3308.076 GB:   : &n    : 1;
+     station=Fd:    0 sec:  180 sec:    3308.076 GB:   : &n    : 1;
+     station=Pt:    0 sec:  180 sec:    3308.076 GB:   : &n    : 1;
+     station=La:    0 sec:  180 sec:    3308.076 GB:   : &n    : 1;
+     station=Ov:    0 sec:  180 sec:    2751.578 GB:   : &n    : 1;
+     station=Kp:    0 sec:  180 sec:    3308.076 GB:   : &n    : 1;
+     station=Br:    0 sec:  180 sec:     618.332 GB:   : &n    : 1;
+     station=Lm:    0 sec:  180 sec:    3308.076 GB:   : &n    : 1;
+     station=Hs:    0 sec:  180 sec:    3308.076 GB:   : &n    : 1;
+     station=Mk:    0 sec:  180 sec:      92.750 GB:   : &n    : 1;
+endscan;
+scan No0151;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h20m55s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    3400.826 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    2844.327 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:     711.082 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:     185.500 GB:   : &n    : 1;
+endscan;
+scan No0152;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h28m55s; mode=86ghz; source=SGR_A;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Aa:    0 sec:   70 sec:    3586.326 GB:   : &n    : 0;
+endscan;
+scan No0153;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h27m16s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    3029.827 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:     896.582 GB:   : &n    : 0;
+endscan;
+scan No0154;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h30m15s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    3586.326 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    3029.827 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:     896.582 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+endscan;
+scan No0155;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h37m15s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    3771.825 GB:   : &n    : 0;
+endscan;
+scan No0156;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h37m02s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    3771.825 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    3771.825 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    3771.825 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    3771.825 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    3771.825 GB:   : &n    : 0;
+endscan;
+scan No0157;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h37m06s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    3215.327 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    1082.081 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:     370.999 GB:   : &n    : 0;
+endscan;
+scan No0158;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h40m05s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    3771.825 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    3215.327 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    1082.081 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:     370.999 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:       0.000 GB:   : &n    : 1;
+endscan;
+scan No0159;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h48m05s; mode=86ghz; source=SGR_A;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Aa:    0 sec:   70 sec:    3957.325 GB:   : &n    : 0;
+endscan;
+scan No0160;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h46m25s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    3400.826 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    1267.581 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:     556.499 GB:   : &n    : 0;
+endscan;
+scan No0161;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h49m25s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    3957.325 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    3957.325 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    3957.325 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    3957.325 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    3957.325 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    3957.325 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    3957.325 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    3400.826 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    3957.325 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    1267.581 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    3957.325 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    3957.325 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:     556.499 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:     185.500 GB:   : &n    : 1;
+endscan;
+scan No0162;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h56m25s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    4142.824 GB:   : &n    : 0;
+endscan;
+scan No0163;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h56m11s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    4142.824 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    4142.824 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    4142.824 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    4142.824 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    4142.824 GB:   : &n    : 0;
+endscan;
+scan No0164;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d10h56m15s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    3586.326 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    1453.081 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:     741.999 GB:   : &n    : 0;
+endscan;
+scan No0165;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d10h59m15s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    4142.824 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    4142.824 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    4142.824 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    4142.824 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    4142.824 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    4142.824 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    4142.824 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    3586.326 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    4142.824 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    1453.081 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    4142.824 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    4142.824 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:     741.999 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:     370.999 GB:   : &n    : 1;
+endscan;
+scan No0166;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h07m15s; mode=86ghz; source=SGR_A;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Aa:    0 sec:   70 sec:    4328.324 GB:   : &n    : 0;
+endscan;
+scan No0167;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h08m35s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    4328.324 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    4328.324 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    4328.324 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    4328.324 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    4328.324 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    4328.324 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    4328.324 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    3771.825 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    4328.324 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    1638.580 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    4328.324 GB:   : &n    : 1;
+     station=Hs:    0 sec:  360 sec:    4328.324 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:     927.498 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:     556.499 GB:   : &n    : 1;
+endscan;
+scan No0168;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h15m35s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    4513.823 GB:   : &n    : 0;
+endscan;
+scan No0169;
+*     Note a COMMENT was inserted during scheduling: 
+*       GBT pointing scan.
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d11h16m55s; mode=86ghz; source=1921-293;
+     station=Gb:    0 sec:  390 sec:    4513.823 GB:   : &n    : 0;
+endscan;
+scan No0170;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d11h19m30s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+endscan;
+scan No0171;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d11h22m16s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    4513.823 GB:   : &n    : 0;
+endscan;
+scan No0172;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d11h19m13s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    3957.325 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    1824.080 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    1112.998 GB:   : &n    : 0;
+endscan;
+scan No0173;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d11h21m59s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Ov:    0 sec:  160 sec:    3957.325 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    1824.080 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    1112.998 GB:   : &n    : 0;
+endscan;
+scan No0174;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group, ALMA new SB 5, long gap
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h25m25s; mode=86ghz; source=1921-293;
+     station=Gb:    0 sec:  180 sec:    4513.823 GB:   : &n    : 1;
+     station=Aa:    0 sec:  180 sec:    4513.823 GB:   : &n    : 1;
+     station=Ax:    0 sec:  180 sec:    4513.823 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  180 sec:    4513.823 GB:   : &n    : 1;
+     station=Fd:    0 sec:  180 sec:    4513.823 GB:   : &n    : 1;
+     station=Pt:    0 sec:  180 sec:    4513.823 GB:   : &n    : 1;
+     station=La:    0 sec:  180 sec:    4513.823 GB:   : &n    : 1;
+     station=Ov:    0 sec:  180 sec:    3957.325 GB:   : &n    : 1;
+     station=Kp:    0 sec:  180 sec:    4513.823 GB:   : &n    : 1;
+     station=Br:    0 sec:  180 sec:    1824.080 GB:   : &n    : 1;
+     station=Lm:    0 sec:  180 sec:    4513.823 GB:   : &n    : 1;
+     station=Mk:    0 sec:  180 sec:    1112.998 GB:   : &n    : 1;
+     station=Mm:    0 sec:  180 sec:     741.999 GB:   : &n    : 1;
+endscan;
+scan No0175;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h30m25s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    4606.573 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    4606.573 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    4606.573 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    4606.573 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    4606.573 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    4606.573 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    4606.573 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    4050.074 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    4606.573 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    1916.830 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    4606.573 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    1205.748 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:     834.748 GB:   : &n    : 1;
+endscan;
+scan No0176;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h38m25s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    4792.073 GB:   : &n    : 0;
+endscan;
+scan No0177;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h39m45s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    4792.073 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    4792.073 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    4792.073 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    4792.073 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    4792.073 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    4792.073 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    4792.073 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    4235.574 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    4792.073 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    2102.329 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    4792.073 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    1391.247 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    1020.248 GB:   : &n    : 1;
+endscan;
+scan No0178;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h46m45s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    4977.572 GB:   : &n    : 0;
+endscan;
+scan No0179;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d11h46m30s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Nl:    0 sec:  160 sec:    4977.572 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    4977.572 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    4977.572 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    4977.572 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    4977.572 GB:   : &n    : 0;
+endscan;
+scan No0180;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d11h46m33s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    4421.074 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    2287.829 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    1576.747 GB:   : &n    : 0;
+endscan;
+scan No0181;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h49m35s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    4977.572 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    4977.572 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    4977.572 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    4977.572 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    4977.572 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    4977.572 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    4977.572 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    4421.074 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    4977.572 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    2287.829 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    4977.572 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    1576.747 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    1205.748 GB:   : &n    : 1;
+endscan;
+scan No0182;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h57m35s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    5163.072 GB:   : &n    : 0;
+endscan;
+scan No0183;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d11h58m55s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    5163.072 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    5163.072 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    5163.072 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    5163.072 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    5163.072 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    5163.072 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    5163.072 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    4606.573 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    5163.072 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    2473.328 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    5163.072 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    1762.246 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    1391.247 GB:   : &n    : 1;
+endscan;
+scan No0184;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h05m55s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    5348.571 GB:   : &n    : 0;
+endscan;
+scan No0185;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d12h05m40s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    5348.571 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    5348.571 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    5348.571 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    5348.571 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    5348.571 GB:   : &n    : 0;
+endscan;
+scan No0186;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d12h05m42s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Ov:    0 sec:  160 sec:    4792.073 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    2658.828 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    1947.746 GB:   : &n    : 0;
+endscan;
+scan No0187;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h08m45s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    5348.571 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    5348.571 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    5348.571 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    5348.571 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    5348.571 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    5348.571 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    5348.571 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    4792.073 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    5348.571 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    2658.828 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    5348.571 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    1947.746 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    1576.747 GB:   : &n    : 1;
+endscan;
+scan No0188;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h16m45s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    5534.071 GB:   : &n    : 0;
+endscan;
+scan No0189;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h18m05s; mode=86ghz; source=P-HALF;
+     station=Gb:    0 sec:  360 sec:    5534.071 GB:   : &n    : 1;
+     station=Aa:    0 sec:  360 sec:    5534.071 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    5534.071 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    5534.071 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    5534.071 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    5534.071 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    5534.071 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    4977.572 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    5534.071 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    2844.327 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    5534.071 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    2133.246 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    1762.246 GB:   : &n    : 1;
+endscan;
+scan No0190;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h25m05s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    5719.570 GB:   : &n    : 0;
+endscan;
+scan No0191;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d12h25m02s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    5719.570 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    5719.570 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    5719.570 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    5719.570 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    5719.570 GB:   : &n    : 0;
+endscan;
+scan No0192;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d12h24m41s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    5163.072 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    3029.827 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    2318.745 GB:   : &n    : 0;
+endscan;
+scan No0193;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h28m05s; mode=86ghz; source=1921-293;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Gb:    0 sec:  180 sec:    5719.570 GB:   : &n    : 1;
+     station=Aa:    0 sec:  180 sec:    5719.570 GB:   : &n    : 1;
+     station=Ax:    0 sec:  180 sec:    5719.570 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  180 sec:    5719.570 GB:   : &n    : 1;
+     station=Fd:    0 sec:  180 sec:    5719.570 GB:   : &n    : 1;
+     station=Pt:    0 sec:  180 sec:    5719.570 GB:   : &n    : 1;
+     station=La:    0 sec:  180 sec:    5719.570 GB:   : &n    : 1;
+     station=Ov:    0 sec:  180 sec:    5163.072 GB:   : &n    : 1;
+     station=Kp:    0 sec:  180 sec:    5719.570 GB:   : &n    : 1;
+     station=Br:    0 sec:  180 sec:    3029.827 GB:   : &n    : 1;
+     station=Lm:    0 sec:  180 sec:    5719.570 GB:   : &n    : 1;
+     station=Mk:    0 sec:  180 sec:    2318.745 GB:   : &n    : 1;
+     station=Mm:    0 sec:  180 sec:    1947.746 GB:   : &n    : 1;
+endscan;
+scan No0194;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d12h33m06s; mode=Doppler@P-RCAS; source=P-RCAS;
+     station=Nl:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+     station=Fd:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+     station=Pt:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+     station=La:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+     station=Kp:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+endscan;
+scan No0195;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d12h35m52s; mode=Doppler@P-RCAS; source=P-RCAS;
+     station=Nl:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+     station=Fd:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+     station=Pt:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+     station=La:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+     station=Kp:    0 sec:  160 sec:    5812.320 GB:   : &ccw  : 0;
+endscan;
+scan No0196;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d12h33m19s; mode=Doppler@P-RCAS#02; source=P-RCAS;
+     station=Ov:    0 sec:  160 sec:    5255.822 GB:   : &ccw  : 0;
+     station=Br:    0 sec:  160 sec:    3122.576 GB:   : &ccw  : 0;
+endscan;
+scan No0197;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d12h36m05s; mode=Doppler@P-RCAS#02; source=P-RCAS;
+     station=Ov:    0 sec:  160 sec:    5255.822 GB:   : &ccw  : 0;
+     station=Br:    0 sec:  160 sec:    3122.576 GB:   : &ccw  : 0;
+endscan;
+scan No0198;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group, ALMA new SB 6, long gap, add 3C454.3 as new CAL
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:SCHEDBLOCK_STARTER:mj008b"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h39m25s; mode=86ghz; source=3C454.3;
+     station=Aa:    0 sec:  360 sec:    5812.320 GB:   : &cw   : 1;
+     station=Ax:    0 sec:  360 sec:    5812.320 GB:   : &n    : 1;
+     station=Nl:    0 sec:  360 sec:    5812.320 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    5812.320 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    5812.320 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    5812.320 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    5255.822 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    5812.320 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    3122.576 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    5812.320 GB:   : &ccw  : 1;
+endscan;
+scan No0199;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h47m55s; mode=86ghz; source=P-HALF;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Aa:    0 sec:  360 sec:    5997.820 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    5997.820 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    5997.820 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    5997.820 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    5997.820 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    5997.820 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    5441.321 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    5997.820 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    3308.076 GB:   : &n    : 1;
+     station=Lm:   68 sec:  360 sec:    5997.820 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    2411.495 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    2040.496 GB:   : &n    : 1;
+endscan;
+scan No0200;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h55m55s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    6183.319 GB:   : &n    : 0;
+endscan;
+scan No0201;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d12h57m15s; mode=86ghz; source=P-HALF;
+     station=Aa:    0 sec:  360 sec:    6183.319 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    6183.319 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    6183.319 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    6183.319 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    6183.319 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    6183.319 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    5626.821 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    6183.319 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    3493.576 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    6183.319 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    2596.995 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    2225.996 GB:   : &n    : 1;
+endscan;
+scan No0202;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d13h04m15s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    6368.819 GB:   : &n    : 0;
+endscan;
+scan No0203;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d13h03m59s; mode=Doppler@P-VXSGR; source=P-VXSGR;
+     station=Nl:    0 sec:  160 sec:    6368.819 GB:   : &n    : 0;
+     station=Fd:    0 sec:  160 sec:    6368.819 GB:   : &n    : 0;
+     station=Pt:    0 sec:  160 sec:    6368.819 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    6368.819 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    6368.819 GB:   : &n    : 0;
+endscan;
+scan No0204;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d13h04m00s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    5812.320 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    3679.075 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    2782.494 GB:   : &n    : 0;
+endscan;
+scan No0205;
+*     Note a COMMENT was inserted during scheduling: 
+*       new group GAP=100
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d13h07m05s; mode=86ghz; source=P-HALF;
+     station=Aa:    0 sec:  360 sec:    6368.819 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    6368.819 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    6368.819 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    6368.819 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    6368.819 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    6368.819 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    5812.320 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    6368.819 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    3679.075 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    6368.819 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    2782.494 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    2411.495 GB:   : &n    : 1;
+endscan;
+scan No0206;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d13h15m05s; mode=86ghz; source=SGR_A;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Aa:    0 sec:   70 sec:    6554.318 GB:   : &n    : 0;
+endscan;
+scan No0207;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_Apply"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d13h16m25s; mode=86ghz; source=P-HALF;
+     station=Aa:    0 sec:  360 sec:    6554.318 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    6554.318 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    6554.318 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    6554.318 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    6554.318 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    6554.318 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    5997.820 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    6554.318 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    3864.575 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    6554.318 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    2967.994 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    2596.995 GB:   : &n    : 1;
+endscan;
+scan No0208;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d13h23m25s; mode=86ghz; source=SGR_A;
+     station=Aa:    0 sec:   70 sec:    6739.818 GB:   : &n    : 0;
+endscan;
+scan No0209;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d13h23m10s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    6183.319 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    4050.074 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    3153.493 GB:   : &n    : 0;
+endscan;
+scan No0210;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d13h26m15s; mode=86ghz; source=P-HALF;
+     station=Aa:    0 sec:  360 sec:    6739.818 GB:   : &n    : 1;
+     station=Ax:    0 sec:  360 sec:    6739.818 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  360 sec:    6739.818 GB:   : &n    : 1;
+     station=Fd:    0 sec:  360 sec:    6739.818 GB:   : &n    : 1;
+     station=Pt:    0 sec:  360 sec:    6739.818 GB:   : &n    : 1;
+     station=La:    0 sec:  360 sec:    6739.818 GB:   : &n    : 1;
+     station=Ov:    0 sec:  360 sec:    6183.319 GB:   : &n    : 1;
+     station=Kp:    0 sec:  360 sec:    6739.818 GB:   : &n    : 1;
+     station=Br:    0 sec:  360 sec:    4050.074 GB:   : &n    : 1;
+     station=Lm:    0 sec:  360 sec:    6739.818 GB:   : &n    : 1;
+     station=Mk:    0 sec:  360 sec:    3153.493 GB:   : &n    : 1;
+     station=Mm:    0 sec:  360 sec:    2782.494 GB:   : &n    : 1;
+endscan;
+scan No0211;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d13h35m29s; mode=Doppler@P-UHER; source=P-UHER;
+     station=Nl:    0 sec:  160 sec:    6925.317 GB:   : &cw   : 0;
+     station=Fd:    0 sec:  160 sec:    6925.317 GB:   : &cw   : 0;
+     station=Pt:    0 sec:  160 sec:    6925.317 GB:   : &n    : 0;
+     station=La:    0 sec:  160 sec:    6925.317 GB:   : &n    : 0;
+     station=Kp:    0 sec:  160 sec:    6925.317 GB:   : &n    : 0;
+endscan;
+scan No0212;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d13h33m11s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+     station=Ov:    0 sec:  160 sec:    6368.819 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    4235.574 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    3338.993 GB:   : &n    : 0;
+endscan;
+scan No0213;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d13h35m57s; mode=Doppler@P-VXSGR#02; source=P-VXSGR;
+*              :data_good:data_stop:goto_foot: pass:  wrap :driv:tape at
+     station=Ov:    0 sec:  160 sec:    6368.819 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    4235.574 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    3338.993 GB:   : &n    : 0;
+endscan;
+scan No0214;
+*     Note a COMMENT was inserted during scheduling: 
+*       2 scans on bright calibrator for polcal at ALMA
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d13h39m15s; mode=86ghz; source=1921-293;
+     station=Aa:    0 sec:  300 sec:    6925.317 GB:   : &n    : 1;
+     station=Ax:    0 sec:  300 sec:    6925.317 GB:   : &ccw  : 1;
+     station=Nl:    0 sec:  300 sec:    6925.317 GB:   : &n    : 1;
+     station=Fd:    0 sec:  300 sec:    6925.317 GB:   : &n    : 1;
+     station=Pt:    0 sec:  300 sec:    6925.317 GB:   : &n    : 1;
+     station=La:    0 sec:  300 sec:    6925.317 GB:   : &n    : 1;
+     station=Ov:    0 sec:  300 sec:    6368.819 GB:   : &n    : 1;
+     station=Kp:    0 sec:  300 sec:    6925.317 GB:   : &n    : 1;
+     station=Br:    0 sec:  300 sec:    4235.574 GB:   : &n    : 1;
+     station=Lm:    0 sec:  300 sec:    6925.317 GB:   : &n    : 1;
+     station=Mk:    0 sec:  300 sec:    3338.993 GB:   : &n    : 1;
+     station=Mm:    0 sec:  300 sec:    2967.994 GB:   : &n    : 1;
+endscan;
+scan No0215;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:PROJECT_FINAL_SCAN:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d13h47m03s; mode=Doppler@P-RCAS; source=P-RCAS;
+     station=Nl:    0 sec:  160 sec:    7079.900 GB:   : &ccw  : 0;
+     station=Fd:    0 sec:  160 sec:    7079.900 GB:   : &ccw  : 0;
+     station=Pt:    0 sec:  160 sec:    7079.900 GB:   : &ccw  : 0;
+     station=La:    0 sec:  160 sec:    7079.900 GB:   : &ccw  : 0;
+     station=Kp:    0 sec:  160 sec:    7079.900 GB:   : &ccw  : 0;
+endscan;
+scan No0216;
+*     Note a COMMENT was inserted during scheduling: 
+*       Following scan added by Sched for reference pointing
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:PROJECT_FINAL_SCAN:mj008b"
+* intent = "REFERENCE_POINTING_DETERMINE"
+     start=2026y111d13h46m55s; mode=Doppler@P-RRAQL; source=P-RRAQL;
+     station=Ov:    0 sec:  160 sec:    6523.402 GB:   : &n    : 0;
+     station=Br:    0 sec:  160 sec:    4390.157 GB:   : &n    : 0;
+     station=Mk:    0 sec:  160 sec:    3493.576 GB:   : &n    : 0;
+endscan;
+scan No0217;
+* intent = "apsmode = fast-sl1"
+* intent = "ALMA:AUTOPHASE_DETERMINE"
+* intent = "ALMA:PROJECT_FINAL_SCAN:mj008b"
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d13h50m55s; mode=86ghz; source=3C454.3;
+     station=Aa:    0 sec:  300 sec:    7079.900 GB:   : &cw   : 1;
+     station=Ax:    0 sec:  300 sec:    7079.900 GB:   : &n    : 1;
+     station=Nl:    0 sec:  300 sec:    7079.900 GB:   : &n    : 1;
+     station=Fd:    0 sec:  300 sec:    7079.900 GB:   : &n    : 1;
+     station=Pt:    0 sec:  300 sec:    7079.900 GB:   : &n    : 1;
+     station=La:    0 sec:  300 sec:    7079.900 GB:   : &n    : 1;
+     station=Ov:    0 sec:  300 sec:    6523.402 GB:   : &n    : 1;
+     station=Kp:    0 sec:  300 sec:    7079.900 GB:   : &n    : 1;
+     station=Br:    0 sec:  300 sec:    4390.157 GB:   : &n    : 1;
+     station=Lm:    0 sec:  300 sec:    7079.900 GB:   : &n    : 1;
+     station=Mk:    0 sec:  300 sec:    3493.576 GB:   : &ccw  : 1;
+     station=Mm:    0 sec:  300 sec:    3122.577 GB:   : &ccw  : 1;
+endscan;
+scan No0218;
+* intent = "REFERENCE_POINTING_APPLY"
+     start=2026y111d13h58m15s; mode=86ghz; source=P-HALF;
+     station=Ax:    0 sec:   60 sec:    7234.483 GB:   : &ccw  : 1;
+     station=Fd:    0 sec:   60 sec:    7234.483 GB:   : &n    : 1;
+     station=Pt:    0 sec:   60 sec:    7234.483 GB:   : &n    : 1;
+     station=La:    0 sec:   60 sec:    7234.483 GB:   : &n    : 1;
+     station=Ov:    0 sec:   60 sec:    6677.985 GB:   : &n    : 1;
+     station=Kp:    0 sec:   60 sec:    7234.483 GB:   : &n    : 1;
+     station=Br:    0 sec:   60 sec:    4544.740 GB:   : &n    : 1;
+     station=Mk:    0 sec:   60 sec:    3648.159 GB:   : &n    : 1;
+     station=Mm:    0 sec:   60 sec:    3277.160 GB:   : &n    : 1;
+endscan;

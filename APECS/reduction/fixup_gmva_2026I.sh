@@ -19,17 +19,18 @@
 # Trying to fix the above issues:
 #
 
-for fn in tau_*.txt; do
+for fn in tau_2026-04-*.txt; do
 	sort -k 2 -h -t"," $fn > ${fn}.sorted
 done
 
-grep "AP-N90" tau_2026-04-21.txt.sorted > mj008bax_tau.csv
+./filterByVexTime.py --backend AP-N90 --output c261bax_tau.csv ~/src/apex-tools/APECS/2026/obs-logs/c261b.vex tau_2026-04-*.sorted 
+./filterByVexTime.py --backend AP-N90 --output c261cax_tau.csv ~/src/apex-tools/APECS/2026/obs-logs/c261c.vex tau_2026-04-*.sorted 
+./filterByVexTime.py --backend AP-N90 --output c261dax_tau.csv ~/src/apex-tools/APECS/2026/obs-logs/c261d.vex tau_2026-04-*.sorted 
+./filterByVexTime.py --backend AP-N90 --output c261eax_tau.csv ~/src/apex-tools/APECS/2026/obs-logs/c261e.vex tau_2026-04-*.sorted 
+./filterByVexTime.py --backend AP-N90 --output c261fax_tau.csv ~/src/apex-tools/APECS/2026/obs-logs/c261f.vex tau_2026-04-*.sorted
 
-./filterByVexTime.py --backend AP-N90 --output c261bax_tau.csv  ~/vlbisystem/vexfiles/triggered/c261b.vex  tau_2026-04-*.sorted
-./filterByVexTime.py --backend AP-N90 --output c261cax_tau.csv  ~/vlbisystem/vexfiles/triggered/c261c.vex  tau_2026-04-*.sorted
-./filterByVexTime.py --backend AP-N90 --output c261dax_tau.csv  ~/vlbisystem/vexfiles/triggered/c261d.vex  tau_2026-04-*.sorted
-./filterByVexTime.py --backend AP-N90 --output c261eax_tau.csv  ~/vlbisystem/vexfiles/triggered/c261e.vex  tau_2026-04-*.sorted
-./filterByVexTime.py --backend AP-N90 --output c261fax_tau.csv  ~/vlbisystem/vexfiles/triggered/c261f.vex  tau_2026-04-*.sorted
+# grep "AP-N90" tau_2026-04-21.txt.sorted > mj008bax_tau.csv
+./filterByVexTime.py --backend AP-N90 --output mj008bax_tau.csv ~/src/apex-tools/APECS/2026/obs-logs/mj008b.vex tau_2026-04-*.sorted
 
 # c261a not observed
 # mk036 and mk037a/b/c/d also not observed

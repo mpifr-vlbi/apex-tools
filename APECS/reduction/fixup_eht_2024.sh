@@ -27,3 +27,5 @@ done
 # 345 GHz: AP-S30
 ./filterByVexTime.py --backend AP-S30 --output e24c09ax_tau.csv ~/src/apex-tools/APECS/2024/obs-logs/e24c09.vex tau_2024-*.sorted
 
+# 230 GHz e24g11 from end of 2024-04-10 (UT day) till 2024-04-11
+# was apparently not observed, no CLASS data file T-0113.F-9996A-2024-2024-04-11.apex for it
