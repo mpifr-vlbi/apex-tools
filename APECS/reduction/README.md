@@ -29,8 +29,8 @@ The order of the columns in the generated tau_<dataset>.txt file(s) are:
 
 Names of FFTS channels that correspond roughly to the VLBI-covered parts of the spectrum are
 
- - AP-N901-F303    N3AR 3mm VLBI, 4-8G, RCP(?)
- - AP-N902-F303    N3AR 3mm VLBI, 4-8G, LCP(?)
+ - AP-N901-F303    N3AR 3mm VLBI in LSB, 4-8G, RCP(?)
+ - AP-N902-F303    N3AR 3mm VLBI in LSB, 4-8G, LCP(?)
  - AP-N201-F101    NFLASH 1mm VLBI in LSB (EHT b1+b2), 4-8G, RCP(?)
  - AP-N202-F101    NFLASH 1mm VLBI in LSB (EHT b1+b2), 4-8G, LCP(?)
  - AP-N203-F102    NFLASH 1mm VLBI in USB (EHT b3+b4), 4-8G, RCP(?)
@@ -39,6 +39,11 @@ Names of FFTS channels that correspond roughly to the VLBI-covered parts of the 
  - AP-S302-F101    SEPIA345 0.8mm VLBI in LSB (EHT b1+b2), 4-8G, LCP(?)
  - AP-S303-F102    SEPIA345 0.8mm VLBI in USB (EHT b3+b4), 4-8G, RCP(?)
  - AP-S304-F102    SEPIA345 0.8mm VLBI in USB (EHT b3+b4), 4-8G, LCP(?)
+
+For GMVA 2025 track c251z at 104G/114G on 28 Apr 2025 01:00-05:00 UT we used N3AR in USB
+
+ - AP-N903-F303    N3AR 3mm VLBI in USB, 4-8G, RCP(?)
+ - AP-N904-F303    N3AR 3mm VLBI in USB, 4-8G, LCP(?)
 
 ## FFTS Details
 

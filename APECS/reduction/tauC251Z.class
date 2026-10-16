@@ -1,0 +1,119 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+! TAU and other metadata extraction
+!
+! GMVA Autumn 2026
+! Specific for track C251Z with N3AR USB(!) for 104G and 114G, PI DW Kim
+!
+! The backends containing the VLBI recorded 2-pol x 1-channel x 512 MHz band are:
+!   AP-N901-F303    corresponding to RCP(?) LSB
+!   AP-N902-F303    corresponding to LCP(?) LSB
+!  USB apparently are
+!   AP-N903-F302
+!   AP-N904-F302
+!
+! The line names are "vlbi..." e.g.
+!   vlbifreq86     88.500 GHz LSB  ! for OCT_D recording 86012--86524 MHz standard GMVA continuum mode
+!   vlbifreq88     90.800 GHz LSB  ! for OCT_D recording 88312--88824 MHz incl HCN  in MN006A
+!   vlbifreq89     91.500 GHz LSB  ! for OCT_D recording 89012--89524 MHz incl HCO+ in MN006B
+!
+! EHT 230G Spring 2026
+!
+! The backends containing the VLBI recorded EHT b1/b2/b3/b4 are approximately
+!  NFLASH 230/260
+!   AP-N201-F101  for X LSB 4-8G
+!   AP-N202-F101  for Y LSB 4-8G
+!   AP-N203-F102  for X USB 4-8G
+!   AP-N204-F102  for Y USB 4-8G
+!  SEPIA 345
+!   AP-S301-F101  for X LSB 4-8G
+!   AP-S302-F101  for Y LSB 4-8G
+!   AP-S303-F102  for X USB 4-8G
+!   AP-S304-F102  for Y USB 4-8G
+!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+! Changelog
+!  01oct2026 v1.0  Francisco Azagra  first version
+!  01oct2026 v1.1  Jan Wagner        loop over all datasets, UT Radians->Hours,
+!                                    and only backends containing the VLBI RCP,LCP 512 MHz slice
+!  02oct2026 v1.2                    include EHT 345G FFTS backend names
+!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+define character*500 outputname
+define real tscaling
+let tscaling = 24/(2*pi)  ! to convert UT Radian into UT Hour
+
+set default
+
+set variable general
+set variable position
+set variable spectro
+set variable calibration
+set variable skydip
+
+!! Find all datasets, tell where scan metadata will be extracted to
+!! e.g. T-0117.F-9996A-2026-2026-09-29.apex  -->  tau_2026-09-29.txt
+!sic find *.apex ~/scidata_archive/
+sic find T-0115.F-9996A-2025-2025-04-28.apex ~/scidata_archive/
+say ""
+say "== Found these data files under ~/scidata_archive/:"
+for fnr 1 to DIR%NFILE
+   let outputname = tau_'DIR%FILE[fnr][21:30]'.txt
+   say 'DIR%FILE[fnr]'"  -->  "'outputname'
+next
+say ""
+
+!! For each dataset, extract metadata of every contained scan
+!for fnr 1 to 2  ! fewer files just for testing
+for fnr 1 to DIR%NFILE
+
+   file in ~/scidata_archive/'DIR%FILE[fnr]'
+   let outputname = tau_'DIR%FILE[fnr][21:30]'.txt
+
+   set line VLBI*
+   set offset 0 0   ! avoids including calibration scans
+
+   ! Backends GMVA 86G:
+   set telescope AP-N901-F303
+   find
+   set telescope AP-N902-F303
+   find append
+
+   ! C251Z GMVA 104/114G:
+   set telescope AP-N903-F302
+   find
+   set telescope AP-N904-F302
+   find append
+
+   ! plus backends EHT 230G:
+   set telescope AP-N201-F101
+   find append
+   set telescope AP-N202-F101
+   find append
+   set telescope AP-N203-F102
+   find append
+   set telescope AP-N204-F102
+   find append
+
+   ! plus backends EHT 345G with Sepia:
+   set telescope AP-S301-F101
+   find append
+   set telescope AP-S302-F101
+   find append
+   set telescope AP-S303-F102
+   find append
+   set telescope AP-S304-F102
+   find append
+
+   sic message class a+i
+   sic output 'outputname'
+   get zero
+   for t 1 to found
+      get next  
+      say 'cdobs','tscaling*ut','scan','sourc','el','restf','teles','tau','taus','tsys','tamb'
+   next 
+   sic out
+
+next

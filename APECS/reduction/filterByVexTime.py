@@ -32,7 +32,7 @@ def parse_args(args):
 
 def gildas2datetime(tgildas):
 	'''Convert an Gildas timestamp string (like 23-SEP-2026,14.195136791951) into Python datetime'''
-	(normal_t, fractional_h) = tgildas.split(',')
+	(normal_t, fractional_h) = tgildas.split(',')[0:2]
 	t = datetime.datetime.strptime(normal_t, '%d-%b-%Y') + datetime.timedelta(hours=float(fractional_h))
 	return t
 

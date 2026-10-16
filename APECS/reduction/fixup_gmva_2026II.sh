@@ -19,19 +19,30 @@
 #
 
 for fn in tau_*.txt; do
-	sort -k 2 $fn > ${fn}.sorted
+	sort -k 2 -h -t"," $fn > ${fn}.sorted
 done
 
-cat tau_2026-09-24.txt.sorted > c262aax_tau.csv
-cat tau_2026-09-25.txt.sorted >> c262aax_tau.csv
-grep -E "26-SEP-2026\,[0-8]\." tau_2026-09-26.txt.sorted >> c262aax_tau.csv
+## Method 1
+## while filterByVexTime.py did not exist yet
+#
+#cat tau_2026-09-24.txt.sorted > c262aax_tau.csv
+#cat tau_2026-09-25.txt.sorted >> c262aax_tau.csv
+#grep -E "26-SEP-2026\,[0-8]\." tau_2026-09-26.txt.sorted >> c262aax_tau.csv
+#
+#grep -v -E "26-SEP-2026\,[0-8]\." tau_2026-09-26.txt.sorted > c262bax_tau.csv
+#grep -E "27-SEP-2026\,[0-8]\." tau_2026-09-27.txt.sorted   >> c262bax_tau.csv
+#
+#grep -v -E "27-SEP-2026\,[0-8]\." tau_2026-09-27.txt.sorted > c262cax_tau.csv
+#grep -E "28-SEP-2026\,[0-2]\." tau_2026-09-28.txt.sorted   >> c262cax_tau.csv
+#
+#grep -v -E "28-SEP-2026\,[0-2]\." tau_2026-09-28.txt.sorted > mn006aax_tau.csv
+#
+#cat tau_2026-09-29.txt.sorted > mn006bax_tau.csv
 
-grep -v -E "26-SEP-2026\,[0-8]\." tau_2026-09-26.txt.sorted > c262bax_tau.csv
-grep -E "27-SEP-2026\,[0-8]\." tau_2026-09-27.txt.sorted   >> c262bax_tau.csv
+## Method 2
+for vexf in ~/vlbisystem/vexfiles/triggered/c262*.vex ~/vlbisystem/vexfiles/triggered/mn006*.vex; do
+        outname=$(basename $vexf)
+        outname=${outname/.vex/}ax_tau.csv
+        ./filterByVexTime.py --backend AP-N90 --output $outname $vexf  tau_2026-*.sorted
+done
 
-grep -v -E "27-SEP-2026\,[0-8]\." tau_2026-09-27.txt.sorted > c262cax_tau.csv
-grep -E "28-SEP-2026\,[0-2]\." tau_2026-09-28.txt.sorted   >> c262cax_tau.csv
-
-grep -v -E "28-SEP-2026\,[0-2]\." tau_2026-09-28.txt.sorted > mn006aax_tau.csv
-
-cat tau_2026-09-29.txt.sorted > mn006bax_tau.csv

@@ -14,7 +14,7 @@
 #
 
 for fn in tau_*.txt; do
-	sort -k 2 $fn > ${fn}.sorted
+	sort -k 2 -h -t"," $fn > ${fn}.sorted
 done
 
 # 230 GHz: AP-N201 AP-N202 AP-N203 AP-N204
